@@ -8,7 +8,8 @@ end
 
 makeGlobal(Game)
 function Start()
-   t = Texture.new("turtle.png")
+   tile, w, h = Texture.new("images/tile.png")
+   print(w, h)
    map = Map.new()
 end
 
@@ -20,7 +21,7 @@ end
 --Update = nil
 
 function End()
-   Texture.destroy(t)
+   Texture.destroy(tile)
    map:destroy()
    print("goodbye")
 end
