@@ -35,6 +35,7 @@ Sprite
 - new(Texture, sx, sy, sw, sh, x, y, w, h)
 - move(self, x, y)
 - size(self, w, h)
+- draw(self, x, y)
 - destroy(self)
 
 Texture
@@ -42,12 +43,3 @@ Texture
   - doesn't create an object (userdata), only a pointer (lightuserdata)
 - destroy(texture)
 
-## Temporary sprite asset
-
-Turtle from:
-
-| Tag | Data |
-|---|---|
-| Source | https://www.creativetail.com/40-free-flat-animal-icons/ or http://archive.is/lE5aD |
-| Author | Creative Tail |
-| Permission (Reusing this file) | https://www.creativetail.com/licensing/ |
