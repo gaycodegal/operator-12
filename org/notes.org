@@ -1,0 +1,48 @@
+* Mechanics
+** Actions
+*** Camouflage
+	Cannot be seen until close
+*** Attack
+	Removes sectors
+*** Add
+	Adds sectors
+*** Increase
+	Increases max sector count
+*** Poison
+	Set damage rate over time
+*** Control
+	Temporarily Gain Control Over Enemy Piece
+*** Sight
+	See Camo'd enemy
+*** Speed
+	Increase speed of unit
+*** Slow
+	Decrease speed of unit
+** Targetting 
+   Can target foe or friend or self
+** Moving
+*** Manhatten
+	decrease x/y distance
+*** A Star
+	Paths to player
+** Level Goals
+*** Information
+	We want information [Prisoner refernce]
+	Perhaps it will lend some competitive advantage?
+	Perhaps it will allow you to see the stats of enemy units?
+*** Encryption Key
+	Data should have a variety of keys that can be acquired to unlock the contents of information
+* Storyline
+** Whose Side?
+   Initially you start off on the Operator side. You are number 12. You use they/them pronouns. You are a person.
+   Your side has buildings, your side has information. So does the other side
+   You could go rogue if you wanted to. 
+   There must be some punishment for going rogue early on. Some tools the enemy can provide.
+
+* Drawing Commands
+** Map
+   A map is the default drawing structure. It is scrollable, and contains objects by coordinates. It figures out what needs to be drawn and draws it.
+*** Map Sprite
+	Drawn to a map. Can be geometrical shape or png. Can fade in and out, but that's about it.
+** Dialogue
+   Generic dialogue nightfall style
