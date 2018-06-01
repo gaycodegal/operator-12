@@ -33,13 +33,20 @@ Custom Libraries you'll need
 
 Sprite
 - new(Texture, sx, sy, sw, sh, x, y, w, h)
+    - returns sprite
 - move(self, x, y)
+    - returns void
 - size(self, w, h)
+    - returns void
 - draw(self, x, y)
+    - returns void
 - destroy(self)
+    - returns void
 
 Texture
 - new(source)
   - doesn't create an object (userdata), only a pointer (lightuserdata)
+  - returns texture, width, height
 - destroy(texture)
+  - returns void
 
