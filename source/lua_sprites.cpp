@@ -14,13 +14,28 @@ static int l_free_texture(lua_State *L){
 
 static int l_draw_sprite(lua_State *L){
   Sprite *s;
+  int x, y;
+  if (!lua_isnumber(L, -1)){
+    lua_pop(L, 3);
+    return 0;
+  }
+  y = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  
+  if (!lua_isnumber(L, -1)){
+    lua_pop(L, 2);
+    return 0;
+  }
+  x = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+
   if (!lua_isuserdata(L, -1)){
     lua_pop(L, 1);
     return 0;
   }
   s = *(Sprite **)lua_touserdata(L, -1);
   lua_pop(L, 1);
-  s->draw();
+  s->draw(x, y);
   return 0;
 }
 
@@ -39,6 +54,7 @@ static int l_free_sprite(lua_State *L){
 static int l_new_texture(lua_State *L){
   //printLuaStack(L, "new_tex");
   char * path;
+  int w, h;
   if (!lua_isstring(L, -1)){
     lua_pop(L, 1);
     lua_pushnil(L);
@@ -46,8 +62,10 @@ static int l_new_texture(lua_State *L){
   }
   path = (char *)lua_tostring(L, -1);
   lua_pop(L, 1);
-  lua_pushlightuserdata(L, (void *)loadTexture(path));
-  return 1;
+  lua_pushlightuserdata(L, (void *)loadTexture(path, w, h));
+  lua_pushnumber(L, w);
+  lua_pushnumber(L, h);
+  return 3;
 }
 
 static int l_static_wait(lua_State *L){

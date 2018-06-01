@@ -9,10 +9,11 @@ function Map.new (dx, dt, param, target)
    local tilesize = 40
    local tilesep = 10
    for xi = 1,limit do
-	  local x = xi * (tilesize + tilesep)
+	  local x = (xi - 1) * (tilesize + tilesep)
 	  for yi = 1,limit do
-		 local y = yi * (tilesize + tilesep)
-		 map[xi * limit + yi] = Sprite.new(t, x, y, tilesize, tilesize)
+		 local y = (yi - 1) * (tilesize + tilesep)
+		 local temp = Sprite.new(tile, x, y, tilesize, tilesize)
+		 map[xi * limit + yi] = temp
 	  end
    end
    local t = {map=map, width=limit, height=limit}
@@ -23,7 +24,7 @@ end
 function Map.draw (self)
    for x = 1, self.width do
 	  for y = 1, self.height do
-		 self.map[x * self.width + y]:draw()
+		 self.map[x * self.width + y]:draw(0, 0)
 	  end
    end
 end
