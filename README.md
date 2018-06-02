@@ -11,6 +11,7 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 
 ## Features
 
+- Escape key closes game.
 - Battle/Map Class
     - currently handles drawing of a simple map
 	- hopefully will eventually only handle map data and be moved to C++
@@ -60,7 +61,7 @@ Just run `make` after installing all the software
 
 Sprite
 
-- new(Texture, x, y, w, h)
+- new(Texture, x, y, w, h, sx, sy)
     - returns sprite
 - move(self, x, y)
     - returns void

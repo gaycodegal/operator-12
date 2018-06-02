@@ -22,7 +22,7 @@ private:
   SDL_Rect source;
   SDL_Texture* texture;
 public:
-  void init(SDL_Texture *tex, int x, int y, int w, int h);
+  void init(SDL_Texture *tex, int x, int y, int w, int h, int sx, int sy);
   void size(int w, int h);
   void move(int x, int y);
   void draw(int x, int y);
