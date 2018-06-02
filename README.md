@@ -11,9 +11,11 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 
 ## Features
 
+- Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
+    - Sample map file found in resources/maps
 - Escape key closes game.
 - Battle/Map Class
-    - currently handles drawing of a simple map
+    - currently handles drawing of a loaded map
 	- hopefully will eventually only handle map data and be moved to C++
 	- can scroll/pan with arrow keys
 - Slug/Slug Class
@@ -51,10 +53,17 @@ Custom Libraries you'll need
   - Should be located in ~/lua
   - You don't need command line lua
 
+And Obviously you'll need `g++` to compile, and `make` to use my makefile.
+
 
 ## Building
 
 Just run `make` after installing all the software
+
+
+## Running 
+
+Just run `./main` after building is complete
 
 
 ## Classes Exposed to Lua via C++
@@ -87,3 +96,10 @@ Texture
     - exits the engine
 - static.wait(time)
 	- wait `time` ms
+
+## Global Constants Exposed to Lua via C++
+
+- Keys
+	- `KEY_UP`, `KEY_DOWN`, `KEY_LEFT`, `KEY_RIGHT`, `KEY_ESCAPE`
+- Screen Dimensions
+	- `SCREEN_WIDTH`, `SCREEN_HEIGHT`

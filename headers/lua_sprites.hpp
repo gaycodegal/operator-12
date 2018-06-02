@@ -5,6 +5,6 @@
 /**
    loads the sprite library into lua
  */
-int luaopen_sprites (lua_State *L);
+int luaopen_sprites(lua_State *L);
 
 #endif
