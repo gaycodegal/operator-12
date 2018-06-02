@@ -1,5 +1,7 @@
 require("util")
 
+-- slugdefs tells us information about slug types
+-- such as where the head/body images are stored
 Slug = {sprites = require("slug/slugdefs")}
 
 Slug.__index = metareplacer(Slug)
