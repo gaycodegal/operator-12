@@ -18,6 +18,7 @@ end
 
 function Update()
    --Update = static.quit
+   map:update()
    map:draw()
    slug:draw()
    static.wait(math.floor(1000/60))
@@ -36,3 +37,31 @@ end
 --[[loadScene()
    endScene()]]
 
+--my machine's keys only, should default to lua's guidance
+function KeyDown(key)
+   if key == 27 then
+	  static.quit()
+   elseif key == 1073741906 then
+	  map.dy = -map.speed
+   elseif key == 1073741905 then
+	  map.dy = map.speed
+   elseif key == 1073741904 then
+	  map.dx = -map.speed
+   elseif key == 1073741903 then
+	  map.dx = map.speed
+   end
+end
+
+function KeyUp(key)
+   if key == 27 then
+	  static.quit()
+   elseif key == 1073741906 and map.dy < 0 then
+	  map.dy = 0
+   elseif key == 1073741905 and map.dy > 0 then
+	  map.dy = 0
+   elseif key == 1073741904 and map.dx < 0 then
+	  map.dx = 0
+   elseif key == 1073741903 and map.dx > 0 then
+	  map.dx = 0
+   end
+end
