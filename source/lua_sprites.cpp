@@ -134,6 +134,11 @@ static int l_size_sprite(lua_State *L){
   return 1;
 }
 
+static int l_quit(lua_State *L){
+  quit = true;
+  return 0;
+}
+
 static int l_new_sprite(lua_State *L){
   //printLuaStack(L, "new_sprite");
   int x, y, w, h;
@@ -209,6 +214,7 @@ static const struct luaL_Reg texturemeta [] = {
 
 static const struct luaL_Reg staticmeta [] = {
   {"wait", l_static_wait},
+  {"quit", l_quit},
   {NULL, NULL}
 };
 

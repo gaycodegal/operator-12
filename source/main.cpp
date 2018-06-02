@@ -38,8 +38,11 @@ int end(){
   return 0;
 }
 
+bool quit = false;
+
 int main( int argc, char* args[] ){
   lua_State *L;
+  quit = false;
   chdir("resources");
 #ifdef SDL_ACTIVE
   if(start() != 0){
@@ -62,21 +65,20 @@ int main( int argc, char* args[] ){
     callLuaVoid(L, "Start");
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
   SDL_Event e;
-  bool quit = false;
   //While application is running
   if(updateExists){
     while( !quit ) {
       //Handle events on queue
       while( SDL_PollEvent( &e ) != 0 )	{
-	//User requests quit
-	if( e.type == SDL_QUIT ){
-	  quit = true;
-	}
+		//User requests quit
+		if( e.type == SDL_QUIT ){
+		  quit = true;
+		}
       }
-    
+	  
       SDL_RenderClear( globalRenderer );
       if(updateExists)
-	callLuaVoid(L, "Update");
+		callLuaVoid(L, "Update");
       SDL_RenderPresent( globalRenderer );
     }
   }

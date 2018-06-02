@@ -32,4 +32,5 @@ extern const int SCREEN_HEIGHT;
 extern SDL_Window* window;
 extern SDL_Surface* screenSurface;
 extern SDL_Renderer *globalRenderer;
+extern bool quit;
 #endif

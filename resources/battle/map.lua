@@ -3,10 +3,13 @@ Map = {}
 
 Map.__index = metareplacer(Map)
 
+Map.tilesep = 10
+Map.tilesize = 40 -- rewritten
 function Map.new (dx, dt, param, target)
    local map = {}
    local limit = 5
-   local tilesize = 40
+   local tilesize = tilew
+   Map.tilesize = tilesize
    local tilesep = 10
    for xi = 1,limit do
 	  local x = (xi - 1) * (tilesize + tilesep)
@@ -19,6 +22,10 @@ function Map.new (dx, dt, param, target)
    local t = {map=map, width=limit, height=limit}
    setmetatable(t, Map)
    return t
+end
+
+function Map.position(x,y)
+   return (x * (Map.tilesize + Map.tilesep)), (y * (Map.tilesize + Map.tilesep))
 end
 
 function Map.draw (self)
