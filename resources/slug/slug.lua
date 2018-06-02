@@ -44,6 +44,10 @@ function Slug.move(self, x, y)
    local seg = self.segs[1]
    local dx = math.abs(x - seg[1])
    local dy = math.abs(y - seg[2])
+   if map.map[x + y * map.width] then else
+	  return
+   end
+	  
    if dx > 1 or dy > 1 or dy == dx then
 	  return
    end

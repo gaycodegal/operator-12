@@ -25,7 +25,9 @@ function Map.new (data)
    print(#map)
    for i, dat in ipairs(map) do
 	  local j = 1
-	  if dat > 0 then
+	  if dat <= 0 then
+		 map[i] = false
+	  else
 		 while dat > tilesets[j].tilecount do
 			dat = dat - tilesets[j].tilecount
 			j = j + 1
@@ -79,7 +81,7 @@ end
 -- draw map to screen
 function Map.draw (self)
    for i, v in ipairs(self.map) do
-	  if v ~= 0 then
+	  if v then
 		 v:draw(map.x, map.y)
 	  end
    end
@@ -92,7 +94,7 @@ function Map.destroy (self)
    end
 
    for i, v in ipairs(self.map) do
-	  if v ~= 0 then
+	  if v then
 		 v:destroy()
 	  end
    end
