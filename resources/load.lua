@@ -21,6 +21,8 @@ function Update()
    map:update()
    map:draw()
    slug:draw()
+   active = map
+   map.slug = slug
    static.wait(math.floor(1000/60))
 end
 
@@ -39,29 +41,36 @@ end
 
 --my machine's keys only, should default to lua's guidance
 function KeyDown(key)
-   if key == 27 then
+   if key == KEY_ESCAPE then
 	  static.quit()
-   elseif key == 1073741906 then
+   elseif key == KEY_UP then
 	  map.dy = -map.speed
-   elseif key == 1073741905 then
+   elseif key == KEY_DOWN then
 	  map.dy = map.speed
-   elseif key == 1073741904 then
+   elseif key == KEY_LEFT then
 	  map.dx = -map.speed
-   elseif key == 1073741903 then
+   elseif key == KEY_RIGHT then
 	  map.dx = map.speed
    end
 end
 
 function KeyUp(key)
-   if key == 27 then
+   if key == KEY_ESCAPE then
 	  static.quit()
-   elseif key == 1073741906 and map.dy < 0 then
+   elseif key == KEY_UP and map.dy < 0 then
 	  map.dy = 0
-   elseif key == 1073741905 and map.dy > 0 then
+   elseif key == KEY_DOWN and map.dy > 0 then
 	  map.dy = 0
-   elseif key == 1073741904 and map.dx < 0 then
+   elseif key == KEY_LEFT and map.dx < 0 then
 	  map.dx = 0
-   elseif key == 1073741903 and map.dx > 0 then
+   elseif key == KEY_RIGHT and map.dx > 0 then
 	  map.dx = 0
+   end
+end
+
+function MouseDown(x, y)
+   print(x, y)
+   if active ~= nil then
+	  active:mousedown(x,y)
    end
 end

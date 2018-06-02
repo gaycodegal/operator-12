@@ -225,6 +225,22 @@ static const struct luaClassList game [] = {
   {NULL, NULL}
 };
 
+struct luaConstInt {
+  const char * name;
+  const int val;
+};
+
+static const struct luaConstInt globints[] = {
+  {"SCREEN_WIDTH", SCREEN_WIDTH},
+  {"SCREEN_HEIGHT", SCREEN_HEIGHT},
+  {"KEY_UP", SDLK_UP},
+  {"KEY_DOWN", SDLK_DOWN},
+  {"KEY_LEFT", SDLK_LEFT},
+  {"KEY_RIGHT", SDLK_RIGHT},
+  {"KEY_ESCAPE", SDLK_ESCAPE},
+  {NULL, 0}
+};
+
 int luaopen_sprites (lua_State *L) {
   int count = 0;
   lua_newtable(L);
@@ -235,6 +251,12 @@ int luaopen_sprites (lua_State *L) {
     luaL_setfuncs(L, ptr->meta, 0);
     lua_setfield(L, -2, ptr->name);
     ++ptr;
+  }
+  struct luaConstInt * pint = (struct luaConstInt *)globints;
+  while(pint->name != NULL){
+	lua_pushnumber(L, pint->val);
+	lua_setfield(L, -2, pint->name);
+	++pint;
   }
   return 1;
 }

@@ -40,6 +40,17 @@ int end(){
 
 bool quit = false;
 
+void mouseHelper(lua_State *L, int type, const char * event, bool fn_exists){
+  int x, y;
+  SDL_GetMouseState( &x, &y );
+  if(fn_exists){
+	lua_getglobal(L, event);
+	lua_pushnumber(L, x);
+	lua_pushnumber(L, y);
+	callErr(L, event, 2);
+  }
+}
+
 int main( int argc, char* args[] ){
   lua_State *L;
   quit = false;
@@ -66,6 +77,10 @@ int main( int argc, char* args[] ){
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
   int keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
   int keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
+  int mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
+  int mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
+  int mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
+
   SDL_Event e;
   //While application is running
   if(updateExists){
@@ -85,6 +100,20 @@ int main( int argc, char* args[] ){
 		  lua_getglobal(L, "KeyUp");
 		  lua_pushnumber(L, e.key.keysym.sym);
 		  callErr(L, "KeyUp", 1);
+		}
+		else if( e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN || e.type == SDL_MOUSEBUTTONUP ){
+		  //Get mouse position
+		  switch(e.type){
+		  case SDL_MOUSEBUTTONDOWN:
+			mouseHelper(L, e.type, "MouseDown", mousedownExists);			
+			break;
+		  case SDL_MOUSEMOTION:
+			mouseHelper(L, e.type, "MouseMove", mousemoveExists);			
+			break;
+		  case SDL_MOUSEBUTTONUP:
+			mouseHelper(L, e.type, "MouseUp", mouseupExists);
+			break;
+		  }
 		}
       }
 	  
