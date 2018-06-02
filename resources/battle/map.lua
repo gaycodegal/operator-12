@@ -21,12 +21,11 @@ function Map.new (data)
    local tilesize = tilew
    Map.tilesize = tilesize
    local tilesep = 10
-   local map = data.layers[1].data
-   print(#map)
-   for i, dat in ipairs(map) do
+   local tmap = data.layers[1].data
+   for i, dat in ipairs(tmap) do
 	  local j = 1
 	  if dat <= 0 then
-		 map[i] = false
+		 tmap[i] = false
 	  else
 		 while dat > tilesets[j].tilecount do
 			dat = dat - tilesets[j].tilecount
@@ -34,9 +33,9 @@ function Map.new (data)
 		 end
 		 
 		 local v = tilesets[j]
-		 print((i % data.width) * (tilesize + tilesep),  (i// data.width) * (tilesize + tilesep))
+		 --print((i % data.width) * (tilesize + tilesep),  (i// data.width) * (tilesize + tilesep))
 		 dat = dat - 1
-		 map[i] = Sprite.new(v.sheet,
+		 tmap[i] = Sprite.new(v.sheet,
 							 (i % data.width) * (tilesize + tilesep),
 							 (i // data.width) * (tilesize + tilesep),
 							 tilesize,
@@ -45,22 +44,27 @@ function Map.new (data)
 							 (dat // v.w)*v.tileheight)
 	  end
    end
-   local t = {map=map,
+   local t = {map=tmap,
 			  tilesets=tilesets,
 			  width=data.width,
 			  height=data.height,
 			  x=(SCREEN_WIDTH - (data.width * (tilesize + tilesep) - tilesep))//2,
 			  y=(SCREEN_HEIGHT - (data.height * (tilesize + tilesep) - tilesep))//2,
 			  dx=0, dy=0, speed=5}
-   print(t.x, t.y)
+   --print(t.x, t.y)
    setmetatable(t, Map)
+   map = t
+   Slug.spawn(data.layers[2].objects)
+   for k,v in pairs(slugs) do
+	  t.slug = v
+   end
    return t
 end
 
 -- map game logic
 function Map.update(self)
-   self.x = self.x + self.dx
-   self.y = self.y + self.dy
+   self.x = self.x - self.dx
+   self.y = self.y - self.dy
 end
 
 -- get map pixel position from grid coords
@@ -74,7 +78,9 @@ function Map.mousedown(self,x,y)
    x = ((x - map.x) // (Map.tilesize + Map.tilesep))
    y = ((y - map.y) // (Map.tilesize + Map.tilesep))
    if x >= 0 and x < self.width and y >= 0 and y < self.width then
-	  self.slug:move(x, y)
+	  if self.slug then
+		 self.slug:move(x, y)
+	  end
    end
 end
 

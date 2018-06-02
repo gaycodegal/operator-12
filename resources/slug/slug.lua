@@ -4,16 +4,51 @@ Slug = {sprites = require("slug/slugdefs")}
 
 Slug.__index = metareplacer(Slug)
 
+-- creates a new slug
 -- data now owned by slug
 function Slug.new (data)
    local sprites = Slug.sprites[data.sprites]
    data.sprites = {}
    for i, spr in ipairs(sprites) do
-	  data.sprites[i] = Sprite.new(spr[1], 0, 0, map.tilesize, map.tilesize, 0, 0)
+	  data.sprites[i] = Sprite.new(spr[1], 0, 0, tilew, tileh, 0, 0)
    end
    data.size = #data.segs
    setmetatable(data, Slug)
    return data
+end
+
+-- spawn slugs from Tiled lua file
+function Slug.spawn(data)
+   slugs = {}
+   for i, v in ipairs(data) do
+	  if slugs[v.name] then else
+		 slugs[v.name] = {}
+	  end
+	  --print(v.y, v.x, map.tilesize, map.width, (v.y // map.tilesize))
+	  slugs[v.name][v.properties.index] = {
+		 (v.x // map.tilesize) % map.width + 1,
+		 (v.y // map.tilesize) 
+	  }
+	  slugs[v.name].type = v.type
+   end
+   for name, v in pairs(slugs) do
+	  slugs[name] = Slug.new({sprites = v.type, segs = v})
+   end
+   return slugs
+end
+
+-- despawn slugs from Tiled lua file
+function Slug.despawn()
+   for name, v in pairs(slugs) do
+	  v:destroy()
+   end
+end
+
+-- draw slugs from Tiled lua file
+function Slug.renderAll()
+   for name, v in pairs(slugs) do
+	  v:draw()
+   end
 end
 
 --load all slug data
