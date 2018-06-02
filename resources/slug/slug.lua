@@ -11,6 +11,7 @@ function Slug.new (data)
    for i, spr in ipairs(sprites) do
 	  data.sprites[i] = Sprite.new(spr[1], 0, 0, spr[2], spr[3])
    end
+   data.size = #data.segs
    setmetatable(data, Slug)
    return data
 end
@@ -34,15 +35,35 @@ function Slug.unload()
    end
 end
 
-function Slug.draw (self)
-   local spr = self.sprites[1]
-   for k,seg in ipairs(self.segs) do
-	  if k ~= 1 then
-		 spr = self.sprites[2]
-	  end
-	  local x, y = Map.position(seg[1], seg[2])
-	  spr:draw(x, y)
+-- incredibly inefficient. O(1) with LinkedListSlug,
+-- but hey who cares, fast and dirty to start
+function Slug.move(self, x, y)
+   local head = self.segs[1]
+   local dx = math.abs(x - head[1])
+   local dy = math.abs(y - head[2])
+   if dx > 1 or dy > 1 or dy == dx then
+	  return
    end
+   print(self.size)
+   for i = self.size, 2, -1 do
+	  self.segs[i] = self.segs[i - 1]
+   end
+   self.segs[1] = {x,y}
+end
+
+function Slug.draw (self)
+   local spr = self.sprites[2]
+   local x, y, seg
+
+   for i = 2, self.size do
+	  seg = self.segs[i]
+	  x, y = Map.position(seg[1], seg[2])
+      spr:draw(x, y)
+   end
+   spr = self.sprites[1]
+   seg = self.segs[1]
+   x, y = Map.position(seg[1], seg[2])
+   spr:draw(x, y)
 end
 
 function Slug.destroy (self)

@@ -34,6 +34,15 @@ function Map.position(x,y)
    return (x * (Map.tilesize + Map.tilesep) + map.x), (y * (Map.tilesize + Map.tilesep) + map.y)
 end
 
+function Map.mousedown(self,x,y)
+   x = ((x - map.x) // (Map.tilesize + Map.tilesep))
+   y = ((y - map.y) // (Map.tilesize + Map.tilesep))
+   print("move", x, y)
+   if x > 0 and x <= self.width and y > 0 and y <= self.width then
+	  self.slug:move(x, y)
+   end
+end
+
 function Map.draw (self)
    for x = 1, self.width do
 	  for y = 1, self.height do
