@@ -64,6 +64,8 @@ int main( int argc, char* args[] ){
   if(globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoid(L, "Start");
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
+  int keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
+  int keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
   SDL_Event e;
   //While application is running
   if(updateExists){
@@ -73,6 +75,16 @@ int main( int argc, char* args[] ){
 		//User requests quit
 		if( e.type == SDL_QUIT ){
 		  quit = true;
+		}//User presses a key
+		else if( keydownExists && e.type == SDL_KEYDOWN ){
+		  lua_getglobal(L, "KeyDown");
+		  lua_pushnumber(L, e.key.keysym.sym);
+		  callErr(L, "KeyDown", 1);
+		}
+		else if( keyupExists && e.type == SDL_KEYUP ){
+		  lua_getglobal(L, "KeyUp");
+		  lua_pushnumber(L, e.key.keysym.sym);
+		  callErr(L, "KeyUp", 1);
 		}
       }
 	  

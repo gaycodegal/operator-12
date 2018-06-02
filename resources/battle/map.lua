@@ -19,19 +19,25 @@ function Map.new (dx, dt, param, target)
 		 map[xi * limit + yi] = temp
 	  end
    end
-   local t = {map=map, width=limit, height=limit}
+   local t = {map=map, width=limit, height=limit, x=0, y=0, dx=0, dy=0, speed=5}
    setmetatable(t, Map)
    return t
 end
 
+function Map.update(self)
+   self.x = self.x + self.dx
+   self.y = self.y + self.dy
+end
+
 function Map.position(x,y)
-   return (x * (Map.tilesize + Map.tilesep)), (y * (Map.tilesize + Map.tilesep))
+   --ehhhhhh global var abuse but like who cares rn
+   return (x * (Map.tilesize + Map.tilesep) + map.x), (y * (Map.tilesize + Map.tilesep) + map.y)
 end
 
 function Map.draw (self)
    for x = 1, self.width do
 	  for y = 1, self.height do
-		 self.map[x * self.width + y]:draw(0, 0)
+		 self.map[x * self.width + y]:draw(map.x, map.y)
 	  end
    end
 end
