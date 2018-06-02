@@ -38,13 +38,33 @@ end
 -- incredibly inefficient. O(1) with LinkedListSlug,
 -- but hey who cares, fast and dirty to start
 function Slug.move(self, x, y)
-   local head = self.segs[1]
-   local dx = math.abs(x - head[1])
-   local dy = math.abs(y - head[2])
+   local seg = self.segs[1]
+   local dx = math.abs(x - seg[1])
+   local dy = math.abs(y - seg[2])
    if dx > 1 or dy > 1 or dy == dx then
 	  return
    end
-   print(self.size)
+   local tomove = nil
+   local toi
+   -- check if we'll replace one of our own segments
+   for i = 2, self.size - 1 do
+	  seg = self.segs[i]
+	  if seg[1] == x and seg[2] == y then
+		 tomove = seg
+		 toi = i
+		 break
+	  end
+   end
+   --if so shift and cylce
+   if tomove ~= nil then
+	  for i = toi, 2, -1 do
+		 self.segs[i] = self.segs[i - 1]
+	  end
+	  self.segs[1] = tomove
+	  return
+   end
+   --otherwise, slide everyone down one
+   self.segs[self.size] = tomove
    for i = self.size, 2, -1 do
 	  self.segs[i] = self.segs[i - 1]
    end

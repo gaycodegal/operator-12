@@ -19,7 +19,8 @@ function Map.new (dx, dt, param, target)
 		 map[xi * limit + yi] = temp
 	  end
    end
-   local t = {map=map, width=limit, height=limit, x=0, y=0, dx=0, dy=0, speed=5}
+   local size = limit * (tilesize + tilesep) - tilesep
+   local t = {map=map, width=limit, height=limit, x=(SCREEN_WIDTH - size)//2, y=(SCREEN_HEIGHT - size)//2, dx=0, dy=0, speed=5}
    setmetatable(t, Map)
    return t
 end
@@ -37,8 +38,7 @@ end
 function Map.mousedown(self,x,y)
    x = ((x - map.x) // (Map.tilesize + Map.tilesep))
    y = ((y - map.y) // (Map.tilesize + Map.tilesep))
-   print("move", x, y)
-   if x > 0 and x <= self.width and y > 0 and y <= self.width then
+   if x >= 0 and x < self.width and y >= 0 and y < self.width then
 	  self.slug:move(x, y)
    end
 end
