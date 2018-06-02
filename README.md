@@ -8,9 +8,24 @@ This project itself is a V2. The original Operator 12 only got so far as to have
 
 The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for your side of the battle. You are #12, you report to #2. There will be more story behind the names as you get to know your organization.
 
+
+## Features
+
+- Battle/Map Class
+    - currently handles drawing of a simple map
+	- hopefully will eventually only handle map data and be moved to C++
+- Slug/Slug Class
+	- the basic entity of the game
+	- will essentially be a linked list moving about the board
+- Slug/Slugdefs
+	- holds info on what sprites are associated with which slug-type
+- Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
+
+
 ## Planned Content
 
 You can check the [org](./org) folder for more information about planned content. Although as I develop the story to my liking there will be spoilers there. Opening it in emacs' orgmode should allow you to avoid looking at anything involved with the story.
+
 
 ## About Code
 
@@ -19,20 +34,31 @@ You can check the [org](./org) folder for more information about planned content
 - AIs will be done within lua, although time consuming algorithms like Quad-Tree search and pathing will be in C++
 - Still very much a work in progress.
 
-## Building
+
+## Installation
 
 Custom Libraries you'll need
+
 - SDL2-Dev `apt-get install libsdl2-dev`
 - SDL2-Image-Dev `apt-get install libsdl2-image-dev`
 - SDL2-TTF-Dev `apt-get install libsdl2-ttf-dev`
 - SDL2-Mixer-Dev `apt-get install libsdl2-mixer-dev`
 - Lua 5.3.4
   - Installation instructions available at [www.lua.org](https://www.lua.org/download.html)
+  - Should be located in ~/lua
+  - You don't need command line lua
 
-## Classes
+
+## Building
+
+Just run `make` after installing all the software
+
+
+## Classes Exposed to Lua via C++
 
 Sprite
-- new(Texture, sx, sy, sw, sh, x, y, w, h)
+
+- new(Texture, x, y, w, h)
     - returns sprite
 - move(self, x, y)
     - returns void
@@ -44,9 +70,17 @@ Sprite
     - returns void
 
 Texture
+
 - new(source)
   - doesn't create an object (userdata), only a pointer (lightuserdata)
   - returns texture, width, height
 - destroy(texture)
   - returns void
 
+
+## Globals Method Exposed to Lua via C++
+
+- static.quit()
+    - exits the engine
+- static.wait(time)
+	- wait `time` ms
