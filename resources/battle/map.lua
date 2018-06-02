@@ -25,16 +25,19 @@ function Map.new (dx, dt, param, target)
    return t
 end
 
+-- map game logic
 function Map.update(self)
    self.x = self.x + self.dx
    self.y = self.y + self.dy
 end
 
+-- get map pixel position from grid coords
 function Map.position(x,y)
    --ehhhhhh global var abuse but like who cares rn
    return (x * (Map.tilesize + Map.tilesep) + map.x), (y * (Map.tilesize + Map.tilesep) + map.y)
 end
 
+-- click on map -> do someting 
 function Map.mousedown(self,x,y)
    x = ((x - map.x) // (Map.tilesize + Map.tilesep))
    y = ((y - map.y) // (Map.tilesize + Map.tilesep))
@@ -43,6 +46,7 @@ function Map.mousedown(self,x,y)
    end
 end
 
+-- draw map to screen
 function Map.draw (self)
    for x = 1, self.width do
 	  for y = 1, self.height do
@@ -51,6 +55,7 @@ function Map.draw (self)
    end
 end
 
+-- deallocate map
 function Map.destroy (self)
    for x = 1, self.width do
 	  for y = 1, self.height do

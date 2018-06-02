@@ -26,8 +26,6 @@ function Update()
    static.wait(math.floor(1000/60))
 end
 
---Update = nil
-
 function End()
    Slug.unload()
    Texture.destroy(tile)
@@ -36,10 +34,6 @@ function End()
    print("goodbye")
 end
 
---[[loadScene()
-   endScene()]]
-
---my machine's keys only, should default to lua's guidance
 function KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()

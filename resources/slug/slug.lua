@@ -16,6 +16,8 @@ function Slug.new (data)
    return data
 end
 
+--load all slug data
+--names -> textures
 function Slug.load ()
    local sprites = Slug.sprites
    for k, v in pairs(sprites) do
@@ -26,6 +28,7 @@ function Slug.load ()
    end
 end
 
+--deallocate global slug textures
 function Slug.unload()
    local sprites = Slug.sprites
    for k, v in pairs(sprites) do
@@ -71,6 +74,7 @@ function Slug.move(self, x, y)
    self.segs[1] = {x,y}
 end
 
+--draw slug to screen
 function Slug.draw (self)
    local spr = self.sprites[2]
    local x, y, seg
@@ -86,6 +90,7 @@ function Slug.draw (self)
    spr:draw(x, y)
 end
 
+-- deallocate slug
 function Slug.destroy (self)
    for i, spr in ipairs(self.sprites) do
 	  spr:destroy()
