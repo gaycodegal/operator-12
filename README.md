@@ -14,9 +14,11 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 - Battle/Map Class
     - currently handles drawing of a simple map
 	- hopefully will eventually only handle map data and be moved to C++
+	- can scroll/pan with arrow keys
 - Slug/Slug Class
 	- the basic entity of the game
 	- will essentially be a linked list moving about the board
+	- can move about the board if clicked one space away from 'head'
 - Slug/Slugdefs
 	- holds info on what sprites are associated with which slug-type
 - Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
