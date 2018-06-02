@@ -11,7 +11,7 @@ makeGlobal(Game)
 function Start()
    Slug.load()
    tile, tilew, tileh = Texture.new("images/tile.png")
-   slug = Slug.new({sprites="test", segs={{2,2}, {2,1}, {1,1}}})
+   slug = Slug.new({sprites="test", segs={{2,2}, {2,1}, {1,1}, {1,2}, {1,3}}})
    map = Map.new()
    
 end
@@ -69,7 +69,6 @@ function KeyUp(key)
 end
 
 function MouseDown(x, y)
-   print(x, y)
    if active ~= nil then
 	  active:mousedown(x,y)
    end
