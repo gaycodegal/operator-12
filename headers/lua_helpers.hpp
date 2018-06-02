@@ -24,12 +24,12 @@ void callLuaVoid(lua_State *L, const char *name);
 /**
    Sets the metatable of an object to LUA_LIBNAME.<name>
  */
-void set_meta(lua_State *L, int ind, const char * name);
+void set_meta(lua_State *L, int ind, const char *name);
 
 /**
    prints the entire lua stack, which is normally
    empty save for the current arguments to/stack
-   manupulations done within a c funciton 
+   manupulations done within a c funciton
  */
 void printLuaStack(lua_State *L, const char *name);
 
