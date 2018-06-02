@@ -18,6 +18,8 @@
 	Increase speed of unit
 *** Slow
 	Decrease speed of unit
+*** Flip Tile
+	Make a tile exist, or remove one from existence
 ** Targetting 
    Can target foe or friend or self
 ** Moving
