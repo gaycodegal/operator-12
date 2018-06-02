@@ -11,25 +11,22 @@ makeGlobal(Game)
 function Start()
    Slug.load()
    map = Map.new(require("maps/test"))
-   slug = Slug.new({sprites="test", segs={{2,2}, {2,1}, {1,1}, {1,2}, {1,3}}})
-   
 end
 
 function Update()
    --Update = static.quit
    map:update()
    map:draw()
-   slug:draw()
+   Slug.renderAll()
    active = map
-   map.slug = slug
    static.wait(math.floor(1000/60))
 end
 
 function End()
+   Slug.despawn()
    Slug.unload()
    Texture.destroy(tile)
    map:destroy()
-   slug:destroy()
    print("goodbye")
 end
 
