@@ -141,12 +141,28 @@ static int l_quit(lua_State *L){
 
 static int l_new_sprite(lua_State *L){
   //printLuaStack(L, "new_sprite");
-  int x, y, w, h;
+  int x, y, w, h, sx, sy;
   SDL_Texture *tex;
   Sprite *s;
   if (!lua_isnumber(L, -1)){
-    lua_pop(L, 5);
+    lua_pop(L, 7);
     //printf("abort\n");
+    lua_pushnil(L);
+    return 1;
+  }
+  sy = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)){
+    lua_pop(L, 6);
+    //printf("abort\n");
+    lua_pushnil(L);
+    return 1;
+  }
+  sx = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)){
+    lua_pop(L, 5);
+	//printf("abort\n");
     lua_pushnil(L);
     return 1;
   }
@@ -174,20 +190,22 @@ static int l_new_sprite(lua_State *L){
     lua_pushnil(L);
     return 1;
   }
+
   x = (int)lua_tonumber(L, -1);
   lua_pop(L, 1);
+  //printf("here %s\n", lua_typename(L, lua_type(L, -1)));
   if (!lua_islightuserdata(L, -1)){
     lua_pop(L, 1);
     //printf("abort\n");
     lua_pushnil(L);
     return 1;
   }
-  //printf("x %i, y %i, w %i, h %i\n", x,y,w,h);
+  //printf("(x %i, y %i, w %i, h %i) sx %i, sy%i\n", x,y,w,h,sx,sy);
   tex = (SDL_Texture *)lua_touserdata(L, -1);
   lua_pop(L, 1);
   s = new Sprite();
   *reinterpret_cast<Sprite **>(lua_newuserdata(L, sizeof(Sprite*))) = s;
-  s->init(tex, x, y, w, h);
+  s->init(tex, x, y, w, h, sx, sy);
   /*for(int l = 0; l < sizeof(Sprite); l++){
     printf("c: %i/%ld v: %i\n", l, sizeof(Sprite), *(c++));
     }*/

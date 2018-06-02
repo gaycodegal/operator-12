@@ -10,9 +10,8 @@ end
 makeGlobal(Game)
 function Start()
    Slug.load()
-   tile, tilew, tileh = Texture.new("images/tile.png")
+   map = Map.new(require("maps/test"))
    slug = Slug.new({sprites="test", segs={{2,2}, {2,1}, {1,1}, {1,2}, {1,3}}})
-   map = Map.new()
    
 end
 

@@ -9,7 +9,7 @@ function Slug.new (data)
    local sprites = Slug.sprites[data.sprites]
    data.sprites = {}
    for i, spr in ipairs(sprites) do
-	  data.sprites[i] = Sprite.new(spr[1], 0, 0, spr[2], spr[3])
+	  data.sprites[i] = Sprite.new(spr[1], 0, 0, map.tilesize, map.tilesize, 0, 0)
    end
    data.size = #data.segs
    setmetatable(data, Slug)

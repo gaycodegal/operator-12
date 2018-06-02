@@ -41,15 +41,15 @@ void Sprite::size(int w, int h){
   this->dest.h = h;
 }
 
-void Sprite::init(SDL_Texture *tex, int x, int y, int w, int h){
+void Sprite::init(SDL_Texture *tex, int x, int y, int w, int h, int sx, int sy){
   texture = tex;
   this->dest.x = x;
   this->dest.y = y;
   this->dest.w = w;
   this->dest.h = h;
   
-  this->source.x = 0;
-  this->source.y = 0;
+  this->source.x = sx;
+  this->source.y = sy;
   this->source.w = w;
   this->source.h = h;
 }
