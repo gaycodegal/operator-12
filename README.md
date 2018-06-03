@@ -104,10 +104,28 @@ Please run `make format` and test your C++ code before submitting a PR for revie
 ### Texture
 
 - new(source)
-  - doesn't create an object (userdata), only a pointer (lightuserdata)
-  - returns texture, width, height
+	- doesn't create an object (userdata), only a pointer (lightuserdata)
+	- returns texture, width, height
 - destroy(texture)
-  - returns void
+	- returns void
+
+
+### Surface
+
+- new(source)
+	- returns source
+- newColored(color)
+	- returns surface
+- sizeOf(surface)
+	- returns w, h
+- blit(dst, source)
+	- returns void
+- textureFrom(surface)
+	- returns texture
+- blitScale(dst, source, sx, sy, sw, sh, dx, dy, dw, dh)
+	- returns void
+- destroy(surface)
+	- returns void
 
 
 ## Globals Method Exposed to Lua via C++
