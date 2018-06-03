@@ -4,7 +4,7 @@ Segment = {}
 Segment.__index = metareplacer(Segment)
 
 -- creates a new segment
--- data now owned by slug
+-- pos now owned by segment
 function Segment.new (p, n, spr, pos, slug)
    self = {p=p,n=n,spr=spr,pos=pos, slug=slug}
    setmetatable(self, Segment)
@@ -62,4 +62,8 @@ function Segment.insert(self, p, n)
    end
    self.p = p
    self.n = n
+end
+
+function Segment.print(self)
+   print(self.slug.name, self.pos[1], self.pos[2])
 end

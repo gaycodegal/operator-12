@@ -42,12 +42,15 @@ function Slug.spawn(data)
 	  --print(v.y, v.x, map.tilesize, map.width, (v.y // map.tilesize))
 	  slugs[v.name][v.properties.index] = {
 		 (v.x // map.tilesize) % map.width + 1,
-		 (v.y // map.tilesize) 
+		 (v.y // map.tilesize)
 	  }
 	  slugs[v.name].type = v.type
+	  if v.properties.team then
+		 slugs[v.name].team = v.properties.team
+	  end
    end
    for name, v in pairs(slugs) do
-	  slugs[name] = Slug.new({sprites = v.type, segs = v, name=name})
+	  slugs[name] = Slug.new({sprites = v.type, segs = v, name=name, team=v.team})
    end
 end
 
@@ -104,7 +107,8 @@ end
 -- case encounter other
 -- diagonal or on head
 -- case encounter consumable
--- case encounter self (tail, max len)
+-- case encounter self tail
+-- case encounter self (max len)
 -- case encounter self default
 function Slug.move(self, x, y)
    local head = self.head
@@ -129,7 +133,7 @@ function Slug.move(self, x, y)
    head:removeFromMap()
    local tail = self.tail
    tail:removeFromMap()
-   if mid then
+   if mid and mid ~= tail then
 	  mid:removeFromMap()
 	  local t = mid.pos
 	  mid.pos = tail.pos
@@ -155,37 +159,20 @@ function Slug.move(self, x, y)
 end
 
 function Slug.damage(self, amount)
-   self.size = self.size - 1
-   local t = self.tail
-   t:removeFromMap()
-   self.tail = t.p
-   t:unlink()
-   if self.size <= 0 then
-	  self:destroy()
+   for i = 1,amount do
+	  self.size = self.size - 1
+	  local t = self.tail
+	  t:removeFromMap()
+	  self.tail = t.p
+	  t:unlink()
+	  if self.size <= 0 then
+		 self:destroy()
+	  end
    end
 end
 
---[=[
---draw slug to screen
-function Slug.draw (self)
-   local spr = self.sprites[2]
-   local x, y, seg
-
-   for i = 2, self.size do
-	  seg = self.segs[i]
-	  x, y = Map.position(seg[1], seg[2])
-      spr:draw(x, y)
-   end
-   spr = self.sprites[1]
-   seg = self.segs[1]
-   x, y = Map.position(seg[1], seg[2])
-   spr:draw(x, y)
-   end
-]=]
-
 -- deallocate slug
 function Slug.destroy (self)
-   print("destroy", self.name)
    for i, spr in ipairs(self.sprites) do
 	  spr:destroy()
    end
