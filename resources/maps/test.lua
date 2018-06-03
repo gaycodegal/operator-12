@@ -89,7 +89,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["index"] = 1
+            ["index"] = 1,
+			["team"] = 1
           }
         },
         {
@@ -164,7 +165,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["index"] = 2
+			 ["index"] = 2
           }
         },
         {
@@ -179,7 +180,8 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["index"] = 1
+			 ["index"] = 1,
+			 ["team"] = 2
           }
         }
       }

@@ -1,6 +1,6 @@
 require("battle/map")
 require("slug/slug")
-
+require("ai/ai")
 function makeGlobal(x)
    for k,v in pairs(x) do
       rawset(_G, k, v)
@@ -12,6 +12,11 @@ function Start()
    Slug.load()
    map = Map.new(require("maps/test"))
    map.slug = slugs.Slug1
+   local all = AI.findAll(1, nil)
+   print(#all)
+   AI.sortDist(all, map.slug.head.pos)
+   all[1]:print()
+   all[2]:print()
 end
 
 function Update()
