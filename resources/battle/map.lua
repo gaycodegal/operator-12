@@ -98,11 +98,7 @@ function Map.draw (self)
 		 v:draw(map.x, map.y)
 	  end
 	  if self.objects[i] then
-		 local x, y = Map.position(
-			i % map.width,
-			i // map.width
-		 )
-		 self.objects[i]:draw(x,y)
+		 self.objects[i]:draw()
 	  end
    end
 end

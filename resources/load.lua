@@ -11,6 +11,7 @@ makeGlobal(Game)
 function Start()
    Slug.load()
    map = Map.new(require("maps/test"))
+   map.slug = slugs.Slug1
 end
 
 function Update()

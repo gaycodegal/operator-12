@@ -1,23 +1,34 @@
 require("util")
-
 -- slugdefs tells us information about slug types
 -- such as where the head/body images are stored
 Slug = {sprites = require("slug/slugdefs")}
 
 Slug.__index = metareplacer(Slug)
+require("slug/segment")
 
 -- creates a new slug
--- data now owned by slug
-function Slug.new (data)
-   local sprites = Slug.sprites[data.sprites]
-   data.sprites = {}
+-- self now owned by slug
+function Slug.new (self)
+   local sprites = Slug.sprites[self.sprites]
+   self.sprites = {}
    for i, spr in ipairs(sprites) do
-	  data.sprites[i] = Sprite.new(spr[1], 0, 0, tilew, tileh, 0, 0)
+	  self.sprites[i] = Sprite.new(spr[1], 0, 0, tilew, tileh, 0, 0)
    end
-   data.size = #data.segs
-   setmetatable(data, Slug)
-   data:addToMap()
-   return data
+   self.size = #self.segs
+   local prev = nil
+   for i = 1,self.size do
+	  local sprite = self.sprites[2]
+	  if i == 1 then
+		 sprite = self.sprites[1]
+	  end
+	  self.segs[i] = Segment.new(prev, nil, sprite, self.segs[i], self)
+	  prev = self.segs[i]
+   end
+   self.head = self.segs[1]
+   self.tail = self.segs[self.size]
+   setmetatable(self, Slug)
+   self:addToMap()
+   return self
 end
 
 -- spawn slugs from Tiled lua file
@@ -72,64 +83,68 @@ end
 -- Remove Slug from Map
 function Slug.liftFromMap(self)
    for i, seg in ipairs(self.segs) do
-	  map.objects[map:indexOf(seg[1], seg[2])] = false
+	  self:liftFromMap()
    end
 end
 
 -- Add Slug to Map
 function Slug.addToMap(self)
    for i, seg in ipairs(self.segs) do
-	  local sprite = self.sprites[2]
-	  if i == 1 then
-		 sprite = self.sprites[1]
-	  end
-	  map.objects[map:indexOf(seg[1], seg[2])] = sprite
+	  seg:addToMap()
    end
 end
 
--- incredibly inefficient. O(1) with LinkedListSlug,
--- but hey who cares, fast and dirty to start
+-- case off map
+-- case encounter other
+-- diagonal or on head
+-- case encounter consumable
+-- case encounter self (tail, max len)
+-- case encounter self default
 function Slug.move(self, x, y)
-   local seg = self.segs[1]
-   local dx = math.abs(x - seg[1])
-   local dy = math.abs(y - seg[2])
+   local head = self.head
+   local dx = math.abs(x - head.pos[1])
+   local dy = math.abs(y - head.pos[2])
+
    if map.map[x + y * map.width] then else
 	  return
    end
-	  
+   local mid = map.objects[x + y * map.width]
+   if mid then
+	  if mid.slug ~= self then
+		 return
+	  end
+   end
+   
    if dx > 1 or dy > 1 or dy == dx then
 	  return
    end
-   
-   self:liftFromMap()
-   
-   local tomove = nil
-   local toi
-   -- check if we'll replace one of our own segments
-   for i = 2, self.size - 1 do
-	  seg = self.segs[i]
-	  if seg[1] == x and seg[2] == y then
-		 tomove = seg
-		 toi = i
-		 break
+
+   head:liftFromMap()
+   local tail = self.tail
+   tail:liftFromMap()
+   if mid then
+	  mid:liftFromMap()
+	  local t = mid.pos
+	  mid.pos = tail.pos
+	  tail.pos = t
+	  mid:addToMap()
+	  mid:unlink()
+	  mid:insert(tail.p, tail)
+   end
+   if tail ~= head then
+	  local prev = tail.p
+	  tail:unlink()	  
+	  tail:insert(head, head.n)
+	  tail.pos[1] = head.pos[1]
+	  tail.pos[2] = head.pos[2]
+	  tail:addToMap()
+	  if prev ~= head then
+		 self.tail = prev
 	  end
    end
-   --if so shift and cylce
-   if tomove ~= nil then
-	  for i = toi, 2, -1 do
-		 self.segs[i] = self.segs[i - 1]
-	  end
-	  self.segs[1] = tomove
-	  self:addToMap()
-	  return
-   end
-   --otherwise, slide everyone down one
-   self.segs[self.size] = tomove
-   for i = self.size, 2, -1 do
-	  self.segs[i] = self.segs[i - 1]
-   end
-   self.segs[1] = {x,y}
-   self:addToMap()
+   head.pos[1] = x
+   head.pos[2] = y
+   head:addToMap()
 end
 
 --[=[
