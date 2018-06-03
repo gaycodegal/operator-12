@@ -16,6 +16,7 @@ function Slug.new (data)
    end
    data.size = #data.segs
    setmetatable(data, Slug)
+   data:addToMap()
    return data
 end
 
@@ -46,13 +47,6 @@ function Slug.despawn()
    end
 end
 
--- draw slugs from Tiled lua file
-function Slug.renderAll()
-   for name, v in pairs(slugs) do
-	  v:draw()
-   end
-end
-
 --load all slug data
 --names -> textures
 function Slug.load ()
@@ -75,6 +69,24 @@ function Slug.unload()
    end
 end
 
+-- Remove Slug from Map
+function Slug.liftFromMap(self)
+   for i, seg in ipairs(self.segs) do
+	  map.objects[map:indexOf(seg[1], seg[2])] = false
+   end
+end
+
+-- Add Slug to Map
+function Slug.addToMap(self)
+   for i, seg in ipairs(self.segs) do
+	  local sprite = self.sprites[2]
+	  if i == 1 then
+		 sprite = self.sprites[1]
+	  end
+	  map.objects[map:indexOf(seg[1], seg[2])] = sprite
+   end
+end
+
 -- incredibly inefficient. O(1) with LinkedListSlug,
 -- but hey who cares, fast and dirty to start
 function Slug.move(self, x, y)
@@ -88,6 +100,9 @@ function Slug.move(self, x, y)
    if dx > 1 or dy > 1 or dy == dx then
 	  return
    end
+   
+   self:liftFromMap()
+   
    local tomove = nil
    local toi
    -- check if we'll replace one of our own segments
@@ -105,6 +120,7 @@ function Slug.move(self, x, y)
 		 self.segs[i] = self.segs[i - 1]
 	  end
 	  self.segs[1] = tomove
+	  self:addToMap()
 	  return
    end
    --otherwise, slide everyone down one
@@ -113,8 +129,10 @@ function Slug.move(self, x, y)
 	  self.segs[i] = self.segs[i - 1]
    end
    self.segs[1] = {x,y}
+   self:addToMap()
 end
 
+--[=[
 --draw slug to screen
 function Slug.draw (self)
    local spr = self.sprites[2]
@@ -129,7 +147,8 @@ function Slug.draw (self)
    seg = self.segs[1]
    x, y = Map.position(seg[1], seg[2])
    spr:draw(x, y)
-end
+   end
+]=]
 
 -- deallocate slug
 function Slug.destroy (self)

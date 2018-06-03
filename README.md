@@ -114,6 +114,7 @@ Please run `make format` and test your C++ code before submitting a PR for revie
 - static.wait(time)
 	- wait `time` ms
 
+
 ## Global Constants Exposed to Lua via C++
 
 - Keys

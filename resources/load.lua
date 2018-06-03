@@ -17,16 +17,15 @@ function Update()
    --Update = static.quit
    map:update()
    map:draw()
-   Slug.renderAll()
+   --Slug.renderAll()
    active = map
    static.wait(math.floor(1000/60))
 end
 
 function End()
-   Slug.despawn()
    Slug.unload()
-   Texture.destroy(tile)
    map:destroy()
+   Slug.despawn()
    print("goodbye")
 end
 
