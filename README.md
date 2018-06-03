@@ -18,6 +18,8 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
     - currently handles drawing of a loaded map
 	- hopefully will eventually only handle map data and be moved to C++
 	- can scroll/pan with arrow keys
+- Slug/Segment Class
+	- Linked list node part of the slug
 - Slug/Slug Class
 	- the basic entity of the game
 	- will essentially be a linked list moving about the board
