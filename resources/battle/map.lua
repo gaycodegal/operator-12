@@ -22,7 +22,9 @@ function Map.new (data)
    Map.tilesize = tilesize
    local tilesep = 10
    local tmap = data.layers[1].data
+   local objects = {}
    for i, dat in ipairs(tmap) do
+	  objects[i] = false
 	  local j = 1
 	  if dat <= 0 then
 		 tmap[i] = false
@@ -45,6 +47,7 @@ function Map.new (data)
 	  end
    end
    local t = {map=tmap,
+			  objects = objects,
 			  tilesets=tilesets,
 			  width=data.width,
 			  height=data.height,
@@ -59,6 +62,10 @@ function Map.new (data)
 	  t.slug = v
    end
    return t
+end
+
+function Map.indexOf(self,x,y)
+   return x + y * self.width
 end
 
 -- map game logic
@@ -89,6 +96,13 @@ function Map.draw (self)
    for i, v in ipairs(self.map) do
 	  if v then
 		 v:draw(map.x, map.y)
+	  end
+	  if self.objects[i] then
+		 local x, y = Map.position(
+			i % map.width,
+			i // map.width
+		 )
+		 self.objects[i]:draw(x,y)
 	  end
    end
 end
