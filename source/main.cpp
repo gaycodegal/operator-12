@@ -41,8 +41,22 @@ int end() {
   return 0;
 }
 
+bool quit = false;
+
+void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
+  int x, y;
+  SDL_GetMouseState(&x, &y);
+  if (fn_exists) {
+    lua_getglobal(L, event);
+    lua_pushnumber(L, x);
+    lua_pushnumber(L, y);
+    callErr(L, event, 2);
+  }
+}
+
 int main(int argc, char *args[]) {
   lua_State *L;
+  quit = false;
   chdir("resources");
 #ifdef SDL_ACTIVE
   if (start() != 0) {
@@ -65,8 +79,13 @@ int main(int argc, char *args[]) {
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoid(L, "Start");
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
+  int keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
+  int keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
+  int mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
+  int mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
+  int mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
+
   SDL_Event e;
-  bool quit = false;
   // While application is running
   if (updateExists) {
     while (!quit) {
@@ -75,6 +94,29 @@ int main(int argc, char *args[]) {
         // User requests quit
         if (e.type == SDL_QUIT) {
           quit = true;
+        } // User presses a key
+        else if (keydownExists && e.type == SDL_KEYDOWN) {
+          lua_getglobal(L, "KeyDown");
+          lua_pushnumber(L, e.key.keysym.sym);
+          callErr(L, "KeyDown", 1);
+        } else if (keyupExists && e.type == SDL_KEYUP) {
+          lua_getglobal(L, "KeyUp");
+          lua_pushnumber(L, e.key.keysym.sym);
+          callErr(L, "KeyUp", 1);
+        } else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
+                   e.type == SDL_MOUSEBUTTONUP) {
+          // Get mouse position
+          switch (e.type) {
+          case SDL_MOUSEBUTTONDOWN:
+            mouseHelper(L, e.type, "MouseDown", mousedownExists);
+            break;
+          case SDL_MOUSEMOTION:
+            mouseHelper(L, e.type, "MouseMove", mousemoveExists);
+            break;
+          case SDL_MOUSEBUTTONUP:
+            mouseHelper(L, e.type, "MouseUp", mouseupExists);
+            break;
+          }
         }
       }
 

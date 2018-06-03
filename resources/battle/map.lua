@@ -3,36 +3,105 @@ Map = {}
 
 Map.__index = metareplacer(Map)
 
-function Map.new (dx, dt, param, target)
-   local map = {}
-   local limit = 5
-   local tilesize = 40
+Map.tilesep = 10
+Map.tilesize = 40 -- rewritten
+
+-- create a new Map
+-- assumes control of data
+function Map.new (data)
+   tilew = data.tilesets[1].tilewidth
+   tileh = data.tilesets[1].tileheight
+   local tilesets = data.tilesets
+   for i, v in ipairs(tilesets) do
+	  local t, w, h = Texture.new("images/" .. v.image)
+	  v.sheet = t
+	  v.w = w // v.tilewidth
+   end
+   
+   local tilesize = tilew
+   Map.tilesize = tilesize
    local tilesep = 10
-   for xi = 1,limit do
-	  local x = (xi - 1) * (tilesize + tilesep)
-	  for yi = 1,limit do
-		 local y = (yi - 1) * (tilesize + tilesep)
-		 local temp = Sprite.new(tile, x, y, tilesize, tilesize)
-		 map[xi * limit + yi] = temp
+   local tmap = data.layers[1].data
+   for i, dat in ipairs(tmap) do
+	  local j = 1
+	  if dat <= 0 then
+		 tmap[i] = false
+	  else
+		 while dat > tilesets[j].tilecount do
+			dat = dat - tilesets[j].tilecount
+			j = j + 1
+		 end
+		 
+		 local v = tilesets[j]
+		 --print((i % data.width) * (tilesize + tilesep),  (i// data.width) * (tilesize + tilesep))
+		 dat = dat - 1
+		 tmap[i] = Sprite.new(v.sheet,
+							 (i % data.width) * (tilesize + tilesep),
+							 (i // data.width) * (tilesize + tilesep),
+							 tilesize,
+							 tilesize,
+							 (dat % v.w)*v.tilewidth,
+							 (dat // v.w)*v.tileheight)
 	  end
    end
-   local t = {map=map, width=limit, height=limit}
+   local t = {map=tmap,
+			  tilesets=tilesets,
+			  width=data.width,
+			  height=data.height,
+			  x=(SCREEN_WIDTH - (data.width * (tilesize + tilesep) - tilesep))//2,
+			  y=(SCREEN_HEIGHT - (data.height * (tilesize + tilesep) - tilesep))//2,
+			  dx=0, dy=0, speed=5}
+   --print(t.x, t.y)
    setmetatable(t, Map)
+   map = t
+   Slug.spawn(data.layers[2].objects)
+   for k,v in pairs(slugs) do
+	  t.slug = v
+   end
    return t
 end
 
-function Map.draw (self)
-   for x = 1, self.width do
-	  for y = 1, self.height do
-		 self.map[x * self.width + y]:draw(0, 0)
+-- map game logic
+function Map.update(self)
+   self.x = self.x - self.dx
+   self.y = self.y - self.dy
+end
+
+-- get map pixel position from grid coords
+function Map.position(x,y)
+   --ehhhhhh global var abuse but like who cares rn
+   return (x * (Map.tilesize + Map.tilesep) + map.x), (y * (Map.tilesize + Map.tilesep) + map.y)
+end
+
+-- click on map -> do someting 
+function Map.mousedown(self,x,y)
+   x = ((x - map.x) // (Map.tilesize + Map.tilesep))
+   y = ((y - map.y) // (Map.tilesize + Map.tilesep))
+   if x >= 0 and x < self.width and y >= 0 and y < self.width then
+	  if self.slug then
+		 self.slug:move(x, y)
 	  end
    end
 end
 
+-- draw map to screen
+function Map.draw (self)
+   for i, v in ipairs(self.map) do
+	  if v then
+		 v:draw(map.x, map.y)
+	  end
+   end
+end
+
+-- deallocate map
 function Map.destroy (self)
-   for x = 1, self.width do
-	  for y = 1, self.height do
-		 self.map[x * self.width + y]:destroy()
+   for i, v in ipairs(self.tilesets) do
+	  Texture.destroy(v.sheet)
+   end
+
+   for i, v in ipairs(self.map) do
+	  if v then
+		 v:destroy()
 	  end
    end
 end

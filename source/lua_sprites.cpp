@@ -134,11 +134,33 @@ static int l_size_sprite(lua_State *L) {
   return 1;
 }
 
+
+static int l_quit(lua_State *L) {
+  quit = true;
+  return 0;
+}
+
 static int l_new_sprite(lua_State *L) {
   // printLuaStack(L, "new_sprite");
-  int x, y, w, h;
+  int x, y, w, h, sx, sy;
   SDL_Texture *tex;
   Sprite *s;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 7);
+    // printf("abort\n");
+    lua_pushnil(L);
+    return 1;
+  }
+  sy = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 6);
+    // printf("abort\n");
+    lua_pushnil(L);
+    return 1;
+  }
+  sx = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 5);
     // printf("abort\n");
@@ -169,20 +191,25 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
+
   x = (int)lua_tonumber(L, -1);
   lua_pop(L, 1);
+
+  // printf("here %s\n", lua_typename(L, lua_type(L, -1)));
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);
     // printf("abort\n");
     lua_pushnil(L);
     return 1;
   }
-  // printf("x %i, y %i, w %i, h %i\n", x,y,w,h);
+
+  // printf("(x %i, y %i, w %i, h %i) sx %i, sy%i\n", x,y,w,h,sx,sy);
   tex = (SDL_Texture *)lua_touserdata(L, -1);
   lua_pop(L, 1);
   s = new Sprite();
   *reinterpret_cast<Sprite **>(lua_newuserdata(L, sizeof(Sprite *))) = s;
-  s->init(tex, x, y, w, h);
+
+  s->init(tex, x, y, w, h, sx, sy);
   /*for(int l = 0; l < sizeof(Sprite); l++){
     printf("c: %i/%ld v: %i\n", l, sizeof(Sprite), *(c++));
     }*/
@@ -202,13 +229,28 @@ static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
 static const struct luaL_Reg texturemeta[] = {
     {"new", l_new_texture}, {"destroy", l_free_texture}, {NULL, NULL}};
 
-static const struct luaL_Reg staticmeta[] = {{"wait", l_static_wait},
-                                             {NULL, NULL}};
+
+static const struct luaL_Reg staticmeta[] = {
+    {"wait", l_static_wait}, {"quit", l_quit}, {NULL, NULL}};
 
 static const struct luaClassList game[] = {{"Texture", texturemeta},
                                            {"Sprite", spritemeta},
                                            {"static", staticmeta},
                                            {NULL, NULL}};
+
+struct luaConstInt {
+  const char *name;
+  const int val;
+};
+
+static const struct luaConstInt globints[] = {{"SCREEN_WIDTH", SCREEN_WIDTH},
+                                              {"SCREEN_HEIGHT", SCREEN_HEIGHT},
+                                              {"KEY_UP", SDLK_UP},
+                                              {"KEY_DOWN", SDLK_DOWN},
+                                              {"KEY_LEFT", SDLK_LEFT},
+                                              {"KEY_RIGHT", SDLK_RIGHT},
+                                              {"KEY_ESCAPE", SDLK_ESCAPE},
+                                              {NULL, 0}};
 
 int luaopen_sprites(lua_State *L) {
   int count = 0;
@@ -220,6 +262,12 @@ int luaopen_sprites(lua_State *L) {
     luaL_setfuncs(L, ptr->meta, 0);
     lua_setfield(L, -2, ptr->name);
     ++ptr;
+  }
+  struct luaConstInt *pint = (struct luaConstInt *)globints;
+  while (pint->name != NULL) {
+    lua_pushnumber(L, pint->val);
+    lua_setfield(L, -2, pint->name);
+    ++pint;
   }
   return 1;
 }

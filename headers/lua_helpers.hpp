@@ -22,6 +22,11 @@ int globalTypeExists(lua_State *L, int type, const char *name);
 void callLuaVoid(lua_State *L, const char *name);
 
 /**
+   pcall and prints if it messes up
+ */
+void callErr(lua_State *L, const char *name, int nargs);
+
+/**
    Sets the metatable of an object to LUA_LIBNAME.<name>
  */
 void set_meta(lua_State *L, int ind, const char *name);
