@@ -4,7 +4,7 @@
 
 Operator 12 is going to be my answer to why aren't there more puzzle/story driven games like [Nightfall](http://biomediaproject.com/bmp/files/LEGO/gms/online/Spybotics/TheNightfallIncident/). Hopefully will include a good story, some nice audio & visuals, and some fun puzzles. Planned as a series, with a smaller inital game to test the waters and then a larger v2 game to improve upon the story and gameplay of the first.
 
-This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathing, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly, and this time it will be open-source as well. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
+This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathig, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly, and this time it will be open-source as well. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
 
 The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for your side of the battle. You are #12, you report to #2. There will be more story behind the names as you get to know your organization.
 
@@ -66,9 +66,25 @@ Just run `make` after installing all the software
 Just run `./main` after building is complete
 
 
+## Contributing
+
+Please run `make format` and test your C++ code before submitting a PR for review. It would also be appreciated (if there are merge conflicts at the time of your PR you `git rebase` off of master so that you can submit a PR without merge conflicts). At present there is no lua-formatter for the project. 
+
+
+### Other Software Required to Contriubte
+
+- clang-format
+
+
+### Thanks
+
+- [benwaffle](https://github.com/benwaffle)
+    - added `make format`
+
+
 ## Classes Exposed to Lua via C++
 
-Sprite
+### Sprite
 
 - new(Texture, x, y, w, h, sx, sy)
     - returns sprite
@@ -81,7 +97,8 @@ Sprite
 - destroy(self)
     - returns void
 
-Texture
+
+### Texture
 
 - new(source)
   - doesn't create an object (userdata), only a pointer (lightuserdata)
