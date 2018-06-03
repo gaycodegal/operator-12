@@ -158,6 +158,8 @@ function Slug.move(self, x, y)
    head:addToMap()
 end
 
+-- remove <amount> segments from
+-- slug, possibly destroying it
 function Slug.damage(self, amount)
    for i = 1,amount do
 	  self.size = self.size - 1
