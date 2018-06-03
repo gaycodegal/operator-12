@@ -13,7 +13,7 @@ function Segment.new (p, n, spr, pos, slug)
 end
 
 -- Remove Segment from Map
-function Segment.liftFromMap(self)
+function Segment.removeFromMap(self)
    map.objects[map:indexOf(self.pos[1], self.pos[2])] = false
 end
 

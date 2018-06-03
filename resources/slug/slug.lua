@@ -26,6 +26,7 @@ function Slug.new (self)
    end
    self.head = self.segs[1]
    self.tail = self.segs[self.size]
+   self.segs = nil
    setmetatable(self, Slug)
    self:addToMap()
    return self
@@ -46,15 +47,16 @@ function Slug.spawn(data)
 	  slugs[v.name].type = v.type
    end
    for name, v in pairs(slugs) do
-	  slugs[name] = Slug.new({sprites = v.type, segs = v})
+	  slugs[name] = Slug.new({sprites = v.type, segs = v, name=name})
    end
-   return slugs
 end
 
 -- despawn slugs from Tiled lua file
 function Slug.despawn()
    for name, v in pairs(slugs) do
-	  v:destroy()
+	  if v then
+		 v:destroy()
+	  end
    end
 end
 
@@ -81,16 +83,20 @@ function Slug.unload()
 end
 
 -- Remove Slug from Map
-function Slug.liftFromMap(self)
-   for i, seg in ipairs(self.segs) do
-	  self:liftFromMap()
+function Slug.removeFromMap(self)
+   local seg = self.head
+   while seg do
+	  seg:removeFromMap()
+	  seg = seg.n
    end
 end
 
 -- Add Slug to Map
 function Slug.addToMap(self)
-   for i, seg in ipairs(self.segs) do
+   local seg = self.head
+   while seg do
 	  seg:addToMap()
+	  seg = seg.n
    end
 end
 
@@ -111,6 +117,7 @@ function Slug.move(self, x, y)
    local mid = map.objects[x + y * map.width]
    if mid then
 	  if mid.slug ~= self then
+		 mid.slug:damage(1)
 		 return
 	  end
    end
@@ -119,11 +126,11 @@ function Slug.move(self, x, y)
 	  return
    end
 
-   head:liftFromMap()
+   head:removeFromMap()
    local tail = self.tail
-   tail:liftFromMap()
+   tail:removeFromMap()
    if mid then
-	  mid:liftFromMap()
+	  mid:removeFromMap()
 	  local t = mid.pos
 	  mid.pos = tail.pos
 	  tail.pos = t
@@ -147,6 +154,17 @@ function Slug.move(self, x, y)
    head:addToMap()
 end
 
+function Slug.damage(self, amount)
+   self.size = self.size - 1
+   local t = self.tail
+   t:removeFromMap()
+   self.tail = t.p
+   t:unlink()
+   if self.size <= 0 then
+	  self:destroy()
+   end
+end
+
 --[=[
 --draw slug to screen
 function Slug.draw (self)
@@ -167,7 +185,11 @@ function Slug.draw (self)
 
 -- deallocate slug
 function Slug.destroy (self)
+   print("destroy", self.name)
    for i, spr in ipairs(self.sprites) do
 	  spr:destroy()
+   end
+   if self.name and slugs[self.name] then
+	  slugs[self.name] = nil
    end
 end
