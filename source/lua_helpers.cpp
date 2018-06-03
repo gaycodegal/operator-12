@@ -40,6 +40,7 @@ void callLuaVoid(lua_State *L, const char *name) {
     printf("we fucked up calling:%s error:%s\n", name, lua_tostring(L, -1));
 }
 
+
 void callErr(lua_State *L, const char *name, int nargs) {
   if (lua_pcall(L, nargs, 0, 0) != 0)
     printf("we fucked up calling:%s error:%s\n", name, lua_tostring(L, -1));

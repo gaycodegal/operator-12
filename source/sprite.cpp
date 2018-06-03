@@ -46,6 +46,7 @@ void Sprite::init(SDL_Texture *tex, int x, int y, int w, int h, int sx,
   this->dest.w = w;
   this->dest.h = h;
 
+
   this->source.x = sx;
   this->source.y = sy;
   this->source.w = w;

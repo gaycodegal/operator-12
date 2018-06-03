@@ -134,6 +134,7 @@ static int l_size_sprite(lua_State *L) {
   return 1;
 }
 
+
 static int l_quit(lua_State *L) {
   quit = true;
   return 0;
@@ -193,6 +194,7 @@ static int l_new_sprite(lua_State *L) {
 
   x = (int)lua_tonumber(L, -1);
   lua_pop(L, 1);
+
   // printf("here %s\n", lua_typename(L, lua_type(L, -1)));
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -200,11 +202,13 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
+
   // printf("(x %i, y %i, w %i, h %i) sx %i, sy%i\n", x,y,w,h,sx,sy);
   tex = (SDL_Texture *)lua_touserdata(L, -1);
   lua_pop(L, 1);
   s = new Sprite();
   *reinterpret_cast<Sprite **>(lua_newuserdata(L, sizeof(Sprite *))) = s;
+
   s->init(tex, x, y, w, h, sx, sy);
   /*for(int l = 0; l < sizeof(Sprite); l++){
     printf("c: %i/%ld v: %i\n", l, sizeof(Sprite), *(c++));
@@ -224,6 +228,7 @@ static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
 
 static const struct luaL_Reg texturemeta[] = {
     {"new", l_new_texture}, {"destroy", l_free_texture}, {NULL, NULL}};
+
 
 static const struct luaL_Reg staticmeta[] = {
     {"wait", l_static_wait}, {"quit", l_quit}, {NULL, NULL}};

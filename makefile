@@ -14,3 +14,5 @@ fclean:
 	rm -f $(OBJS) $(OBJ_NAME) $(wildcard *~)
 re:
 	make clean all
+format:
+	clang-format -i $(shell find source/ headers/ -iname '*.[ch]pp')
