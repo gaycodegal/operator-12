@@ -217,6 +217,53 @@ static int l_new_sprite(lua_State *L) {
   return 1;
 }
 
+static int l_surface_newText(lua_State *L) {
+  char * text;
+  int r;
+  int g;
+  int b;
+  int a;
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 5);
+	return 0;
+  }
+  a = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 4);
+	return 0;
+  }
+  b = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 3);
+	return 0;
+  }
+  g = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 2);
+	return 0;
+  }
+  r = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isstring(L, -1)) {
+	lua_pop(L, 1);
+	return 0;
+  }
+  text = (char *)lua_tostring(L, -1);
+  lua_pop(L, 1);
+  SDL_Color c;
+  c.r = r;
+  c.b = b;
+  c.g = g;
+  c.a = a;
+  SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, text, c );
+  lua_pushlightuserdata(L, (void *)textSurface);
+  return 1;
+}
+
+
 static int l_surface_new(lua_State *L) {
   char *source;
   if (!lua_isstring(L, -1)) {
@@ -499,16 +546,16 @@ static int l_surface_destroy(lua_State *L) {
   return 0;
 }
 
-static const struct luaL_Reg surface_meta[] = {
-    {"new", l_surface_new},
-    {"newBlank", l_surface_newBlank},
-    {"fill", l_surface_fill},
-    {"sizeOf", l_surface_sizeOf},
-    {"blit", l_surface_blit},
-    {"textureFrom", l_surface_textureFrom},
-    {"blitScale", l_surface_blitScale},
-    {"destroy", l_surface_destroy},
-    {NULL, NULL}};
+static const struct luaL_Reg surface_meta[] = {{"new", l_surface_new},
+											   {"newBlank", l_surface_newBlank},
+											   {"newText", l_surface_newText},
+											   {"fill", l_surface_fill},
+											   {"sizeOf", l_surface_sizeOf},
+											   {"blit", l_surface_blit},
+											   {"textureFrom", l_surface_textureFrom},
+											   {"blitScale", l_surface_blitScale},
+											   {"destroy", l_surface_destroy},
+											   {NULL, NULL}};
 
 static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
                                              {"draw", l_draw_sprite},

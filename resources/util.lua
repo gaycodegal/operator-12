@@ -24,4 +24,8 @@ function KeyUp(key)
    end
 end
 
+function listdir(path)
+   return dofile(path .. ".contents.lua")
+end
+
 --Map.__index = metareplacer(Map)

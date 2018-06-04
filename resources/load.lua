@@ -16,7 +16,6 @@ function Update()
    --Update = static.quit
    map:update()
    map:draw()
-   --Slug.renderAll()
    active = map
    static.wait(math.floor(1000/60))
 end

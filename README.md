@@ -73,19 +73,7 @@ You can also specify which lua file to run as the main. For instance `./main sur
 
 ## Contributing
 
-Please run `make format` and test your C++ code before submitting a PR for review. It would also be appreciated (if there are merge conflicts at the time of your PR you `git rebase` off of master so that you can submit a PR without merge conflicts). At present there is no lua-formatter for the project. 
-
-
-### Other Software Required to Contriubte
-
-- clang-format
-
-
-### Thanks
-
-- [benwaffle](https://github.com/benwaffle)
-    - added `make format`
-
+See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## C++ / Lua Methods
 
@@ -123,6 +111,8 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
     - returns 1
 - newBlank(width,height)
     - returns 1
+- newText(text,r,g,b,a)
+    - returns 1
 - fill(surface,x,y,width,height,r,g,b,a)
     - returns 0
 - sizeOf(surface)
@@ -151,3 +141,8 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- `KEY_UP`, `KEY_DOWN`, `KEY_LEFT`, `KEY_RIGHT`, `KEY_ESCAPE`
 - Screen Dimensions
 	- `SCREEN_WIDTH`, `SCREEN_HEIGHT`
+
+## Legal
+
+[MIT license](./LICENSE) for the project.
+Also the MOZART NBP font is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
