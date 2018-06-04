@@ -115,7 +115,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- returns void
 
 
-### Surface
+### **Surface EXPERIMENTAL API (Untested)**
 
 - new(source)
 	- returns source
@@ -123,7 +123,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- returns surface
 - sizeOf(surface)
 	- returns w, h
-- blit(dst, source)
+- blit(dst, source, x, y)
 	- returns void
 - textureFrom(surface)
 	- returns texture
