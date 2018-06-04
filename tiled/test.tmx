@@ -50,13 +50,13 @@
    </properties>
    <point/>
   </object>
-  <object id="17" name="Slug2" type="test" x="337" y="181">
+  <object id="17" name="Slug2" type="test2" x="337" y="181">
    <properties>
     <property name="index" type="int" value="2"/>
    </properties>
    <point/>
   </object>
-  <object id="18" name="Slug2" type="test" x="337" y="211">
+  <object id="18" name="Slug2" type="test2" x="337" y="211">
    <properties>
     <property name="index" type="int" value="1"/>
     <property name="team" type="int" value="2"/>

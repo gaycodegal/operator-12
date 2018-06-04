@@ -9,10 +9,11 @@ require("slug/segment")
 -- creates a new slug
 -- self now owned by slug
 function Slug.new (self)
-   local sprites = Slug.defs[self.sprites]
+   local sprites = Slug.defs[self.sprites].tiles
    self.sprites = {}
-   self.sprites[1] = Sprite.new(sprites.tex, 0, 0, tilew, tileh, sprites.x, sprites.y)
-   self.sprites[2] = Sprite.new(sprites.tex, 0, 0, tilew, tileh, sprites.x, sprites.y)
+   for i, spr in ipairs(sprites) do
+	  self.sprites[i] = Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
+   end
    self.size = #self.segs
    local prev = nil
    for i = 1,self.size do
@@ -94,7 +95,6 @@ function Slug.loadTilesets(tilesets)
 	  v.w = v.imagewidth // v.tilewidth
 	  v.h = v.imageheight // v.tileheight
 	  if v.tiles[1].properties.color then
-		 print(v.tiles[1].properties.color)
 		 local s = Surface.newBlank(v.imagewidth, v.imageheight)
 		 for i, t in ipairs(v.tiles) do
 			local r,g,b,a = Slug.parseColor(t.properties.color)
@@ -138,14 +138,18 @@ function Slug.load ()
    local slugdefs = data.slugs
    Slug.loadTilesets(tilesets)
    for name, v in pairs(slugdefs) do
-	  local j, dat = Slug.tilefinder(v.tile, tilesets)
-	  if j then
-		 local set = tilesets[j]
-		 v.tex = set.sheet
-		 v.w = set.tilewidth
-		 v.h = set.tileheight
-		 v.x = (dat % set.w) * v.w
-		 v.y = (dat // set.w) * v.h
+	  for i, tile in ipairs(v.tiles) do
+		 local j, dat = Slug.tilefinder(tile, tilesets)
+		 if j then
+			local set = tilesets[j]
+			local tex = {}
+			tex.tex = set.sheet
+			tex.w = set.tilewidth
+			tex.h = set.tileheight
+			tex.x = (dat % set.w) * tex.w
+			tex.y = (dat // set.w) * tex.h
+			v.tiles[i] = tex
+		 end
 	  end
    end
    Slug.defs = slugdefs
