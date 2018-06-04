@@ -42,7 +42,7 @@
    There must be some punishment for going rogue early on. Some tools the enemy can provide.
 
 ** Main Idea - My Side From Conversatoin w/ Jake
-Game's called _Operator 12_ - you're in some mysterious and shadowy organization - you're #12 you report to #2 and #6 has gone rogue.
+Game's called *Operator 12* - you're in some mysterious and shadowy organization - you're #12 you report to #2 and #6 has gone rogue.
 
 I'm thinking that we could do some great story telling here - the original one's dev's lacked in that area, and so my thought is that we can work out the broad storyline and then maybe start writing dialogue for it? You can also design levels of course - we'll need tons of them - the original game had far too few
 
@@ -79,13 +79,13 @@ and of course there's also the full defection ending where you take down your or
 	Collect info from the enemy and from your side
 	The enemy presents you with a tool to read info without opening it
 	Present specific bits of information to the operators that is specific to each one from lowest to highest
-	After each one, you _reset them to your previous number_ and say I am Operator X (assuming their number). They respond I am number Y (your previous number).
+	After each one, you *reset them to your previous number* and say I am Operator X (assuming their number). They respond I am number Y (your previous number).
 	You probably have to learn what the role associated with each rank is and tell them what your duty is, else you blow the Become #2 option?
 	Skip #6
 	And eventually you become #2, and learn who and what #1 is
 *** Become #6
 	Resetting #6 is a possibility after resetting #7
-	Game ends - #2 declares a new public enemy - _YOU_
+	Game ends - #2 declares a new public enemy - *YOU*
 
 	
 * Drawing Commands

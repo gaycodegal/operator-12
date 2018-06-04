@@ -236,32 +236,97 @@ static int l_surface_new(lua_State *L) {
   return 1;
 }
 
-static int l_surface_newColored(lua_State *L) {
-  char * color;
+static int l_surface_newBlank(lua_State *L) {
   int width;
   int height;
   if (!lua_isnumber(L, -1)) {
-	lua_pop(L, 3);
+	lua_pop(L, 2);
 	return 0;
   }
   height = (int)lua_tonumber(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
-	lua_pop(L, 2);
+	lua_pop(L, 1);
 	return 0;
   }
   width = (int)lua_tonumber(L, -1);
   lua_pop(L, 1);
-  if (!lua_isstring(L, -1)) {
+  SDL_Surface *s = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
+  lua_pushlightuserdata(L, (void *)s);
+  return 1;
+}
+
+static int l_surface_fill(lua_State *L) {
+  SDL_Surface * surface;
+  int x;
+  int y;
+  int width;
+  int height;
+  int r;
+  int g;
+  int b;
+  int a;
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 9);
+	return 0;
+  }
+  a = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 8);
+	return 0;
+  }
+  b = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 7);
+	return 0;
+  }
+  g = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 6);
+	return 0;
+  }
+  r = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 5);
+	return 0;
+  }
+  height = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 4);
+	return 0;
+  }
+  width = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 3);
+	return 0;
+  }
+  y = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 2);
+	return 0;
+  }
+  x = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_islightuserdata(L, -1)) {
 	lua_pop(L, 1);
 	return 0;
   }
-  color = (char *)lua_tostring(L, -1);
+  surface = (SDL_Surface *)lua_touserdata(L, -1);
   lua_pop(L, 1);
-  SDL_Surface *s = SDL_CreateRGBSurface(0, width, height, 32, 0, 0, 0, 0);
-  SDL_FillRect(s, NULL, SDL_MapRGB(s->format, 255, 0, 0));
-  lua_pushlightuserdata(L, (void *)s);
-  return 1;
+  SDL_Rect rect;
+  rect.x = x;
+  rect.y = y;
+  rect.w = width;
+  rect.h = height;
+  SDL_FillRect(surface, &rect, SDL_MapRGBA(surface->format, r,g,b,a));
+  return 0;
 }
 
 static int l_surface_sizeOf(lua_State *L) {
@@ -311,7 +376,10 @@ static int l_surface_blit(lua_State *L) {
   stretchRect.y = y;
   stretchRect.w = src->w;
   stretchRect.h = src->h;
-  SDL_BlitScaled( src, NULL, dst, &stretchRect );
+  if(SDL_BlitScaled( src, NULL, dst, &stretchRect ) < 0){
+		printf("Unable to blit! SDL Error: %s\n",
+		   SDL_GetError());
+  }
   return 0;
 }
 
@@ -323,6 +391,14 @@ static int l_surface_textureFrom(lua_State *L) {
   }
   surface = (SDL_Surface *)lua_touserdata(L, -1);
   lua_pop(L, 1);
+  // Create texture from surface pixels
+  SDL_Texture *newTexture = SDL_CreateTextureFromSurface(globalRenderer, surface);
+  if (newTexture == NULL) {
+	printf("Unable to create texture from surface! SDL Error: %s\n",
+		   SDL_GetError());
+	return 0;
+  }
+  lua_pushlightuserdata(L, (void *)newTexture);
   return 1;
 }
 
@@ -424,7 +500,8 @@ static int l_surface_destroy(lua_State *L) {
 }
 
 static const struct luaL_Reg surface_meta[] = {{"new", l_surface_new},
-											   {"newColored", l_surface_newColored},
+											   {"newBlank", l_surface_newBlank},
+											   {"fill", l_surface_fill},
 											   {"sizeOf", l_surface_sizeOf},
 											   {"blit", l_surface_blit},
 											   {"textureFrom", l_surface_textureFrom},

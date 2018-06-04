@@ -54,7 +54,7 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
   }
 }
 
-int main(int argc, char *args[]) {
+int main(int argc, char *argv[]) {
   lua_State *L;
   quit = false;
   chdir("resources");
@@ -72,10 +72,18 @@ int main(int argc, char *args[]) {
 
   // SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF,
   // 0xFF, 0xFF ) );
-  if (!loadLuaFile(L, "load.lua")) {
-    end();
-    return 1;
+  if(argc < 2){
+	if (!loadLuaFile(L, "load.lua")) {
+	  end();
+	  return 1;
+	}
+  }else{
+	if (!loadLuaFile(L, (std::string(argv[1]) + ".lua").c_str())) {
+	  end();
+	  return 1;
+	}
   }
+  
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoid(L, "Start");
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");

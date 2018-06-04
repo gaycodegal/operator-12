@@ -15,7 +15,7 @@ extern "C" {
 #include "lua_sprites.hpp"
 #include "sprite.hpp"
 #include <stdio.h>
-
+#include <string>
 /**
    used for creating lists of classes mapped to names
  */

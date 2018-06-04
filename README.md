@@ -68,6 +68,8 @@ Just run `make` after installing all the software
 
 Just run `./main` after building is complete
 
+You can also specify which lua file to run as the main. For instance `./main surface-tests` will run the surface tests lua file as the main lua file.
+
 
 ## Contributing
 
@@ -115,22 +117,24 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- returns void
 
 
-### *Surface EXPERIMENTAL API (Untested)*
+### Surface
 
 - new(source)
-	- returns source
-- newColored(color)
-	- returns surface
+    - returns 1
+- newBlank(width,height)
+    - returns 1
+- fill(surface,x,y,width,height,r,g,b,a)
+    - returns 0
 - sizeOf(surface)
-	- returns w, h
-- blit(dst, source, x, y)
-	- returns void
+    - returns 2
+- blit(dst,src,x,y)
+    - returns 0
 - textureFrom(surface)
-	- returns texture
-- blitScale(dst, source, sx, sy, sw, sh, dx, dy, dw, dh)
-	- returns void
+    - returns 1
+- blitScale(dst,src,sx,sy,sw,sh,dx,dy,dw,dh)
+    - returns 0
 - destroy(surface)
-	- returns void
+    - returns 0
 
 
 ## Globals Method Exposed to Lua via C++

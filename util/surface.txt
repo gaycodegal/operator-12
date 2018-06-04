@@ -4,11 +4,16 @@
 ["char *"]
 ["string"]
 1
-"newColored"
-["color", "width", "height"]
-["char *", "int", "int"]
-["string", "number", "number"]
+"newBlank"
+["width", "height"]
+["int", "int"]
+["number", "number"]
 1
+"fill"
+["surface", "x", "y", "width", "height", "r", "g", "b", "a"]
+["SDL_Surface *", "int", "int", "int", "int", "int", "int", "int", "int"]
+["lightuserdata","number", "number", "number", "number", "number", "number", "number", "number"]
+0
 "sizeOf"
 ["surface"]
 ["SDL_Surface *"]
