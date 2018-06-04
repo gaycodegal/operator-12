@@ -479,10 +479,10 @@ static int l_surface_blitScale(lua_State *L) {
   stretchRect.w = dw;
   stretchRect.h = dh;
   SDL_Rect sourceRect;
-  stretchRect.x = sx;
-  stretchRect.y = sy;
-  stretchRect.w = sw;
-  stretchRect.h = sh;
+  sourceRect.x = sx;
+  sourceRect.y = sy;
+  sourceRect.w = sw;
+  sourceRect.h = sh;
   SDL_BlitScaled(src, &sourceRect, dst, &stretchRect);
   return 0;
 }

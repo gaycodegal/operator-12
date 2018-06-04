@@ -57,6 +57,7 @@ function Map.new (data)
    --print(t.x, t.y)
    setmetatable(t, Map)
    map = t
+   Slug.load()
    Slug.spawn(data.layers[2].objects)
    for k,v in pairs(slugs) do
 	  t.slug = v
