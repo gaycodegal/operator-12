@@ -4,7 +4,7 @@
 
 Operator 12 is going to be my answer to why aren't there more puzzle/story driven games like [Nightfall](http://biomediaproject.com/bmp/files/LEGO/gms/online/Spybotics/TheNightfallIncident/). Hopefully will include a good story, some nice audio & visuals, and some fun puzzles. Planned as a series, with a smaller inital game to test the waters and then a larger v2 game to improve upon the story and gameplay of the first.
 
-This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathig, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly, and this time it will be open-source as well. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
+This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathing, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly, and this time it will be open-source as well. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
 
 The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for your side of the battle. You are #12, you report to #2. There will be more story behind the names as you get to know your organization.
 
@@ -85,6 +85,11 @@ Please run `make format` and test your C++ code before submitting a PR for revie
     - added `make format`
 
 
+## C++ / Lua Methods
+
+You can generate method stubs with `python3 luahelper.py < surface.txt > surface.hidden.c` anything with `.hidden.` in it's file name is ignored by the git ignore. See surface.txt and luahelper.py for understanding of what's generated. You'll have to use auto-indentation from something like emacs or a C++ IDE to indent it, but at least you don't have to write it.
+
+
 ## Classes Exposed to Lua via C++
 
 ### Sprite
@@ -104,10 +109,28 @@ Please run `make format` and test your C++ code before submitting a PR for revie
 ### Texture
 
 - new(source)
-  - doesn't create an object (userdata), only a pointer (lightuserdata)
-  - returns texture, width, height
+	- doesn't create an object (userdata), only a pointer (lightuserdata)
+	- returns texture, width, height
 - destroy(texture)
-  - returns void
+	- returns void
+
+
+### Surface
+
+- new(source)
+	- returns source
+- newColored(color)
+	- returns surface
+- sizeOf(surface)
+	- returns w, h
+- blit(dst, source)
+	- returns void
+- textureFrom(surface)
+	- returns texture
+- blitScale(dst, source, sx, sy, sw, sh, dx, dy, dw, dh)
+	- returns void
+- destroy(surface)
+	- returns void
 
 
 ## Globals Method Exposed to Lua via C++
