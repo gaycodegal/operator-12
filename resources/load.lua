@@ -3,7 +3,6 @@ require("battle/map")
 require("slug/slug")
 require("ai/ai")
 function Start()
-   Slug.load()
    map = Map.new(require("maps/test"))
    map.slug = slugs.Slug1
    local all = AI.findAll(1, nil)
