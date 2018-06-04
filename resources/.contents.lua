@@ -1,0 +1,1 @@
+return {"ai/","battle/","images/","listdir.py","listdir.py~","load.lua","maps/","menu.lua","menu.lua~","slug/","surface-tests.lua","tiled/","util.lua"}
