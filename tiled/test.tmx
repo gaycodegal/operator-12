@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="13" height="13" tilewidth="32" tileheight="32" infinite="0" nextobjectid="19">
+ <tileset firstgid="1" source="tiles.tsx"/>
+ <layer name="Tile Layer 1" width="13" height="13">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,3,3,0,0,0,0,0,
+0,0,3,0,0,3,3,3,3,0,0,0,0,
+0,3,3,3,3,3,3,3,3,6,6,6,0,
+0,0,3,3,3,3,3,0,3,0,0,6,0,
+0,0,0,3,3,3,3,3,3,6,6,6,0,
+0,0,3,3,3,3,3,0,0,6,6,0,0,
+0,3,3,3,0,0,3,6,6,6,6,6,0,
+0,3,3,3,3,3,0,6,0,0,0,0,0,
+0,0,3,3,3,3,0,0,0,0,0,0,0,
+0,0,0,0,3,3,3,3,3,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="slug">
+  <object id="3" name="Slug1" type="test" x="144" y="147">
+   <properties>
+    <property name="index" type="int" value="1"/>
+    <property name="team" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="Slug1" type="test" x="176" y="146">
+   <properties>
+    <property name="index" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="14" name="Slug1" type="test" x="177" y="180">
+   <properties>
+    <property name="index" type="int" value="3"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="15" name="Slug1" type="test" x="175" y="212">
+   <properties>
+    <property name="index" type="int" value="4"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="16" name="Slug1" type="test" x="207" y="208">
+   <properties>
+    <property name="index" type="int" value="5"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="Slug2" type="test" x="337" y="181">
+   <properties>
+    <property name="index" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" name="Slug2" type="test" x="337" y="211">
+   <properties>
+    <property name="index" type="int" value="1"/>
+    <property name="team" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>
