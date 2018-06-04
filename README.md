@@ -111,11 +111,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
     - returns 1
 - newBlank(width,height)
     - returns 1
-- newText(text,r,g,b,a)
-    - returns 1
 - fill(surface,x,y,width,height,r,g,b,a)
     - returns 0
-- sizeOf(surface)
+- size(surface)
     - returns 2
 - blit(dst,src,x,y)
     - returns 0
@@ -125,6 +123,14 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
     - returns 0
 - destroy(surface)
     - returns 0
+
+
+### TTF
+
+- surface(text,r,g,b,a)
+    - returns 1
+- size(text)
+    - returns 2
 
 
 ## Globals Method Exposed to Lua via C++
