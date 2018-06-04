@@ -1,13 +1,7 @@
+require("util")
 require("battle/map")
 require("slug/slug")
 require("ai/ai")
-function makeGlobal(x)
-   for k,v in pairs(x) do
-      rawset(_G, k, v)
-   end
-end
-
-makeGlobal(Game)
 function Start()
    Slug.load()
    map = Map.new(require("maps/test"))
