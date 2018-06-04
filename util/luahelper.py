@@ -7,7 +7,7 @@ def createMethod(name, argnames, argtypes, luatypes, nret):
     for n, t in zip(argnames, argtypes):
         built.append("%s %s;\n" % (t, n))
     i = 0
-    for n, t, lua in zip(argnames, argtypes, luatypes):
+    for n, t, lua in zip(argnames[::-1], argtypes[::-1], luatypes[::-1]):
         lua2 = "userdata" if "userdata" in lua else lua
         built.append("""if (!lua_is%s(L, -1)) {
   lua_pop(L, %i);
