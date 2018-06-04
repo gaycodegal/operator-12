@@ -1,0 +1,36 @@
+"surface_"
+"new"
+["source"]
+["char *"]
+["string"]
+1
+"newColored"
+["color", "width", "height"]
+["char *", "int", "int"]
+["string", "number", "number"]
+1
+"sizeOf"
+["surface"]
+["SDL_Surface *"]
+["lightuserdata"]
+2
+"blit"
+["dst", "src", "x", "y"]
+["SDL_Surface *", "SDL_Surface *", "int", "int"]
+["lightuserdata","lightuserdata", "number", "number"]
+0
+"textureFrom"
+["surface"]
+["SDL_Surface *"]
+["lightuserdata"]
+1
+"blitScale"
+["dst", "src", "sx", "sy", "sw", "sh", "dx", "dy", "dw", "dh"]
+["SDL_Surface *", "SDL_Surface *", "int", "int", "int", "int", "int", "int", "int", "int"]
+["lightuserdata", "lightuserdata", "number", "number", "number", "number", "number", "number", "number", "number"]
+0
+"destroy"
+["surface"]
+["SDL_Surface *"]
+["lightuserdata"]
+0

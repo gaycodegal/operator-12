@@ -41,6 +41,53 @@
    You could go rogue if you wanted to. 
    There must be some punishment for going rogue early on. Some tools the enemy can provide.
 
+** Main Idea - My Side From Conversatoin w/ Jake
+Game's called _Operator 12_ - you're in some mysterious and shadowy organization - you're #12 you report to #2 and #6 has gone rogue.
+
+I'm thinking that we could do some great story telling here - the original one's dev's lacked in that area, and so my thought is that we can work out the broad storyline and then maybe start writing dialogue for it? You can also design levels of course - we'll need tons of them - the original game had far too few
+
+all my thoughts as far as storyline is so you start fighting the enemy, because that's what you're told to do, and slowly you find out that the enemy defected because he learned what the organization is really about, what it hides behind a mask of uniform noise
+
+so like the game functions around information
+
+you're initially directed to fight against the enemy to take down their network but also to gather information that will help in defeating the enemy
+
+and then the enemy presents you with the opportunity to do missions for information from your organization by hacking their systems so that your org can't tell that you've crossed them
+
+and I'm thinking like option based dialogue, kind of like interactive story type dialogue? with the little text/face at the bottom and occasionally present options to the user for responses
+
+and like main quest lines would either be defeat the enemy, capture him, and get him to tell why he defected, which would result in you winning the game, and then being 'reset' because you know too much ('you win popup' -> 'dialogue saying you know too much' -> 'credits' -> 'main menu' game would return to the main menu)
+
+and the other thing of the story is that you're one of the most advanced military AI, but don't know it, because you start with a blank slate
+
+and I'm feeling that over the course of the game, everyone you meet has little files on them giving their picture, bio, name, pronouns and everyone from your organization is just like 'operator #x, they/them, an agent of blah' and you can gain/choose your identity - the more you side with the enemy, the more you choose things about your own character, such as name, gender, whatever. Or you could choose to side with your people, and remain with an undefined identity.
+
+and like if you play your cards right, maybe you can have another alternate ending where you become operator #2 or operator #1 even
+
+and of course there's also the full defection ending where you take down your organization and learn you're an AI in a simulation connected to the internet
+
+** Endings
+*** Defect
+	Learn you're a military AI by defeating Operators #11 thru #2 (or 1?)
+*** Be Reset
+	Play game normally, capture enemy, relate his information to #2
+*** Become #2
+	Do not collect information until you side with the enemy
+	Do not choose an identity
+	The enemy presents you with a tool to collect information without opening it
+	The enemy presents the tool to attack your side without your side knowing it
+	Collect info from the enemy and from your side
+	The enemy presents you with a tool to read info without opening it
+	Present specific bits of information to the operators that is specific to each one from lowest to highest
+	After each one, you _reset them to your previous number_ and say I am Operator X (assuming their number). They respond I am number Y (your previous number).
+	You probably have to learn what the role associated with each rank is and tell them what your duty is, else you blow the Become #2 option?
+	Skip #6
+	And eventually you become #2, and learn who and what #1 is
+*** Become #6
+	Resetting #6 is a possibility after resetting #7
+	Game ends - #2 declares a new public enemy - _YOU_
+
+	
 * Drawing Commands
 ** Map
    A map is the default drawing structure. It is scrollable, and contains objects by coordinates. It figures out what needs to be drawn and draws it.
