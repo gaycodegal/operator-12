@@ -1,0 +1,11 @@
+"ttf_"
+"surface"
+["text", "r", "g", "b", "a"]
+["char *", "int", "int", "int", "int"]
+["string","number", "number", "number", "number"]
+1
+"size"
+["text"]
+["char *"]
+["string"]
+2
