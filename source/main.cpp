@@ -31,10 +31,10 @@ int start() {
     printf("Could not create renderer SDL_Error: %s\n", SDL_GetError());
     return 1;
   }
-  gFont = TTF_OpenFont( "fonts/mozart.ttf", 28 );
-  if( gFont == NULL ){
-	printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-	return 1;
+  gFont = TTF_OpenFont("fonts/mozart.ttf", 28);
+  if (gFont == NULL) {
+    printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+    return 1;
   }
   return 0;
 }
@@ -42,8 +42,8 @@ int start() {
 int end() {
   if (window != NULL)
     SDL_DestroyWindow(window);
-  if(gFont != NULL)
-	TTF_CloseFont( gFont );
+  if (gFont != NULL)
+    TTF_CloseFont(gFont);
   gFont = NULL;
   TTF_Quit();
   IMG_Quit();
