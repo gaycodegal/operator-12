@@ -115,7 +115,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- returns void
 
 
-### **Surface EXPERIMENTAL API (Untested)**
+### *Surface EXPERIMENTAL API (Untested)*
 
 - new(source)
 	- returns source
