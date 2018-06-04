@@ -5,9 +5,9 @@
 ["string"]
 1
 "newColored"
-["color"]
-["char *"]
-["string"]
+["color", "width", "height"]
+["char *", "int", "int"]
+["string", "number", "number"]
 1
 "sizeOf"
 ["surface"]
@@ -15,9 +15,9 @@
 ["lightuserdata"]
 2
 "blit"
-["dst", "src"]
-["SDL_Surface *", "SDL_Surface *"]
-["lightuserdata","lightuserdata"]
+["dst", "src", "x", "y"]
+["SDL_Surface *", "SDL_Surface *", "int", "int"]
+["lightuserdata","lightuserdata", "number", "number"]
 0
 "textureFrom"
 ["surface"]
