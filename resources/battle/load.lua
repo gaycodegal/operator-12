@@ -3,9 +3,8 @@ require("battle/map")
 require("slug/slug")
 require("ai/ai")
 function Start(name)
-   print("YEET", name)
    if name == nil then
-	  name = "test.lua"
+	  name = "spawner-test.lua"
    end
    map = Map.new(dofile("maps/"..name))
    map.slug = slugs.Slug1
