@@ -127,6 +127,9 @@ return {
 	  test2 = {
 		 tiles = {4, 10}
 	  },
+	  spawner={
+		 tiles={3,3}
+	  }
 	  
    }
 }

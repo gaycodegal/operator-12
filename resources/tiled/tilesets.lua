@@ -39,6 +39,8 @@ function Tileset.loadTilesets(tilesets)
 	  v.h = v.imageheight // v.tileheight
 	  if v.tiles[1].properties.color then
 		 local s = Surface.newBlank(v.imagewidth, v.imageheight)
+		 print(v.imagewidth, v.imageheight)
+		 Surface.fill(s,0,0,200,200,255,0,255,255)
 		 for i, t in ipairs(v.tiles) do
 			local r,g,b,a = parseColor(t.properties.color)
 			Surface.fill(s,(i % v.w) * v.tilewidth,
@@ -55,7 +57,7 @@ function Tileset.loadTilesets(tilesets)
 			local w = v.w * map.tilesize
 			local h = v.h * map.tilesize
 			s2 = Surface.newBlank(w,h)
-			--Surface.fill(s2, 0,0,w,h,255,255,255,255)
+			Surface.fill(s2, 0,0,w,h,255,255,255,255)
 			Surface.blitScale(s2, s, 0,0,v.imagewidth, v.imageheight,0,0,w,h)
 			Surface.destroy(s)
 			s = s2

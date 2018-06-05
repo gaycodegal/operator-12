@@ -24,6 +24,18 @@ function KeyUp(key)
    end
 end
 
+function KeyDown(key)
+
+end
+
+function MouseDown(x,y)
+
+end
+
+function MouseUp(x,y)
+
+end
+
 function listdir(path)
    return dofile(path .. ".contents.lua")
 end

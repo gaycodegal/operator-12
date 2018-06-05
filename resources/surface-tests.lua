@@ -6,7 +6,10 @@ function Start()
    s = Surface.new("images/headsprites.png")
    w,h = Surface.size(s)
    s2 = Surface.newBlank(w, h)
-   Surface.fill(s2,56 * 1,56 * 2,56,56,250,250,0,255)
+   Surface.fill(s2, 56,56,56,56
+				,250,250,0,255)
+   Surface.fill(s2, 56 * 2,0,56,56
+				,0,200,200,255)
    Surface.blit(s2, s, 0, 0)
    t = Surface.textureFrom(s)
    t2 = Surface.textureFrom(s2)
