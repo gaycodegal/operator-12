@@ -107,13 +107,30 @@ end
 
 -- draw map to screen
 function Map.draw (self)
-   for i, v in ipairs(self.map) do
-	  if v then
-		 v:draw(map.x, map.y)
+   local i = 1
+   local v
+   local tx = self.x
+   local ty = self.y
+   for y = 1,self.height do
+	  if ty + self.tilesize > 0 and ty < SCREEN_HEIGHT then
+		 tx = self.x
+		 for x = 1,self.width do
+			if tx + self.tilesize > 0 and tx < SCREEN_WIDTH then
+			   v = self.map[i]
+			   if v then
+				  v:draw(self.x, self.y)
+			   end
+			   if self.objects[i] then
+				  self.objects[i]:draw()
+			   end
+			end
+			i = i + 1
+			tx = tx + self.tilesize + self.tilesep
+		 end
+	  else
+		 i = i + self.width
 	  end
-	  if self.objects[i] then
-		 self.objects[i]:draw()
-	  end
+	  ty = ty + self.tilesize + self.tilesep
    end
 end
 
