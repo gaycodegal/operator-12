@@ -1,1 +1,1 @@
-return {"spawner-test.lua","test.lua"}
+return {"large-boi-test.lua","spawner-test.lua","test.lua"}
