@@ -3,7 +3,6 @@ require("battle/map")
 require("slug/slug")
 require("ai/ai")
 function Start(name)
-   print("YEET", name)
    if name == nil then
 	  name = "test.lua"
    end

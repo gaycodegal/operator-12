@@ -38,8 +38,8 @@ function Map.new (data)
 		 --print((i % data.width) * (tilesize + tilesep),  (i// data.width) * (tilesize + tilesep))
 		 dat = dat - 1
 		 tmap[i] = Sprite.new(v.sheet,
-							 (i % data.width) * (tilesize + tilesep),
-							 (i // data.width) * (tilesize + tilesep),
+							  ((i-1) % data.width + 1) * (tilesize + tilesep),
+							  ((i-1) // data.width) * (tilesize + tilesep),
 							 tilesize,
 							 tilesize,
 							 (dat % v.w)*v.tilewidth,
@@ -66,6 +66,7 @@ function Map.new (data)
 end
 
 function Map.indexOf(self,x,y)
+   print(x,y)
    return x + y * self.width
 end
 
@@ -85,7 +86,7 @@ end
 function Map.mousedown(self,x,y)
    x = ((x - map.x) // (Map.tilesize + Map.tilesep))
    y = ((y - map.y) // (Map.tilesize + Map.tilesep))
-   if x >= 0 and x < self.width and y >= 0 and y < self.width then
+   if x > 0 and x <= self.width and y > 0 and y <= self.width then
 	  if self.slug then
 		 self.slug:move(x, y)
 	  end
