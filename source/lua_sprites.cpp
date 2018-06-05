@@ -254,7 +254,7 @@ static int l_surface_newBlank(lua_State *L) {
   Uint32 rmask, gmask, bmask, amask;
 
   /* SDL interprets each pixel as a 32-bit number, so our masks must depend
-	 on the endianness (byte order) of the machine */
+         on the endianness (byte order) of the machine */
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
   rmask = 0xff000000;
   gmask = 0x00ff0000;
@@ -266,7 +266,8 @@ static int l_surface_newBlank(lua_State *L) {
   bmask = 0x00ff0000;
   amask = 0xff000000;
 #endif
-  SDL_Surface *s = SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask);
+  SDL_Surface *s =
+      SDL_CreateRGBSurface(0, width, height, 32, rmask, gmask, bmask, amask);
   lua_pushlightuserdata(L, (void *)s);
   return 1;
 }
@@ -407,7 +408,7 @@ static int l_surface_textureFrom(lua_State *L) {
   lua_pop(L, 1);
   // Create texture from surface pixels
   SDL_Texture *newTexture =
-	SDL_CreateTextureFromSurface(globalRenderer, surface);
+      SDL_CreateTextureFromSurface(globalRenderer, surface);
   if (newTexture == NULL) {
     printf("Unable to create texture from surface! SDL Error: %s\n",
            SDL_GetError());
@@ -515,15 +516,15 @@ static int l_surface_destroy(lua_State *L) {
 }
 
 static const struct luaL_Reg surface_meta[] = {
-  {"new", l_surface_new},
-  {"newBlank", l_surface_newBlank},
-  {"fill", l_surface_fill},
-  {"size", l_surface_size},
-  {"blit", l_surface_blit},
-  {"textureFrom", l_surface_textureFrom},
-  {"blitScale", l_surface_blitScale},
-  {"destroy", l_surface_destroy},
-  {NULL, NULL}};
+    {"new", l_surface_new},
+    {"newBlank", l_surface_newBlank},
+    {"fill", l_surface_fill},
+    {"size", l_surface_size},
+    {"blit", l_surface_blit},
+    {"textureFrom", l_surface_textureFrom},
+    {"blitScale", l_surface_blitScale},
+    {"destroy", l_surface_destroy},
+    {NULL, NULL}};
 
 static int l_ttf_surface(lua_State *L) {
   char *text;
@@ -590,7 +591,7 @@ static int l_ttf_size(lua_State *L) {
 }
 
 static const struct luaL_Reg ttf_meta[] = {
-  {"surface", l_ttf_surface}, {"size", l_ttf_size}, {NULL, NULL}};
+    {"surface", l_ttf_surface}, {"size", l_ttf_size}, {NULL, NULL}};
 
 static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
                                              {"draw", l_draw_sprite},
@@ -601,14 +602,14 @@ static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
                                              {NULL, NULL}};
 
 static const struct luaL_Reg texturemeta[] = {
-  {"new", l_new_texture}, {"destroy", l_free_texture}, {NULL, NULL}};
+    {"new", l_new_texture}, {"destroy", l_free_texture}, {NULL, NULL}};
 
 static const struct luaL_Reg staticmeta[] = {
-  {"wait", l_static_wait}, {"quit", l_quit}, {NULL, NULL}};
+    {"wait", l_static_wait}, {"quit", l_quit}, {NULL, NULL}};
 
 static const struct luaClassList game[] = {
-  {"Texture", texturemeta},  {"Sprite", spritemeta}, {"static", staticmeta},
-  {"Surface", surface_meta}, {"TTF", ttf_meta},      {NULL, NULL}};
+    {"Texture", texturemeta},  {"Sprite", spritemeta}, {"static", staticmeta},
+    {"Surface", surface_meta}, {"TTF", ttf_meta},      {NULL, NULL}};
 
 struct luaConstInt {
   const char *name;
