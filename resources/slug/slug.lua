@@ -42,8 +42,8 @@ function Slug.spawn(data)
 	  end
 	  --print(v.y, v.x, map.tilesize, map.width, (v.y // map.tilesize))
 	  slugs[v.name][v.properties.index] = {
-		 (v.x // map.tilesize),
-		 (v.y // map.tilesize)
+		 (v.x // map.tilesize) + 1,
+		 (v.y // map.tilesize) + 1
 	  }
 	  slugs[v.name].type = v.type
 	  if v.properties.team then
@@ -124,11 +124,11 @@ function Slug.move(self, x, y)
    local head = self.head
    local dx = math.abs(x - head.pos[1])
    local dy = math.abs(y - head.pos[2])
-
-   if map.map[x + y * map.width] then else
+   local ind = map:indexOf(x,y)
+   if map.map[ind] then else
 	  return
    end
-   local mid = map.objects[x + y * map.width]
+   local mid = map.objects[ind]
    if mid then
 	  if mid.slug ~= self then
 		 mid.slug:damage(1)
