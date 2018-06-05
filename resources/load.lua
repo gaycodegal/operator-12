@@ -1,62 +1,45 @@
 require("util")
-require("battle/map")
-require("slug/slug")
-require("ai/ai")
+require("text/text")
+require("ui/button")
+function LoadFile(self)
+   End()
+   require("battle/load")
+   Start(self.text)
+end
 function Start()
-   map = Map.new(require("maps/test"))
-   map.slug = slugs.Slug1
-   local all = AI.findAll(1, nil)
-   print(#all)
-   AI.sortDist(all, map.slug.head.pos)
-   all[1]:print()
-   all[2]:print()
+   print(Text.charsInLine("test", 100))
+   print("hi")
+   page = 1
+   maps = listdir("maps/")
+   local spacing = 10
+   local w = SCREEN_WIDTH // 5 - spacing * 3
+   local h = SCREEN_HEIGHT // 5
+   for i = page,page+16 do
+	  local name = maps[i]
+	  if name then
+		 print(name)
+		 local x = ((i-1) % 4)
+		 local y = ((i-1) // 4)
+		 Button.new({text=name, rect={(spacing)*(x)+SCREEN_WIDTH * x // 5, spacing * y +  SCREEN_HEIGHT * y // 5, w,h}, color={0,0,200,255},click=LoadFile})
+	  end
+   end
 end
 
 function Update()
    --Update = static.quit
-   map:update()
-   map:draw()
-   active = map
-   static.wait(math.floor(1000/60))
+   Button.drawAll()
+   static.wait(1000/60)
 end
 
 function End()
-   Slug.unload()
-   map:destroy()
-   Slug.despawn()
+   Button.destroyAll()
    print("goodbye")
 end
 
-function KeyDown(key)
-   if key == KEY_ESCAPE then
-	  static.quit()
-   elseif key == KEY_UP then
-	  map.dy = -map.speed
-   elseif key == KEY_DOWN then
-	  map.dy = map.speed
-   elseif key == KEY_LEFT then
-	  map.dx = -map.speed
-   elseif key == KEY_RIGHT then
-	  map.dx = map.speed
-   end
-end
-
-function KeyUp(key)
-   if key == KEY_ESCAPE then
-	  static.quit()
-   elseif key == KEY_UP and map.dy < 0 then
-	  map.dy = 0
-   elseif key == KEY_DOWN and map.dy > 0 then
-	  map.dy = 0
-   elseif key == KEY_LEFT and map.dx < 0 then
-	  map.dx = 0
-   elseif key == KEY_RIGHT and map.dx > 0 then
-	  map.dx = 0
-   end
-end
-
-function MouseDown(x, y)
-   if active ~= nil then
-	  active:mousedown(x,y)
+function MouseDown(x,y)
+   print(x,y)
+   b = Button.which(x,y)
+   if b then
+	  b:click(x,y)
    end
 end

@@ -1,1 +1,1 @@
-return {"#tests.lua#",".#tests.lua","segment.lua","slug.lua","slugdefs.lua"}
+return {".#tests.lua","segment.lua","slug.lua","slugdefs.lua"}
