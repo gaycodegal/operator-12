@@ -34,6 +34,34 @@
 	Perhaps it will allow you to see the stats of enemy units?
 *** Encryption Key
 	Data should have a variety of keys that can be acquired to unlock the contents of information
+** Online Conversation w/ Joel
+Efficiency - Yes I too was caught up on efficiency. For this run, I'm going with a MAKE IT WORK EASY. Coding time spent and ease of re-use are far more important that efficiency, and I understand this now.
+
+Classes - yeah, for me in my old full C++ version i was going to have AIs be parameters for the classes (function pointers, or class pointers), and attacks and such would also be function pointers. Same's going to go on with this new one, but it will be done in Lua so like no nasty type-signatures.
+
+State Machine - Yeah I had a state machine deciding on what to do in C++. I'll put a more refined and hidden concept of state into my Lua version.
+
+Custom Coded UI - Yupoers - that's the current part I'm at rn, but with the 'who cares about efficiency' mentality, it's going to be easy. I'm almost done now that I have line-wrapping text rendering in boxes. As far as resizing, I'm probably going to say components can have a custom resizing handler as I don't feel like it's necessary to rewrite CSS. I will at least provide snap to % along top,left,right,or bottom, text alignment, and such. So it will have like most of the necessary things for a game, and custom handlers for when that's not enough. I also probably want to insert an in-game console, but that's a stretch goal.
+
+Real Programming Language - Yeah. Me too with GameMaker then concluding it's not real enough, but like I need to also make my younger self proud and pull this off the right way.
+
+Flying Solo - I normally fly solo only because when I started freshman year of HS there wasn't anyone else my age I knew programming and willing to reach for the stars. In college, everyone else was either dying of work, or had their own projects. I fit into both categories, but hey I have time now. Anyways I like teams as long as it's Agile, and I have a guy who likes making games joining this project to work on story, and my brother who can't program will be doing level design as he likes that and also wants more Nightfall. You're free to join me Joel, but I would recommend waiting until I have it ready for a demo so that the basic utilities like buttons, level-maps, and battles work decently well, so that perhaps you could focus on some cool things you want to see like Proc-Gen Questing/Battles. The code is obviously open-source and is under the MIT license. Feel free to fork and make PRs at any time though. I may get an artist and/or a musician to work with me on the project as well. I like doing my own art, and can do my own music, but we shall see how that goes. I'll have less time when my real job starts next week, but it's a nice company so they won't work me past an 8-hour day, and that's less time than I was putting in towards school, so essentially I have lots of free time. Although there's other things in life that will take up my time like communing with fellow lesbians and whatnot, but again I'll have plenty of time to work on this cause I think it's cool and fun.
+
+Quantum - kind of gimmicky - sounds cool at first, but would just be odd.
+
+Concurrency - good idea with critical section, adds another game mode.
+
+Visual Style - I initially was going to do pixels, because that's one of the art styles I'm best at, but decided to go with SVG art converted to png. I do plan on using a pixel font (Mozart NBP). I really like the idea of different visual styles for different levels of technology across the web. My first game (second considering I'll be making a demo as v1) will take placed on an advanced military network, but great idea for the second game where you're released into the world.
+
+Zones/Making lower programs worth it - what if each program has an associated file-size and the lower level versions are smaller often? zones with bad tech can't support more complex programs.
+
+Skinning/Themes - My code already supports map specific tilemaps, and slug sprites are also loaded from tilemap files, so it's easy to switch out - one of the reasons I used Lua was for easy data read in, and supporting Tiled means mods are easy. (That's another reason to use a scripting language, as it permits custom AI and game-modes).
+
+Microcosm/Macrocosm - Agreed, Nightfall lacked inspiration, but was still great. I intend to improve on the macro with good storytelling and dialogue that matters. I even have a fellow game maker who I pitched the project to and he's excited for it and I think he'll write much of the actual dialogue and improve upon my story ideas.
+
+Penalties - Good idea. There can be penalties and also the ability to save, so you can save-scum if you don't want to face them but they make the game more fun. I think 'programs that die in battle are dead' would be a good thing. It would give that 'leave' button more potential - if you withdraw from battle, you can save credits/programs that haven't been killed yet.
+
+Proc-Gen Maps & Content - My do I love proc-gen, but this definitely sounds like a reach goal for a v2 game.
 * Storyline
 ** Whose Side?
    Initially you start off on the Operator side. You are number 12. You use they/them pronouns. You are a person.
