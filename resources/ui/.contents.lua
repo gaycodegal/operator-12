@@ -1,1 +1,1 @@
-return {"button.lua","button.lua~"}
+return {"button.lua"}

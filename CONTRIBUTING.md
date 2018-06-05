@@ -6,7 +6,8 @@ Please run `make format` and test your C++ code before submitting a PR for revie
 ## Other Software Required to Contriubte
 
 - clang-format
-
+- python 3.5+
+	- Not *really* necessary, but I make quality of life scripts in python.
 
 ## Thanks
 
