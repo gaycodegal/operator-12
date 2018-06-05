@@ -12,15 +12,15 @@ function Start()
    page = 1
    maps = listdir("maps/")
    local spacing = 10
-   local w = SCREEN_WIDTH // 5 - spacing * 3
-   local h = SCREEN_HEIGHT // 5
-   for i = page,page+16 do
+   local w = (SCREEN_WIDTH - spacing * 5) // 4
+   local h = (SCREEN_HEIGHT - spacing * 5) // 4
+   for i = page,page+15 do
 	  local name = maps[i]
 	  if name then
 		 print(name)
 		 local x = ((i-1) % 4)
 		 local y = ((i-1) // 4)
-		 Button.new({text=name, rect={(spacing)*(x)+SCREEN_WIDTH * x // 5, spacing * y +  SCREEN_HEIGHT * y // 5, w,h}, color={0,0,200,255},click=LoadFile})
+		 Button.new({text=name, rect={spacing*(x +1)+w * x, spacing * (y+1) + h*y, w,h}, color={0,0,200,255},click=LoadFile})
 	  end
    end
 end
