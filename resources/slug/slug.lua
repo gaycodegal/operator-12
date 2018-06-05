@@ -42,7 +42,7 @@ function Slug.spawn(data)
 	  end
 	  --print(v.y, v.x, map.tilesize, map.width, (v.y // map.tilesize))
 	  slugs[v.name][v.properties.index] = {
-		 (v.x // map.tilesize) % map.width + 1,
+		 (v.x // map.tilesize),
 		 (v.y // map.tilesize)
 	  }
 	  slugs[v.name].type = v.type
