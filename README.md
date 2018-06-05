@@ -11,6 +11,8 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 
 ## Features
 
+- Can Render text in boxes
+	- Try `./main test-textbox` and use arrow keys to navigate the README!
 - Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
     - Sample map file found in resources/maps
 - Escape key closes game.

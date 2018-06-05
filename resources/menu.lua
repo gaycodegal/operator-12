@@ -1,7 +1,8 @@
 require("util")
-
+require("text/text")
 
 function Start()
+   print(Text.charsInLine("test", 100))
    print("hi")
    page = 1
    maps = listdir("maps/")
@@ -18,7 +19,6 @@ function Start()
 		 print(name)
 	  end
    end
-   
 end
 
 function Update()
