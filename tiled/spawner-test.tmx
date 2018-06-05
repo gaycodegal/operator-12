@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="13" height="13" tilewidth="32" tileheight="32" infinite="0" nextobjectid="21">
+ <tileset firstgid="1" source="tiles.tsx"/>
+ <layer name="Tile Layer 1" width="13" height="13">
+  <data encoding="csv">
+3,6,3,3,3,6,6,6,3,3,3,6,3,
+6,3,0,0,0,3,3,3,0,0,0,3,6,
+3,0,0,0,0,0,0,0,0,0,0,0,3,
+3,0,0,0,0,0,0,0,0,0,0,0,3,
+3,0,0,0,3,3,3,3,3,0,0,0,3,
+3,6,6,6,3,6,3,6,3,6,6,6,3,
+3,6,6,6,3,3,3,3,3,6,6,6,3,
+3,6,6,6,3,6,3,6,3,6,6,6,3,
+3,0,0,0,3,3,3,3,3,0,0,0,3,
+3,0,0,0,0,0,0,0,0,0,0,0,3,
+3,0,0,0,0,0,0,0,0,0,0,0,3,
+6,3,0,0,0,3,3,3,0,0,0,3,6,
+3,6,3,3,3,6,6,6,3,3,3,6,3
+</data>
+ </layer>
+ <objectgroup name="slug">
+  <object id="3" name="Slug1" type="test" x="144" y="147">
+   <properties>
+    <property name="index" type="int" value="1"/>
+    <property name="team" type="int" value="1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="13" name="Slug1" type="test" x="176" y="146">
+   <properties>
+    <property name="index" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="17" name="Slug2" type="test2" x="337" y="181">
+   <properties>
+    <property name="index" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="18" name="Slug2" type="test2" x="337" y="211">
+   <properties>
+    <property name="index" type="int" value="1"/>
+    <property name="team" type="int" value="2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="19" name="spawner" type="spawner" x="209" y="19">
+   <properties>
+    <property name="index" type="int" value="1"/>
+    <property name="spawner" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" name="spawner" type="spawner" x="209" y="402">
+   <properties>
+    <property name="index" type="int" value="2"/>
+    <property name="spawner" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>
