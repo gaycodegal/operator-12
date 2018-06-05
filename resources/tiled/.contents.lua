@@ -1,1 +1,1 @@
-return {"tilesets.lua","tilesets.lua~"}
+return {"tilesets.lua"}
