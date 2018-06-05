@@ -34,8 +34,10 @@ function Button.drawAll()
 end
 
 function Button.destroyAll()
-   for i,b in ipairs(buttons) do
-	  b:destroy()
+   if buttons then
+	  for i,b in ipairs(buttons) do
+		 b:destroy()
+	  end
    end
    buttons = {}
 end
