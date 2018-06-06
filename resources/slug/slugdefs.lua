@@ -122,13 +122,28 @@ return {
    },
    slugs={
 	  test = {
-		 tiles = {1,7}
+		 tiles = {1,7},
+		 stats={
+			moves = 1,
+			range = 1,
+			damage = 1
+		 }
 	  },
 	  test2 = {
-		 tiles = {4, 10}
+		 tiles = {4, 10},
+		 stats={
+			moves = 3,
+			range = 4,
+			damage = 1
+		 }
 	  },
 	  spawner={
-		 tiles={3,3}
+		 tiles={3,3},
+		 stats={
+			moves = 0,
+			range = 0,
+			damage = 0
+		 }
 	  }
 	  
    }

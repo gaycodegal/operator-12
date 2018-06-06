@@ -7,19 +7,22 @@ function Start(name)
 	  name = "spawner-test.lua"
    end
    map = Map.new(dofile("maps/"..name))
-   map.slug = slugs.Slug1
-   local all = AI.findAll(1, nil)
-   print(#all)
-   AI.sortDist(all, map.slug.head.pos)
-   all[1]:print()
-   all[2]:print()
+   local sname = nil
+   for n,slug in pairs(slugs) do
+	  if not sname and slug.team == 1 then
+		 sname = n
+	  elseif slug.team == 1 and n < sname then
+		 sname = n
+	  end
+   end
+   map.slug = slugs[sname]
+   active = map
 end
 
 function Update()
    --Update = static.quit
    map:update()
    map:draw()
-   active = map
    static.wait(math.floor(1000/60))
 end
 
@@ -55,6 +58,8 @@ function KeyUp(key)
 	  map.dx = 0
    elseif key == KEY_RIGHT and map.dx > 0 then
 	  map.dx = 0
+   elseif key == 101 then
+	  AI.prepareForEnemyTurns()
    end
 end
 
