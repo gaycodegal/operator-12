@@ -127,18 +127,17 @@ function Slug.move(self, x, y)
    local dy = math.abs(y - head.pos[2])
    local ind = map:indexOf(x,y)
    if map.map[ind] then else
-	  return
+	  return false
    end
    local mid = map.objects[ind]
    if mid then
 	  if mid.slug ~= self then
-		 mid.slug:damage(1)
-		 return
+		 return false
 	  end
    end
    
    if dx > 1 or dy > 1 or dy == dx then
-	  return
+	  return false
    end
 
    head:removeFromMap()
@@ -167,6 +166,7 @@ function Slug.move(self, x, y)
    head.pos[1] = x
    head.pos[2] = y
    head:addToMap()
+   return true
 end
 
 -- remove <amount> segments from
