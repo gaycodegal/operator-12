@@ -9,6 +9,7 @@ function Player.prepareCurrentSlug()
    Player.pos = head.pos
    Player.moves = slug.stats.moves
    active = Player.move
+   Player.slug:movementOverlay(Player.moves)
 end
 
 function Player.lose()
@@ -26,6 +27,9 @@ function Player.win()
 end
 
 function Player.returnControl()
+   if Player.slug then
+	  Player.slug:destroyOverlay()
+   end
    Player.slug = nil
    Player.pos = nil
    Player.moves = nil
@@ -60,6 +64,8 @@ function Player.move(x, y)
    if Player.moves > 0 then
 	  if Player.slug:move(x,y) then
 		 Player.moves = Player.moves - 1
+		 Player.slug:destroyOverlay()
+		 Player.slug:movementOverlay(Player.moves)
 	  end
    end
    if Player.moves <= 0 then

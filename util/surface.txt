@@ -9,6 +9,11 @@
 ["int", "int"]
 ["number", "number"]
 1
+"blendmode"
+["surface", "mode"]
+["SDL_Surface *", "SDL_BlendMode"]
+["lightuserdata", "number"]
+0
 "fill"
 ["surface", "x", "y", "width", "height", "r", "g", "b", "a"]
 ["SDL_Surface *", "int", "int", "int", "int", "int", "int", "int", "int"]

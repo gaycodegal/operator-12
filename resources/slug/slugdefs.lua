@@ -124,7 +124,7 @@ return {
 	  test = {
 		 tiles = {1,7},
 		 stats={
-			moves = 1,
+			moves = 5,
 			range = 1,
 			damage = 1
 		 }
@@ -140,8 +140,8 @@ return {
 	  spawner={
 		 tiles={3,3},
 		 stats={
-			moves = 1,
-			range = 1,
+			moves = 0,
+			range = 0,
 			damage = 0
 		 }
 	  }

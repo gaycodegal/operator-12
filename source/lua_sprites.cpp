@@ -272,6 +272,25 @@ static int l_surface_newBlank(lua_State *L) {
   return 1;
 }
 
+static int l_surface_blendmode(lua_State *L) {
+  SDL_Surface *surface;
+  SDL_BlendMode mode;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 2);
+    return 0;
+  }
+  mode = (SDL_BlendMode)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_islightuserdata(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  surface = (SDL_Surface *)lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  SDL_SetSurfaceBlendMode(surface, mode);
+  return 0;
+}
+
 static int l_surface_fill(lua_State *L) {
   SDL_Surface *surface;
   int x;
@@ -499,7 +518,9 @@ static int l_surface_blitScale(lua_State *L) {
   sourceRect.y = sy;
   sourceRect.w = sw;
   sourceRect.h = sh;
-  SDL_BlitScaled(src, &sourceRect, dst, &stretchRect);
+  if (SDL_BlitScaled(src, &sourceRect, dst, &stretchRect) < 0) {
+    printf("Unable to blit! SDL Error: %s\n", SDL_GetError());
+  }
   return 0;
 }
 
@@ -518,6 +539,7 @@ static int l_surface_destroy(lua_State *L) {
 static const struct luaL_Reg surface_meta[] = {
     {"new", l_surface_new},
     {"newBlank", l_surface_newBlank},
+    {"blendmode", l_surface_blendmode},
     {"fill", l_surface_fill},
     {"size", l_surface_size},
     {"blit", l_surface_blit},
@@ -616,14 +638,19 @@ struct luaConstInt {
   const int val;
 };
 
-static const struct luaConstInt globints[] = {{"SCREEN_WIDTH", SCREEN_WIDTH},
-                                              {"SCREEN_HEIGHT", SCREEN_HEIGHT},
-                                              {"KEY_UP", SDLK_UP},
-                                              {"KEY_DOWN", SDLK_DOWN},
-                                              {"KEY_LEFT", SDLK_LEFT},
-                                              {"KEY_RIGHT", SDLK_RIGHT},
-                                              {"KEY_ESCAPE", SDLK_ESCAPE},
-                                              {NULL, 0}};
+static const struct luaConstInt globints[] = {
+    {"SCREEN_WIDTH", SCREEN_WIDTH},
+    {"SCREEN_HEIGHT", SCREEN_HEIGHT},
+    {"KEY_UP", SDLK_UP},
+    {"KEY_DOWN", SDLK_DOWN},
+    {"KEY_LEFT", SDLK_LEFT},
+    {"KEY_RIGHT", SDLK_RIGHT},
+    {"KEY_ESCAPE", SDLK_ESCAPE},
+    {"BLENDMODE_NONE", SDL_BLENDMODE_NONE},
+    {"BLENDMODE_BLEND", SDL_BLENDMODE_BLEND},
+    {"BLENDMODE_ADD", SDL_BLENDMODE_ADD},
+    {"BLENDMODE_MOD", SDL_BLENDMODE_MOD},
+    {NULL, 0}};
 
 int luaopen_sprites(lua_State *L) {
   int count = 0;
