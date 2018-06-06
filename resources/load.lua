@@ -1,10 +1,10 @@
-require("util")
+dofile("util.lua")
 require("text/text")
 require("ui/button")
 
 function LoadFile(self)
    End()
-   require("battle/load")
+   dofile("battle/load.lua")
    Start(self.text)
 end
 
@@ -53,12 +53,16 @@ function Start()
    page = 1
    maps = listdir("maps/")
    updateForPage(page)
+   print("end start")
 end
 
 function Update()
    --Update = static.quit
+   print("eyy")
    Button.drawAll()
+   print("butddon")
    static.wait(1000/60)
+   print("fuck")
 end
 
 function End()

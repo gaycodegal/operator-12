@@ -1,4 +1,3 @@
-require("util")
 Player = {}
 
 ---Player.__index = metareplacer(Player)
@@ -10,6 +9,18 @@ function Player.prepareCurrentSlug()
    Player.pos = head.pos
    Player.moves = slug.stats.moves
    active = Player.move
+end
+
+function Player.lose()
+   End()
+   dofile("load.lua")
+   Start()
+end
+
+function Player.win()
+   End()
+   dofile("load.lua")
+   Start()
 end
 
 function Player.returnControl()
@@ -36,8 +47,8 @@ function Player.prepareForTurn()
    end
    Player.nslugs = j-1 -- number of enemies to go.
    if Player.nslugs <= 0 then
-	  print("you lose...")
 	  Player.returnControl()
+	  Player.lose()
 	  return
    end
    Player.prepareCurrentSlug()   

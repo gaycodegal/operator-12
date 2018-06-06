@@ -1,6 +1,6 @@
-require("util")
+dofile("util.lua")
 require("battle/map")
-require("slug/slug")
+dofile("slug/slug.lua")
 require("ai/ai")
 require("ai/player")
 function Start(name)
@@ -55,7 +55,7 @@ function KeyUp(key)
 		 active = Player.attack
 	  elseif active == Player.attack then
 		 Player.returnControl()
-		 Enemy.prepareForTurns()
+		 AI.prepareForEnemyTurns()
 	  end
    end
 end

@@ -15,9 +15,7 @@ function makeGlobal(x)
       rawset(_G, k, v)
    end
 end
-
 makeGlobal(Game)
-
 function KeyUp(key)
    if key == KEY_ESCAPE then
 	  static.quit()

@@ -28,8 +28,8 @@ function AI.prepareCurrentSlug()
    local head = slug.head
    local all = AI.findAll(slug.team)
    if #all <= 0 then
-	  print("you lose...")
 	  AI.returnControl()
+	  Player.lose()
 	  return
    end
    AI.eslug = slug
@@ -75,8 +75,8 @@ function AI.prepareForEnemyTurns()
    AI.oldActive = active
    active = nil
    if AI.neslugs <= 1 then
-	  print("you won...")
 	  AI.returnControl()
+	  Player.win()
 	  return
    end
    AI.prepareCurrentSlug()   
