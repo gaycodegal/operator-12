@@ -34,6 +34,76 @@ function Slug.new (self)
    return self
 end
 
+function Slug.movementOverlay(self, range)
+   local diamond = self:listDiamond(range)
+   local arrs = {overlay.named.up, overlay.named.right, overlay.named.down, overlay.named.left}
+   local x, y
+   if #diamond < 4 then
+	  return
+   end
+   for i = 1, 4 do
+	  if diamond[i] then
+		 x,y = Map.basePosition(diamond[i][1], diamond[i][2])
+		 diamond[i] = Sprite.new(arrs[i].tex, x, y, tilew, tileh, arrs[i].x, arrs[i].y)
+	  end
+   end
+   local move = overlay.named.move
+   for i = 5, #diamond do
+	  if diamond[i] then
+		 x,y = Map.basePosition(diamond[i][1], diamond[i][2])
+		 diamond[i] = Sprite.new(move.tex, x, y, tilew, tileh, move.x, move.y)
+	  end
+   end
+   self.overlay = diamond
+end
+
+function Slug.destroyOverlay(self)
+   if self.overlay then
+	  for i,v in ipairs(self.overlay) do
+		 if v then
+			v:destroy()
+		 end
+	  end
+   end
+   self.overlay = nil
+end
+
+function Slug.drawOverlay(self)
+   if self.overlay then
+	  local x, y = Map.position(self.head.pos[1] + 1, self.head.pos[2] + 1)
+	  for i,v in ipairs(self.overlay) do
+		 if v then
+			v:draw(x,y)
+		 end
+	  end
+   end
+end
+
+function Slug.listDiamond(self, size)
+   -- >v, <v,<^,>^
+   local deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
+   local j = 1
+   local hpos = self.head.pos
+   local pos = {0,0}--
+   local lst = {}
+   for ring = 1,size do
+	  pos[2] = pos[2] - 1
+	  for t,d in ipairs(deltas) do
+		 for i=1,ring do
+			if map.map[map:indexOf(pos[1]+hpos[1], pos[2]+hpos[2])] then
+			   lst[j] = {pos[1], pos[2]}
+			else
+			   lst[j] = false
+			end
+			pos[1] = pos[1] + d[1]
+			pos[2] = pos[2] + d[2]
+			j = j + 1
+		 end
+	  end
+   end
+   return lst
+end
+
 -- spawn slugs from Tiled lua file
 function Slug.spawn(data)
    slugs = {}
@@ -74,16 +144,10 @@ function Slug.load ()
    Tileset.loadTilesets(tilesets)
    for name, v in pairs(slugdefs) do
 	  for i, tile in ipairs(v.tiles) do
-		 local j, dat = Tileset.tilefinder(tile, tilesets)
+		 local j, dat = tilesets:tilefinder(tile)
 		 if j then
-			local set = tilesets[j]
-			local tex = {}
-			tex.tex = set.sheet
-			tex.w = set.tilewidth
-			tex.h = set.tileheight
-			tex.x = (dat % set.w) * tex.w
-			tex.y = (dat // set.w) * tex.h
-			v.tiles[i] = tex
+			local t = tilesets:initTile(tilesets[j],dat)
+			v.tiles[i] = t
 		 end
 	  end
    end
@@ -186,6 +250,7 @@ end
 
 -- deallocate slug
 function Slug.destroy (self)
+   self:destroyOverlay()
    for i, spr in ipairs(self.sprites) do
 	  spr:destroy()
    end

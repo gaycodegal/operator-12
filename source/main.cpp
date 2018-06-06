@@ -139,9 +139,9 @@ int main(int argc, char *argv[]) {
       }
 
       SDL_RenderClear(globalRenderer);
-      if (updateExists){
+      if (updateExists) {
         callLuaVoid(L, "Update");
-	  }
+      }
       SDL_RenderPresent(globalRenderer);
     }
   }

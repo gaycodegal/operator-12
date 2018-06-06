@@ -151,7 +151,7 @@ return {
           rotation = 0,
           visible = true,
           properties = {
-            ["index"] = 1,
+			 ["index"] = 1,
             ["spawner"] = true
           }
         },

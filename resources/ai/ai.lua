@@ -24,7 +24,7 @@ function AI.findAll(nteam)
 end
 
 function AI.prepareCurrentSlug()
-   local slug = AI.eslugs[AI.eturni]
+   local slug = AI.slugs[AI.turni]
    local head = slug.head
    local all = AI.findAll(slug.team)
    if #all <= 0 then
@@ -32,23 +32,27 @@ function AI.prepareCurrentSlug()
 	  Player.lose()
 	  return
    end
-   AI.eslug = slug
-   AI.epos = head.pos
-   AI.etarget = AI.sortDist(all, head.pos)[1]
-   AI.etpos = AI.etarget.pos
-   AI.emoves = slug.stats.moves
-   AI.estate = AI.move
+   AI.slug = slug
+   AI.pos = head.pos
+   AI.target = AI.sortDist(all, head.pos)[1]
+   AI.tpos = AI.target.pos
+   AI.moves = slug.stats.moves
+   AI.state = AI.move
+   AI.slug:movementOverlay(AI.moves)
 end
 
 function AI.returnControl()
-   AI.eslug = nil
-   AI.epos = nil
-   AI.etarget = nil
-   AI.etpos = nil
-   AI.emoves = nil
-   AI.estate = nil
-   AI.eslugs = nil
-   AI.eturni = nil
+   if AI.slug then
+	  AI.slug:destroyOverlay()
+   end
+   AI.slug = nil
+   AI.pos = nil
+   AI.target = nil
+   AI.tpos = nil
+   AI.moves = nil
+   AI.state = nil
+   AI.slugs = nil
+   AI.turni = nil
    AI.neslugs = nil
    Update = AI.oldUpdate
    AI.oldUpdate = nil
@@ -58,13 +62,14 @@ function AI.returnControl()
 end
 
 function AI.prepareForEnemyTurns()
-   AI.eslugs = {} -- active enemy slugs
-   AI.eturni = 1 -- which slug's turn is it
+   --Update=static.quit
+   AI.slugs = {} -- active enemy slugs
+   AI.turni = 1 -- which slug's turn is it
    j = 1
    for i, slug in pairs(slugs) do
 	  if slug then
 		 if slug.team ~= 1 then
-			AI.eslugs[j] = slug
+			AI.slugs[j] = slug
 			j = j + 1
 		 end
 	  end
@@ -83,34 +88,36 @@ function AI.prepareForEnemyTurns()
 end
 
 function AI.move()
-   if AI.emoves > 0 then
-	  local dx = math.min(math.max(AI.etpos[1]-AI.epos[1], -1), 1)
-	  local dy = math.min(math.max(AI.etpos[2]-AI.epos[2], -1), 1)
-	  local indx = map:indexOf(AI.epos[1] + dx,AI.epos[2])
-	  local indy = map:indexOf(AI.epos[1],AI.epos[2] + dy)
-	  if dx ~= 0 and dx + AI.epos[1] > 0 and dx + AI.epos[1] < map.width and map.map[indx] and ((not map.objects[indx]) or map.objects[indx].slug == AI.eslug) then
-		 AI.eslug:move(AI.epos[1] + dx,AI.epos[2])
-		 AI.emoves = AI.emoves - 1
-	  elseif dy ~= 0 and dy + AI.epos[2] > 0 and dy + AI.epos[2] < map.height and map.map[indy] and ((not map.objects[indy]) or map.objects[indy].slug == AI.eslug) then
-		 AI.eslug:move(AI.epos[1],AI.epos[2] + dy)
-		 AI.emoves = AI.emoves - 1
+   if AI.moves > 0 then
+	  local dx = math.min(math.max(AI.tpos[1]-AI.pos[1], -1), 1)
+	  local dy = math.min(math.max(AI.tpos[2]-AI.pos[2], -1), 1)
+	  local indx = map:indexOf(AI.pos[1] + dx,AI.pos[2])
+	  local indy = map:indexOf(AI.pos[1],AI.pos[2] + dy)
+	  if dx ~= 0 and dx + AI.pos[1] > 0 and dx + AI.pos[1] < map.width and map.map[indx] and ((not map.objects[indx]) or map.objects[indx].slug == AI.slug) then
+		 AI.slug:move(AI.pos[1] + dx,AI.pos[2])
+		 AI.moves = AI.moves - 1
+	  elseif dy ~= 0 and dy + AI.pos[2] > 0 and dy + AI.pos[2] < map.height and map.map[indy] and ((not map.objects[indy]) or map.objects[indy].slug == AI.slug) then
+		 AI.slug:move(AI.pos[1],AI.pos[2] + dy)
+		 AI.moves = AI.moves - 1
 	  else
-		 AI.emoves = 0
+		 AI.moves = 0
 	  end	 
    end
-   if AI.emoves <= 0 then
-	  AI.estate = AI.attack
+   AI.slug:destroyOverlay()
+   AI.slug:movementOverlay(AI.moves)
+   if AI.moves <= 0 then
+	  AI.state = AI.attack
    end
 end
 
 function AI.attack()
-   local dx = AI.etpos[1]-AI.epos[1]
-   local dy = AI.etpos[2]-AI.epos[2]
-   if math.abs(dx) + math.abs(dy) <= AI.eslug.stats.range then
-	  AI.etarget.slug:damage(AI.eslug.stats.damage)
+   local dx = AI.tpos[1]-AI.pos[1]
+   local dy = AI.tpos[2]-AI.pos[2]
+   if math.abs(dx) + math.abs(dy) <= AI.slug.stats.range then
+	  AI.target.slug:damage(AI.slug.stats.damage)
    end
-   AI.eturni = AI.eturni + 1
-   if AI.eturni >= AI.neslugs then
+   AI.turni = AI.turni + 1
+   if AI.turni >= AI.neslugs then
 	  AI.returnControl()
    else
 	  AI.prepareCurrentSlug()
@@ -119,11 +126,14 @@ end
 
 function AI.Update()
    --Update = static.quit
-   AI.estate()
+   AI.state()
    if map then
 	  map:update()
 	  map:draw()
-	  static.wait(1000/10)
+	  if AI.slug then
+		 AI.slug:drawOverlay()
+	  end
+	  static.wait(1000/2)
    end
 end
 

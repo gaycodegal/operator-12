@@ -3,11 +3,15 @@ require("battle/map")
 dofile("slug/slug.lua")
 require("ai/ai")
 require("ai/player")
+require("tiled/tilesets")
 function Start(name)
    if name == nil then
 	  name = "spawner-test.lua"
    end
    map = Map.new(dofile("maps/"..name))
+   overlay = {dofile("battle/overlay.lua")}
+   Tileset.loadTilesets(overlay)
+   
    Player.prepareForTurn()
 end
 
@@ -15,10 +19,15 @@ function Update()
    --Update = static.quit
    map:update()
    map:draw()
+   if Player.slug then
+	  Player.slug:drawOverlay()
+   end
    static.wait(math.floor(1000/60))
 end
 
 function End()
+   Tileset.destroyTilesets(overlay)
+   overlay = nil
    Slug.unload()
    map:destroy()
    Slug.despawn()
@@ -54,6 +63,9 @@ function KeyUp(key)
    elseif key == 32 then
 	  if active == Player.move then
 		 active = Player.attack
+		 if Player.slug then
+			Player.slug:destroyOverlay()
+		 end
 	  elseif active == Player.attack then
 		 Player.returnControl()
 		 AI.prepareForEnemyTurns()
