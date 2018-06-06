@@ -53,21 +53,16 @@ function Start()
    page = 1
    maps = listdir("maps/")
    updateForPage(page)
-   print("end start")
 end
 
 function Update()
    --Update = static.quit
-   print("eyy")
    Button.drawAll()
-   print("butddon")
    static.wait(1000/60)
-   print("fuck")
 end
 
 function End()
    Button.destroyAll()
-   print("goodbye")
 end
 
 function MouseDown(x,y)

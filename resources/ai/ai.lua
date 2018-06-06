@@ -79,7 +79,7 @@ function AI.prepareForEnemyTurns()
 	  Player.win()
 	  return
    end
-   AI.prepareCurrentSlug()   
+   AI.prepareCurrentSlug()
 end
 
 function AI.move()
@@ -88,10 +88,10 @@ function AI.move()
 	  local dy = math.min(math.max(AI.etpos[2]-AI.epos[2], -1), 1)
 	  local indx = map:indexOf(AI.epos[1] + dx,AI.epos[2])
 	  local indy = map:indexOf(AI.epos[1],AI.epos[2] + dy)
-	  if dx ~= 0 and map.map[indx] and ((not map.objects[indx]) or map.objects[indx].slug == AI.eslug) then
+	  if dx ~= 0 and dx + AI.epos[1] > 0 and dx + AI.epos[1] < map.width and map.map[indx] and ((not map.objects[indx]) or map.objects[indx].slug == AI.eslug) then
 		 AI.eslug:move(AI.epos[1] + dx,AI.epos[2])
 		 AI.emoves = AI.emoves - 1
-	  elseif dy ~= 0 and map.map[indy] and ((not map.objects[indy]) or map.objects[indy].slug == AI.eslug) then
+	  elseif dy ~= 0 and dy + AI.epos[2] > 0 and dy + AI.epos[2] < map.height and map.map[indy] and ((not map.objects[indy]) or map.objects[indy].slug == AI.eslug) then
 		 AI.eslug:move(AI.epos[1],AI.epos[2] + dy)
 		 AI.emoves = AI.emoves - 1
 	  else
@@ -111,7 +111,7 @@ function AI.attack()
    end
    AI.eturni = AI.eturni + 1
    if AI.eturni >= AI.neslugs then
-	  AI.returnControl()	  
+	  AI.returnControl()
    else
 	  AI.prepareCurrentSlug()
    end
@@ -120,9 +120,11 @@ end
 function AI.Update()
    --Update = static.quit
    AI.estate()
-   map:update()
-   map:draw()
-   static.wait(1000/10)
+   if map then
+	  map:update()
+	  map:draw()
+	  static.wait(1000/10)
+   end
 end
 
 function AI.manhatten(a, b)
