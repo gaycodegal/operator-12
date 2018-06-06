@@ -22,6 +22,7 @@ function End()
    Slug.unload()
    map:destroy()
    Slug.despawn()
+   map = nil
    print("goodbye")
 end
 

@@ -140,8 +140,8 @@ return {
 	  spawner={
 		 tiles={3,3},
 		 stats={
-			moves = 0,
-			range = 0,
+			moves = 1,
+			range = 1,
 			damage = 0
 		 }
 	  }

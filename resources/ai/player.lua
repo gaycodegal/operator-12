@@ -15,12 +15,14 @@ function Player.lose()
    End()
    dofile("load.lua")
    Start()
+   print("lose")
 end
 
 function Player.win()
    End()
    dofile("load.lua")
    Start()
+   print("win")
 end
 
 function Player.returnControl()
