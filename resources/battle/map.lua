@@ -17,7 +17,6 @@ function Map.new (data)
 	  v.sheet = t
 	  v.w = w // v.tilewidth
    end
-   
    local tilesize = tilew
    Map.tilesize = tilesize
    local tilesep = 10

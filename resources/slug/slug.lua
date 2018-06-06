@@ -11,6 +11,7 @@ require("slug/segment")
 -- self now owned by slug
 function Slug.new (self)
    local sprites = Slug.defs[self.sprites].tiles
+   self.stats = Slug.defs[self.sprites].stats
    self.sprites = {}
    for i, spr in ipairs(sprites) do
 	  self.sprites[i] = Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
