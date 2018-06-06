@@ -13,6 +13,7 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 
 - Buttons!
 	- can click them and they do *things*
+- Movement Overlay
 - Main menu - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
 	- As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
 - Can Render text in boxes
@@ -116,6 +117,8 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
     - returns 1
 - newBlank(width,height)
     - returns 1
+- blendmode(surface,mode)
+    - returns 0
 - fill(surface,x,y,width,height,r,g,b,a)
     - returns 0
 - size(surface)
@@ -152,6 +155,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- `KEY_UP`, `KEY_DOWN`, `KEY_LEFT`, `KEY_RIGHT`, `KEY_ESCAPE`
 - Screen Dimensions
 	- `SCREEN_WIDTH`, `SCREEN_HEIGHT`
+- Blend Modes
+	- `BLENDMODE_NONE`, `BLENDMODE_BLEND`, `BLENDMODE_ADD`, `BLENDMODE_MOD`
+
 
 ## Tests
 
