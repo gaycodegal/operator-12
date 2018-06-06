@@ -2,21 +2,13 @@ require("util")
 require("battle/map")
 require("slug/slug")
 require("ai/ai")
+require("ai/player")
 function Start(name)
    if name == nil then
 	  name = "spawner-test.lua"
    end
    map = Map.new(dofile("maps/"..name))
-   local sname = nil
-   for n,slug in pairs(slugs) do
-	  if not sname and slug.team == 1 then
-		 sname = n
-	  elseif slug.team == 1 and n < sname then
-		 sname = n
-	  end
-   end
-   map.slug = slugs[sname]
-   active = map
+   Player.prepareForTurn()
 end
 
 function Update()
@@ -58,13 +50,19 @@ function KeyUp(key)
 	  map.dx = 0
    elseif key == KEY_RIGHT and map.dx > 0 then
 	  map.dx = 0
-   elseif key == 101 then
-	  AI.prepareForEnemyTurns()
+   elseif key == 32 then
+	  if active == Player.move then
+		 active = Player.attack
+	  elseif active == Player.attack then
+		 Player.returnControl()
+		 Enemy.prepareForTurns()
+	  end
    end
 end
 
 function MouseDown(x, y)
    if active ~= nil then
-	  active:mousedown(x,y)
+	  local px, py = Map.positionToCoords(x,y)	  
+	  active(px,py)
    end
 end

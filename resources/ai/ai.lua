@@ -54,6 +54,7 @@ function AI.returnControl()
    AI.oldUpdate = nil
    active = AI.oldActive
    AI.oldActive = nil
+   Player.prepareForTurn()
 end
 
 function AI.prepareForEnemyTurns()
