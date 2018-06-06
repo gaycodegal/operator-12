@@ -2,7 +2,7 @@ require("util")
 require("tiled/tilesets")
 -- slugdefs tells us information about slug types
 -- such as where the head/body images are stored
-Slug = {defs = require("slug/slugdefs")}
+Slug = {defs = dofile("slug/slugdefs.lua")}
 
 Slug.__index = metareplacer(Slug)
 require("slug/segment")
