@@ -4,7 +4,9 @@ dofile("slug/slug.lua")
 require("ai/ai")
 require("ai/player")
 require("tiled/tilesets")
+
 function Start(name)
+   framedelay = 1000//60
    if name == nil then
 	  name = "spawner-test.lua"
    end
@@ -13,6 +15,7 @@ function Start(name)
    Tileset.loadTilesets(overlay)
    
    Player.prepareForTurn()
+   static.framedelay(framedelay)
 end
 
 function Update()
@@ -22,7 +25,6 @@ function Update()
    if Player.slug then
 	  Player.slug:drawOverlay()
    end
-   static.wait(math.floor(1000/60))
 end
 
 function End()

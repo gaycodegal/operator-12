@@ -82,6 +82,19 @@ static int l_static_wait(lua_State *L) {
   return 0;
 }
 
+static int l_static_framedelay(lua_State *L) {
+  int t;
+  Sprite *s;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  t = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  framedelay = t;
+  return 0;
+}
+
 static int l_move_sprite(lua_State *L) {
   // printLuaStack(L, "move_sprite");
   int x, y;
@@ -627,7 +640,10 @@ static const struct luaL_Reg texturemeta[] = {
     {"new", l_new_texture}, {"destroy", l_free_texture}, {NULL, NULL}};
 
 static const struct luaL_Reg staticmeta[] = {
-    {"wait", l_static_wait}, {"quit", l_quit}, {NULL, NULL}};
+    {"framedelay", l_static_framedelay},
+    {"wait", l_static_wait},
+    {"quit", l_quit},
+    {NULL, NULL}};
 
 static const struct luaClassList game[] = {
     {"Texture", texturemeta},  {"Sprite", spritemeta}, {"static", staticmeta},

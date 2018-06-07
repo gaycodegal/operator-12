@@ -146,7 +146,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 - static.quit()
     - exits the engine
 - static.wait(time)
-	- wait `time` ms
+	- wait `time` ms immediately
+- static.framedelay(time)
+	- wait `time` ms after screen is displayed
 
 
 ## Global Constants Exposed to Lua via C++
