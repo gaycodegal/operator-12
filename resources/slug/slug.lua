@@ -81,16 +81,48 @@ end
 
 function Slug.listDiamond(self, size)
    -- >v, <v,<^,>^
-   local deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
-   local j = 1
+   local q = {s=0,e=1,n=1}
+   local low = {0 - size, 0 - size}
+   local visited = {}
+   local tmp,cur,ind,mind,s
    local hpos = self.head.pos
+   q[q.s] = {0,0,size}
+   local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
+   local swidth = size*2 + 1
+   while q.n >= 1 do
+	  cur = q[q.s]
+	  q.s = q.s + 1
+	  q.n = q.n - 1
+	  s = cur[3]
+	  for t,d in ipairs(deltas) do
+		 tmp = {cur[1] + d[1], cur[2] + d[2],s-1}
+		 --print(tmp[1],tmp[2],tmp[3])
+		 if tmp[3] >= 0 and tmp[1] >= low[1] and tmp[1] < low[1] + swidth and tmp[2] >= low[2] and tmp[2] < low[2] + swidth then
+			ind = (tmp[1] - low[1]) + (tmp[2] - low[2])*swidth
+			mind = map:indexOf(tmp[1]+hpos[1], tmp[2]+hpos[2])
+			
+			if not visited[ind] and map.map[mind] then
+			   --print("yes", ind)--), tmp[1]+hpos[1], tmp[2]+hpos[2], tmp[1], tmp[2], map.map[mind])
+			   visited[ind] = true
+			   q[q.e] = tmp
+			   q.e = q.e + 1
+			   q.n = q.n + 1
+			end
+		 end
+	  end
+   end
+   deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
+   local j = 1
+   hpos = self.head.pos
    local pos = {0,0}--
    local lst = {}
    for ring = 1,size do
 	  pos[2] = pos[2] - 1
 	  for t,d in ipairs(deltas) do
 		 for i=1,ring do
-			if map.map[map:indexOf(pos[1]+hpos[1], pos[2]+hpos[2])] then
+			ind = (pos[1] - low[1]) + (pos[2] - low[2])*swidth
+			--print(ind)
+			if visited[ind] then
 			   lst[j] = {pos[1], pos[2]}
 			else
 			   lst[j] = false
