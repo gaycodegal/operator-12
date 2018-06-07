@@ -93,7 +93,7 @@ function AI.prepareForEnemyTurns()
 	  return
    end
    AI.prepareCurrentSlug()
-   framedelay = 1000//3
+   framedelay = 1000 // 3
    static.framedelay(framedelay)
 end
 
