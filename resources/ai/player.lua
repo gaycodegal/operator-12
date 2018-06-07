@@ -64,11 +64,13 @@ function Player.move(x, y)
    if Player.moves > 0 then
 	  if Player.slug:move(x,y) then
 		 Player.moves = Player.moves - 1
-		 Player.slug:destroyOverlay()
-		 Player.slug:movementOverlay(Player.moves)
 	  end
    end
+   Player.slug:destroyOverlay()
+   Player.slug:movementOverlay(Player.moves)
    if Player.moves <= 0 then
+	  Player.slug:destroyOverlay()
+	  Player.slug:attackOverlay(Player.slug.stats.range)
 	  active = Player.attack
    end
 end

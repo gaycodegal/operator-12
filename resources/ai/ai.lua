@@ -106,6 +106,8 @@ function AI.move()
    AI.slug:destroyOverlay()
    AI.slug:movementOverlay(AI.moves)
    if AI.moves <= 0 then
+	  AI.slug:destroyOverlay()
+	  AI.slug:attackOverlay(AI.slug.stats.range)
 	  AI.state = AI.attack
    end
 end

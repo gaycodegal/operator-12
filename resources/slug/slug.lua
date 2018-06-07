@@ -57,6 +57,19 @@ function Slug.movementOverlay(self, range)
    self.overlay = diamond
 end
 
+function Slug.attackOverlay(self, range)
+   local diamond = self:listDiamond2(range)
+   local x, y
+   local atk = overlay.named.attack
+   for i = 1, #diamond do
+	  if diamond[i] then
+		 x,y = Map.basePosition(diamond[i][1], diamond[i][2])
+		 diamond[i] = Sprite.new(atk.tex, x, y, tilew, tileh, atk.x, atk.y)
+	  end
+   end
+   self.overlay = diamond
+end
+
 function Slug.destroyOverlay(self)
    if self.overlay then
 	  for i,v in ipairs(self.overlay) do
@@ -77,6 +90,31 @@ function Slug.drawOverlay(self)
 		 end
 	  end
    end
+end
+
+function Slug.listDiamond2(self, size)
+   -- >v, <v,<^,>^
+   local deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
+   local j = 1
+   local hpos = self.head.pos
+   local pos = {0,0}--
+   local lst = {}
+   for ring = 1,size do
+	  pos[2] = pos[2] - 1
+	  for t,d in ipairs(deltas) do
+		 for i=1,ring do
+			if map.map[map:indexOf(pos[1]+hpos[1], pos[2]+hpos[2])] then
+			   lst[j] = {pos[1], pos[2]}
+			else
+			   lst[j] = false
+			end
+			pos[1] = pos[1] + d[1]
+			pos[2] = pos[2] + d[2]
+			j = j + 1
+		 end
+	  end
+   end
+   return lst
 end
 
 function Slug.listDiamond(self, size)
