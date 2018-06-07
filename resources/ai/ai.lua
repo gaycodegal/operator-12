@@ -37,8 +37,12 @@ function AI.prepareCurrentSlug()
    AI.target = AI.sortDist(all, head.pos)[1]
    AI.tpos = AI.target.pos
    AI.moves = slug.stats.moves
-   AI.state = AI.move
    AI.slug:movementOverlay(AI.moves)
+   AI.state = AI.delay
+end
+
+function AI.delay()
+   AI.state = AI.move
 end
 
 function AI.returnControl()
@@ -58,6 +62,9 @@ function AI.returnControl()
    AI.oldUpdate = nil
    active = AI.oldActive
    AI.oldActive = nil
+   framedelay = AI.oldDelay
+   static.framedelay(framedelay)
+   AI.oldDelay = nil
    Player.prepareForTurn()
 end
 
@@ -75,6 +82,7 @@ function AI.prepareForEnemyTurns()
 	  end
    end
    AI.neslugs = j -- number of enemies to go.
+   AI.oldDelay = framedelay
    AI.oldUpdate = Update
    Update = AI.Update
    AI.oldActive = active
@@ -85,6 +93,8 @@ function AI.prepareForEnemyTurns()
 	  return
    end
    AI.prepareCurrentSlug()
+   framedelay = 1000//3
+   static.framedelay(framedelay)
 end
 
 function AI.move()
@@ -135,7 +145,6 @@ function AI.Update()
 	  if AI.slug then
 		 AI.slug:drawOverlay()
 	  end
-	  static.wait(1000/2)
    end
 end
 
@@ -154,5 +163,5 @@ function AI.sortDist(all, pos)
    table.sort(all)
    Segment.__lt = nil
    Segment._pos = nil
-   return all
+   return all   
 end

@@ -48,17 +48,18 @@ function KeyDown(key)
 end
 
 function Start()
+   framedelay = 1000//60
    print(Text.charsInLine("test", 100))
    print("hi")
    page = 1
    maps = listdir("maps/")
    updateForPage(page)
+   static.framedelay(framedelay)
 end
 
 function Update()
    --Update = static.quit
    Button.drawAll()
-   static.wait(1000/60)
 end
 
 function End()

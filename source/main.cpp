@@ -52,6 +52,7 @@ int end() {
 }
 
 bool quit = false;
+int framedelay = 1000 / 60;
 
 void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
   int x, y;
@@ -143,6 +144,7 @@ int main(int argc, char *argv[]) {
         callLuaVoid(L, "Update");
       }
       SDL_RenderPresent(globalRenderer);
+      SDL_Delay(framedelay);
     }
   }
   if (globalTypeExists(L, LUA_TFUNCTION, "End"))

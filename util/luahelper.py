@@ -22,7 +22,7 @@ lua_pop(L, 1);
 """ % nret)
     return "".join(built)
 
-metabuilt = ["static const struct luaL_Reg %smeta[] = {" % gname]
+metabuilt = ["static const struct luaL_Reg %smeta[] = {\n" % gname]
 
 v = []
 i = 1

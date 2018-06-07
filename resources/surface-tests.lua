@@ -19,6 +19,7 @@ function Start()
    ts = {t, t2}
    Surface.destroy(s2)
    Surface.destroy(s)
+   static.framedelay(1000//30)
 end
 
 function Update()
@@ -26,7 +27,6 @@ function Update()
    for i, spr in ipairs(sprs) do
 	  spr:draw(0,h * (i - 1))
    end
-   static.wait(1000/30)
 end
 
 function End()

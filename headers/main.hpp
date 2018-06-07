@@ -34,4 +34,5 @@ extern SDL_Renderer *globalRenderer;
 extern TTF_Font *gFont;
 
 extern bool quit;
+extern int framedelay;
 #endif
