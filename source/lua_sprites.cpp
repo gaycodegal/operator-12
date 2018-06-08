@@ -1,6 +1,23 @@
 #include "lua_sprites.hpp"
 
-static int l_free_texture(lua_State *L) {
+static int l_texture_new(lua_State *L) {
+  // printLuaStack(L, "new_tex");
+  char *path;
+  int w, h;
+  if (!lua_isstring(L, -1)) {
+    lua_pop(L, 1);
+    lua_pushnil(L);
+    return 1;
+  }
+  path = (char *)lua_tostring(L, -1);
+  lua_pop(L, 1);
+  lua_pushlightuserdata(L, (void *)loadTexture(path, w, h));
+  lua_pushnumber(L, w);
+  lua_pushnumber(L, h);
+  return 3;
+}
+
+static int l_texture_destroy(lua_State *L) {
   SDL_Texture *tex;
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -11,6 +28,190 @@ static int l_free_texture(lua_State *L) {
   SDL_DestroyTexture(tex);
   return 0;
 }
+
+static int l_texture_newTarget(lua_State *L) {
+  int width;
+  int height;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 2);
+    return 0;
+  }
+  height = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  width = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+
+  Uint32 pixformat = SDL_PIXELFORMAT_RGBA8888;
+  SDL_Texture *texture = SDL_CreateTexture(
+      globalRenderer, pixformat, SDL_TEXTUREACCESS_TARGET, width, height);
+  lua_pushlightuserdata(L, (void *)texture);
+  return 1;
+}
+
+static int l_texture_setRGBMask(lua_State *L) {
+  SDL_Texture *texture;
+  Uint8 r;
+  Uint8 g;
+  Uint8 b;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 4);
+    return 0;
+  }
+  b = (Uint8)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 3);
+    return 0;
+  }
+  g = (Uint8)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 2);
+    return 0;
+  }
+  r = (Uint8)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_islightuserdata(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  texture = (SDL_Texture *)lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  SDL_SetTextureColorMod(texture, r, g, b);
+  return 0;
+}
+
+static int l_texture_setAMask(lua_State *L) {
+  SDL_Texture *texture;
+  Uint8 a;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 2);
+    return 0;
+  }
+  a = (Uint8)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_islightuserdata(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  texture = (SDL_Texture *)lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  if (SDL_SetTextureAlphaMod(texture, a) < 0) {
+    printf("Alpha Mod Err %s\n", SDL_GetError());
+  }
+  return 0;
+}
+
+static int l_texture_renderCopy(lua_State *L) {
+  SDL_Texture *texture;
+  int sx;
+  int sy;
+  int sw;
+  int sh;
+  int dx;
+  int dy;
+  int dw;
+  int dh;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 9);
+    return 0;
+  }
+  dh = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 8);
+    return 0;
+  }
+  dw = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 7);
+    return 0;
+  }
+  dy = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 6);
+    return 0;
+  }
+  dx = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 5);
+    return 0;
+  }
+  sh = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 4);
+    return 0;
+  }
+  sw = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 3);
+    return 0;
+  }
+  sy = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 2);
+    return 0;
+  }
+  sx = (int)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_islightuserdata(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  texture = (SDL_Texture *)lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  SDL_Rect dest;
+  dest.x = dx;
+  dest.y = dy;
+  dest.w = dw;
+  dest.h = dh;
+  SDL_Rect source;
+  source.x = sx;
+  source.y = sy;
+  source.w = sw;
+  source.h = sh;
+  SDL_RenderCopy(globalRenderer, texture, &source, &dest);
+  return 0;
+}
+
+static int l_texture_blendmode(lua_State *L) {
+  SDL_Texture *texture;
+  SDL_BlendMode mode;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 2);
+    return 0;
+  }
+  mode = (SDL_BlendMode)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  if (!lua_islightuserdata(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  texture = (SDL_Texture *)lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  SDL_SetTextureBlendMode(texture, mode);
+  return 0;
+}
+
+static const struct luaL_Reg texture_meta[] = {
+    {"new", l_texture_new},
+    {"destroy", l_texture_destroy},
+    {"newTarget", l_texture_newTarget},
+    {"setRGBMask", l_texture_setRGBMask},
+    {"setAMask", l_texture_setAMask},
+    {"renderCopy", l_texture_renderCopy},
+    {"blendmode", l_texture_blendmode},
+    {NULL, NULL}};
 
 static int l_draw_sprite(lua_State *L) {
   Sprite *s;
@@ -51,21 +252,9 @@ static int l_free_sprite(lua_State *L) {
   return 0;
 }
 
-static int l_new_texture(lua_State *L) {
-  // printLuaStack(L, "new_tex");
-  char *path;
-  int w, h;
-  if (!lua_isstring(L, -1)) {
-    lua_pop(L, 1);
-    lua_pushnil(L);
-    return 1;
-  }
-  path = (char *)lua_tostring(L, -1);
-  lua_pop(L, 1);
-  lua_pushlightuserdata(L, (void *)loadTexture(path, w, h));
-  lua_pushnumber(L, w);
-  lua_pushnumber(L, h);
-  return 3;
+static int l_static_quit(lua_State *L) {
+  quit = true;
+  return 0;
 }
 
 static int l_static_wait(lua_State *L) {
@@ -94,6 +283,56 @@ static int l_static_framedelay(lua_State *L) {
   framedelay = t;
   return 0;
 }
+
+static int l_static_setRenderTarget(lua_State *L) {
+  SDL_Texture *texture;
+  if (!lua_islightuserdata(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  texture = (SDL_Texture *)lua_touserdata(L, -1);
+  lua_pop(L, 1);
+  SDL_SetRenderTarget(globalRenderer, texture);
+  return 0;
+}
+
+static int l_static_unsetRenderTarget(lua_State *L) {
+  SDL_SetRenderTarget(globalRenderer, NULL);
+  return 0;
+}
+
+static int l_static_renderClear(lua_State *L) {
+  SDL_SetRenderDrawColor(globalRenderer, 0x00, 0x00, 0x00, 0x00);
+  SDL_Rect rect;
+  rect.x = 0;
+  rect.y = 0;
+  rect.w = SCREEN_WIDTH;
+  rect.h = SCREEN_HEIGHT;
+  SDL_RenderFillRect(globalRenderer, &rect);
+  return 0;
+}
+
+static int l_static_renderBlendmode(lua_State *L) {
+  SDL_BlendMode mode;
+  if (!lua_isnumber(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  mode = (SDL_BlendMode)lua_tonumber(L, -1);
+  lua_pop(L, 1);
+  SDL_SetRenderDrawBlendMode(globalRenderer, mode);
+  return 0;
+}
+
+static const struct luaL_Reg static_meta[] = {
+    {"quit", l_static_quit},
+    {"wait", l_static_wait},
+    {"framedelay", l_static_framedelay},
+    {"setRenderTarget", l_static_setRenderTarget},
+    {"unsetRenderTarget", l_static_unsetRenderTarget},
+    {"renderClear", l_static_renderClear},
+    {"renderBlendmode", l_static_renderBlendmode},
+    {NULL, NULL}};
 
 static int l_move_sprite(lua_State *L) {
   // printLuaStack(L, "move_sprite");
@@ -145,11 +384,6 @@ static int l_size_sprite(lua_State *L) {
   lua_pop(L, 1);
   s->size(w, h);
   return 1;
-}
-
-static int l_quit(lua_State *L) {
-  quit = true;
-  return 0;
 }
 
 static int l_new_sprite(lua_State *L) {
@@ -636,17 +870,8 @@ static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
                                              {"__index", l_meta_indexer},
                                              {NULL, NULL}};
 
-static const struct luaL_Reg texturemeta[] = {
-    {"new", l_new_texture}, {"destroy", l_free_texture}, {NULL, NULL}};
-
-static const struct luaL_Reg staticmeta[] = {
-    {"framedelay", l_static_framedelay},
-    {"wait", l_static_wait},
-    {"quit", l_quit},
-    {NULL, NULL}};
-
 static const struct luaClassList game[] = {
-    {"Texture", texturemeta},  {"Sprite", spritemeta}, {"static", staticmeta},
+    {"Texture", texture_meta}, {"Sprite", spritemeta}, {"static", static_meta},
     {"Surface", surface_meta}, {"TTF", ttf_meta},      {NULL, NULL}};
 
 struct luaConstInt {
