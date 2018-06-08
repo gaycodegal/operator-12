@@ -1,0 +1,36 @@
+"texture_"
+"new"
+["source"]
+["char *"]
+["string"]
+1
+"destroy"
+["texture"]
+["SDL_Texture *"]
+["lightuserdata"]
+0
+"newTarget"
+["width", "height"]
+["int", "int"]
+["number", "number"]
+1
+"setRGBMask"
+["texture", "r", "g", "b"]
+["SDL_Texture *", "Uint8", "Uint8", "Uint8"]
+["lightuserdata", "number", "number", "number"]
+0
+"setAMask"
+["texture", "a"]
+["SDL_Texture *", "Uint8"]
+["lightuserdata", "number"]
+0
+"renderCopy"
+["texture", "sx", "sy", "sw", "sh", "dx", "dy", "dw", "dh"]
+["SDL_Texture *", "int", "int", "int", "int", "int", "int", "int", "int"]
+["lightuserdata", "number", "number", "number", "number", "number", "number", "number", "number"]
+0
+"blendmode"
+["texture", "mode"]
+["SDL_Texture *", "SDL_BlendMode"]
+["lightuserdata", "number"]
+0

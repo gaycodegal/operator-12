@@ -108,7 +108,17 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- doesn't create an object (userdata), only a pointer (lightuserdata)
 	- returns texture, width, height
 - destroy(texture)
-	- returns void
+	- returns 0
+- newTarget(width,height)
+    - returns 1
+- setRGBMask(texture,r,g,b)
+    - returns 0
+- setAMask(texture,a)
+    - returns 0
+- renderCopy(texture,sx,sy,sw,sh,dx,dy,dw,dh)
+    - returns 0
+- blendmode(texture,mode)
+    - returns 0
 
 
 ### Surface
@@ -149,6 +159,14 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- wait `time` ms immediately
 - static.framedelay(time)
 	- wait `time` ms after screen is displayed
+- static.setRenderTarget(texture)
+    - returns 0
+- static.unsetRenderTarget()
+    - returns 0
+- static.renderClear()
+    - returns 0
+- static.renderBlendmode(mode)
+    - returns 0
 
 
 ## Global Constants Exposed to Lua via C++
@@ -168,6 +186,8 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 	- Use arrow keys to navigate the rendered README!
 - Surface
 	- `./main surface-tests`
+- Texture
+	- `./main texture-tests`
 
 
 ## Legal
