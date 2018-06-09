@@ -2,10 +2,6 @@ require("util")
 Tileset = {}
 Tileset.__index = metareplacer(Tileset)
 
-function Tileset.loadlist(tilesets)
-
-end
-
 -- find tile index <dat>
 function Tileset.tilefinder(self, dat)
    local j = 1
@@ -19,8 +15,8 @@ function Tileset.tilefinder(self, dat)
    return j, dat
 end
 
-function Tileset.destroyTilesets(tilesets)
-   for i, v in ipairs(tilesets) do
+function Tileset.destroyTilesets(self)
+   for i, v in ipairs(self) do
 	  Texture.destroy(v.sheet)
    end
 end
@@ -53,10 +49,10 @@ function Tileset.initTile(self, set, dat)
    return tex
 end
 
-function Tileset.loadTilesets(tilesets)
-   tilesets.named = {}
-   setmetatable(tilesets, Tileset)
-   for i, v in ipairs(tilesets) do
+function Tileset.loadTilesets(self)
+   self.named = {}
+   setmetatable(self, Tileset)
+   for i, v in ipairs(self) do
 	  v.w = v.imagewidth // v.tilewidth
 	  v.h = v.imageheight // v.tileheight
 	  if v.tiles[1].properties.color then
@@ -102,7 +98,7 @@ function Tileset.loadTilesets(tilesets)
 	  if v.tiles[1].type and #v.tiles[1].type then
 		 for j, t in ipairs(v.tiles) do
 			if t.type then
-			   tilesets.named[t.type] = overlay:initTile(v, k)
+			   self.named[t.type] = self:initTile(v, k)
 			end
 			k = k + 1
 		 end
