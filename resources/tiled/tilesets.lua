@@ -17,7 +17,12 @@ end
 
 function Tileset.destroyTilesets(self)
    for i, v in ipairs(self) do
-	  Texture.destroy(v.sheet)
+	  if v.surface then
+		 Surface.destroy(v.surface)
+	  end
+	  if v.sheet then
+		 Texture.destroy(v.sheet)
+	  end
    end
 end
 
@@ -44,12 +49,12 @@ function Tileset.initTile(self, set, dat)
    tex.tex = set.sheet
    tex.w = set.tilewidth
    tex.h = set.tileheight
-   tex.x = (dat % set.w) * tex.w
-   tex.y = (dat // set.w) * tex.h
+   tex.x = (dat % set.w) * (tex.w + set.spacing) + set.margin
+   tex.y = (dat // set.w) * (tex.h + set.spacing) + set.margin
    return tex
 end
 
-function Tileset.loadTilesets(self)
+function Tileset.loadSurfaces(self)
    self.named = {}
    setmetatable(self, Tileset)
    for i, v in ipairs(self) do
@@ -62,8 +67,8 @@ function Tileset.loadTilesets(self)
 		 for i, t in ipairs(v.tiles) do
 			local r,g,b,a = parseColor(t.properties.color)
 			if a ~= 0 then
-			   Surface.fill(s,(i % v.w) * v.tilewidth,
-							(i // v.w) * v.tileheight,
+			   Surface.fill(s,((i - 1) % v.w) * v.tilewidth,
+							((i - 1) // v.w) * v.tileheight,
 							v.tilewidth,
 							v.tileheight,
 							r,g,b,a)
@@ -88,13 +93,59 @@ function Tileset.loadTilesets(self)
 			v.imagewidth = w
 			v.imageheight = h
 		 end
-		 v.sheet = Surface.textureFrom(s)
-		 Surface.destroy(s)
+		 v.surface = s
+		 --v.sheet = Surface.textureFrom(s)
+		 --Surface.destroy(s)
 	  else
-		 local t, w, h = Texture.new("images/" .. v.image)
-		 v.sheet = t
+		 v.surface = Surface.new("images/" .. v.image)
+		 --v.sheet = t
 	  end
-	  local k = 0
+   end
+end
+
+function Tileset.colorBridge(self)
+   local sep = map.tilesep
+   for i, v in ipairs(self) do
+	  if v.tiles[1].properties.color then
+		 v.spacing = sep
+		 v.margin = sep
+		 local w = v.w + 1
+		 local h = v.h + 1
+		 local s = Surface.newBlank(v.imagewidth + sep * w, v.imageheight + sep * h)
+		 Surface.blendmode(s, BLENDMODE_BLEND)
+		 for i, t in ipairs(v.tiles) do
+			local r,g,b,a = parseColor(t.properties.color)
+			if a ~= 0 then
+			   local x = ((i - 1) % v.w) * (v.tilewidth + sep) + sep
+			   local y = ((i - 1) // v.w) * (v.tileheight + sep) + sep
+			   local ox = ((i - 1) % v.w) * (v.tilewidth)
+			   local oy = ((i - 1) // v.w) * (v.tileheight)
+			   local sep2 = sep // 2
+			   local sep4 = 4
+			   Surface.fill(s, x - sep2, y + sep4, sep2, v.tileheight - sep4*2,r,g,b,a)
+			   Surface.fill(s, x + sep4, y - sep2, v.tilewidth - sep4*2, sep2,r,g,b,a)
+			   Surface.fill(s, x + v.tilewidth, y + sep4, sep2, v.tileheight - sep4*2,r,g,b,a)
+			   Surface.fill(s, x + sep4, y + v.tileheight, v.tilewidth - sep4*2, sep2,r,g,b,a)
+			   Surface.blitScale(s, v.surface, ox, oy, v.tilewidth, v.tileheight, x, y, v.tilewidth, v.tileheight)
+			end
+		 end
+		 Surface.destroy(v.surface)
+		 v.surface = s
+	  end
+   end
+end
+
+function Tileset.asTextures(self)
+   for i, v in ipairs(self) do
+	  v.sheet = Surface.textureFrom(v.surface)
+	  Surface.destroy(v.surface)
+	  v.surface = nil
+   end   
+end
+
+function Tileset.loadTilesets(self)
+   local k = 0
+   for i, v in ipairs(self) do
 	  if v.tiles[1].type and #v.tiles[1].type then
 		 for j, t in ipairs(v.tiles) do
 			if t.type then
@@ -105,3 +156,4 @@ function Tileset.loadTilesets(self)
 	  end
    end
 end
+

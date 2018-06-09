@@ -14,7 +14,7 @@ function Slug.new (self)
    self.stats = Slug.defs[self.sprites].stats
    self.sprites = {}
    for i, spr in ipairs(sprites) do
-	  self.sprites[i] = Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
+	  self.sprites[i] = sprites[i]--Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
    end
    self.size = #self.segs
    local prev = nil
@@ -23,7 +23,7 @@ function Slug.new (self)
 	  if i == 1 then
 		 sprite = self.sprites[1]
 	  end
-	  self.segs[i] = Segment.new(prev, nil, sprite, self.segs[i], self)
+	  self.segs[i] = Segment.new(prev, nil, sprite, self.segs[i], self, {0,0,0,0})
 	  prev = self.segs[i]
    end
    self.head = self.segs[1]
@@ -211,7 +211,10 @@ function Slug.load ()
    local data = Slug.defs
    local tilesets = data.tilesets
    local slugdefs = data.slugs
-   Tileset.loadTilesets(tilesets)
+   Tileset.loadSurfaces(tilesets)
+   tilesets:colorBridge()
+   tilesets:asTextures()
+   tilesets:loadTilesets()
    for name, v in pairs(slugdefs) do
 	  for i, tile in ipairs(v.tiles) do
 		 local j, dat = tilesets:tilefinder(tile)
@@ -234,6 +237,11 @@ end
 function Slug.removeFromMap(self)
    local seg = self.head
    while seg do
+	  seg:unsetMapConnections()
+	  seg = seg.n
+   end
+   seg = self.head
+   while seg do
 	  seg:removeFromMap()
 	  seg = seg.n
    end
@@ -246,6 +254,11 @@ function Slug.addToMap(self)
 	  seg:addToMap()
 	  seg = seg.n
    end
+   seg = self.head
+   while seg do
+	  seg:setMapConnections()
+	  seg = seg.n
+   end   
 end
 
 -- case off map
@@ -274,8 +287,13 @@ function Slug.move(self, x, y)
 	  return false
    end
 
-   head:removeFromMap()
    local tail = self.tail
+   head:unsetMapConnections()
+   tail:unsetMapConnections()
+   if mid and mid ~= tail then
+	  mid:unsetMapConnections()
+   end
+   head:removeFromMap()
    tail:removeFromMap()
    if mid and mid ~= tail then
 	  mid:removeFromMap()
@@ -300,6 +318,11 @@ function Slug.move(self, x, y)
    head.pos[1] = x
    head.pos[2] = y
    head:addToMap()
+   if mid and mid ~= tail then
+	  mid:setMapConnections()
+   end
+   head:setMapConnections()
+   tail:setMapConnections()
    return true
 end
 
@@ -309,6 +332,7 @@ function Slug.damage(self, amount)
    for i = 1,amount do
 	  self.size = self.size - 1
 	  local t = self.tail
+	  t:unsetMapConnections()
 	  t:removeFromMap()
 	  self.tail = t.p
 	  t:unlink()
@@ -321,9 +345,6 @@ end
 -- deallocate slug
 function Slug.destroy (self)
    self:destroyOverlay()
-   for i, spr in ipairs(self.sprites) do
-	  spr:destroy()
-   end
    if self.name and slugs[self.name] then
 	  slugs[self.name] = nil
    end

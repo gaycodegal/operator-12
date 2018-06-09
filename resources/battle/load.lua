@@ -8,11 +8,13 @@ require("tiled/tilesets")
 function Start(name)
    framedelay = 1000//60
    if name == nil then
-	  name = "spawner-test.lua"
+	  name = "test.lua"
    end
    map = Map.new(dofile("maps/"..name))
    overlay = {dofile("battle/overlay.lua")}
-   Tileset.loadTilesets(overlay)
+   Tileset.loadSurfaces(overlay)
+   overlay:asTextures()
+   overlay:loadTilesets()
    
    Player.prepareForTurn()
    static.framedelay(framedelay)
