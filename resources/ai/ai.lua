@@ -1,4 +1,5 @@
 require("util")
+require("algorithms/Heap")
 AI = {}
 
 AI.__index = metareplacer(AI)
@@ -39,6 +40,8 @@ function AI.prepareCurrentSlug()
    AI.moves = slug.stats.moves
    AI.slug:movementOverlay(AI.moves)
    AI.state = AI.delay
+   AI.path = AI.pathTo(AI.tpos[1], AI.tpos[2])
+   AI.pathi = #AI.path - 1
 end
 
 function AI.delay()
@@ -66,6 +69,76 @@ function AI.returnControl()
    static.framedelay(framedelay)
    AI.oldDelay = nil
    Player.prepareForTurn()
+end
+
+local function scoreDist(x,y)
+   return x[4] > y[4]
+end
+
+function AI.pathTo(x,y)
+   local H = AI.manhatten
+   local closed = Heap.new(scoreDist)
+   local open = Heap.new(scoreDist)
+   local swidth = map.width
+   local sheight = map.height
+   local visited = {}
+   local tmp,cur,ind,owner,old,g
+   local hpos = AI.slug.head.pos
+   local goal = {x,y}
+   local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
+
+   tmp = H(hpos, goal)
+   open:insert({hpos[1],hpos[2],0,tmp, tmp})
+   --print("start", hpos[1], hpos[2])
+   --print("goal", goal[1], goal[2])
+   repeat
+	  cur = open:pop()
+	  closed:insert(cur)
+	  --print("seeing", cur[1], cur[2], ":", cur[3])
+	  if cur[1] == goal[1] and cur[2] == goal[2] then
+		 break -- found
+	  end
+	  
+	  for i, d in ipairs(deltas) do
+		 g = cur[3] + 1
+		 tmp = {cur[1] + d[1], cur[2] + d[2], g}
+		 if tmp[1] >= 0 and tmp[1] < swidth and tmp[2] >= 0 and tmp[2] < sheight then
+			ind = map:indexOf(tmp[1], tmp[2])
+			if visited[ind] then
+			   owner = visited[ind][1]
+			   old = visited[ind][2]
+			else
+			   owner = nil
+			   old = nil
+			end
+			if map.map[ind] and (not map.objects[ind] or map.objects[ind].slug == AI.slug) and owner ~= closed then
+			   if owner ~= open then
+				  tmp[4] = H(tmp, goal)
+				  tmp[5] = tmp[4] + tmp[3]
+				  tmp[6] = cur
+				  open:insert(tmp)
+				  visited[ind] = {open, tmp}
+			   elseif old[4] + g < old[5] then
+				  old[6] = cur-- test if using the current G score make the aSquare F score lower, if yes update the parent because it means its a better path
+			   end
+			end
+		 end
+	  end
+	  cur = nil
+   until #open == 0
+   if cur == nil then
+	  --path not found
+	  cur = closed:pop()
+   end
+   local tmp = {}
+   i = 1
+   while cur do
+	  --print(cur[1], cur[2], cur[3])
+	  tmp[i] = {cur[1], cur[2]}
+	  cur = cur[6]
+	  i = i + 1
+   end
+   return tmp
 end
 
 function AI.prepareForEnemyTurns()
@@ -99,7 +172,7 @@ end
 
 function AI.move()
    if AI.moves > 0 then
-	  local dx = math.min(math.max(AI.tpos[1]-AI.pos[1], -1), 1)
+	  --[=[local dx = math.min(math.max(AI.tpos[1]-AI.pos[1], -1), 1)
 	  local dy = math.min(math.max(AI.tpos[2]-AI.pos[2], -1), 1)
 	  local indx = map:indexOf(AI.pos[1] + dx,AI.pos[2])
 	  local indy = map:indexOf(AI.pos[1],AI.pos[2] + dy)
@@ -111,7 +184,14 @@ function AI.move()
 		 AI.moves = AI.moves - 1
 	  else
 		 AI.moves = 0
-	  end	 
+		 end]=]
+	  if AI.path[AI.pathi] then
+		 AI.slug:move(AI.path[AI.pathi][1],AI.path[AI.pathi][2])
+		 AI.pathi = AI.pathi - 1
+		 AI.moves = AI.moves - 1
+	  else
+		 AI.moves = 0
+	  end
    end
    AI.slug:destroyOverlay()
    AI.slug:movementOverlay(AI.moves)
