@@ -237,6 +237,11 @@ end
 function Slug.removeFromMap(self)
    local seg = self.head
    while seg do
+	  seg:unsetMapConnections()
+	  seg = seg.n
+   end
+   seg = self.head
+   while seg do
 	  seg:removeFromMap()
 	  seg = seg.n
    end
@@ -249,6 +254,11 @@ function Slug.addToMap(self)
 	  seg:addToMap()
 	  seg = seg.n
    end
+   seg = self.head
+   while seg do
+	  seg:setMapConnections()
+	  seg = seg.n
+   end   
 end
 
 -- case off map
@@ -277,24 +287,25 @@ function Slug.move(self, x, y)
 	  return false
    end
 
-   local headn = head.n
    local tail = self.tail
-   local tailp = tail.p
+   head:unsetMapConnections()
+   tail:unsetMapConnections()
+   if mid and mid ~= tail then
+	  mid:unsetMapConnections()
+   end
    head:removeFromMap()
-   head:unlink()
    tail:removeFromMap()
-   tail:unlink()
    if mid and mid ~= tail then
 	  mid:removeFromMap()
-	  mid:unlink()
 	  local t = mid.pos
 	  mid.pos = tail.pos
 	  tail.pos = t
 	  mid:addToMap()
-	  mid:insert(tailp, tail)
+	  mid:unlink()
+	  mid:insert(tail.p, tail)
    end
    if tail ~= head then
-	  local prev = tailp
+	  local prev = tail.p
 	  tail:unlink()	  
 	  tail:insert(head, head.n)
 	  tail.pos[1] = head.pos[1]
@@ -307,6 +318,11 @@ function Slug.move(self, x, y)
    head.pos[1] = x
    head.pos[2] = y
    head:addToMap()
+   if mid and mid ~= tail then
+	  mid:setMapConnections()
+   end
+   head:setMapConnections()
+   tail:setMapConnections()
    return true
 end
 
@@ -316,6 +332,7 @@ function Slug.damage(self, amount)
    for i = 1,amount do
 	  self.size = self.size - 1
 	  local t = self.tail
+	  t:unsetMapConnections()
 	  t:removeFromMap()
 	  self.tail = t.p
 	  t:unlink()
