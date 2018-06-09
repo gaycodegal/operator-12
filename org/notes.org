@@ -27,7 +27,10 @@
 	decrease x/y distance
 *** A Star
 	Paths to player
-** Level Goals
+*** TODO Heal Player as Move
+** TODO Level Goals
+   Level Goals that you have to capture while enemies are still alive.
+   Perhaps some story state events can be triggered on victory type. Obviously at the very least victories will add credits and unlock connected nodes.a
 *** Information
 	We want information [Prisoner refernce]
 	Perhaps it will lend some competitive advantage?
@@ -56,7 +59,7 @@ I normally fly solo only because when I started freshman year of HS there wasn't
 *** Quantum
 kind of gimmicky - sounds cool at first, but would just be odd.
 
-*** Concurrency
+*** Concurrency @V2
 good idea with critical section, adds another game mode.
 
 *** Visual Style
@@ -65,7 +68,7 @@ I initially was going to do pixels, because that's one of the art styles I'm bes
 *** Zones/Making lower programs worth it
 what if each program has an associated file-size and the lower level versions are smaller often? zones with bad tech can't support more complex programs.
 
-*** Skinning/Themes
+*** Skinning/Themes @V2
 My code already supports map specific tilemaps, and slug sprites are also loaded from tilemap files, so it's easy to switch out - one of the reasons I used Lua was for easy data read in, and supporting Tiled means mods are easy. (That's another reason to use a scripting language, as it permits custom AI and game-modes).
 
 *** Microcosm/Macrocosm
@@ -74,8 +77,15 @@ Agreed, Nightfall lacked inspiration, but was still great. I intend to improve o
 *** Penalties
 Good idea. There can be penalties and also the ability to save, so you can save-scum if you don't want to face them but they make the game more fun. I think 'programs that die in battle are dead' would be a good thing. It would give that 'leave' button more potential - if you withdraw from battle, you can save credits/programs that haven't been killed yet.
 
-*** Proc-Gen Maps & Content
+*** Proc-Gen Maps & Content @V2
 My do I love proc-gen, but this definitely sounds like a reach goal for a v2 game.
+** TODO Dialogue
+   Generic dialogue nightfall style
+*** Dialogue Trees?
+	Perhaps have named dialogue events that options within the current dialogue can take you to?
+** TODO Player State
+   Slugs owned, credits, story state variables
+   Save & Load
 * Storyline
 ** Whose Side?
    Initially you start off on the Operator side. You are number 12. You use they/them pronouns. You are a person.
@@ -128,12 +138,16 @@ and of course there's also the full defection ending where you take down your or
 *** Become #6
 	Resetting #6 is a possibility after resetting #7
 	Game ends - #2 declares a new public enemy - *YOU*
-
 	
 * Drawing Commands
 ** Map
    A map is the default drawing structure. It is scrollable, and contains objects by coordinates. It figures out what needs to be drawn and draws it.
 *** Map Sprite
 	Drawn to a map. Can be geometrical shape or png. Can fade in and out, but that's about it.
-** Dialogue
-   Generic dialogue nightfall style
+** TODO Glitch Screen
+   1. Swap rendering context to a new Texture,
+   2. Render screen
+   3. Unset rendering
+   4. Render texture to screen
+   5. Take sections of the texture, shift their RGBA and render back to the screen
+   

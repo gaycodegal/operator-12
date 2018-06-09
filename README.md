@@ -4,7 +4,7 @@
 
 Operator 12 is going to be my answer to why aren't there more puzzle/story driven games like [Nightfall](http://biomediaproject.com/bmp/files/LEGO/gms/online/Spybotics/TheNightfallIncident/). Hopefully will include a good story, some nice audio & visuals, and some fun puzzles. Planned as a series, with a smaller inital game to test the waters and then a larger v2 game to improve upon the story and gameplay of the first.
 
-This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathing, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly, and this time it will be open-source as well. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
+This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathing, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
 
 The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for your side of the battle. You are #12, you report to #2. There will be more story behind the names as you get to know your organization.
 
@@ -28,9 +28,10 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 	- Linked list node part of the slug
 - Slug/Slug Class
 	- the basic entity of the game
-	- will essentially be a linked list moving about the board
+	- essentially a linked list moving about the game-board
 	- can move about the board if clicked one space away from 'head'
 	- can damage other slugs and kill them
+	- Enemy slugs controlled by computer AI
 - Slug/Slugdefs
 	- holds info on what sprites are associated with which slug-type
 - Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
@@ -44,9 +45,9 @@ You can check the [org](./org) folder for more information about planned content
 ## About Code
 
 - Started from my sdl2-lua project as a base.
-- Many mocks will appear first in lua then become C++
-- AIs will be done within lua, although time consuming algorithms like Quad-Tree search and pathing will be in C++
-- Still very much a work in progress.
+- C++ provides access to SDL2 rendering tools
+- Most of the Code base is Lua, which creates the game.
+	- Project runs quickly on my 2013 chromebook, so it'll probably run fine on mobile.
 
 
 ## Installation
@@ -60,7 +61,7 @@ Custom Libraries you'll need
 - Lua 5.3.4
   - Installation instructions available at [www.lua.org](https://www.lua.org/download.html)
   - Should be located in ~/lua
-  - You don't need command line lua
+  - You don't need command-line lua
 
 And Obviously you'll need `g++` to compile, and `make` to use my makefile.
 
@@ -80,6 +81,7 @@ You can also specify which lua file to run as the main. For instance `./main sur
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
+
 
 ## C++ / Lua Methods
 
@@ -193,4 +195,4 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 ## Legal
 
 [MIT license](./LICENSE) for the project.
-Also the MOZART NBP font is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
+Also the MOZART NBP font (by Nate Halley) is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
