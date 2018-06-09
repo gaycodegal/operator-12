@@ -14,7 +14,7 @@ function Slug.new (self)
    self.stats = Slug.defs[self.sprites].stats
    self.sprites = {}
    for i, spr in ipairs(sprites) do
-	  self.sprites[i] = Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
+	  self.sprites[i] = sprites[i]--Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
    end
    self.size = #self.segs
    local prev = nil
@@ -23,7 +23,7 @@ function Slug.new (self)
 	  if i == 1 then
 		 sprite = self.sprites[1]
 	  end
-	  self.segs[i] = Segment.new(prev, nil, sprite, self.segs[i], self)
+	  self.segs[i] = Segment.new(prev, nil, sprite, self.segs[i], self, {0,0,0,0})
 	  prev = self.segs[i]
    end
    self.head = self.segs[1]
@@ -211,7 +211,10 @@ function Slug.load ()
    local data = Slug.defs
    local tilesets = data.tilesets
    local slugdefs = data.slugs
-   Tileset.loadTilesets(tilesets)
+   Tileset.loadSurfaces(tilesets)
+   tilesets:colorBridge()
+   tilesets:asTextures()
+   tilesets:loadTilesets()
    for name, v in pairs(slugdefs) do
 	  for i, tile in ipairs(v.tiles) do
 		 local j, dat = tilesets:tilefinder(tile)
@@ -274,20 +277,24 @@ function Slug.move(self, x, y)
 	  return false
    end
 
-   head:removeFromMap()
+   local headn = head.n
    local tail = self.tail
+   local tailp = tail.p
+   head:removeFromMap()
+   head:unlink()
    tail:removeFromMap()
+   tail:unlink()
    if mid and mid ~= tail then
 	  mid:removeFromMap()
+	  mid:unlink()
 	  local t = mid.pos
 	  mid.pos = tail.pos
 	  tail.pos = t
 	  mid:addToMap()
-	  mid:unlink()
-	  mid:insert(tail.p, tail)
+	  mid:insert(tailp, tail)
    end
    if tail ~= head then
-	  local prev = tail.p
+	  local prev = tailp
 	  tail:unlink()	  
 	  tail:insert(head, head.n)
 	  tail.pos[1] = head.pos[1]
@@ -321,9 +328,6 @@ end
 -- deallocate slug
 function Slug.destroy (self)
    self:destroyOverlay()
-   for i, spr in ipairs(self.sprites) do
-	  spr:destroy()
-   end
    if self.name and slugs[self.name] then
 	  slugs[self.name] = nil
    end
