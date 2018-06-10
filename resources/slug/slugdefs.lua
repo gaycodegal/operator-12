@@ -126,7 +126,8 @@ return {
 		 stats={
 			moves = 5,
 			range = 1,
-			damage = 1
+			damage = 1,
+			maxsize = 5
 		 }
 	  },
 	  test2 = {
@@ -134,7 +135,8 @@ return {
 		 stats={
 			moves = 3,
 			range = 4,
-			damage = 1
+			damage = 1,
+			maxsize = 3
 		 }
 	  },
 	  spawner={
@@ -142,7 +144,8 @@ return {
 		 stats={
 			moves = 0,
 			range = 0,
-			damage = 0
+			damage = 0,
+			maxsize = 0
 		 }
 	  }
 	  
