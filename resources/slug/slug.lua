@@ -288,6 +288,9 @@ function Slug.move(self, x, y)
    end
 
    local tail = self.tail
+   local ntail = nil
+   local tx = tail.pos[1]
+   local ty = tail.pos[2]
    head:unsetMapConnections()
    tail:unsetMapConnections()
    if mid and mid ~= tail then
@@ -304,6 +307,7 @@ function Slug.move(self, x, y)
 	  mid:unlink()
 	  mid:insert(tail.p, tail)
    end
+   
    if tail ~= head then
 	  local prev = tail.p
 	  tail:unlink()	  
@@ -318,6 +322,13 @@ function Slug.move(self, x, y)
    head.pos[1] = x
    head.pos[2] = y
    head:addToMap()
+   if not mid and self.size < self.stats.maxsize then
+	  self.size = self.size + 1
+	  ntail = Segment.new(self.tail, nil, self.sprites[2], {tx,ty}, self, {0,0,0,0})
+	  self.tail = ntail
+	  ntail:addToMap()
+	  ntail:setMapConnections()
+   end
    if mid and mid ~= tail then
 	  mid:setMapConnections()
    end
