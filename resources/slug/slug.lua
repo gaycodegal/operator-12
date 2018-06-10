@@ -17,6 +17,7 @@ function Slug.new (self)
 	  self.sprites[i] = sprites[i]--Sprite.new(spr.tex, 0, 0, tilew, tileh, spr.x, spr.y)
    end
    self.size = #self.segs
+   self.maxsize = self.stats.maxsize
    local prev = nil
    for i = 1,self.size do
 	  local sprite = self.sprites[2]
@@ -322,7 +323,7 @@ function Slug.move(self, x, y)
    head.pos[1] = x
    head.pos[2] = y
    head:addToMap()
-   if not mid and self.size < self.stats.maxsize then
+   if not mid and self.size < self.maxsize then
 	  self.size = self.size + 1
 	  ntail = Segment.new(self.tail, nil, self.sprites[2], {tx,ty}, self, {0,0,0,0})
 	  self.tail = ntail

@@ -27,7 +27,8 @@
 	decrease x/y distance
 *** A Star
 	Paths to player
-*** TODO Heal Player as Move
+*** DONE Heal Player as Move
+	 CLOSED: [2018-06-10 Sun 14:40]
 ** TODO Level Goals
    Level Goals that you have to capture while enemies are still alive.
    Perhaps some story state events can be triggered on victory type. Obviously at the very least victories will add credits and unlock connected nodes.a

@@ -31,6 +31,7 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 	- essentially a linked list moving about the game-board
 	- can move about the board if clicked one space away from 'head'
 	- can damage other slugs and kill them
+	- regen size as they move up to a max size
 	- Enemy slugs controlled by computer AI
 - Slug/Slugdefs
 	- holds info on what sprites are associated with which slug-type
