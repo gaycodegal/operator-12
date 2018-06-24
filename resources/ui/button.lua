@@ -11,10 +11,10 @@ function Button.new (self)
    setmetatable(self, Button)
    local r = self.rect
    local c = self.color
-   local s = Text.textbox(self.text, r[3], r[4], 255,255,255,255)
+   local s, l, h = Text.textbox(self.text, 1, r[3], r[4], 255,255,255,255)
    local s2 = Surface.newBlank(r[3], r[4])
    Surface.fill(s2, 0, 0, r[3], r[4], c[1], c[2], c[3], c[4])
-   Surface.blit(s2, s, 0, 0)
+   Surface.blit(s2, s, 0, (r[4] - h) // 2)
    self.tex = Surface.textureFrom(s2)
    self.spr = Sprite.new(self.tex, r[1], r[2], r[3], r[4], 0, 0) -- sprite
    Surface.destroy(s)

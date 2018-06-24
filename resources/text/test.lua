@@ -52,7 +52,7 @@ function updateForPage(p)
    end
    free()
    page = p
-   local sbox = Text.textbox(texts[page], SCREEN_WIDTH, SCREEN_HEIGHT, 255,255,255,255)
+   local sbox = Text.textbox(texts[page], 0, SCREEN_WIDTH, SCREEN_HEIGHT, 255,255,255,255)
    tex = Surface.textureFrom(sbox)
    spr = Sprite.new(tex, 0,0,SCREEN_WIDTH, SCREEN_HEIGHT,0,0)
    Surface.destroy(sbox)
