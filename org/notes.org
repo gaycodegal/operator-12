@@ -82,6 +82,12 @@ Good idea. There can be penalties and also the ability to save, so you can save-
 My do I love proc-gen, but this definitely sounds like a reach goal for a v2 game.
 ** TODO Dialogue
    Generic dialogue nightfall style
+*** Parse Dialogue From Orgmode File
+*** Follow Normal Same-File
+*** Special Lua-Link
+	link: lua://filename#methodname
+*** Special onload setup?
+*** Conditionals, Variables?
 *** Dialogue Trees?
 	Perhaps have named dialogue events that options within the current dialogue can take you to?
 ** TODO Player State
