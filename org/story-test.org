@@ -1,0 +1,14 @@
+* Story Path 1
+** Room 1
+This is some text that describes the room, it is very descriptive
+[[Room%202][to 2]]
+** Room 2
+Another room woo
+[[Room%201][To first room]]
+[[Room%203][to 3]]
+* Story Path 2
+** Room 3
+All links
+[[Room%201][To 1]]
+[[Room%202][To 2]]
+[[Room%203][Reload]]
