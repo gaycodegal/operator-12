@@ -144,8 +144,8 @@ int main(int argc, char *argv[]) {
         callLuaVoid(L, "Update");
       }
       SDL_RenderPresent(globalRenderer);
-	  if(!quit)
-		SDL_WaitEventTimeout(NULL, framedelay);
+      if (!quit)
+        SDL_WaitEventTimeout(NULL, framedelay);
     }
   }
   if (globalTypeExists(L, LUA_TFUNCTION, "End"))

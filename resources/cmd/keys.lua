@@ -1,4 +1,5 @@
 KEYS = {
+   [KEY_SPACE] = " ",
    [KEY_a] = "a",
    [KEY_b] = "b",
    [KEY_c] = "c",
