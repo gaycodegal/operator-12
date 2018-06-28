@@ -1,1 +1,1 @@
-return {"ai/","battle/","fonts/","images/","listdir.py","load.lua","maps/","slug/","surface-tests.lua","test.lua~","text/","texture-tests.lua","texture-tests.lua~","tiled/","ui/","util.lua"}
+return {"ai/","algorithms/","battle/","cmd/","fonts/","images/","listdir.py","load.lua","maps/","slug/","surface-tests.lua","test.lua~","text/","texture-tests.lua","texture-tests.lua~","tiled/","ui/","util/","util.lua"}
