@@ -1,29 +1,36 @@
 dofile("util.lua")
 require("text/text")
-
+require("cmd/keys")
 function KeyDown(key)
    if key == KEY_ESCAPE then
-	  static.quit()
-   elseif key == KEY_UP then
-	  updateForPage(page - 14)
-   elseif key == KEY_DOWN then
-	  updateForPage(page + 14)
-   elseif key == KEY_LEFT then
-	  updateForPage(page - 14)
-   elseif key == KEY_RIGHT then
-	  updateForPage(page + 14)
+	  return static.quit()
+   elseif key == KEY_LSHIFT or key == KEY_RSHIFT then
+	  shiftHeld = true
+	  return
+   end
+   local sym
+   if shiftHeld then
+	  sym = SHIFT_KEYS[key]
+   else
+	  sym = KEYS[key]
+   end
+   print(sym)
+end
+
+function KeyUp(key)
+   if key == KEY_LSHIFT or key == KEY_RSHIFT then
+	  shiftHeld = false
    end
 end
 
 function Start()
-   
+   shiftHeld = false
 end
 
 function Update()
    --Update = static.quit
-   Button.drawAll()
 end
 
 function End()
-   Button.destroyAll()
+   shiftHeld = false
 end
