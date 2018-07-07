@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
-    callLuaVoid(L, "Start");
+    callLuaVoidArgv(L, "Start", argc - 1, argv+1);
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
   int keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
   int keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");

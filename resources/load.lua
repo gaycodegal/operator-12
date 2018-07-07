@@ -1,7 +1,7 @@
 dofile("util.lua")
 require("text/text")
 require("ui/button")
-
+require("ui/UIElement")
 function LoadFile(self)
    End()
    dofile("battle/load.lua")
@@ -18,17 +18,10 @@ function updateForPage(p)
    else
 	  page = p
    end
-   local spacing = 10
-   local w = (SCREEN_WIDTH - spacing * 5) // 4
-   local h = (SCREEN_HEIGHT - spacing * 5) // 4
    for i = 0,15 do
 	  local name = maps[i+page]
 	  if name then
-		 local x = ((i) % 4)
-		 local y = ((i) // 4)
-		 local rx = spacing*(x +1)+w * x
-		 local ry = spacing * (y+1) + h*y
-		 Button.new({text=name, rect={rx,ry, w,h}, color={0,0,200,255},click=LoadFile})
+		 Button.new({text=name, layout=named[i+1], color={0,0,200,255}, click=LoadFile})
 	  end
    end
 end
@@ -48,9 +41,14 @@ function KeyDown(key)
 end
 
 function Start()
+   local btns = {}
+   scene = {{s="screen",c=btns}}
+   for i = 1,16 do
+	  btns[i] = {n=i,s="button",d={(i-1)%4,(i-1)//4}}
+   end
+   named, scene = UIElement.getNamed(scene, dofile("ui/styles/main-menu.style.lua"))
+   --scene[1]:print()
    framedelay = 1000//60
-   print(Text.charsInLine("test", 100))
-   print("hi")
    page = 1
    maps = listdir("maps/")
    updateForPage(page)
@@ -67,7 +65,6 @@ function End()
 end
 
 function MouseDown(x,y)
-   print(x,y)
    b = Button.which(x,y)
    if b then
 	  b:click(x,y)
