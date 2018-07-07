@@ -17,9 +17,14 @@ int loadLuaFile(lua_State *L, const char *fname);
 int globalTypeExists(lua_State *L, int type, const char *name);
 
 /**
-   calls a lua funciton as if it were a void
+   calls a lua funciton as if it were a void(void)
  */
 void callLuaVoid(lua_State *L, const char *name);
+
+/**
+   calls a lua funciton as if it were a void(int,char**)
+ */
+void callLuaVoidArgv(lua_State *L, const char *name, int argc, char **argv);
 
 /**
    pcall and prints if it messes up

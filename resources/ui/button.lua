@@ -9,6 +9,7 @@ function Button.new (self)
 	  buttons = {}
    end
    setmetatable(self, Button)
+   self.rect = self.layout:rect()
    local r = self.rect
    local c = self.color
    local s, l, h = Text.textbox(self.text, 1, r[3], r[4], 255,255,255,255)
