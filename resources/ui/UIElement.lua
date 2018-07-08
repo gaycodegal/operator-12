@@ -3,17 +3,30 @@ require("util")
 UIElement = {named={}}
 UIElement.__index = metareplacer(UIElement)
 
-function UIElement.getNamed(e,style,childs,parent)
+--[=[
+Creates UIElements
+Calculates their properties when loaded
+@param e Elements list to render
+@param parent parent of current element list (nil is fine)
+@return table of named entities; Array.<UIElement> generated elements
+]=]
+function UIElement.getNamed(e,style,parent)
    UIElement.named = {}
-   local scene = UIElement.fromStatic(e,style,childs,parent)
+   local scene = UIElement.fromStatic(e,style,parent)
    local named = UIElement.named
    UIElement.recalc(scene)
    return named, scene
 end
 
-function UIElement.fromStatic(e,style,childs,parent)
+--[=[
+Creates UIElements
+@param e Elements list to render
+@param parent parent of current element list (nil is fine)
+@return Array.<UIElement> generated elements
+]=]
+function UIElement.fromStatic(e,style,parent)
    local resize
-   local level = childs or {}
+   local level = {}
    local nc
    local t
    for i, v in ipairs(e) do
@@ -24,19 +37,23 @@ function UIElement.fromStatic(e,style,childs,parent)
 		 nc = 0
 	  end
 	  t = UIElement.new(v.d, resize, nc, parent)
-	  level[i] = t
+	  if nc >= 1 then
+		 t.c = UIElement.fromStatic(v.c,style,t)
+	  end
 	  if v.n then
 		 t.n = v.n
 		 UIElement.named[v.n] = t
 	  end
-	  if nc >= 1 then
-		 t.c = {}
-		 UIElement.fromStatic(v.c,style,t.c,t)
-	  end
+	  level[i] = t
    end
    return level
 end
 
+--[=[
+Calculates/recalcs element properties
+and subchildren
+@param e Elements list to operate on
+]=]
 function UIElement.recalc(e)
    for k,v in ipairs(e) do
 	  v:resize()
@@ -46,12 +63,23 @@ function UIElement.recalc(e)
    end
 end
 
+--[=[
+Calculates/recalcs element properties
+@param d Data table
+@param resize onResize function
+@param nchildren number of children
+@param parent of elem
+]=]
 function UIElement.new(d,resize,nchildren,parent)
    local self = {d=d,resize=resize,nc=nchildren,p=parent}
    setmetatable(self, UIElement)
    return self
 end
 
+
+--[=[
+Prints self and children
+]=]
 function UIElement:print()
    print(self.n, self.x, self.y, self.w, self.h)
    if self.c then
@@ -61,6 +89,9 @@ function UIElement:print()
    end
 end
 
+--[=[
+@return {x,y,w,h}
+]=]
 function UIElement:rect()
    return {self.x, self.y, self.w, self.h}
 end
