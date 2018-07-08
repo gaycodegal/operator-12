@@ -9,13 +9,13 @@ screen resizing.
 usage:
 ./main ui/style-writer <input.lua> <output.lua>
 ]=]
-function Start(argc, args)
+function Start(argc, argv)
    if argc < 2 then
 	  print("usage:")
 	  print(argv[1] .. " <input.lua> <output.lua>")
 	  return nil
    end
-   generateStyle(args[3], dofile(args[2]))
+   generateStyle(argv[3], dofile(argv[2]))
    print("done")
 end
 
