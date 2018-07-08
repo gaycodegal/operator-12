@@ -20,3 +20,10 @@ end
 function listdir(path)
    return dofile(path .. ".contents.lua")
 end
+
+function table.copy(t)
+   for k, v in pairs(t) do
+	  rawset(t, k, v)
+   end
+end
+
