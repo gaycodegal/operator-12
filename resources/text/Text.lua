@@ -23,13 +23,54 @@ function Text.charsInLine(text, width)
 	  end
    end
    w = TTF.size(string.sub(text, 1, curi))
-   if w <= width and curi > best then
+   if w <= width and best < curi then
 	  return curi
    end
    return best
 end
 
-function Text.textbox(text, align, w, h, r,g,b,a)
+-- figures out how much text can go on a line
+-- up to width pix long
+function Text.charsInLineRev(text, width)
+   local len = #text
+   local best = 0
+   local mini = 1
+   local maxi = len
+   local curi = len, w
+   local v
+   while mini <= maxi do
+	  curi = (mini + maxi) // 2
+	  v = len - curi
+	  w = TTF.size(string.sub(text, curi, len))
+	  if w < width then
+		 if best < v then
+			best = v
+		 end
+		 maxi = curi - 1
+	  elseif w > width then
+		 mini = curi + 1
+	  else
+		 return v
+	  end
+   end
+   w = TTF.size(string.sub(text, 1, curi))
+   if w <= width and best < v then
+	  return v
+   end
+   return best
+end
+
+function Text.sub(text, n)
+   return string.sub(text, 1, n)
+end
+
+function Text.subRev(text, n)
+   return string.sub(text, n, #text)
+end
+
+function Text.textbox(text, align, w, h, r,g,b,a, charsInLine, sub)
+   sub = sub or Text.sub
+   charsInLine = charsInLine or Text.charsInLine
    local x, th = TTF.size("M")
    h = h // th
    local s = Surface.newBlank(w, h * th)

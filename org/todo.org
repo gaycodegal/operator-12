@@ -1,0 +1,26 @@
+* TODO Dialogue
+** Make Textbox
+   Look at button.lua and use this to create a textbox with changable text
+   maybe a textbox with like a scroll through source option
+   make it accept any background builder
+* TODO Background Builder
+** Solid Color
+** Image
+   Tile vs stretch
+** TODO 9-slice
+   Image:
+
+   ABC
+   DEF
+   GHI
+
+   The following points describe what happens when you change the dimensions of the image:
+   - The four corners (A, C, G and I) do not change in size.
+   - The B and H sections stretch or tile horizontally.
+   - The D and F sections stretch or tile vertically.
+   - The E section stretches or tiles both horizontally and vertically.
+* TODO Layout
+** Layout should have more than just resize
+   like it should have a static onload function and should support additional static properties
+   perhaps it should also have an onscroll function???
+*** TODO Additional Static Properties

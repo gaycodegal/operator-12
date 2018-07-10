@@ -43,10 +43,10 @@ void callLuaVoid(lua_State *L, const char *name) {
 void callLuaVoidArgv(lua_State *L, const char *name, int argc, char **argv) {
   lua_getglobal(L, name); /* function to be called */
   lua_pushnumber(L, argc);
-  lua_createtable(L,argc,0);
-  for(int i = 0; i < argc; ++i){
-	lua_pushstring(L, argv[i]);
-	lua_rawseti(L, -2, i + 1);
+  lua_createtable(L, argc, 0);
+  for (int i = 0; i < argc; ++i) {
+    lua_pushstring(L, argv[i]);
+    lua_rawseti(L, -2, i + 1);
   }
   if (lua_pcall(L, 2, 0, 0) != 0)
     printf("we fucked up calling:%s error:%s\n", name, lua_tostring(L, -1));

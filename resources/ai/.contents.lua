@@ -1,1 +1,1 @@
-return {"ai.lua","player.lua","player.lua~"}
+return {"ai.lua","player.lua"}

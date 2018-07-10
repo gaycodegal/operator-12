@@ -1,6 +1,6 @@
 dofile("util.lua")
-require("text/text")
-require("ui/button")
+require("text/Text")
+require("ui/Button")
 require("ui/UIElement")
 function LoadFile(self)
    End()
