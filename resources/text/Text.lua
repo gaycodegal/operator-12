@@ -68,7 +68,7 @@ function Text.subRev(text, n)
    return string.sub(text, n, #text)
 end
 
-function Text.textbox(text, align, w, h, r,g,b,a, charsInLine, sub)
+function Text.textbox(text, align, w, h, c, charsInLine, sub)
    sub = sub or Text.sub
    charsInLine = charsInLine or Text.charsInLine
    local x, th = TTF.size("M")
@@ -92,13 +92,13 @@ function Text.textbox(text, align, w, h, r,g,b,a, charsInLine, sub)
 		 len = len + x
 	  end
 	  if #tmp > 0 then
-		 s2 = TTF.surface(tmp, r,g,b,a)
-		 if align == 0 then -- left align
+		 s2 = TTF.surface(tmp, c[1],c[2],c[3],c[4])
+		 if align == 1 then -- left align
 			Surface.blit(s, s2,0,(i-1)*th)
-		 elseif align == 1 then -- center align
+		 elseif align == 2 then -- center align
 			x = Surface.size(s2)
 			Surface.blit(s, s2,(w - x) // 2,(i-1)*th)
-		 elseif align == 2 then -- right
+		 elseif align == 3 then -- right
 			x = Surface.size(s2)
 			Surface.blit(s, s2,w-x,(i-1)*th)			 
 		 end
