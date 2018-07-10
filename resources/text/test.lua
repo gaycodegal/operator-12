@@ -1,5 +1,5 @@
 require("util")
-require("text/text")
+require("text/Text")
 
 function Start()
    --print(Text.charsInLine("test", 100))

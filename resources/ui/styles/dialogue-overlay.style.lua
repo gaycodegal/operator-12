@@ -8,18 +8,17 @@ self.x = 0
 self.y = 0
 end
 },
-button = {
+dialogue = {
 resize=function(self)
 local d = self.d
 local p=self.p
 local s=10
-local col=4
-local w=(p.w - s * (col + 1))//col
-local h=(p.h - s * (col + 1))//col
+local w=p.w - s * 2
+local h=250
 self.h = h
 self.w = w
-self.x = (d[1] + 1)*s + d[1]*w
-self.y = (d[2] + 1)*s + d[2]*h
+self.x = s
+self.y = p.h - h - s
 end
 },
 }

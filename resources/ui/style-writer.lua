@@ -23,7 +23,7 @@ function generateStyle(fname, style)
    local handle = io.open(fname, "w")
    handle:write("return {\n")
    for k,v in pairs(style) do
-	  handle:write(k .. " = function(self)\nlocal d = self.d\n")
+	  handle:write(k .. " = {\nresize=function(self)\nlocal d = self.d\n")
 	  if v.vars then
 		 for i,var in ipairs(v.vars) do
 			handle:write("local " .. var .. "\n")
@@ -34,7 +34,7 @@ function generateStyle(fname, style)
 		 local val = v[var] or 0
 		 handle:write("self." .. var .. " = " .. v[var] .. "\n")
 	  end
-	  handle:write("end,\n")
+	  handle:write("end\n},\n")
    end
    handle:write("}")
    handle:close()

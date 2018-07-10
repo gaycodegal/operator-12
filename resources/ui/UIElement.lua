@@ -70,8 +70,8 @@ Calculates/recalcs element properties
 @param nchildren number of children
 @param parent of elem
 ]=]
-function UIElement.new(d,resize,nchildren,parent)
-   local self = {d=d,resize=resize,nc=nchildren,p=parent}
+function UIElement.new(d,layout,nchildren,parent)
+   local self = {d=d,resize=layout.resize,e=layout.e,nc=nchildren,p=parent}
    setmetatable(self, UIElement)
    return self
 end

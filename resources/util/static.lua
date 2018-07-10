@@ -11,6 +11,16 @@ function metareplacer(mt)
    end
 end
 
+function meta(t)
+   t.__index = metareplacer(t)
+end
+
+function Class()
+   local t = {}
+   meta(t)
+   return t
+end
+
 function makeGlobal(x)
    for k,v in pairs(x) do
       rawset(_G, k, v)

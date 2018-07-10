@@ -1,6 +1,5 @@
-require("util")
-Button = {}
-Button.__index = metareplacer(Button)
+require("util/static")
+Button = Class()
 
 -- creates a new button
 -- self now owned by button
