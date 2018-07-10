@@ -3,6 +3,10 @@ require("util")
 UIElement = {named={}}
 UIElement.__index = metareplacer(UIElement)
 
+function getStyle(name)
+   return dofile("ui/styles/"..name..".style.lua")
+end
+
 --[=[
 Creates UIElements
 Calculates their properties when loaded

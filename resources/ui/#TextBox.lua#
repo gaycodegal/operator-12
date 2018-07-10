@@ -1,9 +1,0 @@
-require("util/static")
-TextBox = Class()
-
-function TextBox.new(self)
-   setmetatable(self, TextBox)
-   self.rect = self.layout:rect()
-   local s, l, h = Text.textbox(self.text, 1, r[3], r[4], 255,255,255,255)
-end
-
