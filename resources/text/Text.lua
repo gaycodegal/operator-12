@@ -60,76 +60,148 @@ function Text.charsInLineRev(text, width)
    return best
 end
 
-function Text.sub(text, n)
-   return string.sub(text, 1, n)
-end
-
-function Text.subRev(text, n)
-   return string.sub(text, n, #text)
-end
-
-function Text.textbox(text, align, w, h, c, charsInLine, sub)
-   sub = sub or Text.sub
-   charsInLine = charsInLine or Text.charsInLine
+function Text.textbox(text, align, w, h, c, direction)
+   local charsInLine = Text.charsInLine
+   if direction == 2 then
+	  charsInLine = Text.charsInLineRev
+   end
    local x, th = TTF.size("M")
    h = h // th
    local s = Surface.newBlank(w, h * th)
-   local s2, y, tmp, l
+   local s2, y, tmp
+   local l = 0
    local len = 0
+   local spl
    for i = 1,h do
 	  x = Text.charsInLine(text, w)
 	  if x == 0 then
 		 break
 	  end
-	  y = string.find(text,"\n",1,true)
+	  y = nil
+	  if direction == 2 then
+		 y = string.find(string.reverse(text),"\n",1,true)
+	  else
+		 y = string.find(text,"\n",1,true)
+	  end
 	  if y and y < x then
-		 tmp = string.sub(text,1,y-1)
-		 text = string.sub(text,y+1)
+		 spl = y
+		 if direction == 2 then
+			spl = #text - y
+		 end
+		 if direction == 2 then
+			tmp = string.sub(text,spl+2,-1)
+			text = string.sub(text,1,spl)
+		 else
+			tmp = string.sub(text,1,spl-1)
+			text = string.sub(text,spl+1,-1)
+		 end
 		 len = len + y
 	  else
-		 tmp = string.sub(text,1,x)
-		 text = string.sub(text,x+1)
+		 spl = x
+		 if direction == 2 then
+			spl = #text - x
+		 end
+		 tmp = string.sub(text,1,spl)
+		 text = string.sub(text,spl+1,-1)
+		 if direction == 2 then
+			tmp, text = text, tmp
+			if string.sub(text, -1, -1) == "\n" then
+			   text = string.sub(text, 1, -2)
+			end
+		 else
+			if string.sub(text, 1, 1) == "\n" then
+			   text = string.sub(text, 2, -1)
+			end
+		 end
 		 len = len + x
 	  end
 	  if #tmp > 0 then
+		 y = (i-1)*th
+		 if direction == 2 then
+			y = (h-i)*th
+		 end
 		 s2 = TTF.surface(tmp, c[1],c[2],c[3],c[4])
 		 if align == 1 then -- left align
-			Surface.blit(s, s2,0,(i-1)*th)
+			Surface.blit(s, s2,0,y)
 		 elseif align == 2 then -- center align
 			x = Surface.size(s2)
-			Surface.blit(s, s2,(w - x) // 2,(i-1)*th)
+			Surface.blit(s, s2,(w - x) // 2,y)
 		 elseif align == 3 then -- right
 			x = Surface.size(s2)
-			Surface.blit(s, s2,w-x,(i-1)*th)			 
+			Surface.blit(s, s2,w-x,y)
 		 end
 		 Surface.destroy(s2)
 		 l = i
 	  end
 	  s2 = nil
    end
-   return s, len, l * th
+   s2 = Surface.newBlank(w, l * th)
+   if direction == 2 then
+	  Surface.blit(s2, s, 0, -(h - l) * th)
+   else
+	  Surface.blit(s2, s, 0, 0)
+   end
+   Surface.destroy(s)
+   return s2, len, l * th
 end
 
-function Text.charsInTextbox(text, w, h)
+function Text.charsInTextbox(text, w, h, direction)
+   local charsInLine = Text.charsInLine
+   if direction == 2 then
+	  charsInLine = Text.charsInLineRev
+   end
    local x, th = TTF.size("M")
    h = h // th
-   local s2, y, tmp
+   local y, tmp
+   local l = 0
    local len = 0
+   local spl
    for i = 1,h do
 	  x = Text.charsInLine(text, w)
 	  if x == 0 then
-		 return len
+		 break
 	  end
-	  y = string.find(text,"\n",1,true)
+	  y = nil
+	  if direction == 2 then
+		 y = string.find(string.reverse(text),"\n",1,true)
+	  else
+		 y = string.find(text,"\n",1,true)
+	  end
 	  if y and y < x then
-		 tmp = string.sub(text,1,y-1)
-		 text = string.sub(text,y+1)
+		 spl = y
+		 if direction == 2 then
+			spl = #text - y
+		 end
+		 if direction == 2 then
+			tmp = string.sub(text,spl+2,-1)
+			text = string.sub(text,1,spl)
+		 else
+			tmp = string.sub(text,1,spl-1)
+			text = string.sub(text,spl+1,-1)
+		 end
 		 len = len + y
 	  else
-		 tmp = string.sub(text,1,x)
-		 text = string.sub(text,x+1)
+		 spl = x
+		 if direction == 2 then
+			spl = #text - x
+		 end
+		 tmp = string.sub(text,1,spl)
+		 text = string.sub(text,spl+1,-1)
+		 if direction == 2 then
+			tmp, text = text, tmp
+			if string.sub(text, -1, -1) == "\n" then
+			   text = string.sub(text, 1, -2)
+			end
+		 else
+			if string.sub(text, 1, 1) == "\n" then
+			   text = string.sub(text, 2, -1)
+			end
+		 end
 		 len = len + x
 	  end
+	  if #tmp > 0 then
+		 l = i
+	  end
    end
-   return len
+   return len, l * th
 end
