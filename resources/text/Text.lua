@@ -61,6 +61,7 @@ function Text.charsInLineRev(text, width)
 end
 
 function Text.textbox(text, align, w, h, c, direction)
+   direction = direction or 1
    local charsInLine = Text.charsInLine
    if direction == 2 then
 	  charsInLine = Text.charsInLineRev
@@ -135,7 +136,7 @@ function Text.textbox(text, align, w, h, c, direction)
 	  end
 	  s2 = nil
    end
-   s2 = Surface.newBlank(w, l * th)
+   s2 = Surface.newBlank(w, h * th)
    if direction == 2 then
 	  Surface.blit(s2, s, 0, -(h - l) * th)
    else
@@ -146,6 +147,7 @@ function Text.textbox(text, align, w, h, c, direction)
 end
 
 function Text.charsInTextbox(text, w, h, direction)
+   direction = direction or 1
    local charsInLine = Text.charsInLine
    if direction == 2 then
 	  charsInLine = Text.charsInLineRev
