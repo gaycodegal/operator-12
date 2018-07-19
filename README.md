@@ -202,4 +202,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 ## Legal
 
 [MIT license](./LICENSE) for the project.
+Lua's source is not included in this project's but all distributed compiled versions of this software require you to follow Lua's MIT license. I'm going to work in a Powered-by-Lua image eventually into the project. 
 Also the MOZART NBP font (by Nate Halley) is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
+
+I have yet to create a thanks-page within the app, but will get there when I'm planning a release.
+
+I have obtained permission to do the work necessary to finish this project from my company via [iarc](https://opensource.google.com/docs/iarc/), which is a wonderful thing.
