@@ -10,7 +10,8 @@ return {
    input={
 	  e={
 		 direction=2,
-		 fg={255,0,0,255}
+		 fg={0,0,0,255},
+		 bg={255,255,255,255}
 	  },
 	  vars={"p=self.p", "h="..cmdline_height},
 	  w="p.w",
@@ -21,7 +22,8 @@ return {
    log={
 	  e={
 		 direction=2,
-		 fg={0,0,255,255}
+		 fg={255,255,255,255},
+		 bg={0,0,0,255}
 	  },
 	  vars={"p=self.p", "ch="..cmdline_height},
 	  w="p.w",

@@ -18,12 +18,27 @@ function KeyDown(key)
 	  Log.line = Log.readLine()
 	  Log.inputline:setText("")
 	  Log.addMessage(cmd)
-	  eval(cmd)
+	  local success, result = pcall(load, "return " .. cmd)
+	  if success then
+		 local temp = {pcall(result)}
+		 success = temp[1]
+		 local length = 0
+		 for i,v in ipairs(temp) do
+			temp[i] = "[" .. (i-1) .. "]: " .. tostring(temp[i])
+			length = i
+		 end
+		 result = table.concat(temp," ",2,length)
+	  end
+	  
+	  if not success then
+		 Log.addMessage("ERROR!")
+	  end
+	  Log.addMessage(tostring(result))
 	  return
    end
    
    local sym
-   if shiftHeld then
+   if Log.shiftHeld then
 	  sym = SHIFT_KEYS[key]
    else
 	  sym = KEYS[key]
@@ -51,6 +66,7 @@ function Start()
    Log.inputline = TextBox.new({text="type a command", layout=Log.named.input})
    Log.log = TextBox.new({text="", layout=Log.named.log})
    Log.addMessage("GameEngine Lua command line")
+   static.framedelay(1000)
 end
 
 function Update()
