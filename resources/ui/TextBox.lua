@@ -8,6 +8,7 @@ function TextBox.new(self)
    local layout = self.layout
    self.j = layout.e.justify or 1
    self.fg = layout.e.fg or {255,255,255,255}
+   self.bg = layout.e.bg or {0,0,0,0}
    self.direction = layout.e.direction
    self:resize()
    return self
