@@ -1,15 +1,25 @@
 dofile("util.lua")
-require("text/text")
+require("ui/TextBox")
 require("cmd/keys")
+Log = {data={},maxData=10}
+
 function KeyDown(key)
    if key == KEY_ESCAPE then
 	  return static.quit()
    elseif key == KEY_LSHIFT or key == KEY_RSHIFT then
-	  shiftHeld = true
+	  Log.shiftHeld = true
+	  return
+   elseif key == KEY_BACKSPACE then
+	  table.remove(Log.line)
+	  Log.updateInput()
 	  return
    elseif key == KEY_ENTER then
-	  print(table.concat(line))
-	  line = readLine()
+	  local cmd = table.concat(Log.line)
+	  Log.line = Log.readLine()
+	  Log.inputline:setText("")
+	  Log.addMessage(cmd)
+	  eval(cmd)
+	  return
    end
    
    local sym
@@ -19,33 +29,59 @@ function KeyDown(key)
 	  sym = KEYS[key]
    end
    if sym then
-	  down(line, sym)
+	  Log.down(Log.line, sym)
    end
 end
 
 function KeyUp(key)
    if key == KEY_LSHIFT or key == KEY_RSHIFT then
-	  shiftHeld = false
+	  Log.shiftHeld = false
    end
 end
 
 function Start()
-   shiftHeld = false
-   line = readLine()
+   Log.shiftHeld = false
+   Log.line = Log.readLine()
+   Log.style = getStyle("cmd/cmd")
+   Log.scene = {{s="screen",c={
+					{n="input",s="input"},
+					{n="log",s="log"}
+			   }}}
+   Log.named,Log.scene = UIElement.getNamed(Log.scene, Log.style)
+   Log.inputline = TextBox.new({text="type a command", layout=Log.named.input})
+   Log.log = TextBox.new({text="", layout=Log.named.log})
+   Log.addMessage("GameEngine Lua command line")
 end
 
 function Update()
    --Update = static.quit
+   Log.inputline:draw()
+   Log.log:draw()
 end
 
 function End()
-   shiftHeld = false
-end
-function down(line, sym)
-    line[line.n]=sym
-    line.n=1+line.n
+   Log.shiftHeld = false
+   Log.inputline:destroy()
+   Log.log:destroy()
 end
 
-function readLine()
-    return {n=1}
+function Log.down(line, sym)
+   table.insert(line, sym)
+   Log.updateInput()
+end
+
+function Log.updateInput()
+   Log.inputline:setText(table.concat(Log.line))
+end
+
+function Log.readLine()
+   return {n=1}
+end
+
+function Log.addMessage(m)
+   table.insert(Log.data, m)
+   if #Log.data > Log.maxData then
+	  table.remove(Log.data, 1)
+   end
+   Log.log:setText(table.concat(Log.data,"\n"))
 end

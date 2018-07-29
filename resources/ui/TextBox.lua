@@ -13,7 +13,7 @@ function TextBox.new(self)
    return self
 end
 
-function TextBox:text(text, start)
+function TextBox:setText(text, start)
    self.start = start or 0
    self.text = text
    self:resize()
