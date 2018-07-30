@@ -1,1 +1,1 @@
-return {"save.lua","save.lua~"}
+return {"save.lua"}

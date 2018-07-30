@@ -1,1 +1,1 @@
-return {"keys.lua","load.lua"}
+return {"keys.lua"}
