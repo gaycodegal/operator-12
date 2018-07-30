@@ -37,3 +37,16 @@ function table.copy(t)
    end
 end
 
+function min(x,y)
+   if x < y then
+	  return x
+   end
+   return y
+end
+
+function max(x,y)
+   if x < y then
+	  return y
+   end
+   return x
+end
