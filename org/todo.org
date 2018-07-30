@@ -1,8 +1,28 @@
+* Order of Ops
+1. Basic Moves
+2. Elapsed Time
+3. Resizeable Window
+4. Config file
+5. More Test Maps?
+6. Background Builder
+7. Alerts
+8. World Map
+9. Spawn Selection
+10. Menu
+11. Music
+12. Dialogue
 * TODO Dialogue
-** Make Textbox
+** DONE Make Textbox
+   CLOSED: [2018-07-29 Sun 21:27]
    Look at button.lua and use this to create a textbox with changable text
-   maybe a textbox with like a scroll through source option
+   maybe a textbox with like a 
+** TODO scroll through source option
    make it accept any background builder
+** TODO Data Structure
+*** How will we know when a choice is available
+	textref:{text, choices:{Choice(action, TextRef),...}
+*** How will these be stored on the disk?
+	Probably a dialogue folder
 * TODO Background Builder
 ** Solid Color
 ** Image
@@ -19,8 +39,35 @@
    - The B and H sections stretch or tile horizontally.
    - The D and F sections stretch or tile vertically.
    - The E section stretches or tiles both horizontally and vertically.
-* TODO Layout
+* DONE Layout
+  CLOSED: [2018-07-29 Sun 21:28]
 ** Layout should have more than just resize
    like it should have a static onload function and should support additional static properties
    perhaps it should also have an onscroll function???
-*** TODO Additional Static Properties
+*** DONE Additional Static Properties
+	 CLOSED: [2018-07-29 Sun 21:28]
+* TODO World Map
+* TODO Menu
+** Loading Screen
+** Credits
+* TODO Attack Selection
+* TODO Slug Info Screen
+* TODO Resizeable Window
+* TODO Update w/ elapsed time
+* TODO Basic Moves
+** TODO Flood Heal
+** TODO Speed Mod
+** TODO Size Mod
+* TODO Player Spawn Selection
+* TODO Test Maps
+* TODO Music Player / SFX Player
+* TODO Alerts
+** TODO Win/Loss alert
+* TODO Player Data
+  Where to store?
+* TODO Compiling Lua
+  Probably should include some specification of which lua files to group together
+* TODO Config File
+  do-load SDL
+* Later Problems
+** Support For 2x display
