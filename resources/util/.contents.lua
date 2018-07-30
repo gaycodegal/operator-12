@@ -1,1 +1,1 @@
-return {"fakes.lua","fakes.lua~","static.lua"}
+return {"fakes.lua","static.lua"}
