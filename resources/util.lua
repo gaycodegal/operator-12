@@ -1,7 +1,5 @@
 require("util/static")
 
-makeGlobal(Game)
-
 function KeyUp(key)
    if key == KEY_ESCAPE then
 	  static.quit()
@@ -10,6 +8,11 @@ end
 
 function KeyDown(key)
 
+end
+
+function Resize(w, h)
+   SCREEN_WIDTH = w
+   SCREEN_HEIGHT = h
 end
 
 function MouseDown(x,y)

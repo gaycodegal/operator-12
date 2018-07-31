@@ -16,12 +16,11 @@ int start() {
     printf("Could not initialize SDLTTF SDL_Error: %s\n", SDL_GetError());
     return 1;
   }
-  Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL;
+  Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
-  window = SDL_CreateWindow(
-      "Game Engine V0", 0, 0,
-      /*SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED*/ SCREEN_WIDTH,
-      SCREEN_HEIGHT, initopts);
+  window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
+                            SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+                            initopts);
   if (window == NULL) {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return 1;
@@ -136,6 +135,12 @@ int main(int argc, char *argv[]) {
             mouseHelper(L, e.type, "MouseUp", mouseupExists);
             break;
           }
+        } else if (e.type == SDL_WINDOWEVENT &&
+                   e.window.event == SDL_WINDOWEVENT_RESIZED) {
+          lua_getglobal(L, "Resize");
+          lua_pushnumber(L, e.window.data1);
+          lua_pushnumber(L, e.window.data2);
+          callErr(L, "Resize", 2);
         }
       }
 

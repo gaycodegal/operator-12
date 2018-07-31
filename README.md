@@ -94,6 +94,18 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 You can generate method stubs with `python3 luahelper.py < surface.txt > surface.hidden.c` anything with `.hidden.` in it's file name is ignored by the git ignore. See surface.txt and luahelper.py for understanding of what's generated. You'll have to use auto-indentation from something like emacs or a C++ IDE to indent it, but at least you don't have to write it.
 
+## Special Lua Methods Called by C++
+
+- Update()
+	- Called every frame, and after every event
+- Resize(width, height)
+	- Window has resized to (width, height).
+	- Globals will not be modified by this at this time.
+- KeyDown(which)
+- KeyUp(which)
+- MouseDown(x, y)
+- MouseMove(x, y)
+- MouseUp(x, y)
 
 ## Classes Exposed to Lua via C++
 

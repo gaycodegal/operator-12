@@ -1,16 +1,15 @@
 * Order of Ops
 1. Basic Moves
 2. Elapsed Time
-3. Resizeable Window
-4. Config file
-5. More Test Maps?
-6. Background Builder
-7. Alerts
-8. World Map
-9. Spawn Selection
-10. Menu
-11. Music
-12. Dialogue
+3. Config file
+4. More Test Maps?
+5. Background Builder
+6. Alerts
+7. World Map
+8. Spawn Selection
+9. Menu
+10. Music
+11. Dialogue
 * TODO Dialogue
 ** DONE Make Textbox
    CLOSED: [2018-07-29 Sun 21:27]
@@ -52,7 +51,8 @@
 ** Credits
 * TODO Attack Selection
 * TODO Slug Info Screen
-* TODO Resizeable Window
+* DONE Resizeable Window
+  CLOSED: [2018-07-30 Mon 21:32]
 * TODO Update w/ elapsed time
 * TODO Basic Moves
 ** TODO Flood Heal
@@ -63,6 +63,9 @@
 * TODO Music Player / SFX Player
 * TODO Alerts
 ** TODO Win/Loss alert
+* TODO Enhance Util.lua for State Switchout
+** Make an Interface class that declares all the usual methods
+   To allow for easier defaults and replacements without requiring the use of *dofile* all over the place
 * TODO Player Data
   Where to store?
 * TODO Compiling Lua
