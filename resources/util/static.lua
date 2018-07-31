@@ -50,3 +50,5 @@ function max(x,y)
    end
    return x
 end
+
+makeGlobal(Game)

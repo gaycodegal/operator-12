@@ -55,6 +55,13 @@ function Start()
    static.framedelay(framedelay)
 end
 
+function Resize(w, h)
+   SCREEN_WIDTH = w
+   SCREEN_HEIGHT = h
+   UIElement.recalc(scene)
+   updateForPage(page)
+end
+
 function Update()
    --Update = static.quit
    Button.drawAll()
