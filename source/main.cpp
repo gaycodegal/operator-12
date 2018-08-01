@@ -64,6 +64,21 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
   }
 }
 
+long lastMS;
+// returns system time, but every time you call it, it makes sure at least one
+// millisecond has passed
+static inline long getMS() {
+  long ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch())
+                .count();
+  if (ms < lastMS) {
+    lastMS = lastMS + 1;
+    return lastMS;
+  }
+  lastMS = ms;
+  return lastMS;
+}
+
 int main(int argc, char *argv[]) {
   lua_State *L;
   quit = false;
@@ -93,7 +108,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
   }
-
+  long lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoidArgv(L, "Start", argc - 1, argv + 1);
   int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
@@ -102,7 +117,6 @@ int main(int argc, char *argv[]) {
   int mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
   int mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
   int mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
-
   SDL_Event e;
   // While application is running
   if (updateExists) {
@@ -145,9 +159,15 @@ int main(int argc, char *argv[]) {
       }
 
       SDL_RenderClear(globalRenderer);
+      long nowTick = getMS();
+	  long delta = (nowTick - lastTick);
       if (updateExists) {
-        callLuaVoid(L, "Update");
+        lua_getglobal(L, "Update");
+        lua_pushnumber(L, delta / 1000.0f);
+        lua_pushnumber(L, delta);
+        callErr(L, "Update", 2);
       }
+      lastTick = nowTick;
       SDL_RenderPresent(globalRenderer);
       if (!quit)
         SDL_WaitEventTimeout(NULL, framedelay);
