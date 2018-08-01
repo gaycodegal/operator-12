@@ -48,7 +48,8 @@ function Start()
    end
    named, scene = UIElement.getNamed(scene, dofile("ui/styles/main-menu.style.lua"))
    --scene[1]:print()
-   framedelay = 1000//60
+   framedelay = 1000/10
+   trueticks = framedelay
    page = 1
    maps = listdir("maps/")
    updateForPage(page)
@@ -61,10 +62,13 @@ function Resize(w, h)
    UIElement.recalc(scene)
    updateForPage(page)
 end
-
-function Update()
+function Update(t, ticks)
+   --print((1/t) .. " fps")
    --Update = static.quit
    Button.drawAll()
+   local weight = 100
+   trueticks = max(1, (trueticks * weight + trueticks - (ticks - framedelay))//(weight + 1))
+   static.framedelay(trueticks)
 end
 
 function End()

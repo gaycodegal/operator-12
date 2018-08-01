@@ -14,6 +14,7 @@ extern "C" {
 #include "lua_helpers.hpp"
 #include "lua_sprites.hpp"
 #include "sprite.hpp"
+#include <chrono>
 #include <stdio.h>
 #include <string>
 /**
