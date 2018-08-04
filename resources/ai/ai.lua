@@ -197,16 +197,18 @@ function AI.move()
    AI.slug:movementOverlay(AI.moves)
    if AI.moves <= 0 then
 	  AI.slug:destroyOverlay()
-	  AI.slug:attackOverlay(AI.slug.stats.range)
+	  AI.slug:basicOverlay(AI.slug.action.range, Slug.attackOverlayFn)
 	  AI.state = AI.attack
    end
 end
 
 function AI.attack()
-   local dx = AI.tpos[1]-AI.pos[1]
-   local dy = AI.tpos[2]-AI.pos[2]
-   if math.abs(dx) + math.abs(dy) <= AI.slug.stats.range then
-	  AI.target.slug:damage(AI.slug.stats.damage)
+   local x, y = AI.tpos[1], AI.tpos[2]
+   local ind = map:indexOf(x,y)
+   local obj = map.objects[ind]
+   local skill = Skills[AI.slug.action.skill]
+   if skill.can(AI.slug, obj, ind, x, y)  then
+	  skill.act(AI.slug, obj, ind, x, y)
    end
    AI.turni = AI.turni + 1
    if AI.turni >= AI.neslugs then

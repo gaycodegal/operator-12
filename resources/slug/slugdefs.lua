@@ -125,27 +125,38 @@ return {
 		 tiles = {1,7},
 		 stats={
 			moves = 5,
-			range = 1,
-			damage = 1,
-			maxsize = 5
+			maxsize = 5,
+			skills={
+			   {skill="Damage",
+				range=1,
+				damage=1
+			   }
+			}
 		 }
 	  },
 	  test2 = {
 		 tiles = {4, 10},
 		 stats={
 			moves = 3,
-			range = 4,
-			damage = 1,
-			maxsize = 3
+			maxsize = 3,
+			skills={
+			   {skill="Damage",
+				range=4,
+				damage=1
+			   }
+			}
 		 }
 	  },
 	  spawner={
 		 tiles={3,3},
 		 stats={
 			moves = 0,
-			range = 0,
-			damage = 0,
-			maxsize = 0
+			maxsize = 0,
+			skills={
+			   {skill="Spawn",
+				range=0
+			   }
+			}
 		 }
 	  }
 	  

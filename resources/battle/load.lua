@@ -69,7 +69,8 @@ function KeyUp(key)
 		 active = Player.attack
 		 if Player.slug then
 			Player.slug:destroyOverlay()
-			Player.slug:attackOverlay(Player.slug.stats.range)
+			Player.slug:basicOverlay(
+			   Player.slug.action.range, Slug.attackOverlayFn)
 		 end
 	  elseif active == Player.attack then
 		 Player.returnControl()

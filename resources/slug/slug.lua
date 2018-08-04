@@ -18,6 +18,7 @@ function Slug.new (self)
    end
    self.size = #self.segs
    self.maxsize = self.stats.maxsize
+   self.action = self.stats.skills[1]
    local prev = nil
    for i = 1,self.size do
 	  local sprite = self.sprites[2]
@@ -58,8 +59,11 @@ function Slug.movementOverlay(self, range)
    self.overlay = diamond
 end
 
-function Slug.attackOverlay(self, range)
-   local diamond = self:listDiamond2(range)
+function Slug.basicOverlay(self, range, overlayFn)
+   if not overlayFn then
+	  overlayFn = Slug.attackOverlayFn
+   end
+   local diamond = self:listDiamond2(range, overlayFn)
    local x, y
    local atk = overlay.named.attack
    for i = 1, #diamond do
@@ -93,18 +97,24 @@ function Slug.drawOverlay(self)
    end
 end
 
-function Slug.listDiamond2(self, size)
+function Slug.attackOverlayFn(x,y)
+   return map.map[map:indexOf(x, y)]
+end
+
+function Slug.listDiamond2(self, size, overlayFn)
    -- >v, <v,<^,>^
    local deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
    local j = 1
    local hpos = self.head.pos
    local pos = {0,0}--
    local lst = {}
+   local x, y
    for ring = 1,size do
 	  pos[2] = pos[2] - 1
 	  for t,d in ipairs(deltas) do
 		 for i=1,ring do
-			if map.map[map:indexOf(pos[1]+hpos[1], pos[2]+hpos[2])] then
+			x, y = pos[1]+hpos[1], pos[2]+hpos[2]
+			if overlayFn(x, y) then
 			   lst[j] = {pos[1], pos[2]}
 			else
 			   lst[j] = false
@@ -274,7 +284,7 @@ function Slug.move(self, x, y)
    local dx = math.abs(x - head.pos[1])
    local dy = math.abs(y - head.pos[2])
    local ind = map:indexOf(x,y)
-   if map.map[ind] then else
+   if not map:valid(x, y) or not map.map[ind] then
 	  return false
    end
    local mid = map.objects[ind]

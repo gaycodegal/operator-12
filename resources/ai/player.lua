@@ -71,7 +71,7 @@ function Player.move(x, y)
    Player.slug:movementOverlay(Player.moves)
    if Player.moves <= 0 then
 	  Player.slug:destroyOverlay()
-	  Player.slug:attackOverlay(Player.slug.stats.range)
+	  Player.slug:basicOverlay(Player.slug.action.range, Slug.attackOverlayFn)
 	  active = Player.attack
    end
 end
@@ -79,8 +79,9 @@ end
 function Player.attack(x,y)
    local ind = map:indexOf(x,y)
    local obj = map.objects[ind]
-   if Skills.Damage.can(Player.slug, obj, ind, x, y)  then
-	  Skills.Damage.act(Player.slug, obj, ind, x, y)
+   local skill = Skills[Player.slug.action.skill]
+   if skill.can(Player.slug, obj, ind, x, y)  then
+	  skill.act(Player.slug, obj, ind, x, y)
    end
    Player.turni = Player.turni + 1
    if Player.turni > Player.nslugs then
