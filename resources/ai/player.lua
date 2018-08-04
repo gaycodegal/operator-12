@@ -1,3 +1,4 @@
+require("slug/Skills")
 Player = {}
 
 ---Player.__index = metareplacer(Player)
@@ -76,13 +77,10 @@ function Player.move(x, y)
 end
 
 function Player.attack(x,y)
-   local dx = x-Player.pos[1]
-   local dy = y-Player.pos[2]
-   if math.abs(dx) + math.abs(dy) <= Player.slug.stats.range then
-	  local ind = map:indexOf(x,y)
-	  if map.objects[ind] and map.objects[ind].slug.team ~= 1 then
-		 map.objects[ind].slug:damage(Player.slug.stats.damage)
-	  end
+   local ind = map:indexOf(x,y)
+   local obj = map.objects[ind]
+   if Skills.Damage.can(Player.slug, obj, ind, x, y)  then
+	  Skills.Damage.act(Player.slug, obj, ind, x, y)
    end
    Player.turni = Player.turni + 1
    if Player.turni > Player.nslugs then
