@@ -34,28 +34,7 @@ function Map.new (data)
    setmetatable(t, Map)
    map = t
    for i, dat in ipairs(tmap) do
-	  objects[i] = false
-	  local j = 1
-	  if dat <= 0 then
-		 tmap[i] = false
-	  else
-		 while dat > tilesets[j].tilecount do
-			dat = dat - tilesets[j].tilecount
-			j = j + 1
-		 end
-		 
-		 local v = tilesets[j]
-		 --print((i % data.width) * (tilesize + tilesep),  (i// data.width) * (tilesize + tilesep))
-		 dat = dat - 1
-		 local x, y = Map.basePosition((i-1) % data.width + 1, (i-1) // data.width + 1)
-		 tmap[i] = Sprite.new(v.sheet,
-							  x,
-							  y,
-							 tilesize,
-							 tilesize,
-							 (dat % v.w)*v.tilewidth,
-							 (dat // v.w)*v.tileheight)
-	  end
+	  t:makeTile(i, dat)
    end
    Slug.load()
    Slug.spawn(data.layers[2].objects)
@@ -67,14 +46,52 @@ function Map.new (data)
    return t
 end
 
-function Map.indexOf(self,x,y)
+function Map:makeTile(i, dat)
+   local tilesets = self.tilesets
+   local tmap = self.map
+   local objects = self.objects
+   objects[i] = false
+   local j = 1
+   if dat <= 0 then
+	  tmap[i] = false
+   else
+	  while dat > tilesets[j].tilecount do
+		 dat = dat - tilesets[j].tilecount
+		 j = j + 1
+	  end
+	  
+	  local v = tilesets[j]
+	  dat = dat - 1
+	  local x, y = Map.basePosition((i-1) % self.width + 1, (i-1) // self.width + 1)
+	  tmap[i] = Sprite.new(v.sheet,
+						   x,
+						   y,
+						   self.tilesize,
+						   self.tilesize,
+						   (dat % v.w)*v.tilewidth,
+						   (dat // v.w)*v.tileheight)
+   end
+end
+
+function Map:destroyTile(i)
+   if self.map[i] then
+	  self.map[i]:destroy()
+	  self.map[i] = false
+   end
+end
+
+function Map:indexOf(x,y)
    return (x-1) + (y - 1) * self.width + 1
 end
 
 -- map game logic
-function Map.update(self)
+function Map:update()
    self.x = self.x - self.dx
    self.y = self.y - self.dy
+end
+
+function Map:valid(x, y)
+   return x >= 1 and y >= 1 and x <= self.width and y <= self.height
 end
 
 function Map.positionToCoords(x,y)
@@ -95,7 +112,7 @@ function Map.basePosition(x,y)
 end
 
 -- click on map -> do someting 
-function Map.mousedown(self,x,y)
+function Map:mousedown(x,y)
    local x,y = Map.positionToCoords(x,y)
    if x > 0 and x <= self.width and y > 0 and y <= self.width then
 	  if self.slug then
@@ -105,7 +122,7 @@ function Map.mousedown(self,x,y)
 end
 
 -- draw map to screen
-function Map.draw (self)
+function Map:draw()
    local i = 1
    local v
    local tx = self.x
@@ -134,7 +151,7 @@ function Map.draw (self)
 end
 
 -- deallocate map
-function Map.destroy (self)
+function Map:destroy()
    for i, v in ipairs(self.tilesets) do
 	  Texture.destroy(v.sheet)
    end
