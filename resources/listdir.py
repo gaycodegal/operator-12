@@ -2,7 +2,7 @@ import json
 import os
 
 def listall(path):
-    things = sorted([x for x in os.listdir(path) if x != ".contents.lua"])
+    things = sorted([x for x in os.listdir(path) if x != ".contents.lua" and not x.endswith("~")])
     for i, thing in enumerate(things):
         if os.path.isdir(thing):
             things[i] = thing + "/"

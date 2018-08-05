@@ -1,1 +1,1 @@
-return {"Text.lua","loremipsum.lua","test.lua"}
+return {"Text.lua"}

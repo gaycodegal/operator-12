@@ -1,5 +1,5 @@
 require("util")
-
+local isMain = Util.isMain()
 
 function Start()
    print("hi")
@@ -38,3 +38,5 @@ function End()
    end
    print("goodbye")
 end
+
+Util.try(isMain, _G)
