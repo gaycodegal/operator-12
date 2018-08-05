@@ -191,7 +191,7 @@ static int l_texture_blendmode(lua_State *L) {
     lua_pop(L, 2);
     return 0;
   }
-  mode = (SDL_BlendMode)lua_tonumber(L, -1);
+  mode = static_cast<SDL_BlendMode>(static_cast<int>(lua_tonumber(L, -1)));
   lua_pop(L, 1);
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -318,7 +318,7 @@ static int l_static_renderBlendmode(lua_State *L) {
     lua_pop(L, 1);
     return 0;
   }
-  mode = (SDL_BlendMode)lua_tonumber(L, -1);
+  mode = static_cast<SDL_BlendMode>(static_cast<int>(lua_tonumber(L, -1)));
   lua_pop(L, 1);
   SDL_SetRenderDrawBlendMode(globalRenderer, mode);
   return 0;
@@ -526,7 +526,7 @@ static int l_surface_blendmode(lua_State *L) {
     lua_pop(L, 2);
     return 0;
   }
-  mode = (SDL_BlendMode)lua_tonumber(L, -1);
+  mode = static_cast<SDL_BlendMode>(static_cast<int>(lua_tonumber(L, -1)));
   lua_pop(L, 1);
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);

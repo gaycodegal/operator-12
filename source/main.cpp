@@ -66,8 +66,8 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
 
 static inline long getMS() {
   return std::chrono::duration_cast<std::chrono::milliseconds>(
-                std::chrono::system_clock::now().time_since_epoch())
-                .count();
+             std::chrono::system_clock::now().time_since_epoch())
+      .count();
 }
 
 int main(int argc, char *argv[]) {
@@ -147,11 +147,11 @@ int main(int argc, char *argv[]) {
 
       SDL_RenderClear(globalRenderer);
       long nowTick = getMS();
-	  long delta = (nowTick - lastTick);
-	  long tdelta = delta;
-	  if(delta <= 0){
-		delta = 0;
-	  }
+      long delta = (nowTick - lastTick);
+      long tdelta = delta;
+      if (delta <= 0) {
+        delta = 0;
+      }
       if (updateExists) {
         lua_getglobal(L, "Update");
         lua_pushnumber(L, delta / 1000.0f);
