@@ -1,5 +1,5 @@
 require("util")
-
+local isMain = Util.isMain()
 
 function Start()
    print("hi")
@@ -60,10 +60,11 @@ function makeOneGlitch(tar, r)
    Texture.setAMask(tar,f[4])
    Texture.renderCopy(tar,d[1],d[2],d[3],d[4], e[1],e[2],d[3],d[4])
 end
+
 function makeGlitch(tar, r)
    for i = 1,20 do
 	  makeOneGlitch(tar, r)
    end
 end
 
-
+Util.try(isMain, _G)

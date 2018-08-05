@@ -1,11 +1,14 @@
-dofile("util.lua")
+require("util")
+local isMain = Util.isMain()
 require("battle/map")
-dofile("slug/slug.lua")
 require("ai/ai")
 require("ai/player")
 require("tiled/tilesets")
+Battle = {}
+local B = Battle
 
-function Start(name)
+function B.Start(name)
+   dofile("slug/slug.lua")
    framedelay = 1000//60
    if name == nil then
 	  name = "test.lua"
@@ -20,7 +23,7 @@ function Start(name)
    static.framedelay(framedelay)
 end
 
-function Update()
+function B.Update()
    --Update = static.quit
    map:update()
    map:draw()
@@ -29,17 +32,16 @@ function Update()
    end
 end
 
-function End()
+function B.End()
    Tileset.destroyTilesets(overlay)
    overlay = nil
    Slug.unload()
    map:destroy()
    Slug.despawn()
    map = nil
-   print("goodbye")
 end
 
-function KeyDown(key)
+function B.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()
    elseif key == KEY_UP then
@@ -53,7 +55,7 @@ function KeyDown(key)
    end
 end
 
-function KeyUp(key)
+function B.KeyUp(key)
    if key == KEY_ESCAPE then
 	  static.quit()
    elseif key == KEY_UP and map.dy < 0 then
@@ -79,9 +81,11 @@ function KeyUp(key)
    end
 end
 
-function MouseDown(x, y)
+function B.MouseDown(x, y)
    if active ~= nil then
 	  local px, py = Map.positionToCoords(x,y)	  
 	  active(px,py)
    end
 end
+
+Util.try(isMain, M)

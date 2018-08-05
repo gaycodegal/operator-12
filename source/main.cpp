@@ -64,19 +64,10 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
   }
 }
 
-long lastMS;
-// returns system time, but every time you call it, it makes sure at least one
-// millisecond has passed
 static inline long getMS() {
-  long ms = std::chrono::duration_cast<std::chrono::milliseconds>(
+  return std::chrono::duration_cast<std::chrono::milliseconds>(
                 std::chrono::system_clock::now().time_since_epoch())
                 .count();
-  if (ms < lastMS) {
-    lastMS = lastMS + 1;
-    return lastMS;
-  }
-  lastMS = ms;
-  return lastMS;
 }
 
 int main(int argc, char *argv[]) {
@@ -93,10 +84,6 @@ int main(int argc, char *argv[]) {
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
 
-  // screenSurface = SDL_GetWindowSurface( window );
-
-  // SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0xFF,
-  // 0xFF, 0xFF ) );
   if (argc < 2) {
     if (!loadLuaFile(L, "load.lua")) {
       end();
@@ -161,10 +148,14 @@ int main(int argc, char *argv[]) {
       SDL_RenderClear(globalRenderer);
       long nowTick = getMS();
 	  long delta = (nowTick - lastTick);
+	  long tdelta = delta;
+	  if(delta <= 0){
+		delta = 0;
+	  }
       if (updateExists) {
         lua_getglobal(L, "Update");
         lua_pushnumber(L, delta / 1000.0f);
-        lua_pushnumber(L, delta);
+        lua_pushnumber(L, tdelta);
         callErr(L, "Update", 2);
       }
       lastTick = nowTick;

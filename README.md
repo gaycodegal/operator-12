@@ -13,7 +13,7 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 
 - Layout Generator
 	- Generates resizing functions from layout definitions.
-	- usage `ui/style-writer <name>`
+	- usage `./main ui/style-writer <name>`
 		- see name:`main-menu`
 - UIElements
   - resizable elements generated from a layout style and a list of elements/data to be styled
@@ -96,8 +96,10 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 
 ## Special Lua Methods Called by C++
 
-- Update()
+- Start(argc, argv)
+- Update(msFraction, msTrue)
 	- Called every frame, and after every event
+- End
 - Resize(width, height)
 	- Window has resized to (width, height).
 	- Globals will not be modified by this at this time.
@@ -214,10 +216,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 ## Legal
 
 [MIT license](./LICENSE) for the project.
-Lua's source is not included in this project's but all distributed compiled versions of this software require you to follow Lua's MIT license. I'm going to work in a Powered-by-Lua image eventually into the project. 
-SDL2 is zlib license, and compiled versions should show that too. 
+I'm going to work in a Powered-by-Lua image eventually into the project. 
 Also the MOZART NBP font (by Nate Halley) is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
 
-I have yet to create a thanks-page within the app, but will get there when I'm planning a release.
+Thanks/Licenses page in testing at `./main viewer/load` this simply displays all the licenses used by/planned to be used by the project when compiled & linked. These are located [here](./resources/licenses/).
 
 I have obtained permission to do the work necessary to finish this project from my company via [iarc](https://opensource.google.com/docs/iarc/), which is a wonderful thing.

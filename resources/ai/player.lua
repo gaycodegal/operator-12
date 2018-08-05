@@ -15,16 +15,14 @@ end
 
 function Player.lose()
    End()
-   dofile("load.lua")
+   Util.setController(MapSelect)
    Start()
-   print("lose")
 end
 
 function Player.win()
    End()
-   dofile("load.lua")
+   Util.setController(MapSelect)
    Start()
-   print("win")
 end
 
 function Player.returnControl()
