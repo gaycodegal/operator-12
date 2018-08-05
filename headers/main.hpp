@@ -1,11 +1,24 @@
 #ifndef _MAIN_HPP_
 #define _MAIN_HPP_
+#ifdef _WIN32
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <Windows.h>
+
+#else
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
-// needs extern because of linking
 #include <unistd.h>
+
+#endif
+// needs extern because of linking
+
 extern "C" {
 #include <lauxlib.h>
 #include <lua.h>
