@@ -74,7 +74,11 @@ static inline long getMS() {
 int main(int argc, char *argv[]) {
   lua_State *L;
   quit = false;
+#ifdef _WIN32
+  SetCurrentDirectory("resources");
+#else
   chdir("resources");
+#endif
 #ifdef SDL_ACTIVE
   if (start() != 0) {
     end();
