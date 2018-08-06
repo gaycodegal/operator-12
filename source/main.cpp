@@ -35,7 +35,7 @@ int start() {
     printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
     return 1;
   }
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
   return 0;
 }
 
