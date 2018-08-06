@@ -7,7 +7,6 @@ SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
 TTF_Font *gFont = NULL;
 int start() {
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     return 1;
@@ -36,6 +35,7 @@ int start() {
     printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
     return 1;
   }
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
   return 0;
 }
 
