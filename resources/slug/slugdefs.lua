@@ -130,6 +130,10 @@ return {
 			   {skill="Damage",
 				range=1,
 				damage=1
+			   },
+			   {skill="Heal",
+				range=1,
+				heal=10
 			   }
 			}
 		 }
