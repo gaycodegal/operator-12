@@ -98,7 +98,7 @@ function Slug.drawOverlay(self)
 end
 
 function Slug.attackOverlayFn(x,y)
-   return map.map[map:indexOf(x, y)]
+   return map:valid(x, y) and map.map[map:indexOf(x, y)]
 end
 
 function Slug.listDiamond2(self, size, overlayFn)
@@ -135,6 +135,7 @@ function Slug.listDiamond(self, size)
    local visited = {}
    local tmp,cur,ind,mind,s
    local hpos = self.head.pos
+   local x,y
    q[q.s] = {0,0,size}
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
    local swidth = size*2 + 1
@@ -148,9 +149,9 @@ function Slug.listDiamond(self, size)
 		 --print(tmp[1],tmp[2],tmp[3])
 		 if tmp[3] >= 0 and tmp[1] >= low[1] and tmp[1] < low[1] + swidth and tmp[2] >= low[2] and tmp[2] < low[2] + swidth then
 			ind = (tmp[1] - low[1]) + (tmp[2] - low[2])*swidth
-			mind = map:indexOf(tmp[1]+hpos[1], tmp[2]+hpos[2])
-			
-			if not visited[ind] and map.map[mind] then
+			x,y=tmp[1]+hpos[1], tmp[2]+hpos[2]
+			mind = map:indexOf(x, y)
+			if map:valid(x, y) and not visited[ind] and map.map[mind] then
 			   --print("yes", ind)--), tmp[1]+hpos[1], tmp[2]+hpos[2], tmp[1], tmp[2], map.map[mind])
 			   visited[ind] = true
 			   q[q.e] = tmp
