@@ -1,14 +1,15 @@
 * Order of Ops
-1. Basic Moves
-2. Config file
-3. More Test Maps?
-4. Background Builder
-5. Alerts
-6. World Map
-7. Spawn Selection
-8. Menu
+1. Menu
+2. Attack Selection
+3. Config file
+4. More Test Maps?
+5. Background Builder
+6. Alerts
+7. World Map
+8. Spawn Selection
 9. Music
 10. Dialogue
+11. Basic Moves
 * TODO Dialogue
 ** DONE Make Textbox
    CLOSED: [2018-07-29 Sun 21:27]
@@ -49,13 +50,15 @@
 ** Loading Screen
 ** Credits
 * TODO Attack Selection
+** What key to trigger? (A)?
 * TODO Slug Info Screen
 * DONE Resizeable Window
   CLOSED: [2018-07-30 Mon 21:32]
 * DONE Update w/ elapsed time
   CLOSED: [2018-08-05 Sun 19:23]
 * TODO Basic Moves
-** TODO Flood Heal
+** DONE Flood Heal
+   CLOSED: [2018-08-06 Mon 20:46]
 ** TODO Speed Mod
 ** TODO Size Mod
 ** DONE Flip
