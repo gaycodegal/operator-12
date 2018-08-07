@@ -353,14 +353,16 @@ end
 -- slug, possibly destroying it
 function Slug.damage(self, amount)
    for i = 1,amount do
-	  self.size = self.size - 1
-	  local t = self.tail
-	  t:unsetMapConnections()
-	  t:removeFromMap()
-	  self.tail = t.p
-	  t:unlink()
-	  if self.size <= 0 then
-		 self:destroy()
+	  if self.size > 0 then
+		 self.size = self.size - 1
+		 local t = self.tail
+		 t:unsetMapConnections()
+		 t:removeFromMap()
+		 self.tail = t.p
+		 t:unlink()
+		 if self.size <= 0 then
+			self:destroy()
+		 end
 	  end
    end
 end
