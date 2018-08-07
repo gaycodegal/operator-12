@@ -129,7 +129,7 @@ return {
 			skills={
 			   {skill="Damage",
 				range=1,
-				damage=1
+				damage=2
 			   },
 			   {skill="Heal",
 				range=1,
