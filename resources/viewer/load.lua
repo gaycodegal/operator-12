@@ -16,7 +16,7 @@ function V.readAll(dir, sep)
 end
 
 function V.Start(argc, argv)
-   if argc <= 3 then	
+   if argc < 3 then	
 	  argv = {"viewer/load", "licenses/", "\n\n"}
    end
    V.stext = V.readAll(argv[2], argv[3])
