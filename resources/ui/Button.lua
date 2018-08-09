@@ -1,48 +1,8 @@
 require("util/static")
+require("text/Text")
 Button = Class()
 
--- creates a new button
--- self now owned by button
-function Button.new (self)
-   if buttons == nil then
-	  buttons = {}
-   end
-   setmetatable(self, Button)
-   self.rect = self.layout:rect()
-   local r = self.rect
-   local c = self.color
-   local s, l, h = Text.textbox(self.text, 2, r[3], r[4], {255,255,255,255})
-   local s2 = Surface.newBlank(r[3], r[4])
-   Surface.fill(s2, 0, 0, r[3], r[4], c[1], c[2], c[3], c[4])
-   Surface.blit(s2, s, 0, (r[4] - h) // 2)
-   self.tex = Surface.textureFrom(s2)
-   self.spr = Sprite.new(self.tex, r[1], r[2], r[3], r[4], 0, 0) -- sprite
-   Surface.destroy(s)
-   Surface.destroy(s2)
-   buttons[#buttons + 1] = self
-   return self
-end
-
-function Button.draw(self)
-   self.spr:draw(0,0)
-end
-
-function Button.drawAll()
-   for i,b in ipairs(buttons) do
-	  b:draw()
-   end
-end
-
-function Button.destroyAll()
-   if buttons then
-	  for i,b in ipairs(buttons) do
-		 b:destroy()
-	  end
-   end
-   buttons = {}
-end
-
-function Button.which(x,y)
+function Button.which(buttons,x,y)
    local r
    for i,b in ipairs(buttons) do
 	  r = b.rect
@@ -52,8 +12,39 @@ function Button.which(x,y)
    end
 end
 
+-- creates a new button
+-- self now owned by button
+function Button.new (self)
+   setmetatable(self, Button)
+   self:resize()
+   return self
+end
+
+function Button:resize()
+   self.rect = self.layout:rect()
+   local r = self.rect
+   local c = self.color
+   local s, l, h = Text.textbox(self.text, 2, r[3], r[4], {255,255,255,255})
+   local s2 = Surface.newBlank(r[3], r[4])
+   Surface.fill(s2, 0, 0, r[3], r[4], c[1], c[2], c[3], c[4])
+   Surface.blit(s2, s, 0, (r[4] - h) // 2)
+   self:destroy()
+   self.tex = Surface.textureFrom(s2)
+   self.spr = Sprite.new(self.tex, r[1], r[2], r[3], r[4], 0, 0) -- sprite
+   Surface.destroy(s)
+   Surface.destroy(s2)
+end
+
+function Button:draw()
+   self.spr:draw(0,0)
+end
+
 -- deallocate button
-function Button.destroy (self)
-   Texture.destroy(self.tex)
-   self.spr:destroy()
+function Button:destroy()
+   if self.tex then
+	  Texture.destroy(self.tex)
+   end
+   if self.spr then
+	  self.spr:destroy()
+   end
 end
