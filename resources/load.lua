@@ -15,8 +15,15 @@ function M.LoadFile(self)
    Start(self.text)
 end
 
+function M.destroyButtons()
+   for i,b in ipairs(M.buttons) do
+	  b:destroy()
+   end
+   M.buttons = {}
+end
+
 function M.updateForPage(p)
-   Button.destroyAll()
+   M.destroyButtons()
    if p < 1 then
 	  p = 1
    end
@@ -28,7 +35,7 @@ function M.updateForPage(p)
    for i = 0,15 do
 	  local name = M.maps[i+M.page]
 	  if name then
-		 Button.new({text=name, layout=M.named[i+1], color={0,0,200,255}, click=M.LoadFile})
+		 M.buttons[i + 1] = Button.new({text=name, layout=M.named[i+1], color={0,0,200,255}, click=M.LoadFile})
 	  end
    end
 end
@@ -49,6 +56,7 @@ end
 
 function M.Start()
    local btns = {}
+   M.buttons = {}
    M.scene = {{s="screen",c=btns}}
    for i = 1,16 do
 	  btns[i] = {n=i,s="button",d={(i-1)%4,(i-1)//4}}
@@ -72,18 +80,20 @@ end
 
 function M.Update(t, ticks)
    --Update = static.quit
-   Button.drawAll()
+   for i,b in ipairs(M.buttons) do
+	  b:draw()
+   end
    local weight = 100
    trueticks = max(1, (trueticks * weight + trueticks - (ticks - framedelay))//(weight + 1))
    static.framedelay(trueticks)
 end
 
 function M.End()
-   Button.destroyAll()
+   M.destroyButtons()
 end
 
 function M.MouseDown(x,y)
-   local b = Button.which(x,y)
+   local b = Button.which(M.buttons, x,y)
    if b then
 	  b:click(x,y)
    end
