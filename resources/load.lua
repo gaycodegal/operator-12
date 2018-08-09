@@ -1,102 +1,51 @@
 require("util")
 local isMain = Util.isMain()
-require("text/Text")
-require("ui/Button")
 require("ui/UIElement")
-require("battle/load")
-MapSelect = {}
-local M = MapSelect
+require("ui/ListButton")
+require("level-select/load")
+require("viewer/load")
+MainMenu = {}
+local M = MainMenu
 
-function M.LoadFile(self)
+function M.toMapSelect()
    M.End()
-   
-   Util.setController(Battle)
-   
-   Start(self.text)
+   Util.setController(MapSelect)
+   Start()
 end
 
-function M.destroyButtons()
-   for i,b in ipairs(M.buttons) do
-	  b:destroy()
-   end
-   M.buttons = {}
-end
-
-function M.updateForPage(p)
-   M.destroyButtons()
-   if p < 1 then
-	  p = 1
-   end
-   if p > #M.maps then
-	  p = #M.maps - 14
-   else
-	  M.page = p
-   end
-   for i = 0,15 do
-	  local name = M.maps[i+M.page]
-	  if name then
-		 M.buttons[i + 1] = Button.new({text=name, layout=M.named[i+1], color={0,0,200,255}, click=M.LoadFile})
-	  end
-   end
-end
-
-function M.KeyDown(key)
-   if key == KEY_ESCAPE then
-	  static.quit()
-   elseif key == KEY_UP then
-	  M.updateForPage(M.page - 14)
-   elseif key == KEY_DOWN then
-	  M.updateForPage(M.page + 14)
-   elseif key == KEY_LEFT then
-	  M.updateForPage(M.page - 14)
-   elseif key == KEY_RIGHT then
-	  M.updateForPage(M.page + 14)
-   end
-end
-
-function M.Start()
-   local btns = {}
-   M.buttons = {}
-   M.scene = {{s="screen",c=btns}}
-   for i = 1,16 do
-	  btns[i] = {n=i,s="button",d={(i-1)%4,(i-1)//4}}
-   end
-   M.named, M.scene = UIElement.getNamed(M.scene, dofile("ui/styles/main-menu.style.lua"))
-   --M.scene[1]:print()
-   framedelay = 1000/10
-   trueticks = framedelay
-   M.page = 1
-   M.maps = listdir("maps/")
-   M.updateForPage(M.page)
-   static.framedelay(framedelay)
-end
-
-function M.Resize(w, h)
-   SCREEN_WIDTH = w
-   SCREEN_HEIGHT = h
-   UIElement.recalc(M.scene)
-   M.updateForPage(M.page)
-end
-
-function M.Update(t, ticks)
-   --Update = static.quit
-   for i,b in ipairs(M.buttons) do
-	  b:draw()
-   end
-   local weight = 100
-   trueticks = max(1, (trueticks * weight + trueticks - (ticks - framedelay))//(weight + 1))
-   static.framedelay(trueticks)
-end
-
-function M.End()
-   M.destroyButtons()
+function M.toCredits()
+   M.End()
+   Util.setController(Viewer)
+   Start(3, {"viewer/load", "licenses/", "\n\n"})
 end
 
 function M.MouseDown(x,y)
-   local b = Button.which(M.buttons, x,y)
+   local b = M.buttons:which(x,y)
    if b then
-	  b:click(x,y)
+	  b:click()
    end
+end
+
+function M.Resize(w,h)
+   Util.Resize(w,h)
+   UIElement.recalc(M.scene)
+   M.buttons:resize()
+end
+
+function M.Start()
+   M.buttons = ListButton.new("menu", {M.toMapSelect,M.toCredits},{"Level Selection", "Credits/Thanks"}, 60, 10, 2)
+   M.scene = {{s="screen",c=M.buttons.c}}
+   M.named, M.scene = UIElement.getNamed(M.scene, getStyle("list-button"))
+   M.buttons:init(M.named)
+end
+
+function M.Update()
+   --Update=static.quit
+   M.buttons:draw()
+end
+
+function M.End()
+   M.buttons:destroy()
 end
 
 Util.try(isMain, M)

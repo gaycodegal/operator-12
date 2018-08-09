@@ -51,4 +51,10 @@ function max(x,y)
    return x
 end
 
+function merge(dst,src)
+   for k,v in pairs(src) do
+	  dst[k] = v
+   end
+end
+
 makeGlobal(Game)
