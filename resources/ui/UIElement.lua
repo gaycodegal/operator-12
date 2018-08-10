@@ -7,6 +7,14 @@ function getStyle(name)
    return dofile("ui/styles/"..name..".style.lua")
 end
 
+function getStyles(names)
+   local all = {}
+   for i, name in ipairs(names) do
+	  merge(all, getStyle(name))
+   end
+   return all
+end
+
 --[=[
 Creates UIElements
 Calculates their properties when loaded

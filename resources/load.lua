@@ -33,9 +33,14 @@ function M.Resize(w,h)
 end
 
 function M.Start()
-   M.buttons = ListButton.new("menu", {M.toMapSelect,M.toCredits},{"Level Selection", "Credits/Thanks"}, 60, 10, 2)
+   M.buttons = ListButton.new(
+	  "menu",
+	  {M.toMapSelect,M.toCredits},
+	  {"Level Selection", "Credits/Thanks"},
+	  60, 10, 2)
    M.scene = {{s="screen",c=M.buttons.c}}
-   M.named, M.scene = UIElement.getNamed(M.scene, getStyle("list-button"))
+   M.named, M.scene = UIElement.getNamed(
+	  M.scene, getStyles({"list-button", "screen"}))
    M.buttons:init(M.named)
 end
 
