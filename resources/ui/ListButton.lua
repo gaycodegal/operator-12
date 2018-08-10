@@ -16,7 +16,10 @@ function LB.new(name, fns, texts, height, space, align)
    self.texts = texts
    self.c = {}
    for i = 1,nb do
-	  self.c[i] = {n=self.name .. i,s="listButton",d={n=nb,align=align,s=space, h=height, i=(i-1)}}
+	  self.c[i] = {
+		 n=self.name .. i,
+		 s="listButton",
+		 d={n=nb, align=align, s=space, h=height, i=(i-1)}}
    end
    self.initialized = false
    return self
@@ -26,7 +29,11 @@ function LB:init(named)
    if not self.initialized then
 	  self.btns = {}
 	  for i=1,#self.fns do
-		 self.btns[i] = Button.new({text=self.texts[i], layout=named[self.name .. i], color={0,0,200,255}, click=self.fns[i]})
+		 self.btns[i] = Button.new({
+			   text=self.texts[i],
+			   layout=named[self.name .. i],
+			   color={0,0,200,255},
+			   click=self.fns[i]})
 	  end
 	  self.initialized = true
    end
@@ -48,6 +55,8 @@ function LB:destroy()
    for i,b in ipairs(self.btns) do
 	  b:destroy()
    end
+   self.initialized = false
+   self.btns = nil
 end
 
 function LB:which(x,y)
@@ -74,9 +83,14 @@ function LB.Resize(w,h)
 end
 
 function LB.Start()
-   LB.buttons = LB.new("boye", {LB.testClick,LB.testClick,LB.testClick,LB.testClick},{"a","bb", "cs", "doo", "eff"}, 60, 10, 2)
+   LB.buttons = LB.new(
+	  "boye",
+	  {LB.testClick,LB.testClick,LB.testClick,LB.testClick},
+	  {"a","bb", "cs", "doo", "eff"},
+	  60, 10, 2)
    LB.scene = {{s="screen",c=LB.buttons.c}}
-   LB.named, LB.scene = UIElement.getNamed(LB.scene, getStyle("list-button"))
+   LB.named, LB.scene = UIElement.getNamed(
+	  LB.scene, getStyles({"list-button", "screen"}))
    LB.buttons:init(LB.named)
 end
 
