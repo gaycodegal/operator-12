@@ -26,7 +26,6 @@ def matcher(obj):
 def listall(path):
     things = sorted([x for x in os.listdir(path) if x != ".contents.lua" and x.endswith(".lua") and x.count(".") == 1 and os.path.isfile(os.path.join(path, x))])
     for name in things:
-        #print(name)
         full = os.path.join(path, name)
         contents = ""
         with open(full, "r") as f:
@@ -36,8 +35,9 @@ def listall(path):
             continue
         p.sub(matcher, contents)
     for thing in os.listdir(path):
-        if os.path.isdir(thing):
-            listall(os.path.join(path, thing))
+        name = os.path.join(path, thing)
+        if os.path.isdir(name):
+            listall(name)
 
             
 
