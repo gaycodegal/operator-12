@@ -1,7 +1,7 @@
 require("util/static")
 Util = {}
 
---[[
+--[[--
    keyup fallback
 ]]
 function Util.KeyUp(key)
@@ -10,14 +10,14 @@ function Util.KeyUp(key)
    end
 end
 
---[[
+--[[--
    keydown fallback
 ]]
 function Util.KeyDown(key)
 
 end
 
---[[
+--[[--
    resize fallback
 
    @param w 
@@ -28,7 +28,7 @@ function Util.Resize(w, h)
    SCREEN_HEIGHT = h
 end
 
---[[
+--[[--
    mousedown fallback
 
    @param x 
@@ -38,7 +38,7 @@ function Util.MouseDown(x,y)
 
 end
 
---[[
+--[[--
    mousemove fallback
 
    @param x 
@@ -48,7 +48,7 @@ function Util.MouseMove(x,y)
 
 end
 
---[[
+--[[--
    fallback
 
    @param x 
@@ -58,7 +58,7 @@ function Util.MouseUp(x,y)
 
 end
 
---[[
+--[[--
    Take a class and make global the methods that are expected by C++
 
    @param controller 
@@ -74,7 +74,7 @@ function Util.setController(controller)
    end
 end
 
---[[
+--[[--
    First class to call this becomes main.
 
    Hence there is a pattern of the first import being `require("util")` followed by local `isMain = Util.isMain()` - this guarentees the first loaded class will be main. Other require calls should follow this pattern.
@@ -89,7 +89,7 @@ function Util.isMain()
    return true
 end
 
---[[
+--[[--
    Make a controller the current controller if it says it's main
 
    @param isMain usually returned from Util.isMain()
