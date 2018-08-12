@@ -3,6 +3,11 @@ Player = {}
 
 ---Player.__index = metareplacer(Player)
 
+--[[
+desc.
+
+@return
+]]
 function Player.prepareCurrentSlug()
    local slug = Player.slugs[Player.turni]
    local head = slug.head
@@ -13,18 +18,33 @@ function Player.prepareCurrentSlug()
    Player.slug:movementOverlay(Player.moves)
 end
 
+--[[
+desc.
+
+@return
+]]
 function Player.lose()
    End()
    Util.setController(MapSelect)
    Start()
 end
 
+--[[
+desc.
+
+@return
+]]
 function Player.win()
    End()
    Util.setController(MapSelect)
    Start()
 end
 
+--[[
+desc.
+
+@return
+]]
 function Player.returnControl()
    if Player.slug then
 	  Player.slug:destroyOverlay()
@@ -38,6 +58,11 @@ function Player.returnControl()
    active = nil
 end
 
+--[[
+desc.
+
+@return
+]]
 function Player.prepareForTurn()
    Player.slugs = {} -- active slugs
    Player.turni = 1 -- which slug's turn is it
@@ -59,6 +84,14 @@ function Player.prepareForTurn()
    Player.prepareCurrentSlug()   
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function Player.move(x, y)
    if Player.moves > 0 then
 	  if Player.slug:move(x,y) then
@@ -74,6 +107,14 @@ function Player.move(x, y)
    end
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function Player.attack(x,y)
    local ind = map:indexOf(x,y)
    local obj = map.objects[ind]

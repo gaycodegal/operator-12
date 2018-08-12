@@ -1,8 +1,12 @@
 require("util")
 local isMain = Util.isMain()
 
+--[[
+   Render to texture + glitch art.
+
+   Also a good demo of what textures can do currently
+]]
 function Start()
-   print("hi")
    t,w,h = Texture.new("images/headsprites.png")
    static.renderBlendmode(BLENDMODE_BLEND);
    tar = Texture.newTarget(SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -19,6 +23,9 @@ function Start()
    static.framedelay(1000//60)
 end
 
+--[[
+   draw some random colored copies
+]]
 function Update()
    local y = 20
    Texture.setRGBMask(tar,255,255,255)
@@ -28,12 +35,20 @@ function Update()
    --Update = static.quit
 end
 
+--[[
+   destroy shit
+]]
 function End()
    Texture.destroy(t)
    Texture.destroy(tar)
-   print("goodbye")
 end
 
+--[[
+   Render one colored copy of a portion of target texture to the screen
+
+   @param tar Texture to copy
+   @param r rect size of area to copy to
+]]
 function makeOneGlitch(tar, r)
    local d={}
    local e={}
@@ -61,10 +76,17 @@ function makeOneGlitch(tar, r)
    Texture.renderCopy(tar,d[1],d[2],d[3],d[4], e[1],e[2],d[3],d[4])
 end
 
+--[[
+   Render many colored copy of a portion of target texture to the screen
+
+   @param tar Texture to copy
+   @param r rect size of area to copy to
+]]
 function makeGlitch(tar, r)
    for i = 1,20 do
 	  makeOneGlitch(tar, r)
    end
 end
 
+--purely a test class, so I used globals and then just told Util to pull off the global env instead of a class
 Util.try(isMain, _G)

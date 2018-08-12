@@ -7,6 +7,13 @@ require("tiled/tilesets")
 Battle = {}
 local B = Battle
 
+--[[
+desc.
+
+@param name 
+
+@return
+]]
 function B.Start(name)
    dofile("slug/slug.lua")
    framedelay = 1000//60
@@ -23,6 +30,11 @@ function B.Start(name)
    static.framedelay(framedelay)
 end
 
+--[[
+desc.
+
+@return
+]]
 function B.Update()
    --Update = static.quit
    map:update()
@@ -32,6 +44,11 @@ function B.Update()
    end
 end
 
+--[[
+desc.
+
+@return
+]]
 function B.End()
    Tileset.destroyTilesets(overlay)
    overlay = nil
@@ -41,6 +58,13 @@ function B.End()
    map = nil
 end
 
+--[[
+desc.
+
+@param key 
+
+@return
+]]
 function B.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()
@@ -55,6 +79,13 @@ function B.KeyDown(key)
    end
 end
 
+--[[
+desc.
+
+@param key 
+
+@return
+]]
 function B.KeyUp(key)
    if key == KEY_ESCAPE then
 	  static.quit()
@@ -81,6 +112,14 @@ function B.KeyUp(key)
    end
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function B.MouseDown(x, y)
    if active ~= nil then
 	  local px, py = Map.positionToCoords(x,y)	  

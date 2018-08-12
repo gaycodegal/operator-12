@@ -104,6 +104,14 @@ function Segment.linkP(self, p)
    self.n = n
 end
 
+--[[
+desc.
+
+@param self 
+@param o 
+
+@return
+]]
 function Segment.cOf(self, o)
    if self.pos[2] > o.pos[2] then
 	  return 1
@@ -129,6 +137,13 @@ function Segment.insert(self, p, n)
    self.n = n
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Segment.print(self)
    print(self.slug.name, self.pos[1], self.pos[2])
 end

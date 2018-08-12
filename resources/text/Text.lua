@@ -60,6 +60,18 @@ function Text.charsInLineRev(text, width)
    return best
 end
 
+--[[
+desc.
+
+@param text 
+@param align 
+@param w 
+@param h 
+@param c 
+@param direction 
+
+@return
+]]
 function Text.textbox(text, align, w, h, c, direction)
    direction = direction or 1
    local charsInLine = Text.charsInLine
@@ -146,6 +158,16 @@ function Text.textbox(text, align, w, h, c, direction)
    return s2, len, l * th
 end
 
+--[[
+desc.
+
+@param text 
+@param w 
+@param h 
+@param direction 
+
+@return
+]]
 function Text.charsInTextbox(text, w, h, direction)
    direction = direction or 1
    local charsInLine = Text.charsInLine

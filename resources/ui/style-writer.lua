@@ -20,6 +20,14 @@ function Start(argc, argv)
    print("done")
 end
 
+--[[
+desc.
+
+@param fname 
+@param style 
+
+@return
+]]
 function generateStyle(fname, style)
    local handle = io.open(fname, "w")
    handle:write("return {\n")

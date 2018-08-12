@@ -5,6 +5,18 @@ require("ui/Button")
 ListButton = Class()
 local LB = ListButton
 
+--[[
+desc.
+
+@param name 
+@param fns 
+@param texts 
+@param height 
+@param space 
+@param align 
+
+@return
+]]
 function LB.new(name, fns, texts, height, space, align)
    space = space or 0
    height = height or 30
@@ -34,6 +46,13 @@ function LB.new(name, fns, texts, height, space, align)
    return self
 end
 
+--[[
+desc.
+
+@param named 
+
+@return
+]]
 function LB:init(named)
    if not self.initialized then
 	  self.btns = {}
@@ -51,18 +70,33 @@ function LB:init(named)
    end
 end
 
+--[[
+desc.
+
+@return
+]]
 function LB:resize()
    for i,b in ipairs(self.btns) do
 	  b:resize()
    end
 end
 
+--[[
+desc.
+
+@return
+]]
 function LB:draw()
    for i,b in ipairs(self.btns) do
 	  b:draw()
    end
 end
 
+--[[
+desc.
+
+@return
+]]
 function LB:destroy()
    for i,b in ipairs(self.btns) do
 	  b:destroy()
@@ -71,16 +105,37 @@ function LB:destroy()
    self.btns = nil
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function LB:which(x,y)
    return Button.which(self.btns, x,y)
 end
 
 -- TESTS BELOW
 
+--[[
+desc.
+
+@return
+]]
 function LB:testClick()
    print(self.text)
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function LB.MouseDown(x,y)
    local b = LB.buttons:which(x,y)
    if b then
@@ -88,12 +143,25 @@ function LB.MouseDown(x,y)
    end
 end
 
+--[[
+desc.
+
+@param w 
+@param h 
+
+@return
+]]
 function LB.Resize(w,h)
    Util.Resize(w,h)
    UIElement.recalc(LB.scene)
    LB.buttons:resize()
 end
 
+--[[
+desc.
+
+@return
+]]
 function LB.Start()
    require("ui/TextBox")
    LB.buttons = LB.new(
@@ -109,12 +177,22 @@ function LB.Start()
    LB.t = TextBox.new({text="testing testing 123", layout=LB.buttons.child})
 end
 
+--[[
+desc.
+
+@return
+]]
 function LB.Update()
    --Update=static.quit
    LB.buttons:draw()
    LB.t:draw()
 end
 
+--[[
+desc.
+
+@return
+]]
 function LB.End()
    LB.buttons:destroy()
    LB.t:destroy()

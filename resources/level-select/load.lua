@@ -7,6 +7,13 @@ require("battle/load")
 MapSelect = {}
 local M = MapSelect
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function M.LoadFile(self)
    M.End()
    
@@ -15,6 +22,11 @@ function M.LoadFile(self)
    Start(self.text)
 end
 
+--[[
+desc.
+
+@return
+]]
 function M.destroyButtons()
    for i,b in ipairs(M.buttons) do
 	  b:destroy()
@@ -22,6 +34,13 @@ function M.destroyButtons()
    M.buttons = {}
 end
 
+--[[
+desc.
+
+@param p 
+
+@return
+]]
 function M.updateForPage(p)
    M.destroyButtons()
    if p < 1 then
@@ -40,6 +59,13 @@ function M.updateForPage(p)
    end
 end
 
+--[[
+desc.
+
+@param key 
+
+@return
+]]
 function M.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()
@@ -54,6 +80,11 @@ function M.KeyDown(key)
    end
 end
 
+--[[
+desc.
+
+@return
+]]
 function M.Start()
    local btns = {}
    M.buttons = {}
@@ -61,7 +92,7 @@ function M.Start()
    for i = 1,16 do
 	  btns[i] = {n=i,s="button",d={(i-1)%4,(i-1)//4}}
    end
-   M.named, M.scene = UIElement.getNamed(M.scene, dofile("ui/styles/main-menu.style.lua"))
+   M.named, M.scene = UIElement.getNamed(M.scene, dofile("ui/styles/map-select.style.lua"))
    --M.scene[1]:print()
    framedelay = 1000/10
    trueticks = framedelay
@@ -71,6 +102,14 @@ function M.Start()
    static.framedelay(framedelay)
 end
 
+--[[
+desc.
+
+@param w 
+@param h 
+
+@return
+]]
 function M.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
@@ -78,6 +117,14 @@ function M.Resize(w, h)
    M.updateForPage(M.page)
 end
 
+--[[
+desc.
+
+@param t 
+@param ticks 
+
+@return
+]]
 function M.Update(t, ticks)
    --Update = static.quit
    for i,b in ipairs(M.buttons) do
@@ -88,10 +135,23 @@ function M.Update(t, ticks)
    static.framedelay(trueticks)
 end
 
+--[[
+desc.
+
+@return
+]]
 function M.End()
    M.destroyButtons()
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function M.MouseDown(x,y)
    local b = Button.which(M.buttons, x,y)
    if b then

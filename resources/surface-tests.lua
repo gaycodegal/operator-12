@@ -1,6 +1,11 @@
 require("util")
 local isMain = Util.isMain()
 
+--[[
+   Draws an image with a colored background
+
+   Demo of what surfaces can do
+]]
 function Start()
    print("hi")
    s = Surface.new("images/headsprites.png")
@@ -22,6 +27,9 @@ function Start()
    static.framedelay(1000//30)
 end
 
+--[[
+   draw shit
+]]
 function Update()
    --Update = static.quit
    for i, spr in ipairs(sprs) do
@@ -29,6 +37,9 @@ function Update()
    end
 end
 
+--[[
+   destroy shit
+]]
 function End()
    for i, t in ipairs(ts) do
 	  Texture.destroy(t)
@@ -39,4 +50,5 @@ function End()
    print("goodbye")
 end
 
+--purely a test class, so I used globals and then just told Util to pull off the global env instead of a class
 Util.try(isMain, _G)

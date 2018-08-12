@@ -46,6 +46,14 @@ function Map.new (data)
    return t
 end
 
+--[[
+desc.
+
+@param i 
+@param dat 
+
+@return
+]]
 function Map:makeTile(i, dat)
    local tilesets = self.tilesets
    local tmap = self.map
@@ -73,6 +81,13 @@ function Map:makeTile(i, dat)
    end
 end
 
+--[[
+desc.
+
+@param i 
+
+@return
+]]
 function Map:destroyTile(i)
    if self.map[i] then
 	  self.map[i]:destroy()
@@ -80,6 +95,14 @@ function Map:destroyTile(i)
    end
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function Map:indexOf(x,y)
    return (x-1) + (y - 1) * self.width + 1
 end
@@ -90,10 +113,26 @@ function Map:update()
    self.y = self.y - self.dy
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function Map:valid(x, y)
    return x >= 1 and y >= 1 and x <= self.width and y <= self.height
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function Map.positionToCoords(x,y)
    return (x - map.x)//(Map.tilesize + Map.tilesep) + 1,
    (y - map.y)//(Map.tilesize + Map.tilesep) + 1

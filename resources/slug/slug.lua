@@ -36,6 +36,14 @@ function Slug.new (self)
    return self
 end
 
+--[[
+desc.
+
+@param self 
+@param range 
+
+@return
+]]
 function Slug.movementOverlay(self, range)
    local diamond = self:listDiamond(range)
    local arrs = {overlay.named.up, overlay.named.right, overlay.named.down, overlay.named.left}
@@ -59,6 +67,15 @@ function Slug.movementOverlay(self, range)
    self.overlay = diamond
 end
 
+--[[
+desc.
+
+@param self 
+@param range 
+@param overlayFn 
+
+@return
+]]
 function Slug.basicOverlay(self, range, overlayFn)
    if not overlayFn then
 	  overlayFn = Slug.attackOverlayFn
@@ -75,6 +92,13 @@ function Slug.basicOverlay(self, range, overlayFn)
    self.overlay = diamond
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Slug.destroyOverlay(self)
    if self.overlay then
 	  for i,v in ipairs(self.overlay) do
@@ -86,6 +110,13 @@ function Slug.destroyOverlay(self)
    self.overlay = nil
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Slug.drawOverlay(self)
    if self.overlay then
 	  local x, y = Map.position(self.head.pos[1] + 1, self.head.pos[2] + 1)
@@ -97,10 +128,27 @@ function Slug.drawOverlay(self)
    end
 end
 
+--[[
+desc.
+
+@param x 
+@param y 
+
+@return
+]]
 function Slug.attackOverlayFn(x,y)
    return map:valid(x, y) and map.map[map:indexOf(x, y)]
 end
 
+--[[
+desc.
+
+@param self 
+@param size 
+@param overlayFn 
+
+@return
+]]
 function Slug.listDiamond2(self, size, overlayFn)
    -- >v, <v,<^,>^
    local deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
@@ -128,6 +176,14 @@ function Slug.listDiamond2(self, size, overlayFn)
    return lst
 end
 
+--[[
+desc.
+
+@param self 
+@param size 
+
+@return
+]]
 function Slug.listDiamond(self, size)
    -- >v, <v,<^,>^
    local q = {s=0,e=1,n=1}

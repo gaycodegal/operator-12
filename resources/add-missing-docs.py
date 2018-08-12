@@ -17,12 +17,12 @@ def listall(path):
         with open(full, "r") as f:
             contents = f.read()
         if bd.match(contents):
-            print("BAD")
+            #print("BAD")
             continue
         try:
             n = p.sub(matcher, contents)
             with open(full, "w") as f:
-                f.write(print(n))
+                f.write(n)
         except e:
             pass
         

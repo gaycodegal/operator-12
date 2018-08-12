@@ -63,6 +63,13 @@ local function SiftDown(heap, index)
 	end
 end
 
+--[[
+desc.
+
+@param comparator 
+
+@return
+]]
 function Heap.new(comparator)
 	local newHeap = { }
 	setmetatable(newHeap, Heap)
@@ -75,6 +82,13 @@ function Heap.new(comparator)
 	return newHeap
 end
 
+--[[
+desc.
+
+@param newValue 
+
+@return
+]]
 function Heap:insert(newValue)
 	table.insert(self, newValue)
 	
@@ -85,6 +99,11 @@ function Heap:insert(newValue)
 	SiftUp(self, #self)
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:pop()
 	if #self > 0 then
 		local toReturn = self[1]
@@ -99,6 +118,11 @@ function Heap:pop()
 	end
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:peek()
 	if #self > 0 then
 		return self[1]
@@ -107,6 +131,11 @@ function Heap:peek()
 	end
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:toTable()
 	local newTable = { }
 	for i = 1, #self do
@@ -115,12 +144,22 @@ function Heap:toTable()
 	return newTable
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:clear()
 	for k in pairs(self) do
 		self[k] = nil
 	end
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:print()
 	local out = ""
 	for i = 1, #self do
@@ -129,10 +168,20 @@ function Heap:print()
 	print(out)
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:size()
 	return #self
 end
 
+--[[
+desc.
+
+@return
+]]
 function Heap:clone()
 	local newHeap = Heap.new(self.Compare)
 	for i = 1, #self do
@@ -151,6 +200,15 @@ function Heap:Heapify(oldTable, comparator)
 	return newHeap
 end
 
+--[[
+desc.
+
+@param heap1 
+@param heap2 
+@param comparator 
+
+@return
+]]
 function Heap:Meld(heap1, heap2, comparator)
 	if not comparator then
 		comparator = heap1.Compare or heap2.Compare
