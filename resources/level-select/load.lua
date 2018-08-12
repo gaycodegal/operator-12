@@ -8,7 +8,7 @@ MapSelect = {}
 local M = MapSelect
 
 --[[
-   desc.
+   Button onclick
 
    @param self 
 

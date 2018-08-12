@@ -85,6 +85,11 @@ Just run `./main` after building is complete
 You can also specify which lua file to run as the main. For instance `./main surface-tests` will run the surface tests lua file as the main lua file.
 
 
+## Doxygen
+
+Run `python3 extract-docs.py > out.hidden.c && doxygen Doxyfile` to generate the docs. It's a horrible way to do it but it was easiest for me
+
+
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
