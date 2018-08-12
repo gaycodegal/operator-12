@@ -8,11 +8,11 @@ MapSelect = {}
 local M = MapSelect
 
 --[[
-desc.
+   desc.
 
-@param self 
+   @param self 
 
-@return
+   @return
 ]]
 function M.LoadFile(self)
    M.End()
@@ -23,9 +23,9 @@ function M.LoadFile(self)
 end
 
 --[[
-desc.
+   desc.
 
-@return
+   @return
 ]]
 function M.destroyButtons()
    for i,b in ipairs(M.buttons) do
@@ -35,11 +35,11 @@ function M.destroyButtons()
 end
 
 --[[
-desc.
+   desc.
 
-@param p 
+   @param p 
 
-@return
+   @return
 ]]
 function M.updateForPage(p)
    M.destroyButtons()
@@ -60,11 +60,11 @@ function M.updateForPage(p)
 end
 
 --[[
-desc.
+   desc.
 
-@param key 
+   @param key 
 
-@return
+   @return
 ]]
 function M.KeyDown(key)
    if key == KEY_ESCAPE then
@@ -81,9 +81,7 @@ function M.KeyDown(key)
 end
 
 --[[
-desc.
-
-@return
+   Loads list of available maps, will display them in a grid
 ]]
 function M.Start()
    local btns = {}
@@ -103,12 +101,10 @@ function M.Start()
 end
 
 --[[
-desc.
+   resize
 
-@param w 
-@param h 
-
-@return
+   @param w 
+   @param h 
 ]]
 function M.Resize(w, h)
    SCREEN_WIDTH = w
@@ -118,12 +114,10 @@ function M.Resize(w, h)
 end
 
 --[[
-desc.
+   Draw, also tries to keep it close to the target framerate as an experiment
 
-@param t 
-@param ticks 
-
-@return
+   @param t time since last frame as a fraction of a second
+   @param ticks true ticks (ms) between last frame, can be 0
 ]]
 function M.Update(t, ticks)
    --Update = static.quit
@@ -136,21 +130,19 @@ function M.Update(t, ticks)
 end
 
 --[[
-desc.
-
-@return
+   destroy shit
 ]]
 function M.End()
    M.destroyButtons()
 end
 
 --[[
-desc.
+   handle buttons
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 
-@return
+   @return
 ]]
 function M.MouseDown(x,y)
    local b = Button.which(M.buttons, x,y)
