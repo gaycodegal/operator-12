@@ -7,41 +7,35 @@ require("battle/load")
 MapSelect = {}
 local M = MapSelect
 
---[[
-   Button onclick
+--[[--
+   Button onclick, load map associated with button
 
-   @param self 
-
-   @return
+   @param self Button
 ]]
-function M.LoadFile(self)
+function MapSelect.LoadFile(self)
    M.End()
    
    Util.setController(Battle)
    
-   Start(self.text)
+   Start(2, {"battle/load", self.text})
 end
 
---[[
-   desc.
-
-   @return
+--[[--
+   Destroy all active buttons
 ]]
-function M.destroyButtons()
+function MapSelect.destroyButtons()
    for i,b in ipairs(M.buttons) do
 	  b:destroy()
    end
    M.buttons = {}
 end
 
---[[
-   desc.
+--[[--
+   page select which maps to display
 
-   @param p 
-
-   @return
+   @param p page number
 ]]
-function M.updateForPage(p)
+function MapSelect.updateForPage(p)
    M.destroyButtons()
    if p < 1 then
 	  p = 1
@@ -59,14 +53,12 @@ function M.updateForPage(p)
    end
 end
 
---[[
-   desc.
+--[[--
+   Turn page/quit
 
    @param key 
-
-   @return
 ]]
-function M.KeyDown(key)
+function MapSelect.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()
    elseif key == KEY_UP then
@@ -80,10 +72,10 @@ function M.KeyDown(key)
    end
 end
 
---[[
+--[[--
    Loads list of available maps, will display them in a grid
 ]]
-function M.Start()
+function MapSelect.Start()
    local btns = {}
    M.buttons = {}
    M.scene = {{s="screen",c=btns}}
@@ -106,7 +98,7 @@ end
    @param w 
    @param h 
 ]]
-function M.Resize(w, h)
+function MapSelect.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
    UIElement.recalc(M.scene)
@@ -119,7 +111,7 @@ end
    @param t time since last frame as a fraction of a second
    @param ticks true ticks (ms) between last frame, can be 0
 ]]
-function M.Update(t, ticks)
+function MapSelect.Update(t, ticks)
    --Update = static.quit
    for i,b in ipairs(M.buttons) do
 	  b:draw()
@@ -132,7 +124,7 @@ end
 --[[
    destroy shit
 ]]
-function M.End()
+function MapSelect.End()
    M.destroyButtons()
 end
 
@@ -144,7 +136,7 @@ end
 
    @return
 ]]
-function M.MouseDown(x,y)
+function MapSelect.MouseDown(x,y)
    local b = Button.which(M.buttons, x,y)
    if b then
 	  b:click(x,y)

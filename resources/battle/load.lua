@@ -5,16 +5,14 @@ require("ai/ai")
 require("ai/player")
 require("tiled/tilesets")
 Battle = {}
-local B = Battle
 
---[[
-desc.
+--[[--
+Load the slugs, load the map, prepare for battle
 
-@param name 
-
-@return
+@param argv[2] name of map to load
 ]]
-function B.Start(name)
+function Battle.Start(argc, argv)
+   name = argv[0]
    dofile("slug/slug.lua")
    framedelay = 1000//60
    if name == nil then
@@ -30,12 +28,10 @@ function B.Start(name)
    static.framedelay(framedelay)
 end
 
---[[
-desc.
-
-@return
+--[[--
+draw shit, update map
 ]]
-function B.Update()
+function Battle.Update()
    --Update = static.quit
    map:update()
    map:draw()
@@ -45,11 +41,9 @@ function B.Update()
 end
 
 --[[
-desc.
-
-@return
+destroy shit
 ]]
-function B.End()
+function Battle.End()
    Tileset.destroyTilesets(overlay)
    overlay = nil
    Slug.unload()
@@ -58,14 +52,12 @@ function B.End()
    map = nil
 end
 
---[[
-desc.
+--[[--
+   pan camera about map or quit
 
 @param key 
-
-@return
 ]]
-function B.KeyDown(key)
+function Battle.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()
    elseif key == KEY_UP then
@@ -79,14 +71,12 @@ function B.KeyDown(key)
    end
 end
 
---[[
-desc.
+--[[--
+Stop panning or quit
 
 @param key 
-
-@return
 ]]
-function B.KeyUp(key)
+function Battle.KeyUp(key)
    if key == KEY_ESCAPE then
 	  static.quit()
    elseif key == KEY_UP and map.dy < 0 then
@@ -113,18 +103,18 @@ function B.KeyUp(key)
 end
 
 --[[
-desc.
+   Trigger movement/attack or whatever other action is currently active
 
 @param x 
 @param y 
 
 @return
 ]]
-function B.MouseDown(x, y)
+function Battle.MouseDown(x, y)
    if active ~= nil then
 	  local px, py = Map.positionToCoords(x,y)	  
 	  active(px,py)
    end
 end
 
-Util.try(isMain, M)
+Util.try(isMain, Battle)

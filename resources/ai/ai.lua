@@ -1,10 +1,8 @@
 require("util")
 require("algorithms/Heap")
-AI = {}
+AI = Class()
 
-AI.__index = metareplacer(AI)
-
---[[
+--[[--
    creates a new AI
 
    @param algo Supposed to be algorithm to calculate distance/path or whatnot but like there's only one way we do that so kinda moot. Also should be reworked if we intend to have multiple algos
@@ -17,10 +15,10 @@ function AI.new (algo)
    return self
 end
 
---[[
-find all segments not on <nteam>
+--[[--
+   find all segments not on <nteam>
 
-@param nteam the team's number. Usually player's team is 1
+   @param nteam the team's number. Usually player's team is 1
 ]]
 function AI.findAll(nteam)
    local all = {}
@@ -34,7 +32,7 @@ function AI.findAll(nteam)
    return all
 end
 
---[[
+--[[--
    Prepare for each new AI controlled slug's turn
 ]]
 function AI.prepareCurrentSlug()
@@ -64,8 +62,8 @@ function AI.delay()
    AI.state = AI.move
 end
 
---[[
-Return control to the usurped class, trigger's player turn
+--[[--
+   Return control to the usurped class, trigger's player turn
 ]]
 function AI.returnControl()
    if AI.slug then
@@ -90,17 +88,23 @@ function AI.returnControl()
    Player.prepareForTurn()
 end
 
+--[[
+   score options by distance (for heap)
+
+   @param x
+   @param y
+]]
 local function scoreDist(x,y)
    return x[4] > y[4]
 end
 
---[[
-Calculates path between current enemy slug and position
+--[[--
+   Calculates path between current enemy slug and position
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 
-@return the path
+   @return the path
 ]]
 function AI.pathTo(x,y)
    local H = AI.manhatten
@@ -168,7 +172,7 @@ function AI.pathTo(x,y)
    return tmp
 end
 
---[[
+--[[--
    Prepare for the enemy's turn, where it will control all slugs in it's team.
    Usurps Update function
 ]]
@@ -201,23 +205,23 @@ function AI.prepareForEnemyTurns()
    static.framedelay(framedelay)
 end
 
---[[
+--[[--
    Moves the current slug a single tile, consumes one movement
    sets the AI state to attack when no moves are left
 ]]
 function AI.move()
    if AI.moves > 0 then
 	  --[=[local dx = math.min(math.max(AI.tpos[1]-AI.pos[1], -1), 1)
-	  local dy = math.min(math.max(AI.tpos[2]-AI.pos[2], -1), 1)
-	  local indx = map:indexOf(AI.pos[1] + dx,AI.pos[2])
-	  local indy = map:indexOf(AI.pos[1],AI.pos[2] + dy)
-	  if dx ~= 0 and dx + AI.pos[1] > 0 and dx + AI.pos[1] < map.width and map.map[indx] and ((not map.objects[indx]) or map.objects[indx].slug == AI.slug) then
+		 local dy = math.min(math.max(AI.tpos[2]-AI.pos[2], -1), 1)
+		 local indx = map:indexOf(AI.pos[1] + dx,AI.pos[2])
+		 local indy = map:indexOf(AI.pos[1],AI.pos[2] + dy)
+		 if dx ~= 0 and dx + AI.pos[1] > 0 and dx + AI.pos[1] < map.width and map.map[indx] and ((not map.objects[indx]) or map.objects[indx].slug == AI.slug) then
 		 AI.slug:move(AI.pos[1] + dx,AI.pos[2])
 		 AI.moves = AI.moves - 1
-	  elseif dy ~= 0 and dy + AI.pos[2] > 0 and dy + AI.pos[2] < map.height and map.map[indy] and ((not map.objects[indy]) or map.objects[indy].slug == AI.slug) then
+		 elseif dy ~= 0 and dy + AI.pos[2] > 0 and dy + AI.pos[2] < map.height and map.map[indy] and ((not map.objects[indy]) or map.objects[indy].slug == AI.slug) then
 		 AI.slug:move(AI.pos[1],AI.pos[2] + dy)
 		 AI.moves = AI.moves - 1
-	  else
+		 else
 		 AI.moves = 0
 		 end]=]
 	  if AI.path[AI.pathi] then
@@ -237,7 +241,7 @@ function AI.move()
    end
 end
 
---[[
+--[[--
    Does the enemy slug's attack, continues onto next slug or returns control to player if no slugs left to move
 ]]
 function AI.attack()
@@ -256,14 +260,14 @@ function AI.attack()
    end
 end
 
---[[
-Continue the enemy slug's turn
+--[[--
+   Continue the enemy slug's turn
 
-This update function does the enemy's turn part by part until there are no more parts and turns to take.
+   This update function does the enemy's turn part by part until there are no more parts and turns to take.
 
-A turn for an individual slug consists of targeting, moving, and attacking if posible.
+   A turn for an individual slug consists of targeting, moving, and attacking if posible.
 
-Once there are no more turns to process, control will revert to the usurped Update function
+   Once there are no more turns to process, control will revert to the usurped Update function
 ]]
 function AI.Update()
    --Update = static.quit
@@ -277,40 +281,40 @@ function AI.Update()
    end
 end
 
---[[
-Manhatten/taxicab distance between points a and b
+--[[--
+   Manhatten/taxicab distance between points a and b
 
-@param a 
-@param b 
+   @param a 
+   @param b 
 
-@return distance score
+   @return distance score
 ]]
 function AI.manhatten(a, b)
    return math.abs(a[1] - b[1]) + math.abs(a[2] - b[2])
 end
 
---[[
-comparator for manhatten function.
+--[[--
+   comparator for manhatten function.
 
-segments have a ._pos field temporarily, which provides the reference position they are to be compared with
+   segments have a ._pos field temporarily, which provides the reference position they are to be compared with
 
-@param a Slug segment
-@param b Slug segment
+   @param a Slug segment
+   @param b Slug segment
 
-@return whether distance from A to reference pos is less than B
+   @return whether distance from A to reference pos is less than B
 ]]
 function AI.mancomp (a, b)
    local c = AI.manhatten(a.pos, a._pos) < AI.manhatten(b.pos, a._pos)
    return c
 end
 
---[[
-Sort list of possible targets by distance
+--[[--
+   Sort list of possible targets by distance
 
-@param all list of segments that might be possible targets
-@param pos reference position
+   @param all list of segments that might be possible targets
+   @param pos reference position
 
-@return sorted list (same list)
+   @return sorted list (same list)
 ]]
 function AI.sortDist(all, pos)
    Segment._pos = pos

@@ -1,12 +1,8 @@
 require("slug/Skills")
 Player = {}
 
----Player.__index = metareplacer(Player)
-
---[[
-desc.
-
-@return
+--[[--
+   Prepares current slug to be controlled
 ]]
 function Player.prepareCurrentSlug()
    local slug = Player.slugs[Player.turni]
@@ -18,10 +14,8 @@ function Player.prepareCurrentSlug()
    Player.slug:movementOverlay(Player.moves)
 end
 
---[[
-desc.
-
-@return
+--[[--
+   Trigger player losing the battle
 ]]
 function Player.lose()
    End()
@@ -29,10 +23,8 @@ function Player.lose()
    Start()
 end
 
---[[
-desc.
-
-@return
+--[[--
+   Trigger player battle win
 ]]
 function Player.win()
    End()
@@ -40,10 +32,8 @@ function Player.win()
    Start()
 end
 
---[[
-desc.
-
-@return
+--[[--
+   wipe variables
 ]]
 function Player.returnControl()
    if Player.slug then
@@ -58,10 +48,8 @@ function Player.returnControl()
    active = nil
 end
 
---[[
-desc.
-
-@return
+--[[--
+   prepare for player turn
 ]]
 function Player.prepareForTurn()
    Player.slugs = {} -- active slugs
@@ -84,13 +72,11 @@ function Player.prepareForTurn()
    Player.prepareCurrentSlug()   
 end
 
---[[
-desc.
+--[[--
+   Player move a slug by one tile
 
-@param x 
-@param y 
-
-@return
+   @param x 
+   @param y 
 ]]
 function Player.move(x, y)
    if Player.moves > 0 then
@@ -107,13 +93,13 @@ function Player.move(x, y)
    end
 end
 
---[[
-desc.
+--[[--
+   Player attempt attack
 
-@param x 
-@param y 
+   if the player chooses an invalid square it will 
 
-@return
+   @param x 
+   @param y 
 ]]
 function Player.attack(x,y)
    local ind = map:indexOf(x,y)
