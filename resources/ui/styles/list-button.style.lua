@@ -13,13 +13,28 @@ self.x = p.x
 self.y = y
 end
 },
-screen = {e={},
+lbContainer = {e={},
 resize=function(self)
 local d = self.d
-self.h = SCREEN_HEIGHT
-self.w = SCREEN_WIDTH
-self.x = 0
-self.y = 0
+local p=self.p
+self.h = p.h
+self.w = p.w
+self.x = p.x
+self.y = p.y
+end
+},
+lbChild = {e={},
+resize=function(self)
+local d = self.d
+local p=self.p
+local h=d.h
+local th=(d.n * h + (d.n - 1) * d.s)
+local a=d.align
+local y=p.y + ((a==3 and 0) or th)
+self.h = p.h-th
+self.w = p.w
+self.x = p.x
+self.y = y
 end
 },
 }

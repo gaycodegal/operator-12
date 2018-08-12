@@ -1,4 +1,5 @@
-require("util/static")
+require("util")
+local isMain = Util.isMain()
 require("ui/UIElement")
 require("text/Text")
 TextBox = Class()
@@ -70,24 +71,23 @@ function TextBox:destroy()
    end
 end
 
-if not Start then
-   dofile("util.lua")
-   function Start()
-	  style = getStyle("test/textbox")
-	  scene = {{s="screen",c={
-				   {n="box",s="box"}
-			  }}}
-	  named,scene = UIElement.getNamed(scene, style)
-	  t = TextBox.new({text=dofile("text/loremipsum.lua"), layout=named.box})
-   end
-
-   function Update()
-	  --Update = static.quit
-	  t:draw()
-   end
-
-   function End()
-	  t:destroy()
-   end
+function TextBox.Start()
+   TextBox.style = getStyle("test/textbox")
+   TextBox.scene = {{s="screen",c={
+				{n="box",s="box"}
+		   }}}
+   TextBox.named,TextBox.scene = UIElement.getNamed(TextBox.scene, TextBox.style)
+   TextBox.t = TextBox.new({text="testing testing 123", layout=TextBox.named.box})
 end
 
+function TextBox.Update()
+   --Update = static.quit
+   TextBox.t:draw()
+end
+
+function TextBox.End()
+   TextBox.t:destroy()
+end
+
+
+Util.try(isMain, TextBox)
