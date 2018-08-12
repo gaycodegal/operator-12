@@ -4,6 +4,13 @@ require("ui/UIElement")
 require("text/Text")
 TextBox = Class()
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function TextBox.new(self)
    setmetatable(self, TextBox)
    local layout = self.layout
@@ -15,17 +22,37 @@ function TextBox.new(self)
    return self
 end
 
+--[[
+desc.
+
+@param text 
+@param start 
+
+@return
+]]
 function TextBox:setText(text, start)
    self.start = start or 0
    self.text = text
    self:resize()
 end
 
+--[[
+desc.
+
+@param start 
+
+@return
+]]
 function TextBox:setStart(start)
    self.start = start or 0
    self:resize()
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox:resize()
    self:destroy()
    self.rect = self.layout:rect()
@@ -58,10 +85,20 @@ function TextBox:resize()
 
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox:draw()
    self.spr:draw(0,0)
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox:destroy()
    if self.spr then
 	  self.spr:destroy()
@@ -71,6 +108,11 @@ function TextBox:destroy()
    end
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox.Start()
    TextBox.style = getStyle("test/textbox")
    TextBox.scene = {{s="screen",c={
@@ -80,11 +122,21 @@ function TextBox.Start()
    TextBox.t = TextBox.new({text="testing testing 123", layout=TextBox.named.box})
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox.Update()
    --Update = static.quit
    TextBox.t:draw()
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox.End()
    TextBox.t:destroy()
 end

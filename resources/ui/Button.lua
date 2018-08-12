@@ -2,6 +2,15 @@ require("util/static")
 require("text/Text")
 Button = Class()
 
+--[[
+desc.
+
+@param buttons 
+@param x 
+@param y 
+
+@return
+]]
 function Button.which(buttons,x,y)
    local r
    for i,b in ipairs(buttons) do
@@ -20,6 +29,11 @@ function Button.new (self)
    return self
 end
 
+--[[
+desc.
+
+@return
+]]
 function Button:resize()
    self.rect = self.layout:rect()
    local r = self.rect
@@ -35,6 +49,11 @@ function Button:resize()
    Surface.destroy(s2)
 end
 
+--[[
+desc.
+
+@return
+]]
 function Button:draw()
    self.spr:draw(0,0)
 end

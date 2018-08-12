@@ -3,10 +3,24 @@ require("util")
 UIElement = {named={}}
 UIElement.__index = metareplacer(UIElement)
 
+--[[
+desc.
+
+@param name 
+
+@return
+]]
 function getStyle(name)
    return dofile("ui/styles/"..name..".style.lua")
 end
 
+--[[
+desc.
+
+@param names 
+
+@return
+]]
 function getStyles(names)
    local all = {}
    for i, name in ipairs(names) do

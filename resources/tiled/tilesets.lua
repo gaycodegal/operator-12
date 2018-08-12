@@ -15,6 +15,13 @@ function Tileset.tilefinder(self, dat)
    return j, dat
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Tileset.destroyTilesets(self)
    for i, v in ipairs(self) do
 	  if v.surface then
@@ -26,6 +33,13 @@ function Tileset.destroyTilesets(self)
    end
 end
 
+--[[
+desc.
+
+@param color 
+
+@return
+]]
 function parseColor(color)
    local l = #color
    local t = l // 6-- 0 if 3-4, 1 if 6-8
@@ -44,6 +58,15 @@ function parseColor(color)
    return r,g,b,a
 end
 
+--[[
+desc.
+
+@param self 
+@param set 
+@param dat 
+
+@return
+]]
 function Tileset.initTile(self, set, dat)
    local tex = {}
    tex.tex = set.sheet
@@ -54,6 +77,13 @@ function Tileset.initTile(self, set, dat)
    return tex
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Tileset.loadSurfaces(self)
    self.named = {}
    setmetatable(self, Tileset)
@@ -103,6 +133,13 @@ function Tileset.loadSurfaces(self)
    end
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Tileset.colorBridge(self)
    local sep = map.tilesep
    for i, v in ipairs(self) do
@@ -135,6 +172,13 @@ function Tileset.colorBridge(self)
    end
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Tileset.asTextures(self)
    for i, v in ipairs(self) do
 	  v.sheet = Surface.textureFrom(v.surface)
@@ -143,6 +187,13 @@ function Tileset.asTextures(self)
    end   
 end
 
+--[[
+desc.
+
+@param self 
+
+@return
+]]
 function Tileset.loadTilesets(self)
    local k = 0
    for i, v in ipairs(self) do

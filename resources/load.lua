@@ -7,18 +7,30 @@ require("viewer/load")
 MainMenu = {}
 local M = MainMenu
 
+--[[
+   on click callback to load map select
+]]
 function M.toMapSelect()
    M.End()
    Util.setController(MapSelect)
    Start()
 end
 
+--[[
+   on click callback to load credits
+]]
 function M.toCredits()
    M.End()
    Util.setController(Viewer)
    Start(3, {"viewer/load", "licenses/", "\n\n"})
 end
 
+--[[
+   click button
+
+   @param x 
+   @param y 
+]]
 function M.MouseDown(x,y)
    local b = M.buttons:which(x,y)
    if b then
@@ -26,12 +38,21 @@ function M.MouseDown(x,y)
    end
 end
 
+--[[
+   resize
+
+   @param w 
+   @param h 
+]]
 function M.Resize(w,h)
    Util.Resize(w,h)
    UIElement.recalc(M.scene)
    M.buttons:resize()
 end
 
+--[[
+   Basic menu setup
+]]
 function M.Start()
    M.buttons = ListButton.new(
 	  "menu",
@@ -44,11 +65,17 @@ function M.Start()
    M.buttons:init(M.named)
 end
 
+--[[
+   draw shit
+]]
 function M.Update()
    --Update=static.quit
    M.buttons:draw()
 end
 
+--[[
+   destroy shit
+]]
 function M.End()
    M.buttons:destroy()
 end

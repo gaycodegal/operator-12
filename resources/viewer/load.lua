@@ -4,6 +4,14 @@ require("text/Text")
 Viewer = {}
 local V = Viewer
 
+--[[
+desc.
+
+@param dir 
+@param sep 
+
+@return
+]]
 function V.readAll(dir, sep)
    local texts = {}
    local sources = listdir(dir)
@@ -15,6 +23,14 @@ function V.readAll(dir, sep)
    return table.concat(texts, sep)
 end
 
+--[[
+desc.
+
+@param argc 
+@param argv 
+
+@return
+]]
 function V.Start(argc, argv)
    if argc < 3 then	
 	  argv = {"viewer/load", "licenses/", "\n\n"}
@@ -23,12 +39,25 @@ function V.Start(argc, argv)
    V.reset()
 end
 
+--[[
+desc.
+
+@param w 
+@param h 
+
+@return
+]]
 function V.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
    V.reset()
 end
 
+--[[
+desc.
+
+@return
+]]
 function V.reset()
    local text = V.stext
    V.texts = {}
@@ -44,6 +73,11 @@ function V.reset()
    V.updateForPage(1)
 end
 
+--[[
+desc.
+
+@return
+]]
 function V.free()
    if V.tex then
 	  Texture.destroy(V.tex)
@@ -55,6 +89,13 @@ function V.free()
    V.spr = nil
 end
 
+--[[
+desc.
+
+@param p 
+
+@return
+]]
 function V.updateForPage(p)
    if V.texts[p] == nil then
 	  return
@@ -67,16 +108,33 @@ function V.updateForPage(p)
    Surface.destroy(sbox)
 end
 
+--[[
+desc.
+
+@return
+]]
 function V.Update()
    --Update = static.quit
    V.spr:draw(0,0)
 end
 
+--[[
+desc.
+
+@return
+]]
 function V.End()
    V.free()
    V.stext = nil
 end
 
+--[[
+desc.
+
+@param key 
+
+@return
+]]
 function V.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()

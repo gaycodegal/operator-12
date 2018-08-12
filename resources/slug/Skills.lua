@@ -99,6 +99,14 @@ function Heal.act(initiator, object, _, _, _)
    end
 end
 
+--[[
+desc.
+
+@param object 
+@param frees 
+
+@return
+]]
 function Heal.addAllFreeNear(object, frees)
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
    local pos = object.pos
