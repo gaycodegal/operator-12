@@ -1,25 +1,25 @@
 require("util")
 
 UIElement = {named={}}
-UIElement.__index = metareplacer(UIElement)
+meta(UIElement)
 
---[[
-desc.
+--[[--
+load a style from disk
 
-@param name 
+@param name style's name
 
-@return
+@return said style
 ]]
 function getStyle(name)
    return dofile("ui/styles/"..name..".style.lua")
 end
 
---[[
-desc.
+--[[--
+load multiple styles
 
-@param names 
+@param names all them boye's names
 
-@return
+@return all dem styles as one
 ]]
 function getStyles(names)
    local all = {}
@@ -29,13 +29,15 @@ function getStyles(names)
    return all
 end
 
---[=[
+--[[--
 Creates UIElements
 Calculates their properties when loaded
+
 @param e Elements list to render
 @param parent parent of current element list (nil is fine)
+
 @return table of named entities; Array.<UIElement> generated elements
-]=]
+]]
 function UIElement.getNamed(e,style,parent)
    UIElement.named = {}
    local scene = UIElement.fromStatic(e,style,parent)
@@ -44,12 +46,14 @@ function UIElement.getNamed(e,style,parent)
    return named, scene
 end
 
---[=[
+--[[--
 Creates UIElements
+
 @param e Elements list to render
 @param parent parent of current element list (nil is fine)
+
 @return Array.<UIElement> generated elements
-]=]
+]]
 function UIElement.fromStatic(e,style,parent)
    local resize
    local level = {}
@@ -75,11 +79,12 @@ function UIElement.fromStatic(e,style,parent)
    return level
 end
 
---[=[
+--[[--
 Calculates/recalcs element properties
 and subchildren
+
 @param e Elements list to operate on
-]=]
+]]
 function UIElement.recalc(e)
    for k,v in ipairs(e) do
 	  v:resize()
@@ -89,13 +94,16 @@ function UIElement.recalc(e)
    end
 end
 
---[=[
+--[[--
 Calculates/recalcs element properties
+
 @param d Data table
 @param resize onResize function
 @param nchildren number of children
 @param parent of elem
-]=]
+
+@return new boy
+]]
 function UIElement.new(d,layout,nchildren,parent)
    local self = {d=d,resize=layout.resize,e=layout.e,nc=nchildren,p=parent}
    setmetatable(self, UIElement)
@@ -103,9 +111,9 @@ function UIElement.new(d,layout,nchildren,parent)
 end
 
 
---[=[
+--[[--
 Prints self and children
-]=]
+]]
 function UIElement:print()
    print(self.n, self.x, self.y, self.w, self.h)
    if self.c then
@@ -115,9 +123,10 @@ function UIElement:print()
    end
 end
 
---[=[
-@return {x,y,w,h}
-]=]
+--[[--
+   get boy's rect
+   @return {x,y,w,h}
+]]
 function UIElement:rect()
    return {self.x, self.y, self.w, self.h}
 end
