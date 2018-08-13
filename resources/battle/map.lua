@@ -1,13 +1,17 @@
 require("util")
-Map = {}
-
-Map.__index = metareplacer(Map)
+Map = Class()
 
 Map.tilesep = 10
 Map.tilesize = 40 -- rewritten
 
--- create a new Map
--- assumes control of data
+--[[--
+   create a new Map
+
+   could display in a more efficient way but like it works fine.
+   
+   @param data passed in from Tiled data
+   (map assumes control of data)/will corrupt it.
+]]
 function Map.new (data)
    tilew = data.tilesets[1].tilewidth
    tileh = data.tilesets[1].tileheight
@@ -46,13 +50,11 @@ function Map.new (data)
    return t
 end
 
---[[
-desc.
+--[[--
+   make a map tile, adds it to the map
 
-@param i 
-@param dat 
-
-@return
+   @param i map index
+   @param dat tile number
 ]]
 function Map:makeTile(i, dat)
    local tilesets = self.tilesets
@@ -81,12 +83,10 @@ function Map:makeTile(i, dat)
    end
 end
 
---[[
-desc.
+--[[--
+   destroy an individual tile
 
-@param i 
-
-@return
+   @param i map index
 ]]
 function Map:destroyTile(i)
    if self.map[i] then
@@ -95,50 +95,54 @@ function Map:destroyTile(i)
    end
 end
 
---[[
-desc.
+--[[--
+   convert x,y map postion to an index
 
-@param x 
-@param y 
+   @param x 1 based x index
+   @param y 1 based x index
 
-@return
+   @return map index
 ]]
 function Map:indexOf(x,y)
    return (x-1) + (y - 1) * self.width + 1
 end
 
--- map game logic
+--[[--
+   pan map
+]]
 function Map:update()
    self.x = self.x - self.dx
    self.y = self.y - self.dy
 end
 
---[[
-desc.
+--[[--
+   is an (x,y) coord in bounds
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 
-@return
+   @return in bounds
 ]]
 function Map:valid(x, y)
    return x >= 1 and y >= 1 and x <= self.width and y <= self.height
 end
 
---[[
-desc.
+--[[--
+   convert input position to map coordinates
 
-@param x 
-@param y 
+   @param x Screen-space position
+   @param y Screen-space position
 
-@return
+   @return x, y - map-space postion
 ]]
 function Map.positionToCoords(x,y)
    return (x - map.x)//(Map.tilesize + Map.tilesep) + 1,
    (y - map.y)//(Map.tilesize + Map.tilesep) + 1
 end
 
--- get map pixel position from grid coords
+--[[
+   get map pixel position from grid coords
+]]
 function Map.position(x,y)
    --ehhhhhh global var abuse but like who cares rn
    return ((x - 1) * (Map.tilesize + Map.tilesep) + map.x), ((y - 1) * (Map.tilesize + Map.tilesep) + map.y)

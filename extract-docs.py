@@ -11,7 +11,11 @@ def matcher(obj):
     fname = obj.group(3).strip().split(".")
     fobj = ""
     if len(fname) > 1:
-        fobj = ".".join(fname[:-1])
+        if ":" in fname[-1]:
+            fname = ".".join(fname[:-1]).split(":")
+            fobj = fname[0]
+        else:
+            fobj = ".".join(fname[:-1])
     fname = fname[-1]
     if not (fobj in classes):
         classes[fobj] = True
