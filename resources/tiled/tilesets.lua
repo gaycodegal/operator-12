@@ -1,9 +1,12 @@
 require("util")
-Tileset = {}
-Tileset.__index = metareplacer(Tileset)
+Tileset = Class()
 
--- find tile index <dat>
-function Tileset.tilefinder(self, dat)
+--[[--
+   find tile index `dat`
+   @param dat
+   @return false or `sheet index`, `position in sheet`
+]]
+function Tileset:tilefinder(dat)
    local j = 1
    if dat <= 0 then
 	  return false
@@ -15,14 +18,10 @@ function Tileset.tilefinder(self, dat)
    return j, dat
 end
 
---[[
-desc.
-
-@param self 
-
-@return
+--[[--
+   destroy
 ]]
-function Tileset.destroyTilesets(self)
+function Tileset:destroyTilesets()
    for i, v in ipairs(self) do
 	  if v.surface then
 		 Surface.destroy(v.surface)
@@ -33,12 +32,12 @@ function Tileset.destroyTilesets(self)
    end
 end
 
---[[
-desc.
-
-@param color 
-
-@return
+--[[--
+   parse a hex color
+   
+   @param color 
+   
+   @return array version of color
 ]]
 function parseColor(color)
    local l = #color
@@ -58,16 +57,15 @@ function parseColor(color)
    return r,g,b,a
 end
 
---[[
-desc.
+--[[--
+   init a tile
 
-@param self 
-@param set 
-@param dat 
-
-@return
+   @param set 
+   @param dat 
+   
+   @return new Tile
 ]]
-function Tileset.initTile(self, set, dat)
+function Tileset:initTile(set, dat)
    local tex = {}
    tex.tex = set.sheet
    tex.w = set.tilewidth
@@ -77,14 +75,10 @@ function Tileset.initTile(self, set, dat)
    return tex
 end
 
---[[
-desc.
-
-@param self 
-
-@return
+--[[--
+   load own surfaces
 ]]
-function Tileset.loadSurfaces(self)
+function Tileset:loadSurfaces()
    self.named = {}
    setmetatable(self, Tileset)
    for i, v in ipairs(self) do
@@ -134,13 +128,9 @@ function Tileset.loadSurfaces(self)
 end
 
 --[[
-desc.
-
-@param self 
-
-@return
+   create the color bridges for a sheet w/colors
 ]]
-function Tileset.colorBridge(self)
+function Tileset:colorBridge()
    local sep = map.tilesep
    for i, v in ipairs(self) do
 	  if v.tiles[1].properties.color then
@@ -173,13 +163,9 @@ function Tileset.colorBridge(self)
 end
 
 --[[
-desc.
-
-@param self 
-
-@return
+   surfaces to textures, destroy surfaces
 ]]
-function Tileset.asTextures(self)
+function Tileset:asTextures()
    for i, v in ipairs(self) do
 	  v.sheet = Surface.textureFrom(v.surface)
 	  Surface.destroy(v.surface)
@@ -188,13 +174,9 @@ function Tileset.asTextures(self)
 end
 
 --[[
-desc.
-
-@param self 
-
-@return
+   load all tilesets
 ]]
-function Tileset.loadTilesets(self)
+function Tileset:loadTilesets()
    local k = 0
    for i, v in ipairs(self) do
 	  if v.tiles[1].type and #v.tiles[1].type then
