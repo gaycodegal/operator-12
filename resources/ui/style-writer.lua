@@ -1,15 +1,18 @@
 require("ui/UIElement")
 require("data/save")
---[=[
-Takes stylesheet lua files and converts
-them into functions that will calculate
-their size automatically. Useful for when
-you need elements that can respond to
-screen resizing.
+--[[--
+   Takes stylesheet lua files and converts
+   them into functions that will calculate
+   their size automatically. Useful for when
+   you need elements that can respond to
+   screen resizing.
 
-usage:
-./main ui/style-writer <name>
-]=]
+   usage:
+   `./main ui/style-writer <name>`
+
+   @param argc
+   @param argv[2] style to convert
+]]
 function Start(argc, argv)
    if argc < 2 then
 	  print("usage:")
@@ -20,13 +23,11 @@ function Start(argc, argv)
    print("done")
 end
 
---[[
-desc.
+--[[--
+   take a filename and a style and generate the resize function etc and write it to disk at `fname`
 
-@param fname 
-@param style 
-
-@return
+   @param fname 
+   @param style 
 ]]
 function generateStyle(fname, style)
    local handle = io.open(fname, "w")
