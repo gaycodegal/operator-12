@@ -10,10 +10,12 @@ def matcher(obj):
     doc = (obj.group(1))
     fname = obj.group(3).strip().split(".")
     fobj = ""
-    if len(fname) > 1:
+    member = False
+    if len(fname) >= 1:
         if ":" in fname[-1]:
-            fname = ".".join(fname[:-1]).split(":")
+            fname = ".".join(fname).split(":")
             fobj = fname[0]
+            member = True
         else:
             fobj = ".".join(fname[:-1])
     fname = fname[-1]
@@ -22,8 +24,14 @@ def matcher(obj):
         print("/** @class", fobj, "*/")
     print("/**")
     print(doc)
-    print("   @relates", fobj)
-    print("   @name", fname)
+    if fobj.strip() == "":
+        fobj = "_G"
+    
+    if member:
+        print("   @memberof", fobj)
+    else:
+        print("   @relates", fobj)
+    #print("   @name", fname)
     print("   @fn", obj.group(2))
     print("*/")
     return "tst"
