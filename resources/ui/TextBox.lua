@@ -4,12 +4,12 @@ require("ui/UIElement")
 require("text/Text")
 TextBox = Class()
 
---[[
-desc.
+--[[--
+   Create a new textbox
 
-@param self 
+   @param self 
 
-@return
+   @return new textbox
 ]]
 function TextBox.new(self)
    setmetatable(self, TextBox)
@@ -22,13 +22,11 @@ function TextBox.new(self)
    return self
 end
 
---[[
-desc.
+--[[--
+   set boy's text
 
-@param text 
-@param start 
-
-@return
+   @param text 
+   @param start 
 ]]
 function TextBox:setText(text, start)
    self.start = start or 0
@@ -36,22 +34,18 @@ function TextBox:setText(text, start)
    self:resize()
 end
 
---[[
-desc.
+--[[--
+   set start position (doesn't do much yet? I forget)
 
-@param start 
-
-@return
+   @param start 
 ]]
 function TextBox:setStart(start)
    self.start = start or 0
    self:resize()
 end
 
---[[
-desc.
-
-@return
+--[[--
+   resize the boy
 ]]
 function TextBox:resize()
    self:destroy()
@@ -60,10 +54,10 @@ function TextBox:resize()
    local text = self.text
    if self.direction == 2 then
 	  local len, h = Text.charsInTextbox(
-	  self.text,
-	  r[3],
-	  r[4],
-	  2)
+		 self.text,
+		 r[3],
+		 r[4],
+		 2)
 	  text = string.sub(text, #text - len + 1, -1)
    end
    local s, l, h = Text.textbox(
@@ -85,19 +79,19 @@ function TextBox:resize()
 
 end
 
---[[
-desc.
+--[[--
+   desc.
 
-@return
+   @return
 ]]
 function TextBox:draw()
    self.spr:draw(0,0)
 end
 
---[[
-desc.
+--[[--
+   desc.
 
-@return
+   @return
 ]]
 function TextBox:destroy()
    if self.spr then
@@ -109,23 +103,19 @@ function TextBox:destroy()
 end
 
 --[[
-desc.
-
-@return
+   start the boy's tests
 ]]
 function TextBox.Start()
    TextBox.style = getStyle("test/textbox")
    TextBox.scene = {{s="screen",c={
-				{n="box",s="box"}
-		   }}}
+						{n="box",s="box"}
+				   }}}
    TextBox.named,TextBox.scene = UIElement.getNamed(TextBox.scene, TextBox.style)
    TextBox.t = TextBox.new({text="testing testing 123", layout=TextBox.named.box})
 end
 
 --[[
-desc.
-
-@return
+   draw
 ]]
 function TextBox.Update()
    --Update = static.quit
@@ -133,9 +123,7 @@ function TextBox.Update()
 end
 
 --[[
-desc.
-
-@return
+   end
 ]]
 function TextBox.End()
    TextBox.t:destroy()
