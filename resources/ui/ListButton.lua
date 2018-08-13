@@ -5,19 +5,25 @@ require("ui/Button")
 ListButton = Class()
 local LB = ListButton
 
---[[
-desc.
+--[[--
+   creates a new list button
 
-@param name 
-@param fns 
-@param texts 
-@param height 
-@param space 
-@param align 
+   a ui element that contains multiple buttons in a list, and possibly a space for some text above or below it.
 
-@return
+   if align = 2 then there is no child container space
+
+   MUST CALL init before use
+   
+   @param name unique id
+   @param fns callbacks for buttons
+   @param texts texts for buttons
+   @param height height of one button
+   @param space space between buttons
+   @param align {1=align button top, 2=middle, 3=bottom}
+
+   @return new list button
 ]]
-function LB.new(name, fns, texts, height, space, align)
+function ListButton.new(name, fns, texts, height, space, align)
    space = space or 0
    height = height or 30
    local nb = #fns
@@ -46,22 +52,20 @@ function LB.new(name, fns, texts, height, space, align)
    return self
 end
 
---[[
-desc.
+--[[--
+   finish initialize button once layout is loaded
 
-@param named 
-
-@return
+   @param named Named ui elements
 ]]
-function LB:init(named)
+function ListButton:init(named)
    if not self.initialized then
 	  self.btns = {}
 	  for i=1,#self.fns do
 		 table.insert(self.btns, Button.new({
-			   text=self.texts[i],
-			   layout=named[self.name .. i],
-			   color={0,0,200,255},
-			   click=self.fns[i]}))
+							text=self.texts[i],
+							layout=named[self.name .. i],
+							color={0,0,200,255},
+							click=self.fns[i]}))
 	  end
 	  if self.align ~= 2 then
 		 self.child=named[self.name .. "-c"]
@@ -70,34 +74,28 @@ function LB:init(named)
    end
 end
 
---[[
-desc.
-
-@return
+--[[--
+   resize my boy
 ]]
-function LB:resize()
+function ListButton:resize()
    for i,b in ipairs(self.btns) do
 	  b:resize()
    end
 end
 
---[[
-desc.
-
-@return
+--[[--
+   draw my boy
 ]]
-function LB:draw()
+function ListButton:draw()
    for i,b in ipairs(self.btns) do
 	  b:draw()
    end
 end
 
---[[
-desc.
-
-@return
+--[[--
+   destroy my boy
 ]]
-function LB:destroy()
+function ListButton:destroy()
    for i,b in ipairs(self.btns) do
 	  b:destroy()
    end
@@ -105,38 +103,34 @@ function LB:destroy()
    self.btns = nil
 end
 
---[[
-desc.
+--[[--
+   which of our boys was pressed
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 
-@return
+   @return that boy, index or just like nil
 ]]
-function LB:which(x,y)
+function ListButton:which(x,y)
    return Button.which(self.btns, x,y)
 end
 
 -- TESTS BELOW
 
 --[[
-desc.
-
-@return
+   test click callback
 ]]
-function LB:testClick()
+function ListButton:testClick()
    print(self.text)
 end
 
 --[[
-desc.
+   click our boys
 
-@param x 
-@param y 
-
-@return
+   @param x 
+   @param y 
 ]]
-function LB.MouseDown(x,y)
+function ListButton.MouseDown(x,y)
    local b = LB.buttons:which(x,y)
    if b then
 	  b:click()
@@ -144,25 +138,21 @@ function LB.MouseDown(x,y)
 end
 
 --[[
-desc.
+   resize scene
 
-@param w 
-@param h 
-
-@return
+   @param w 
+   @param h 
 ]]
-function LB.Resize(w,h)
+function ListButton.Resize(w,h)
    Util.Resize(w,h)
    UIElement.recalc(LB.scene)
    LB.buttons:resize()
 end
 
 --[[
-desc.
-
-@return
+   test boys
 ]]
-function LB.Start()
+function ListButton.Start()
    require("ui/TextBox")
    LB.buttons = LB.new(
 	  "boye",
@@ -178,22 +168,18 @@ function LB.Start()
 end
 
 --[[
-desc.
-
-@return
+   test boys
 ]]
-function LB.Update()
+function ListButton.Update()
    --Update=static.quit
    LB.buttons:draw()
    LB.t:draw()
 end
 
 --[[
-desc.
-
-@return
+   stop test boys
 ]]
-function LB.End()
+function ListButton.End()
    LB.buttons:destroy()
    LB.t:destroy()
 end
