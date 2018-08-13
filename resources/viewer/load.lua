@@ -4,15 +4,15 @@ require("text/Text")
 Viewer = {}
 local V = Viewer
 
---[[
-desc.
+--[[--
+   read all docs in a dir, and concat them together
 
-@param dir 
-@param sep 
+   @param dir 
+   @param sep 
 
-@return
+   @return full text
 ]]
-function V.readAll(dir, sep)
+function Viewer.readAll(dir, sep)
    local texts = {}
    local sources = listdir(dir)
    for i, source in ipairs(sources) do
@@ -23,15 +23,14 @@ function V.readAll(dir, sep)
    return table.concat(texts, sep)
 end
 
---[[
-desc.
+--[[--
+   view all things in a dir
 
-@param argc 
-@param argv 
-
-@return
+   @param argc 
+   @param argv[2] dir
+   @param argv[3] sep
 ]]
-function V.Start(argc, argv)
+function Viewer.Start(argc, argv)
    if argc < 3 then	
 	  argv = {"viewer/load", "licenses/", "\n\n"}
    end
@@ -40,25 +39,23 @@ function V.Start(argc, argv)
 end
 
 --[[
-desc.
+   resize
 
-@param w 
-@param h 
+   @param w 
+   @param h 
 
-@return
+   @return
 ]]
-function V.Resize(w, h)
+function Viewer.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
    V.reset()
 end
 
 --[[
-desc.
-
-@return
+   reset viewer
 ]]
-function V.reset()
+function Viewer.reset()
    local text = V.stext
    V.texts = {}
    V.page = 1
@@ -74,11 +71,9 @@ function V.reset()
 end
 
 --[[
-desc.
-
-@return
+   free viewer's stuff
 ]]
-function V.free()
+function Viewer.free()
    if V.tex then
 	  Texture.destroy(V.tex)
    end
@@ -90,13 +85,11 @@ function V.free()
 end
 
 --[[
-desc.
+   show page `p` of content
 
-@param p 
-
-@return
+   @param p 
 ]]
-function V.updateForPage(p)
+function Viewer.updateForPage(p)
    if V.texts[p] == nil then
 	  return
    end
@@ -109,33 +102,27 @@ function V.updateForPage(p)
 end
 
 --[[
-desc.
-
-@return
+   draw shit
 ]]
-function V.Update()
+function Viewer.Update()
    --Update = static.quit
    V.spr:draw(0,0)
 end
 
 --[[
-desc.
-
-@return
+   destroy shit
 ]]
-function V.End()
+function Viewer.End()
    V.free()
    V.stext = nil
 end
 
 --[[
-desc.
+   move around pages
 
-@param key 
-
-@return
+   @param key 
 ]]
-function V.KeyDown(key)
+function Viewer.KeyDown(key)
    if key == KEY_ESCAPE then
 	  static.quit()
    elseif key == KEY_UP then

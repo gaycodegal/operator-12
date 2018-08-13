@@ -1,6 +1,11 @@
 UpdateStack = {}
--- indexing checks metatable first
--- and falls back to object if that fails
+
+--[[--
+   indexing checks metatable first
+   and falls back to object if that fails
+
+   @param mt metatable
+]]
 function metareplacer(mt)
    return function(t, f)
       v = rawget(t, f)
@@ -11,21 +16,19 @@ function metareplacer(mt)
    end
 end
 
---[[
-desc.
+--[[--
+   metareplaces t
 
-@param t 
-
-@return
+   @param t table
 ]]
 function meta(t)
    t.__index = metareplacer(t)
 end
 
---[[
-desc.
+--[[--
+   creates a new already metareplaced object ready to become a class
 
-@return
+   @return new class table
 ]]
 function Class()
    local t = {}
@@ -33,12 +36,10 @@ function Class()
    return t
 end
 
---[[
-desc.
+--[[--
+   make everything in x global
 
-@param x 
-
-@return
+   @param x table
 ]]
 function makeGlobal(x)
    for k,v in pairs(x) do
@@ -46,37 +47,42 @@ function makeGlobal(x)
    end
 end
 
---[[
-desc.
+--[[--
+   list everything in dir, hack cause neither lua nor C supported it. C++ probably has a better solution.
+   
+   @param path 
 
-@param path 
-
-@return
+   @return contents
 ]]
 function listdir(path)
    return dofile(path .. ".contents.lua")
 end
 
---[[
-desc.
+--[[--
+   copy a table
 
-@param t 
+   @param t table to copy
 
-@return
+   @return new table
 ]]
 function table.copy(t)
+   local n = {}
    for k, v in pairs(t) do
-	  rawset(t, k, v)
+	  rawset(n, k, v)
    end
+   return n
 end
 
 --[[
-desc.
+   DONT USE see math.min
 
-@param x 
-@param y 
+   @deprecated
+   @private
 
-@return
+   @param x 
+   @param y 
+
+   @return
 ]]
 function min(x,y)
    if x < y then
@@ -86,12 +92,15 @@ function min(x,y)
 end
 
 --[[
-desc.
+   DONT USE see math.max
 
-@param x 
-@param y 
+   @deprecated
+   @private
 
-@return
+   @param x 
+   @param y 
+
+   @return
 ]]
 function max(x,y)
    if x < y then
@@ -101,12 +110,10 @@ function max(x,y)
 end
 
 --[[
-desc.
+   merge 2 tables
 
-@param dst 
-@param src 
-
-@return
+   @param dst destination
+   @param src source
 ]]
 function merge(dst,src)
    for k,v in pairs(src) do
