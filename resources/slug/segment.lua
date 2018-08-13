@@ -1,10 +1,15 @@
 require("util")
-Segment = {}
+Segment = Class()
 
-Segment.__index = metareplacer(Segment)
-
--- creates a new segment
--- pos now owned by segment
+--[[--
+   creates a new segment
+   @param p previous
+   @param n next
+   @param spr sprite - not owned by segment
+   @param slug parent slug
+   @param pos now owned by segment
+   @param c connections
+]]
 function Segment.new (p, n, spr, pos, slug, c)
    self = {p=p,n=n,spr=spr,pos=pos, slug=slug, c=c}
    setmetatable(self, Segment)
@@ -12,18 +17,24 @@ function Segment.new (p, n, spr, pos, slug, c)
    return self
 end
 
--- Remove Segment from Map
-function Segment.removeFromMap(self)
+--[[--
+   Remove Segment from Map
+]]
+function Segment:removeFromMap()
    map.objects[map:indexOf(self.pos[1], self.pos[2])] = false
 end
 
--- Add Segment to Map
-function Segment.addToMap(self)
+--[[--
+   Add Segment to Map
+]]
+function Segment:addToMap()
    map.objects[map:indexOf(self.pos[1], self.pos[2])] = self
 end
 
--- Unsets self and surrounding c vals
-function Segment.unsetMapConnections(self)
+--[[--
+   Unsets own connections and removes self from surrounding segments' connections.
+]]
+function Segment:unsetMapConnections()
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
    local tmp
    local swidth = map.width
@@ -42,8 +53,10 @@ function Segment.unsetMapConnections(self)
    end
 end
 
--- sets self and surrounding c vals
-function Segment.setMapConnections(self) 
+--[[--
+   sets own connections self and adds self to surrounding segments' connecting c vals
+]]
+function Segment:setMapConnections() 
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
    local tmp
    local swidth = map.width
@@ -65,8 +78,10 @@ function Segment.setMapConnections(self)
    end
 end
 
--- Draw on Map
-function Segment.draw(self)
+--[[--
+   Draw on Map
+]]
+function Segment:draw()
    local x, y = Map.position(self.pos[1], self.pos[2])
    local s = self.spr
    local c = self.c
@@ -80,8 +95,10 @@ function Segment.draw(self)
    --   s:draw(x, y)
 end
 
--- Removes Segment from chain
-function Segment.unlink(self)
+--[[--
+   Removes Segment from chain
+]]
+function Segment:unlink()
    if self.p then
 	  self.p.n = self.n
    end
@@ -92,27 +109,33 @@ function Segment.unlink(self)
    self.p = nil
 end
 
--- link the next
-function Segment.linkN(self, n)
+--[[--
+   link the next
+]]
+function Segment:linkN(n)
    n.p = self
    self.n = n
 end
 
--- link the prev
-function Segment.linkP(self, p)
+--[[--
+   link the prev
+]]
+function Segment:linkP(p)
    p.n = self
    self.n = n
 end
 
 --[[
-desc.
+   gets c value index of `o` in relation to `self`
 
-@param self 
-@param o 
+   `    1     `
+   ` 4 self 2 `
+   `    3     `
+   @param o 
 
-@return
+   @return index
 ]]
-function Segment.cOf(self, o)
+function Segment:cOf(o)
    if self.pos[2] > o.pos[2] then
 	  return 1
    elseif self.pos[1] < o.pos[1] then
@@ -124,8 +147,10 @@ function Segment.cOf(self, o)
    end
 end
 
--- insert between p - n
-function Segment.insert(self, p, n)
+--[[--
+   insert between p - n
+]]
+function Segment:insert(p, n)
    local c
    if p then
 	  p.n = self
@@ -138,12 +163,8 @@ function Segment.insert(self, p, n)
 end
 
 --[[
-desc.
-
-@param self 
-
-@return
+   print out info
 ]]
-function Segment.print(self)
+function Segment:print()
    print(self.slug.name, self.pos[1], self.pos[2])
 end
