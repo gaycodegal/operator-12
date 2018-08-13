@@ -3,13 +3,13 @@ require("text/Text")
 Button = Class()
 
 --[[
-desc.
+   which of these buttons were pressed, if any
 
-@param buttons 
+@param buttons list of buttons
 @param x 
 @param y 
 
-@return
+@return button, index (can return nil if not found)
 ]]
 function Button.which(buttons,x,y)
    local r
@@ -21,18 +21,18 @@ function Button.which(buttons,x,y)
    end
 end
 
--- creates a new button
--- self now owned by button
+--[[--
+   creates a new button
+   @param self now owned by button
+]]
 function Button.new (self)
    setmetatable(self, Button)
    self:resize()
    return self
 end
 
---[[
-desc.
-
-@return
+--[[--
+resize the button
 ]]
 function Button:resize()
    self.rect = self.layout:rect()
@@ -49,16 +49,16 @@ function Button:resize()
    Surface.destroy(s2)
 end
 
---[[
-desc.
-
-@return
+--[[--
+draw le boy
 ]]
 function Button:draw()
    self.spr:draw(0,0)
 end
 
--- deallocate button
+--[[--
+   deallocate button
+]]
 function Button:destroy()
    if self.tex then
 	  Texture.destroy(self.tex)
