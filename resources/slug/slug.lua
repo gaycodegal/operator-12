@@ -7,8 +7,11 @@ Slug = {defs = dofile("slug/slugdefs.lua")}
 Slug.__index = metareplacer(Slug)
 require("slug/segment")
 
--- creates a new slug
--- self now owned by slug
+--[[--
+   creates a new slug
+   @param self now owned by slug, passed in unlike usual
+   @return new slug
+]]
 function Slug.new (self)
    local sprites = Slug.defs[self.sprites].tiles
    self.stats = Slug.defs[self.sprites].stats
@@ -36,15 +39,15 @@ function Slug.new (self)
    return self
 end
 
---[[
-desc.
+--[[--
+   creates the overlay for movement
 
-@param self 
-@param range 
+   this overlay displays the maximum movement a slug can make with
+   the `range` of moves it has left
 
-@return
+   @param range number of moves slug has left
 ]]
-function Slug.movementOverlay(self, range)
+function Slug:movementOverlay(range)
    local diamond = self:listDiamond(range)
    local arrs = {overlay.named.up, overlay.named.right, overlay.named.down, overlay.named.left}
    local x, y
@@ -67,16 +70,16 @@ function Slug.movementOverlay(self, range)
    self.overlay = diamond
 end
 
---[[
-desc.
+--[[--
+   creates a basic overlay
 
-@param self 
-@param range 
-@param overlayFn 
+   calls the overlayFn to determine what of the diamond of squares in range
+   should be displayed
 
-@return
+   @param range how may tiles away does this overlay go
+   @param overlayFn determines visible squares
 ]]
-function Slug.basicOverlay(self, range, overlayFn)
+function Slug:basicOverlay(range, overlayFn)
    if not overlayFn then
 	  overlayFn = Slug.attackOverlayFn
    end
@@ -92,14 +95,10 @@ function Slug.basicOverlay(self, range, overlayFn)
    self.overlay = diamond
 end
 
---[[
-desc.
-
-@param self 
-
-@return
+--[[--
+   destroys current overlay
 ]]
-function Slug.destroyOverlay(self)
+function Slug:destroyOverlay()
    if self.overlay then
 	  for i,v in ipairs(self.overlay) do
 		 if v then
@@ -110,14 +109,10 @@ function Slug.destroyOverlay(self)
    self.overlay = nil
 end
 
---[[
-desc.
-
-@param self 
-
-@return
+--[[--
+   draws overlay
 ]]
-function Slug.drawOverlay(self)
+function Slug:drawOverlay()
    if self.overlay then
 	  local x, y = Map.position(self.head.pos[1] + 1, self.head.pos[2] + 1)
 	  for i,v in ipairs(self.overlay) do
@@ -128,28 +123,27 @@ function Slug.drawOverlay(self)
    end
 end
 
---[[
-desc.
+--[[--
+   how to determine whether a square should have the attack overlay
 
-@param x 
-@param y 
-
-@return
+   @param x coord
+   @param y coord
+  
+   @return should show for coord
 ]]
 function Slug.attackOverlayFn(x,y)
    return map:valid(x, y) and map.map[map:indexOf(x, y)]
 end
 
---[[
-desc.
+--[[--
+   creates a list of the coords that make up an overlay of a certain size
 
-@param self 
-@param size 
-@param overlayFn 
+   @param size 
+   @param overlayFn 
 
-@return
+   @return list of coords (false replaces unwanted tiles)
 ]]
-function Slug.listDiamond2(self, size, overlayFn)
+function Slug:listDiamond2(size, overlayFn)
    -- >v, <v,<^,>^
    local deltas = {{1,1},{-1,1},{-1,-1},{1,-1}}
    local j = 1
@@ -176,15 +170,14 @@ function Slug.listDiamond2(self, size, overlayFn)
    return lst
 end
 
---[[
-desc.
-
-@param self 
-@param size 
-
-@return
+--[[--
+   same as `listDiamond2` above but using a breadth first search
+   
+   @param size 
+   
+   @return list of coords (false replaces unwanted tiles)
 ]]
-function Slug.listDiamond(self, size)
+function Slug:listDiamond(size)
    -- >v, <v,<^,>^
    local q = {s=0,e=1,n=1}
    local low = {0 - size, 0 - size}
@@ -242,7 +235,9 @@ function Slug.listDiamond(self, size)
    return lst
 end
 
--- spawn slugs from Tiled lua file
+--[[--
+ spawn slugs from Tiled lua file
+]]
 function Slug.spawn(data)
    slugs = {}
    for i, v in ipairs(data) do
@@ -264,7 +259,9 @@ function Slug.spawn(data)
    end
 end
 
--- despawn slugs from Tiled lua file
+--[[--
+ despawn slugs from Tiled lua file
+]]
 function Slug.despawn()
    for name, v in pairs(slugs) do
 	  if v then
@@ -273,8 +270,10 @@ function Slug.despawn()
    end
 end
 
---load all slug data
---names -> textures
+--[[--
+   load all slug data
+   names -> textures
+]]
 function Slug.load ()
    local data = Slug.defs
    local tilesets = data.tilesets
@@ -296,13 +295,17 @@ function Slug.load ()
    Slug.tilesets = tilesets
 end
 
---deallocate global slug textures
+--[[--
+deallocate global slug textures
+]]
 function Slug.unload()
    Tileset.destroyTilesets(Slug.tilesets)
 end
 
--- Remove Slug from Map
-function Slug.removeFromMap(self)
+--[[--
+ Remove Slug from Map
+]]
+function Slug:removeFromMap()
    local seg = self.head
    while seg do
 	  seg:unsetMapConnections()
@@ -315,8 +318,10 @@ function Slug.removeFromMap(self)
    end
 end
 
--- Add Slug to Map
-function Slug.addToMap(self)
+--[[-- 
+Add Slug to Map
+]]
+function Slug:addToMap()
    local seg = self.head
    while seg do
 	  seg:addToMap()
@@ -329,14 +334,22 @@ function Slug.addToMap(self)
    end   
 end
 
--- case off map
--- case encounter other
--- diagonal or on head
--- case encounter consumable
--- case encounter self tail
--- case encounter self (max len)
--- case encounter self default
-function Slug.move(self, x, y)
+--[[--
+move slug's head to (x,y)
+   
+   Edge cases:
+   - case off map
+   - case encounter other
+   - diagonal or on head
+   - case encounter consumable
+   - case encounter self tail
+   - case encounter self (max len)
+   - case encounter self default
+
+@param x
+@param y
+]]
+function Slug:move(x, y)
    local head = self.head
    local dx = math.abs(x - head.pos[1])
    local dy = math.abs(y - head.pos[2])
@@ -405,9 +418,14 @@ function Slug.move(self, x, y)
    return true
 end
 
--- remove <amount> segments from
--- slug, possibly destroying it
-function Slug.damage(self, amount)
+--[[--
+   remove `amount` segments from
+   slug, possibly destroying it
+
+   probably needs to be moved into Skills.lua now
+   @param amount How many tiles to remove
+]]
+function Slug:damage(amount)
    for i = 1,amount do
 	  if self.size > 0 then
 		 self.size = self.size - 1
@@ -423,8 +441,10 @@ function Slug.damage(self, amount)
    end
 end
 
--- deallocate slug
-function Slug.destroy (self)
+--[[--
+   deallocate slug
+]]
+function Slug:destroy ()
    self:destroyOverlay()
    if self.name and slugs[self.name] then
 	  slugs[self.name] = nil
