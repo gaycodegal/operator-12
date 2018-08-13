@@ -128,7 +128,7 @@ end
 
    @param x coord
    @param y coord
-  
+   
    @return should show for coord
 ]]
 function Slug.attackOverlayFn(x,y)
@@ -236,7 +236,7 @@ function Slug:listDiamond(size)
 end
 
 --[[--
- spawn slugs from Tiled lua file
+   spawn slugs from Tiled lua file
 ]]
 function Slug.spawn(data)
    slugs = {}
@@ -260,7 +260,7 @@ function Slug.spawn(data)
 end
 
 --[[--
- despawn slugs from Tiled lua file
+   despawn slugs from Tiled lua file
 ]]
 function Slug.despawn()
    for name, v in pairs(slugs) do
@@ -296,14 +296,14 @@ function Slug.load ()
 end
 
 --[[--
-deallocate global slug textures
+   deallocate global slug textures
 ]]
 function Slug.unload()
    Tileset.destroyTilesets(Slug.tilesets)
 end
 
 --[[--
- Remove Slug from Map
+   Remove Slug from Map
 ]]
 function Slug:removeFromMap()
    local seg = self.head
@@ -319,7 +319,7 @@ function Slug:removeFromMap()
 end
 
 --[[-- 
-Add Slug to Map
+   Add Slug to Map
 ]]
 function Slug:addToMap()
    local seg = self.head
@@ -335,7 +335,7 @@ function Slug:addToMap()
 end
 
 --[[--
-move slug's head to (x,y)
+   move slug's head to (x,y)
    
    Edge cases:
    - case off map
@@ -346,8 +346,8 @@ move slug's head to (x,y)
    - case encounter self (max len)
    - case encounter self default
 
-@param x
-@param y
+   @param x
+   @param y
 ]]
 function Slug:move(x, y)
    local head = self.head
