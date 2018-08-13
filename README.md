@@ -14,25 +14,26 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 - Layout Generator
 	- Generates resizing functions from layout definitions.
 	- usage `./main ui/style-writer <name>`
-		- see name:`main-menu`
-- UIElements
-  - resizable elements generated from a layout style and a list of elements/data to be styled
-- Buttons!
+		- see name:`screen` for a simple example
+- UIElement
+	- resizable elements generated from a layout style and a list of elements/data to be styled
+- Button
 	- can click them and they do *things*
 - Movement Overlay
-- Main menu - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
-	- As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
-- Can Render text in boxes
-- Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
-    - Sample map file found in resources/maps
+- Text
+	- Can Render text in boxes
+- TextBox
+	- For when Text just isn't enough
 - Escape key closes game.
-- Battle/Map Class
-    - currently handles drawing of a loaded map
+- Map
+	- Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
+		- Sample map file found in resources/maps
+	- currently handles drawing of a loaded map
 	- hopefully will eventually only handle map data and be moved to C++
 	- can scroll/pan with arrow keys
-- Slug/Segment Class
+- Segment
 	- Linked list node part of the slug
-- Slug/Slug Class
+- Slug
 	- the basic entity of the game
 	- essentially a linked list moving about the game-board
 	- can move about the board if clicked one space away from 'head'
@@ -42,6 +43,7 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 - Slug/Slugdefs
 	- holds info on what sprites are associated with which slug-type
 - Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
+	- I got windows working actually!
 
 
 ## Planned Content
@@ -217,7 +219,23 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 - Texture
 	- `./main texture-tests`
 
+## View Controllers
 
+- Battle
+  - `./main battle/load <map-name>.lua`
+  - controls battles
+- Viewer
+  - `./main viewer/load <path> <sep>`
+  - view shit, mostly just the copyright infos for stuff
+- MainMenu
+  - `./main`
+  - mostly just for easy access to stuff
+- MapSelect
+  - `./main level-select/load`
+  - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
+  - As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
+  
+  
 ## Legal
 
 [MIT license](./LICENSE) for the project.
