@@ -1,7 +1,11 @@
 Text = {}
 
--- figures out how much text can go on a line
--- up to width pix long
+--[[--
+   figures out how much of `text` can go on a line
+   up to `width` pix long
+   @param text text to fit
+   @param width px
+]]
 function Text.charsInLine(text, width)
    local len = #text
    local best = 0
@@ -29,8 +33,15 @@ function Text.charsInLine(text, width)
    return best
 end
 
--- figures out how much text can go on a line
--- up to width pix long
+--[[
+   DON'T USE
+
+   @deprecated
+   @private
+
+   figures out how much text can go on a line
+   up to width pix long
+]]
 function Text.charsInLineRev(text, width)
    local len = #text
    local best = 0
@@ -60,17 +71,17 @@ function Text.charsInLineRev(text, width)
    return best
 end
 
---[[
-desc.
+--[[--
+   generates text in a box as a surface
 
-@param text 
-@param align 
-@param w 
-@param h 
-@param c 
-@param direction 
+   @param text 
+   @param align 
+   @param w 
+   @param h 
+   @param c foreground color
+   @param direction text direction {1=forwards, 2=backwards(DO NOT USE)}
 
-@return
+   @return surface with rendered text
 ]]
 function Text.textbox(text, align, w, h, c, direction)
    direction = direction or 1
@@ -159,14 +170,14 @@ function Text.textbox(text, align, w, h, c, direction)
 end
 
 --[[
-desc.
+   characters in a textbox
 
-@param text 
-@param w 
-@param h 
-@param direction 
+   @param text 
+   @param w 
+   @param h 
+   @param direction 
 
-@return
+   @return number of chars that can fit
 ]]
 function Text.charsInTextbox(text, w, h, direction)
    direction = direction or 1
