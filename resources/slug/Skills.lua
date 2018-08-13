@@ -10,6 +10,8 @@ local Spawn = Skills.Spawn
 local Heal = Skills.Heal
 
 --[[
+   can initiator damage object
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -30,6 +32,8 @@ function Damage.can(initiator, object, _, _, _)
 end
 
 --[[
+   make initiator damage object
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -42,6 +46,8 @@ function Damage.act(initiator, object, _, _, _)
 end
 
 --[[
+   can initiator heal object
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -62,6 +68,8 @@ function Heal.can(initiator, object, _, _, _)
 end
 
 --[[
+   make initiator heal object
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -100,12 +108,10 @@ function Heal.act(initiator, object, _, _, _)
 end
 
 --[[
-desc.
+   add all the free spots near an object we could place newly spawned segements in
 
-@param object 
-@param frees 
-
-@return
+   @param object slug segment
+   @param(out) frees list to insert free spaces into
 ]]
 function Heal.addAllFreeNear(object, frees)
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
@@ -121,6 +127,8 @@ function Heal.addAllFreeNear(object, frees)
 end
 
 --[[
+   can slug flip a tile (bring it into existence or destroy it)
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -138,6 +146,8 @@ function Flip.can(initiator, object, ind, x, y)
 end
 
 --[[
+   flip a tile
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -154,6 +164,8 @@ function Flip.act(initiator, object, ind, x, y)
 end
 
 --[[
+   can spawn? not yet done
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
@@ -166,6 +178,8 @@ function Spawn.can(initiator, object, ind, x, y)
 end
 
 --[[
+   do spawn (not yet done)
+
    @param initiator Slug doing the action
    @param object Map object at coordinates
    @param ind Map index
