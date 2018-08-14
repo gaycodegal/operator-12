@@ -1,0 +1,6 @@
+Source code from the luapower project can be found here:
+https://luapower.com/
+---
+
+Luapower is published as Public Domain software under the terms of The Unlicense.
+For more information, please refer to <http://unlicense.org/>
