@@ -93,7 +93,7 @@ end
    @param y
 ]]
 local function scoreDist(x,y)
-   return x[4] > y[4]
+   return x[4] < y[4]
 end
 
 --[[--
