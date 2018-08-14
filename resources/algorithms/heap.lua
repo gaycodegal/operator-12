@@ -1,7 +1,11 @@
---Originally sourced from https://github.com/luapower/heap/blob/master/heap.lua
+-- Originally sourced from https://github.com/luapower/heap/blob/master/heap.lua
+-- Priority queue implemented as a binary heap.
+-- Written by Cosmin Apreutesei. Public Domain.
 
---Priority queue implemented as a binary heap.
---Written by Cosmin Apreutesei. Public Domain.
+-- In order to make a new heap, first assign a local heap variable like this:
+-- local heap = require "algorithms/heap"
+-- Then call either heap.cdataheap{cmp} or heap.valueheap{cmp} depending on if you're using Lua or C data types.
+-- cmp is a function that determines whether it's a min heap or max heap.
 
 if not ... then require'heap_test'; return end
 
@@ -9,7 +13,19 @@ local ffi --init on demand so that the module can be used without luajit
 local assert, floor = assert, math.floor
 
 --heap algorithm working over abstract API that counts from one.
+--[[--
+   Creates abstract heap API that can be instantiated later.
+   
+   Params are in the form of functions passed at instance-time.
 
+   The root is at index 1 and stack indices are consecutive.
+
+   @param add pushes a value into the heap and returns its index
+   @param remove remove the value at index i
+   @param swap swap two values
+   @param length number of elements in the stack
+   @param cmp compares elements. Also determins the min/max nature of the heap at instance-time.
+]]
 local function heap(add, remove, swap, length, cmp)
 
 	local function moveup(child)
@@ -57,8 +73,12 @@ local function heap(add, remove, swap, length, cmp)
 	return push, pop, rebalance
 end
 
---cdata heap working over a cdata array
-
+--[[--
+   cdata heap working over a cdata array
+   
+   @param h Existing heap
+   @return A new cdataheap
+]]
 local function cdataheap(h)
 	ffi = ffi or require'ffi'
 	assert(h and h.size, 'size expected')
@@ -107,8 +127,12 @@ local function cdataheap(h)
 	return h
 end
 
---value heap working over a Lua table
+--[[--
+   Create a new value heap working over a Lua table
 
+   @param h Existing heap
+   @return A new valueheap
+]]
 local function valueheap(h)
 	h = h or {}
 	local t, n = h, #h
