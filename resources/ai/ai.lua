@@ -1,5 +1,4 @@
 require("util")
---require("algorithms/heap")
 AI = Class()
 --[[--
    creates a new AI
@@ -108,7 +107,7 @@ end
 function AI.pathTo(x,y)
    local heap = require 'algorithms/heap'
    local H = AI.manhatten
-   local closed = heap.valueheap{cmp = scoreDist}
+   local closed = heap.valueheap{cmp = scoreDist} -- scoreDist determines whether heap is min or max
    local open = heap.valueheap{cmp = scoreDist}
    local swidth = map.width
    local sheight = map.height
