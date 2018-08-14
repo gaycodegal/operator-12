@@ -1,7 +1,6 @@
 require("util")
-require("algorithms/Heap")
+--require("algorithms/heap")
 AI = Class()
-
 --[[--
    creates a new AI
 
@@ -107,9 +106,10 @@ end
    @return the path
 ]]
 function AI.pathTo(x,y)
+   local heap = require 'algorithms/heap'
    local H = AI.manhatten
-   local closed = Heap.new(scoreDist)
-   local open = Heap.new(scoreDist)
+   local closed = heap.valueheap{cmp = scoreDist}
+   local open = heap.valueheap{cmp = scoreDist}
    local swidth = map.width
    local sheight = map.height
    local visited = {}
@@ -119,12 +119,12 @@ function AI.pathTo(x,y)
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
 
    tmp = H(hpos, goal)
-   open:insert({hpos[1],hpos[2],0,tmp, tmp})
+   open:push({hpos[1],hpos[2],0,tmp, tmp})
    --print("start", hpos[1], hpos[2])
    --print("goal", goal[1], goal[2])
    repeat
 	  cur = open:pop()
-	  closed:insert(cur)
+	  closed:push(cur)
 	  --print("seeing", cur[1], cur[2], ":", cur[3])
 	  if cur[1] == goal[1] and cur[2] == goal[2] then
 		 break -- found
@@ -147,7 +147,7 @@ function AI.pathTo(x,y)
 				  tmp[4] = H(tmp, goal)
 				  tmp[5] = tmp[4] + tmp[3]
 				  tmp[6] = cur
-				  open:insert(tmp)
+				  open:push(tmp)
 				  visited[ind] = {open, tmp}
 			   elseif old[4] + g < old[5] then
 				  old[6] = cur-- test if using the current G score make the aSquare F score lower, if yes update the parent because it means its a better path
