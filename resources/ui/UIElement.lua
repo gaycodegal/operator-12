@@ -66,7 +66,7 @@ function UIElement.fromStatic(e,style,parent)
 	  else
 		 nc = 0
 	  end
-	  t = UIElement.new(v.d, resize, nc, parent)
+	  t = UIElement.new(v, resize, nc, parent)
 	  if nc >= 1 then
 		 t.c = UIElement.fromStatic(v.c,style,t)
 	  end
@@ -97,19 +97,30 @@ end
 --[[--
 Calculates/recalcs element properties
 
-@param d Data table
+@private
+
+@param v.s Style name
+@param v.d Data table
 @param resize onResize function
 @param nchildren number of children
 @param parent of elem
 
 @return new boy
 ]]
-function UIElement.new(d,layout,nchildren,parent)
-   local self = {d=d,resize=layout.resize,e=layout.e,nc=nchildren,p=parent}
+function UIElement.new(v,layout,nchildren,parent)
+   if not layout then
+	  print(v.s, "not found")
+   end
+   local self = {d=v.d,resize=layout.resize,e=layout.e,nc=nchildren,p=parent, layout=layout}
    setmetatable(self, UIElement)
    return self
 end
 
+function UIElement:copy(d)
+   local c = UIElement.new({d=d}, self.layout, self.nc, self.p)
+   c:resize()
+   return c
+end
 
 --[[--
 Prints self and children

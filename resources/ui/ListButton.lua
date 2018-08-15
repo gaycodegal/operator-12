@@ -31,8 +31,10 @@ function ListButton.new(name, fns, texts, height, space, align)
    setmetatable(self, LB)
    self.name = name
    self.fns = fns
-   self.align = align
    self.texts = texts
+   self.height = height
+   self.space = space
+   self.align = align
    self.c = {}
    if align ~= 2 then
 	  self.child = {
@@ -41,12 +43,10 @@ function ListButton.new(name, fns, texts, height, space, align)
 		 d={n=nb,align=align,s=space,h=height}}
 	  table.insert(self.c, self.child)
    end
-   for i = 1,nb do
-	  table.insert(self.c, {
-					  n=self.name .. i,
-					  s="listButton",
-					  d={n=nb, align=align, s=space, h=height, i=(i-1)}})
-   end
+   table.insert(self.c, {
+				   n=self.name .. "-b",
+				   s="listButton",
+				   d={n=1, align=align, s=space, h=height, i=0}})
    self.container = {n=self.name .. "-p",s="lbContainer",c=self.c}
    self.initialized = false
    return self
@@ -58,18 +58,30 @@ end
    @param named Named ui elements
 ]]
 function ListButton:init(named)
+   self.named = named
    if not self.initialized then
 	  self.btns = {}
-	  for i=1,#self.fns do
+	  local layout = named[self.name .. "-b"]
+	  local nb = #self.fns
+	  self.container = named[self.name .. "-p"]
+	  self.container.c={}
+	  local c = self.container.c
+	  if self.align ~= 2 then
+		 self.child=named[self.name .. "-c"]
+		 self.child.d.n = nb
+		 table.insert(c, self.child)
+	  end
+	  for i = 1,nb do
+		 local d = {n=nb, align=self.align, s=self.space, h=self.height, i=(i-1)}
+		 local cpy = layout:copy(d)
+		 table.insert(c, cpy)		 
 		 table.insert(self.btns, Button.new({
 							text=self.texts[i],
-							layout=named[self.name .. i],
+							layout=cpy,
 							color={0,0,200,255},
 							click=self.fns[i]}))
 	  end
-	  if self.align ~= 2 then
-		 self.child=named[self.name .. "-c"]
-	  end
+	  UIElement.recalc({self.container})
 	  self.initialized = true
    end
 end
@@ -92,15 +104,27 @@ function ListButton:draw()
    end
 end
 
+function ListButton:setButtons(fns, texts)
+   local named = self.named
+   self:destroy()
+   self.fns = fns
+   self.texts = texts
+   self:init(named)
+   self:resize()
+end
+
 --[[--
    destroy my boy
 ]]
 function ListButton:destroy()
-   for i,b in ipairs(self.btns) do
-	  b:destroy()
+   if self.btns then
+	  for i,b in ipairs(self.btns) do
+		 b:destroy()
+	  end
    end
    self.initialized = false
    self.btns = nil
+   self.named = nil
 end
 
 --[[--
@@ -154,12 +178,12 @@ end
 ]]
 function ListButton.Start()
    require("ui/TextBox")
-   LB.buttons = LB.new(
+   LB.buttons = ListButton.new(
 	  "boye",
 	  {LB.testClick,LB.testClick,LB.testClick,LB.testClick},
 	  {"a","bb", "cs", "doo", "eff"},
 	  60, 10, 3)
-   LB.scene = {{s="screen",c=LB.buttons.c}}
+   LB.scene = {{s="screen",c=LB.buttons.container}}
    LB.named, LB.scene = UIElement.getNamed(
 	  LB.scene, getStyles({"list-button", "screen"}))
    LB.buttons:init(LB.named)
