@@ -92,7 +92,7 @@ function BattleUI.destroy()
    B.t = nil
 end
 
---[[
+--[[--
    handle click
 
    @param x 
