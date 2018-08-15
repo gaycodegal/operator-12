@@ -45,8 +45,6 @@ function Map.new (data)
    for k,v in pairs(slugs) do
 	  t.slug = v
    end
-   -- map.x = (SCREEN_WIDTH - (data.width * (tilesize + tilesep) - tilesep))//2
-   -- map.y = (SCREEN_HEIGHT - (data.height * (tilesize + tilesep) - tilesep))//2
    t:recenter()
    return t
 end
@@ -125,7 +123,6 @@ end
 function Map:update()
    self.x = self.x - self.dx
    self.y = self.y - self.dy
-   self:recenter()
 end
 
 --[[--
