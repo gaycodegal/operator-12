@@ -121,6 +121,11 @@ function merge(dst,src)
    end
 end
 
+--[[--
+   prints out a table
+
+   @param t table to print
+]]
 function table.print(t)
    if type(t) ~= "table" then
 	  print(t)

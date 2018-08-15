@@ -4,22 +4,22 @@ UIElement = {named={}}
 meta(UIElement)
 
 --[[--
-load a style from disk
+   load a style from disk
 
-@param name style's name
+   @param name style's name
 
-@return said style
+   @return said style
 ]]
 function getStyle(name)
    return dofile("ui/styles/"..name..".style.lua")
 end
 
 --[[--
-load multiple styles
+   load multiple styles
 
-@param names all them boye's names
+   @param names all them boye's names
 
-@return all dem styles as one
+   @return all dem styles as one
 ]]
 function getStyles(names)
    local all = {}
@@ -30,13 +30,13 @@ function getStyles(names)
 end
 
 --[[--
-Creates UIElements
-Calculates their properties when loaded
+   Creates UIElements
+   Calculates their properties when loaded
 
-@param e Elements list to render
-@param parent parent of current element list (nil is fine)
+   @param e Elements list to render
+   @param parent parent of current element list (nil is fine)
 
-@return table of named entities; Array.<UIElement> generated elements
+   @return table of named entities; Array.<UIElement> generated elements
 ]]
 function UIElement.getNamed(e,style,parent)
    UIElement.named = {}
@@ -47,12 +47,12 @@ function UIElement.getNamed(e,style,parent)
 end
 
 --[[--
-Creates UIElements
+   Creates UIElements
 
-@param e Elements list to render
-@param parent parent of current element list (nil is fine)
+   @param e Elements list to render
+   @param parent parent of current element list (nil is fine)
 
-@return Array.<UIElement> generated elements
+   @return Array.<UIElement> generated elements
 ]]
 function UIElement.fromStatic(e,style,parent)
    local resize
@@ -80,10 +80,10 @@ function UIElement.fromStatic(e,style,parent)
 end
 
 --[[--
-Calculates/recalcs element properties
-and subchildren
+   Calculates/recalcs element properties
+   and subchildren
 
-@param e Elements list to operate on
+   @param e Elements list to operate on
 ]]
 function UIElement.recalc(e)
    for k,v in ipairs(e) do
@@ -95,17 +95,17 @@ function UIElement.recalc(e)
 end
 
 --[[--
-Calculates/recalcs element properties
+   Calculates/recalcs element properties
 
-@private
+   @private
 
-@param v.s Style name
-@param v.d Data table
-@param resize onResize function
-@param nchildren number of children
-@param parent of elem
+   @param v.s Style name
+   @param v.d Data table
+   @param resize onResize function
+   @param nchildren number of children
+   @param parent of elem
 
-@return new boy
+   @return new boy
 ]]
 function UIElement.new(v,layout,nchildren,parent)
    if not layout then
@@ -116,6 +116,13 @@ function UIElement.new(v,layout,nchildren,parent)
    return self
 end
 
+--[[--
+   creates a copy of this element with the specified data table
+
+   @param d Data table
+
+   @return a new boy
+]]
 function UIElement:copy(d)
    local c = UIElement.new({d=d}, self.layout, self.nc, self.p)
    c:resize()
@@ -123,7 +130,7 @@ function UIElement:copy(d)
 end
 
 --[[--
-Prints self and children
+   Prints self and children
 ]]
 function UIElement:print()
    print(self.n, self.x, self.y, self.w, self.h)
