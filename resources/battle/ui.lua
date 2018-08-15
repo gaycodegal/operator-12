@@ -27,18 +27,24 @@ function BattleUI.getSlugText(slug)
 		   
 end
 
-function BattleUI.fn(i)
+function BattleUI.fn(i, slug)
    return function ()
-	  
+	  slug.action = slug.stats.skills[i]
+	  return true
    end
 end
 
 function BattleUI.setSlug(slug)
    local s = slug.stats
    local fns = {}
+   local texts = {}
+   for i = 1,#slug.stats.skills do
+	  table.insert(fns, B.fn(i, slug))
+	  table.insert(texts, slug.stats.skills[i].skill)
+   end
    B.slug = slug
    B.t:setText(B.getSlugText(slug))
-   B.actions:setButtons({1},{"hi"})
+   B.actions:setButtons(fns,texts)
    B.t:resize()
 end
 
@@ -58,7 +64,7 @@ function BattleUI.destroy()
 end
 
 function BattleUI.MouseDown(x, y)
-   local b = LB.buttons:which(x,y)
+   local b = B.actions:which(x,y)
    if b then
 	  return b:click()
    end
