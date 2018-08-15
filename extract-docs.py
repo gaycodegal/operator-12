@@ -3,7 +3,7 @@ import re
 
 classes = {}
 
-p = re.compile("\-\-\[\[\-\-((?:[^\]]*(?:\][^\]])?)*)\]\]\n(function ([^\(]*)\([^\)]*\))")
+p = re.compile("\-\-\[\[\-\-((?:[^\]](?:\][^\]])?)*)\]\]\n(function ([^\(]*)\([^\)]*\))")
 bd = re.compile("\s*return")
 def matcher(obj):
     m = obj.group(0)
@@ -18,14 +18,14 @@ def matcher(obj):
             member = True
         else:
             fobj = ".".join(fname[:-1])
+    if fobj.strip() == "":
+        fobj = "_G"
     fname = fname[-1]
     if not (fobj in classes):
         classes[fobj] = True
         print("/** @class", fobj, "*/")
     print("/**")
     print(doc)
-    if fobj.strip() == "":
-        fobj = "_G"
     
     if member:
         print("   @memberof", fobj)
