@@ -1,1 +1,1 @@
-return {"ai/","algorithms/","battle/","cmd/","data/","dialogue/","fonts/","images/","licenses/","listdir.py","load.lua","maps/","slug/","surface-tests.lua","text/","texture-tests.lua","tiled/","ui/","util/","util.lua","viewer/"}
+return {"add-missing-docs.py","ai/","algorithms/","battle/","cmd/","data/","dialogue/","fonts/","images/","level-select/","licenses/","listdir.py","load.lua","maps/","slug/","surface-tests.lua","text/","texture-tests.lua","tiled/","ui/","util/","util.lua","viewer/"}
