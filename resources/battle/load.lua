@@ -12,7 +12,7 @@ Load the slugs, load the map, prepare for battle
 @param argv[2] name of map to load
 ]]
 function Battle.Start(argc, argv)
-   name = argv[0]
+   name = argv[2]
    dofile("slug/slug.lua")
    framedelay = 1000//60
    if name == nil then
