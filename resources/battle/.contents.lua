@@ -1,1 +1,1 @@
-return {"load.lua","map.lua","overlay.lua"}
+return {"load.lua","map.lua","overlay.lua","ui.lua"}

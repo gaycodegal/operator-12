@@ -3,6 +3,9 @@ require("ui/TextBox")
 BattleUI = {}
 local B = BattleUI
 
+--[[--
+   Makes the list button and text box that is gonna be displaying the slug's stats
+]]
 function BattleUI.init()
    B.actions = ListButton.new(
 	  "actions",
@@ -19,14 +22,29 @@ function BattleUI.init()
    B.t = TextBox.new({text="testing testing 123", layout=B.actions.child})
 end
 
+--[[--
+   Get the text that our actions List is supposed to display as the slug's overall info
+
+   @param slug Slug we need info of.
+
+   @return said text
+]]
 function BattleUI.getSlugText(slug)
    local s = slug.stats
    return table.concat({"moves: ", tostring(s.moves),"\n",
 						"max size: ", tostring(s.maxsize),"\n"})
-		   
-		   
 end
 
+--[[--
+   On actions click closure generater
+
+   on click simply changes the slug's active action. needs to do more, like moving the slug onto it's action phase if applicable and changing the overlay if necessary. probably put in slug:switchSkill(ind)
+
+   @param i Index of skill
+   @param slug slug in focus
+
+   @return a on click closure
+]]
 function BattleUI.fn(i, slug)
    return function ()
 	  slug.action = slug.stats.skills[i]
@@ -34,6 +52,11 @@ function BattleUI.fn(i, slug)
    end
 end
 
+--[[--
+   set slug in focus
+
+   @param slug our focus
+]]
 function BattleUI.setSlug(slug)
    local s = slug.stats
    local fns = {}
@@ -48,11 +71,17 @@ function BattleUI.setSlug(slug)
    B.t:resize()
 end
 
+--[[--
+   draw shit
+]]
 function BattleUI.draw()
    B.actions:draw()
    B.t:draw()
 end
 
+--[[--
+   destroy shit
+]]
 function BattleUI.destroy()
    B.actions:destroy()
    B.t:destroy()
@@ -63,6 +92,14 @@ function BattleUI.destroy()
    B.t = nil
 end
 
+--[[--
+   handle click
+
+   @param x 
+   @param y 
+
+   @return true if click should be consumed. false otherwise
+]]
 function BattleUI.MouseDown(x, y)
    local b = B.actions:which(x,y)
    if b then
