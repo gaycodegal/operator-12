@@ -104,6 +104,14 @@ function ListButton:draw()
    end
 end
 
+--[[--
+   Sets up new buttons to replace the old. Number of buttons does not have to remain constant
+
+   WARNING, you may need to resize your child elements of this button after calling this
+
+   @param fns New onclicks
+   @param texts New texts
+]]
 function ListButton:setButtons(fns, texts)
    local named = self.named
    self:destroy()
