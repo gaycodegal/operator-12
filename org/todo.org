@@ -1,15 +1,14 @@
 * Order of Ops
-1. Menu
-2. Attack Selection
-3. Config file
-4. More Test Maps?
-5. Background Builder
-6. Alerts
-7. World Map
-8. Spawn Selection
-9. Music
-10. Dialogue
-11. Basic Moves
+1. Attack Selection
+2. Config file
+3. More Test Maps?
+4. Background Builder
+5. Alerts
+6. World Map
+7. Spawn Selection
+8. Music
+9. Dialogue
+10. Basic Moves
 * TODO Dialogue
 ** DONE Make Textbox
    CLOSED: [2018-07-29 Sun 21:27]
@@ -46,10 +45,12 @@
 *** DONE Additional Static Properties
 	 CLOSED: [2018-07-29 Sun 21:28]
 * TODO World Map
-* TODO Menu
+* DONE Menu
+  CLOSED: [2018-08-15 Wed 08:45]
 ** Loading Screen
 ** Credits
-* TODO Attack Selection
+* DONE Attack Selection
+  CLOSED: [2018-08-15 Wed 08:45]
 ** What key to trigger? (A)?
 * TODO Slug Info Screen
 * DONE Resizeable Window
@@ -68,7 +69,8 @@
 * TODO Music Player / SFX Player
 * TODO Alerts
 ** TODO Win/Loss alert
-* TODO Enhance Util.lua for State Switchout
+* DONE Enhance Util.lua for State Switchout
+  CLOSED: [2018-08-15 Wed 08:45]
 ** Make an Interface class that declares all the usual methods
    To allow for easier defaults and replacements without requiring the use of *dofile* all over the place
 * TODO Player Data
