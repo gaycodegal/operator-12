@@ -114,6 +114,9 @@ end
 @return
 ]]
 function Battle.MouseDown(x, y)
+   if BattleUI.MouseDown(x,y) then
+	  return
+   end
    if active ~= nil then
 	  local px, py = Map.positionToCoords(x,y)	  
 	  active(px,py)
