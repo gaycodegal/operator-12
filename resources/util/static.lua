@@ -121,4 +121,15 @@ function merge(dst,src)
    end
 end
 
+function table.print(t)
+   if type(t) ~= "table" then
+	  print(t)
+	  return
+   end
+   print("__#__", #t)
+   for k,v in pairs(t) do
+	  print(k,v)
+   end
+end
+
 makeGlobal(Game)

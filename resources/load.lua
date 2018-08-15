@@ -59,7 +59,7 @@ function MainMenu.Start()
 	  {M.toMapSelect,M.toCredits},
 	  {"Level Selection", "Credits/Thanks"},
 	  60, 10, 2)
-   M.scene = {{s="screen",c=M.buttons.c}}
+   M.scene = {{s="screen",c={M.buttons.container}}}
    M.named, M.scene = UIElement.getNamed(
 	  M.scene, getStyles({"list-button", "screen"}))
    M.buttons:init(M.named)
