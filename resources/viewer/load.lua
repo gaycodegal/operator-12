@@ -50,7 +50,6 @@ function Viewer.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
    V.reset()
-   if map then map:recenter() end
 end
 
 --[[
