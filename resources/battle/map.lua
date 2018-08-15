@@ -45,10 +45,20 @@ function Map.new (data)
    for k,v in pairs(slugs) do
 	  t.slug = v
    end
-   map.x = (SCREEN_WIDTH - (data.width * (tilesize + tilesep) - tilesep))//2
-   map.y = (SCREEN_HEIGHT - (data.height * (tilesize + tilesep) - tilesep))//2
+   t:recenter()
    return t
 end
+
+
+--[[--
+   recenter the map in the display
+]]
+function Map:recenter()
+   self.x = (SCREEN_WIDTH - (self.width * (self.tilesize + self.tilesep) - self.tilesep))//2
+   self.y = (SCREEN_HEIGHT - (self.height * (self.tilesize + self.tilesep) - self.tilesep))//2
+end
+
+
 
 --[[--
    make a map tile, adds it to the map

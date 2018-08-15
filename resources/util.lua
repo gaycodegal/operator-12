@@ -26,6 +26,7 @@ end
 function Util.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
+   if map then map:recenter() end
 end
 
 --[[--

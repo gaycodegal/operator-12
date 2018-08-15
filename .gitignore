@@ -5,3 +5,4 @@ main
 tiled/*.png
 tiled/*.lua
 docs/*
+.#*
