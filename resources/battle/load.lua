@@ -4,6 +4,7 @@ require("battle/map")
 require("ai/ai")
 require("ai/player")
 require("tiled/tilesets")
+require("battle/ui")
 Battle = {}
 
 --[[--
@@ -23,7 +24,7 @@ function Battle.Start(argc, argv)
    Tileset.loadSurfaces(overlay)
    overlay:asTextures()
    overlay:loadTilesets()
-   
+   BattleUI.init()
    Player.prepareForTurn()
    static.framedelay(framedelay)
 end
@@ -38,6 +39,7 @@ function Battle.Update()
    if Player.slug then
 	  Player.slug:drawOverlay()
    end
+   BattleUI.draw()
 end
 
 --[[
@@ -49,6 +51,7 @@ function Battle.End()
    Slug.unload()
    map:destroy()
    Slug.despawn()
+   BattleUI.destroy()
    map = nil
 end
 
@@ -111,6 +114,9 @@ end
 @return
 ]]
 function Battle.MouseDown(x, y)
+   if BattleUI.MouseDown(x,y) then
+	  return
+   end
    if active ~= nil then
 	  local px, py = Map.positionToCoords(x,y)	  
 	  active(px,py)

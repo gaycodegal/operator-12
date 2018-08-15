@@ -1,4 +1,5 @@
 require("slug/Skills")
+require("battle/ui")
 Player = {}
 
 --[[--
@@ -12,6 +13,7 @@ function Player.prepareCurrentSlug()
    Player.moves = slug.stats.moves
    active = Player.move
    Player.slug:movementOverlay(Player.moves)
+   BattleUI.setSlug(slug)
 end
 
 --[[--
