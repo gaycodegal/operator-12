@@ -29,6 +29,19 @@ function Battle.Start(argc, argv)
    static.framedelay(framedelay)
 end
 
+--[[
+   resize shit
+
+   @param w 
+   @param h 
+]]
+function Battle.Resize(w, h)
+   SCREEN_WIDTH = w
+   SCREEN_HEIGHT = h
+   map:recenter()
+   BattleUI.resize()
+end
+
 --[[--
 draw shit, update map
 ]]
