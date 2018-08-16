@@ -38,7 +38,7 @@ end
 --[[--
    On actions click closure generater
 
-   on click simply changes the slug's active action. needs to do more, like moving the slug onto it's action phase if applicable and changing the overlay if necessary. probably put in slug:switchSkill(ind)
+   sets slug attack mode; moves slug onto attack phase
 
    @param i Index of skill
    @param slug slug in focus
