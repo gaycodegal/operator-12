@@ -17,6 +17,15 @@ function Player.prepareCurrentSlug()
 end
 
 --[[--
+   Sets the slug into attack mode
+]]
+function Player.beginAttack()
+   Player.slug:destroyOverlay()
+   Player.slug:basicOverlay(Player.slug.action.range, Slug.attackOverlayFn)
+   active = Player.attack   
+end
+
+--[[--
    Trigger player losing the battle
 ]]
 function Player.lose()
@@ -89,9 +98,7 @@ function Player.move(x, y)
    Player.slug:destroyOverlay()
    Player.slug:movementOverlay(Player.moves)
    if Player.moves <= 0 then
-	  Player.slug:destroyOverlay()
-	  Player.slug:basicOverlay(Player.slug.action.range, Slug.attackOverlayFn)
-	  active = Player.attack
+	  Player.beginAttack()
    end
 end
 
