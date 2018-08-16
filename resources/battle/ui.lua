@@ -73,6 +73,15 @@ function BattleUI.setSlug(slug)
 end
 
 --[[--
+   resize shit
+]]
+function BattleUI.resize()
+   UIElement.recalc(B.scene)
+   B.actions:resize()
+   B.t:resize()
+end
+
+--[[--
    draw shit
 ]]
 function BattleUI.draw()
