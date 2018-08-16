@@ -18,7 +18,7 @@ function BattleUI.init()
    B.named, B.scene = UIElement.getNamed(
 	  B.scene, getStyles({"screen", "list-button", "battle-ui"}))
    B.actions:init(B.named)
-   B.actions.child.e = {bg={200,0,0,255}}
+   B.actions.child.e = {bg={0,0,0,128}}
    B.t = TextBox.new({text="testing testing 123", layout=B.actions.child})
 end
 
@@ -38,7 +38,7 @@ end
 --[[--
    On actions click closure generater
 
-   on click simply changes the slug's active action. needs to do more, like moving the slug onto it's action phase if applicable and changing the overlay if necessary. probably put in slug:switchSkill(ind)
+   sets slug attack mode; moves slug onto attack phase
 
    @param i Index of skill
    @param slug slug in focus
@@ -48,6 +48,7 @@ end
 function BattleUI.fn(i, slug)
    return function ()
 	  slug.action = slug.stats.skills[i]
+	  Player.beginAttack()
 	  return true
    end
 end

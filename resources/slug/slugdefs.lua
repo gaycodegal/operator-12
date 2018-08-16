@@ -132,10 +132,10 @@ return {
 				damage=2
 			   },
 			   {skill="Flip",
-				range=1
+				range=6
 			   },
 			   {skill="Heal",
-				range=1,
+				range=3,
 				heal=10
 			   }
 			}

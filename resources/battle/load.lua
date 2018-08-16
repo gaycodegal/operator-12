@@ -92,12 +92,7 @@ function Battle.KeyUp(key)
 	  map.dx = 0
    elseif key == 32 then
 	  if active == Player.move then
-		 active = Player.attack
-		 if Player.slug then
-			Player.slug:destroyOverlay()
-			Player.slug:basicOverlay(
-			   Player.slug.action.range, Slug.attackOverlayFn)
-		 end
+		 Player.beginAttack()
 	  elseif active == Player.attack then
 		 Player.returnControl()
 		 AI.prepareForEnemyTurns()
