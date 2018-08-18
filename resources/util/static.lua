@@ -137,4 +137,12 @@ function table.print(t)
    end
 end
 
-makeGlobal(Game)
+function table.map(t, fn)
+   local t2 = {}
+   for k,v in pairs(t) do
+	  t2[k] = fn(k,v)
+   end
+   return t2
+end
+
+if Game then makeGlobal(Game) end

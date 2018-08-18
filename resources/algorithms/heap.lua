@@ -1,179 +1,110 @@
--- Originally sourced from https://github.com/luapower/heap/blob/master/heap.lua
--- Priority queue implemented as a binary heap.
--- Written by Cosmin Apreutesei. Public Domain.
+require "util"
+Heap = Class()
+local H = Heap
 
--- In order to make a new heap, first assign a local heap variable like this:
--- local heap = require "algorithms/heap"
--- Then call either heap.cdataheap{cmp} or heap.valueheap{cmp} depending on if you're using Lua or C data types.
--- cmp is a function that determines whether it's a min heap or max heap.
-
-if not ... then require'heap_test'; return end
-
-local ffi --init on demand so that the module can be used without luajit
-local assert, floor = assert, math.floor
-
---heap algorithm working over abstract API that counts from one.
 --[[--
-   Creates abstract heap API that can be instantiated later.
+   make a new Heap
    
-   Params are in the form of functions passed at instance-time.
+   @param cmp comparator fn
 
-   The root is at index 1 and stack indices are consecutive.
-
-   @param add pushes a value into the heap and returns its index
-   @param remove remove the value at index i
-   @param swap swap two values
-   @param length number of elements in the stack
-   @param cmp compares elements. Also determins the min/max nature of the heap at instance-time.
+   @return new boi
 ]]
-local function heap(add, remove, swap, length, cmp)
-
-	local function moveup(child)
-		local parent = floor(child / 2)
-		while child > 1 and cmp(child, parent) do
-			swap(child, parent)
-			child = parent
-			parent = floor(child / 2)
-		end
-		return child
-	end
-
-	local function movedown(parent)
-		local last = length()
-		local child = parent * 2
-		while child <= last do
-			if child + 1 <= last and cmp(child + 1, child) then
-				child = child + 1 --sibling is smaller
-			end
-			if not cmp(child, parent) then break end
-			swap(parent, child)
-			parent = child
-			child = parent * 2
-		end
-		return parent
-	end
-
-	local function push(...)
-		add(...)
-		return moveup(length())
-	end
-
-	local function pop(i)
-		swap(i, length())
-		remove()
-		movedown(i)
-	end
-
-	local function rebalance(i)
-		if moveup(i) == i then
-			movedown(i)
-		end
-	end
-
-	return push, pop, rebalance
+function Heap.new(cmp)
+   self = {}
+   self.size = 0
+   self.data = {}
+   self.cmp = cmp or Heap.cmp
+   setmetatable(self, H)
+   return self
 end
 
 --[[--
-   cdata heap working over a cdata array
+   Get parent index
+
+   @param i current index
+
+   @return parent index
+]]
+function Heap.parent(i)
+   return (i-2) // 2 + 1
+end
+
+--[[--
+   Get left child index
+
+   Right = left + 1
    
-   @param h Existing heap
-   @return A new cdataheap
+   @param i Current index
+
+   @return left child index
 ]]
-local function cdataheap(h)
-	ffi = ffi or require'ffi'
-	assert(h and h.size, 'size expected')
-	assert(h.size >= 2, 'size too small')
-	assert(h.ctype, 'ctype expected')
-	local ctype = ffi.typeof(h.ctype)
-	h.data = h.data or ffi.new(ffi.typeof('$[?]', ctype), h.size)
-	local t, n, maxn = h.data, h.length or 0, h.size-1
-	local function add(v) n=n+1; t[n]=v end
-	local function rem() n=n-1 end
-	local function swap(i, j) t[0]=t[i]; t[i]=t[j]; t[j]=t[0] end
-	local function length() return n end
-	local cmp = h.cmp and
-		function(i, j) return h.cmp(t[i], t[j]) end or
-		function(i, j) return t[i] < t[j] end
-	local push, pop, rebalance = heap(add, rem, swap, length, cmp)
-
-	local function get(i, box)
-		assert(i >= 1 and i <= n, 'invalid index')
-		if box then
-			box[0] = t[i]
-		else
-			return ffi.new(ctype, t[i])
-		end
-	end
-	function h:push(v)
-		assert(n < maxn, 'buffer overflow')
-		push(v)
-	end
-	function h:pop(i, box)
-		assert(n > 0, 'buffer underflow')
-		local v = get(i or 1, box)
-		pop(i or 1)
-		return v
-	end
-	function h:peek(i, box)
-		return get(i or 1, box)
-	end
-	function h:replace(i, v)
-		assert(i >= 1 and i <= n, 'invalid index')
-		t[i] = v
-		rebalance(i)
-	end
-	h.length = length
-
-	return h
+function Heap.child(i)
+   return (i-1) * 2 + 2
 end
 
---[[--
-   Create a new value heap working over a Lua table
-
-   @param h Existing heap
-   @return A new valueheap
-]]
-local function valueheap(h)
-	h = h or {}
-	local t, n = h, #h
-	local function add(v) n=n+1; t[n]=v end
-	local function rem() t[n]=nil; n=n-1 end
-	local function swap(i, j) t[i], t[j] = t[j], t[i] end
-	local function length() return n end
-	local cmp = h.cmp and
-		function(i, j) return h.cmp(t[i], t[j]) end or
-		function(i, j) return t[i] < t[j] end
-	local push, pop, rebalance = heap(add, rem, swap, length, cmp)
-
-	local function get(i)
-		assert(i >= 1 and i <= n, 'invalid index')
-		return t[i]
-	end
-	function h:push(v)
-		assert(v ~= nil, 'invalid value')
-		push(v)
-	end
-	function h:pop(i)
-		assert(n > 0, 'buffer underflow')
-		local v = get(i or 1)
-		pop(i or 1)
-		return v
-	end
-	function h:peek(i)
-		return get(i or 1)
-	end
-	function h:replace(i, v)
-		assert(i >= 1 and i <= n, 'invalid index')
-		t[i] = v
-		rebalance(i)
-	end
-	h.length = length
-
-	return h
+function Heap:siftUp(i)
+   local p = self.parent(i)
+   local d,cmp = self.data,self.cmp
+   local t
+   while p >= 1 and not cmp(d[p], d[i]) do
+	  t = d[p]
+	  d[p] = d[i]
+	  d[i] = t
+	  i = p
+	  p = self.parent(i)
+   end
+   return i
 end
 
-return {
-	heap = heap,
-	valueheap = valueheap,
-	cdataheap = cdataheap,
-}
+function Heap:siftDown(p)
+   local l = self.child(p)
+   local r = l + 1
+   local d,cmp = self.data,self.cmp
+   local t
+   local cl, cr = cmp(d[p], d[l]), cmp(d[p], d[r])
+   while l <= self.size and not cl or not cr do
+	  if (cl and not cr) or (cl and cr and cmp(d[l], d[r])) then
+		 t = d[p]
+		 d[p] = d[l]
+		 d[l] = t
+		 p = l
+	  else
+		 t = d[p]
+		 d[p] = d[r]
+		 d[r] = t
+		 p = r
+	  end
+	  l = self.child(p)
+	  r = l + 1
+	  cl, cr = cmp(d[p], d[l]), cmp(d[p], d[r])
+   end
+   return p
+end
+
+function Heap:push(x)
+   self.size = self.size + 1
+   self.data[self.size] = x
+   self:siftUp(self.size)
+end
+
+function Heap:pop()
+   local x = self.data[1]
+   self.data[1] = self.data[self.size]
+   self.size = self.size - 1
+   self:siftDown(1)
+   return x
+end
+
+Heap.cmp = function(x,y)
+   return x < y
+end
+
+heap = Heap.new()
+
+for i = 1,100 do
+   heap:push(i)
+end
+
+for i = 1,100 do
+   print(heap:pop())
+end
