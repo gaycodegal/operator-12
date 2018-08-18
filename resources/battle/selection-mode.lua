@@ -3,7 +3,7 @@ require("ai/ai")
 SlugSelect = {}
 local S = SlugSelect
 
---[[
+--[[--
 callback gen, set active choice to slug.
 
 should probably update textbox text
@@ -19,7 +19,7 @@ function SlugSelect.fn(i, slugs)
    end
 end
 
---[[
+--[[--
 Set up buttons so one can choose which slug to place.
 
 Should include pagination.
@@ -39,7 +39,7 @@ function SlugSelect.setUI()
    BattleUI.t:resize()
 end
 
---[[
+--[[--
 Sets self as controller, takes some functions from Battle
 Loads possible slug choices for use
 
@@ -64,7 +64,7 @@ function SlugSelect.Begin(inv)
    S.setUI()
 end
 
---[[
+--[[--
 cleans up memory, hands control back to Battle
 ]]
 function SlugSelect.Finish()
@@ -106,7 +106,7 @@ function SlugSelect.Update()
    BattleUI.draw()
 end
 
---[[
+--[[--
 either click buttons, or try and place a slug
 
 @param x 

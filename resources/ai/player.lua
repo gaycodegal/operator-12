@@ -120,7 +120,7 @@ function Player.attack(x,y)
    Player.nextTurn()
 end
 
---[[
+--[[--
 moves onto the next slug or team
 ]]
 function Player.nextTurn()
