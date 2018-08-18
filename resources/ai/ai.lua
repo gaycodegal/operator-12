@@ -103,16 +103,37 @@ end
 
 --[[
    score options by distance (for heap)
+   if distance equal, choose shorter path
 
    @param x
    @param y
 ]]
 local function scoreDist(x,y)
+   if x[4] == y[4] then
+	  return x[3] < y[3]
+   end
    return x[4] < y[4]
+end
+
+--[[
+   score options by f-score (for-heap)
+
+   @param x
+   @param y
+]]
+local function scoreF(x,y)
+   return x[5] < y[5]
 end
 
 --[[--
    Calculates path between current enemy slug and position
+   
+   A* pathing.
+   H: Heuristic
+   G: Path cost
+   F: H + G
+   
+   Node: {X, Y, G, H, F, PARENT}
 
    @param x 
    @param y 
@@ -122,10 +143,8 @@ end
 function AI.pathTo(x,y)
    local heap = require 'algorithms/heap'
    local H = AI.manhatten
-   local closed = heap.valueheap{cmp = scoreDist} -- scoreDist determines whether heap is min or max
-   local open = heap.valueheap{cmp = scoreDist}
-   local swidth = map.width
-   local sheight = map.height
+   local closed = Heap.new(scoreDist) -- scoreDist determines whether heap is min or max
+   local open = Heap.new(scoreF)
    local visited = {}
    local tmp,cur,ind,owner,old,g
    local hpos = AI.slug.head.pos
@@ -139,15 +158,18 @@ function AI.pathTo(x,y)
    repeat
 	  cur = open:pop()
 	  closed:push(cur)
+	  ind = map:indexOf(cur[1], cur[2])
+	  visited[ind] = {closed, cur}
 	  --print("seeing", cur[1], cur[2], ":", cur[3])
 	  if cur[1] == goal[1] and cur[2] == goal[2] then
+		 --print("found!")
 		 break -- found
 	  end
 	  
 	  for i, d in ipairs(deltas) do
 		 g = cur[3] + 1
 		 tmp = {cur[1] + d[1], cur[2] + d[2], g}
-		 if tmp[1] >= 0 and tmp[1] < swidth and tmp[2] >= 0 and tmp[2] < sheight then
+		 if map:valid(tmp[1], tmp[2]) then
 			ind = map:indexOf(tmp[1], tmp[2])
 			if visited[ind] then
 			   owner = visited[ind][1]
@@ -163,17 +185,21 @@ function AI.pathTo(x,y)
 				  tmp[6] = cur
 				  open:push(tmp)
 				  visited[ind] = {open, tmp}
-			   elseif old[4] + g < old[5] then
-				  old[6] = cur-- test if using the current G score make the aSquare F score lower, if yes update the parent because it means its a better path
+			   elseif g < old[3] then -- lower cost to reach
+				  old[3] = g --update cost
+				  old[5] = old[4] + g -- update F score
+				  old[6] = cur -- update parent
+				  open:rescore(old._ind)
 			   end
 			end
 		 end
 	  end
 	  cur = nil
-   until #open == 0
+   until open.size == 0
    if cur == nil then
 	  --path not found
 	  cur = closed:pop()
+	  --print("closest", cur[1], cur[2])
    end
    local tmp = {}
    i = 1
@@ -183,6 +209,7 @@ function AI.pathTo(x,y)
 	  cur = cur[6]
 	  i = i + 1
    end
+   --print(table.concat(table.map(tmp, function(k,v) return table.concat(v,",") end), "::"))
    return tmp
 end
 
