@@ -1,11 +1,14 @@
 require "util"
+local isMain = Util.isMain()
 Heap = Class()
 local H = Heap
 
 --[[--
    make a new Heap
    
-   @param cmp comparator fn
+   @param cmp(x,y) comparator fn. if cmp(x,y) => x > y 
+   then (begin (push x) (push y) (pop)) => x 
+   
 
    @return new boi
 ]]
@@ -50,6 +53,8 @@ function Heap:siftUp(i)
 	  t = d[p]
 	  d[p] = d[i]
 	  d[i] = t
+	  d[p]._ind = p
+	  d[i]._ind = i
 	  i = p
 	  p = self.parent(i)
    end
@@ -61,22 +66,28 @@ function Heap:siftDown(p)
    local r = l + 1
    local d,cmp = self.data,self.cmp
    local t
-   local cl, cr = cmp(d[p], d[l]), cmp(d[p], d[r])
-   while l <= self.size and not cl or not cr do
+   local cl, cr
+   while l <= self.size do
+	  cl, cr = not cmp(d[p], d[l]), r <= self.size and not cmp(d[p], d[r])
 	  if (cl and not cr) or (cl and cr and cmp(d[l], d[r])) then
 		 t = d[p]
 		 d[p] = d[l]
 		 d[l] = t
+		 d[p]._ind = p
+		 d[l]._ind = l
 		 p = l
-	  else
+	  elseif cr then
 		 t = d[p]
 		 d[p] = d[r]
 		 d[r] = t
+		 d[p]._ind = p
+		 d[r]._ind = r
 		 p = r
+	  else
+		 break
 	  end
 	  l = self.child(p)
 	  r = l + 1
-	  cl, cr = cmp(d[p], d[l]), cmp(d[p], d[r])
    end
    return p
 end
@@ -84,27 +95,40 @@ end
 function Heap:push(x)
    self.size = self.size + 1
    self.data[self.size] = x
+   x._ind = self.size
    self:siftUp(self.size)
 end
 
 function Heap:pop()
    local x = self.data[1]
    self.data[1] = self.data[self.size]
+   self.data[1]._ind = 1
    self.size = self.size - 1
    self:siftDown(1)
    return x
+end
+
+function Heap:rescore(i)
+   if i > self.size or i < 1 then
+	  return
+   end
+   if self:siftUp(i) == i then
+	  self:siftDown(i)
+   end
 end
 
 Heap.cmp = function(x,y)
    return x < y
 end
 
-heap = Heap.new()
+if isMain then
+   heap = Heap.new(function (x, y) return x[1] < y[1] end)
 
-for i = 1,100 do
-   heap:push(i)
-end
-
-for i = 1,100 do
-   print(heap:pop())
+   for i = 100,1,-1 do
+	  heap:push({i})
+   end
+   
+   for i = 1,100 do
+	  print(heap:pop()[1])
+   end
 end
