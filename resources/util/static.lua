@@ -137,6 +137,14 @@ function table.print(t)
    end
 end
 
+--[[
+desc.
+
+@param t 
+@param fn 
+
+@return
+]]
 function table.map(t, fn)
    local t2 = {}
    for k,v in pairs(t) do
