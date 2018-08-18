@@ -3,12 +3,27 @@ require("ai/ai")
 SlugSelect = {}
 local S = SlugSelect
 
+--[[
+callback gen, set active choice to slug.
+
+should probably update textbox text
+
+@param i index into choice
+@param slugs slugs
+
+@return callback
+]]
 function SlugSelect.fn(i, slugs)
    return function()
 	  S.choice = slugs[i]
    end
 end
 
+--[[
+Set up buttons so one can choose which slug to place.
+
+Should include pagination.
+]]
 function SlugSelect.setUI()
    local slugs = S.inv.slugs
    local fns = {}
@@ -24,6 +39,12 @@ function SlugSelect.setUI()
    BattleUI.t:resize()
 end
 
+--[[
+Sets self as controller, takes some functions from Battle
+Loads possible slug choices for use
+
+@param inv Player's inventory
+]]
 function SlugSelect.Begin(inv)
    for i,v in pairs({"Resize", "Start", "End"}) do
 	  S[v] = Battle[v]
@@ -43,6 +64,9 @@ function SlugSelect.Begin(inv)
    S.setUI()
 end
 
+--[[
+cleans up memory, hands control back to Battle
+]]
 function SlugSelect.Finish()
    local spawners = slugs["spawner"]
    if spawners then
@@ -82,6 +106,12 @@ function SlugSelect.Update()
    BattleUI.draw()
 end
 
+--[[
+either click buttons, or try and place a slug
+
+@param x 
+@param y 
+]]
 function SlugSelect.MouseDown(x,y)
    if BattleUI.MouseDown(x,y) then
 	  return
