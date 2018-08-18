@@ -5,6 +5,7 @@ require("ai/ai")
 require("ai/player")
 require("tiled/tilesets")
 require("battle/ui")
+require("battle/selection-mode")
 Battle = {}
 
 --[[--
@@ -25,8 +26,8 @@ function Battle.Start(argc, argv)
    overlay:asTextures()
    overlay:loadTilesets()
    BattleUI.init()
-   Player.prepareForTurn()
    static.framedelay(framedelay)
+   SlugSelect.Begin(dofile("data/static/inv.lua"))
 end
 
 --[[
@@ -103,12 +104,11 @@ function Battle.KeyUp(key)
 	  map.dx = 0
    elseif key == KEY_RIGHT and map.dx > 0 then
 	  map.dx = 0
-   elseif key == 32 then
+   elseif key == KEY_SPACE then
 	  if active == Player.move then
 		 Player.beginAttack()
 	  elseif active == Player.attack then
-		 Player.returnControl()
-		 AI.prepareForEnemyTurns()
+		 Player.nextTurn()
 	  end
    end
 end
