@@ -120,6 +120,9 @@ function Player.attack(x,y)
    Player.nextTurn()
 end
 
+--[[
+moves onto the next slug or team
+]]
 function Player.nextTurn()
    Player.turni = Player.turni + 1
    if Player.turni > Player.nslugs then
