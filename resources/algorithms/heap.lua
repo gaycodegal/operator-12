@@ -45,6 +45,13 @@ function Heap.child(i)
    return (i-1) * 2 + 2
 end
 
+--[[--
+moves an element toward the top of the heap as appropriate
+
+@param i index to move
+
+@return index the element ended up at
+]]
 function Heap:siftUp(i)
    local p = self.parent(i)
    local d,cmp = self.data,self.cmp
@@ -61,6 +68,13 @@ function Heap:siftUp(i)
    return i
 end
 
+--[[--
+moves an element toward the bottom of the heap as appropriate
+
+@param p index to move
+
+@return index the element ended up at
+]]
 function Heap:siftDown(p)
    local l = self.child(p)
    local r = l + 1
@@ -92,6 +106,11 @@ function Heap:siftDown(p)
    return p
 end
 
+--[[--
+add a thing to the heap. must be a table
+
+@param x table to add
+]]
 function Heap:push(x)
    self.size = self.size + 1
    self.data[self.size] = x
@@ -99,6 +118,11 @@ function Heap:push(x)
    self:siftUp(self.size)
 end
 
+--[[--
+remove the top thing from the heap
+
+@return said thing
+]]
 function Heap:pop()
    local x = self.data[1]
    self.data[1] = self.data[self.size]
@@ -108,6 +132,11 @@ function Heap:pop()
    return x
 end
 
+--[[--
+move something at index i up or down in heap as required
+
+@param i index to rescore
+]]
 function Heap:rescore(i)
    if i > self.size or i < 1 then
 	  return
@@ -117,6 +146,9 @@ function Heap:rescore(i)
    end
 end
 
+--[[--
+   default comparator
+]]
 Heap.cmp = function(x,y)
    return x < y
 end

@@ -102,8 +102,10 @@ function AI.returnControl()
 end
 
 --[[
-   score options by distance (for heap)
+   score options by distance to target (H score)
    if distance equal, choose shorter path
+
+   for heap
 
    @param x
    @param y
@@ -116,7 +118,9 @@ local function scoreDist(x,y)
 end
 
 --[[
-   score options by f-score (for-heap)
+   score options by f-score
+
+   for heap
 
    @param x
    @param y
