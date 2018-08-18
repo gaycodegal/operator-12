@@ -108,8 +108,7 @@ function Battle.KeyUp(key)
 	  if active == Player.move then
 		 Player.beginAttack()
 	  elseif active == Player.attack then
-		 Player.returnControl()
-		 AI.prepareForEnemyTurns()
+		 Player.nextTurn()
 	  end
    end
 end
