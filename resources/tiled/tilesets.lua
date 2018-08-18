@@ -70,8 +70,8 @@ function Tileset:initTile(set, dat)
    tex.tex = set.sheet
    tex.w = set.tilewidth
    tex.h = set.tileheight
-   tex.x = (dat % set.w) * (tex.w + set.spacing) + set.margin
-   tex.y = (dat // set.w) * (tex.h + set.spacing) + set.margin
+   tex.x = ((dat - 1) % set.w) * (tex.w + set.spacing) + set.margin
+   tex.y = ((dat - 1) // set.w) * (tex.h + set.spacing) + set.margin
    return tex
 end
 
@@ -90,13 +90,11 @@ function Tileset:loadSurfaces()
 		 --Surface.fill(s,0,0,200,200,255,0,255,255)
 		 for i, t in ipairs(v.tiles) do
 			local r,g,b,a = parseColor(t.properties.color)
-			if a ~= 0 then
-			   Surface.fill(s,((i - 1) % v.w) * v.tilewidth,
-							((i - 1) // v.w) * v.tileheight,
-							v.tilewidth,
-							v.tileheight,
-							r,g,b,a)
-			end
+			Surface.fill(s,((i - 1) % v.w) * v.tilewidth,
+						 ((i - 1) // v.w) * v.tileheight,
+						 v.tilewidth,
+						 v.tileheight,
+						 r,g,b,a)
 		 end
 		 local s2 = Surface.new("images/" .. v.image)
 		 Surface.blit(s, s2, 0, 0)
@@ -142,19 +140,18 @@ function Tileset:colorBridge()
 		 Surface.blendmode(s, BLENDMODE_BLEND)
 		 for i, t in ipairs(v.tiles) do
 			local r,g,b,a = parseColor(t.properties.color)
-			if a ~= 0 then
-			   local x = ((i - 1) % v.w) * (v.tilewidth + sep) + sep
-			   local y = ((i - 1) // v.w) * (v.tileheight + sep) + sep
-			   local ox = ((i - 1) % v.w) * (v.tilewidth)
-			   local oy = ((i - 1) // v.w) * (v.tileheight)
-			   local sep2 = sep // 2
-			   local sep4 = 4
-			   Surface.fill(s, x - sep2, y + sep4, sep2, v.tileheight - sep4*2,r,g,b,a)
-			   Surface.fill(s, x + sep4, y - sep2, v.tilewidth - sep4*2, sep2,r,g,b,a)
-			   Surface.fill(s, x + v.tilewidth, y + sep4, sep2, v.tileheight - sep4*2,r,g,b,a)
-			   Surface.fill(s, x + sep4, y + v.tileheight, v.tilewidth - sep4*2, sep2,r,g,b,a)
-			   Surface.blitScale(s, v.surface, ox, oy, v.tilewidth, v.tileheight, x, y, v.tilewidth, v.tileheight)
-			end
+			local x = ((i - 1) % v.w) * (v.tilewidth + sep) + sep
+			local y = ((i - 1) // v.w) * (v.tileheight + sep) + sep
+			local ox = ((i - 1) % v.w) * (v.tilewidth)
+			local oy = ((i - 1) // v.w) * (v.tileheight)
+			local sep2 = sep // 2
+			local sep4 = 4
+			Surface.fill(s, x - sep2, y + sep4, sep2, v.tileheight - sep4*2,r,g,b,a)
+			Surface.fill(s, x + sep4, y - sep2, v.tilewidth - sep4*2, sep2,r,g,b,a)
+			Surface.fill(s, x + v.tilewidth, y + sep4, sep2, v.tileheight - sep4*2,r,g,b,a)
+			Surface.fill(s, x + sep4, y + v.tileheight, v.tilewidth - sep4*2, sep2,r,g,b,a)
+			Surface.blendmode(v.surface, BLENDMODE_NONE)
+			Surface.blitScale(s, v.surface, ox, oy, v.tilewidth, v.tileheight, x, y, v.tilewidth, v.tileheight)
 		 end
 		 Surface.destroy(v.surface)
 		 v.surface = s
@@ -177,7 +174,7 @@ end
    load all tilesets
 ]]
 function Tileset:loadTilesets()
-   local k = 0
+   local k = 1
    for i, v in ipairs(self) do
 	  if v.tiles[1].type and #v.tiles[1].type then
 		 for j, t in ipairs(v.tiles) do

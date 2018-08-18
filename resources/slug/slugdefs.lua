@@ -1,5 +1,6 @@
 return {
-   tilesets={{
+   tilesets={
+	  {
 		 name = "heads",
 		 tilewidth = 56,
 		 tileheight = 56,
@@ -7,7 +8,7 @@ return {
 		 margin = 0,
 		 image = "headsprites.png",
 		 imagewidth = 168,
-		 imageheight = 112,
+		 imageheight = 168,
 		 tileoffset = {
 			x = 0,
 			y = 0
@@ -19,7 +20,7 @@ return {
 		 },
 		 properties = {},
 		 terrains = {},
-		 tilecount = 6,
+		 tilecount = 9,
 		 tiles = {
 			{
 			   id = 0,
@@ -56,9 +57,15 @@ return {
 			   properties = {
 				  ["color"] = "ff7200"
 			   }
+			},
+			{
+			   id = 6,
+			   properties = {
+				  ["color"] = "ffffff00"
+			   }
 			}
 		 }
-			 },
+	  },
 	  {
 		 name = "tails",
 		 tilewidth = 56,
@@ -67,7 +74,7 @@ return {
 		 margin = 0,
 		 image = "tailsprites.png",
 		 imagewidth = 168,
-		 imageheight = 112,
+		 imageheight = 168,
 		 tileoffset = {
 			x = 0,
 			y = 0
@@ -79,7 +86,7 @@ return {
 		 },
 		 properties = {},
 		 terrains = {},
-		 tilecount = 6,
+		 tilecount = 9,
 		 tiles = {
 			{
 			   id = 0,
@@ -116,13 +123,19 @@ return {
 			   properties = {
 				  ["color"] = "ff7200"
 			   }
+			},
+			{
+			   id = 6,
+			   properties = {
+				  ["color"] = "00000000"
+			   }
 			}
 		 }
 	  }
    },
    slugs={
 	  test = {
-		 tiles = {1,7},
+		 tiles = {1,10},
 		 stats={
 			moves = 5,
 			maxsize = 5,
@@ -142,7 +155,7 @@ return {
 		 }
 	  },
 	  test2 = {
-		 tiles = {4, 10},
+		 tiles = {4, 13},
 		 stats={
 			moves = 3,
 			maxsize = 3,
@@ -155,7 +168,7 @@ return {
 		 }
 	  },
 	  spawner={
-		 tiles={3,3},
+		 tiles={7,7},
 		 stats={
 			moves = 0,
 			maxsize = 0,

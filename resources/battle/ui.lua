@@ -1,4 +1,5 @@
 require("util")
+require("ui/ListButton")
 require("ui/TextBox")
 BattleUI = {}
 local B = BattleUI

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="heads" tilewidth="56" tileheight="56" tilecount="6" columns="3">
- <image source="headsprites.png" width="168" height="112"/>
+<tileset name="heads" tilewidth="56" tileheight="56" tilecount="9" columns="3">
+ <image source="headsprites.png" width="168" height="168"/>
  <tile id="0">
   <properties>
    <property name="color" value="008cff"/>
@@ -29,6 +29,11 @@
  <tile id="5">
   <properties>
    <property name="color" value="ff7200"/>
+  </properties>
+ </tile>
+ <tile id="6">
+  <properties>
+   <property name="color" value="00000000"/>
   </properties>
  </tile>
 </tileset>
