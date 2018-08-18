@@ -104,7 +104,7 @@ function Battle.KeyUp(key)
 	  map.dx = 0
    elseif key == KEY_RIGHT and map.dx > 0 then
 	  map.dx = 0
-   elseif key == 32 then
+   elseif key == KEY_SPACE then
 	  if active == Player.move then
 		 Player.beginAttack()
 	  elseif active == Player.attack then

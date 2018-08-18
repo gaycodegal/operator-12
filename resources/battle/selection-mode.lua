@@ -102,4 +102,40 @@ function SlugSelect.MouseDown(x,y)
    end
 end
 
+--[[--
+   pan camera about map or quit
 
+@param key 
+]]
+function SlugSelect.KeyDown(key)
+   if key == KEY_ESCAPE then
+	  static.quit()
+   elseif key == KEY_UP then
+	  map.dy = -map.speed
+   elseif key == KEY_DOWN then
+	  map.dy = map.speed
+   elseif key == KEY_LEFT then
+	  map.dx = -map.speed
+   elseif key == KEY_RIGHT then
+	  map.dx = map.speed
+   end
+end
+
+--[[--
+Stop panning or quit
+
+@param key 
+]]
+function SlugSelect.KeyUp(key)
+   if key == KEY_ESCAPE then
+	  static.quit()
+   elseif key == KEY_UP and map.dy < 0 then
+	  map.dy = 0
+   elseif key == KEY_DOWN and map.dy > 0 then
+	  map.dy = 0
+   elseif key == KEY_LEFT and map.dx < 0 then
+	  map.dx = 0
+   elseif key == KEY_RIGHT and map.dx > 0 then
+	  map.dx = 0
+   end
+end
