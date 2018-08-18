@@ -5,6 +5,7 @@ require("ai/ai")
 require("ai/player")
 require("tiled/tilesets")
 require("battle/ui")
+require("battle/selection-mode")
 Battle = {}
 
 --[[--
@@ -25,8 +26,8 @@ function Battle.Start(argc, argv)
    overlay:asTextures()
    overlay:loadTilesets()
    BattleUI.init()
-   Player.prepareForTurn()
    static.framedelay(framedelay)
+   SlugSelect.Begin(dofile("data/static/inv.lua"))
 end
 
 --[[
