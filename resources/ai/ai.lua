@@ -31,6 +31,21 @@ function AI.findAll(nteam)
 end
 
 --[[--
+   find all spawners
+]]
+function AI.findSpawners()
+   local all = {}
+   j = 1
+   for i, o in ipairs(map.objects) do
+	  if o and o.slug and o.slug.spawner then
+		 all[j] = o
+		 j = j + 1
+	  end
+   end
+   return all
+end
+
+--[[--
    Prepare for each new AI controlled slug's turn
 ]]
 function AI.prepareCurrentSlug()

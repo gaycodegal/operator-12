@@ -241,7 +241,7 @@ end
 function Slug.spawn(data)
    slugs = {}
    for i, v in ipairs(data) do
-	  if slugs[v.name] then else
+	  if not slugs[v.name] then
 		 slugs[v.name] = {}
 	  end
 	  --print(v.y, v.x, map.tilesize, map.width, (v.y // map.tilesize))
@@ -253,9 +253,12 @@ function Slug.spawn(data)
 	  if v.properties.team then
 		 slugs[v.name].team = v.properties.team
 	  end
+	  if v.properties.spawner then
+		 slugs[v.name].spawner = true
+	  end
    end
    for name, v in pairs(slugs) do
-	  slugs[name] = Slug.new({sprites = v.type, segs = v, name=name, team=v.team})
+	  slugs[name] = Slug.new({sprites = v.type, segs = v, name=name, team=v.team, spawner = v.spawner})
    end
 end
 

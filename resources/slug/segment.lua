@@ -37,14 +37,12 @@ end
 function Segment:unsetMapConnections()
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
    local tmp
-   local swidth = map.width
-   local sheight = map.height
    local ind
    local cur = self.pos
    for c, d in ipairs(deltas) do
 	  tmp = {cur[1] + d[1], cur[2] + d[2]}
 	  self.c[c] = 0
-	  if tmp[1] >= 0 and tmp[1] < swidth and tmp[2] >= 0 and tmp[2] < sheight then
+	  if map:valid(tmp[1], tmp[2]) then
 		 ind = map:indexOf(tmp[1], tmp[2])
 		 if map.objects[ind] and map.objects[ind].slug == self.slug then
 			map.objects[ind].c[((c + 1) & 3) + 1] = 0
@@ -59,13 +57,11 @@ end
 function Segment:setMapConnections() 
    local deltas = {{0,-1},{1,0},{0,1},{-1,0}}
    local tmp
-   local swidth = map.width
-   local sheight = map.height
    local ind
    local cur = self.pos
    for c, d in ipairs(deltas) do
 	  tmp = {cur[1] + d[1], cur[2] + d[2]}
-	  if tmp[1] >= 0 and tmp[1] < swidth and tmp[2] >= 0 and tmp[2] < sheight then
+	  if map:valid(tmp[1], tmp[2]) then
 		 ind = map:indexOf(tmp[1], tmp[2])
 		 if map.objects[ind] and map.objects[ind].slug == self.slug then
 			self.c[c] = 1

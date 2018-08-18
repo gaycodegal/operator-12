@@ -117,6 +117,10 @@ function Player.attack(x,y)
    if skill.can(Player.slug, obj, ind, x, y)  then
 	  skill.act(Player.slug, obj, ind, x, y)
    end
+   Player.nextTurn()
+end
+
+function Player.nextTurn()
    Player.turni = Player.turni + 1
    if Player.turni > Player.nslugs then
 	  Player.returnControl()
