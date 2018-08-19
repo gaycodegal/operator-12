@@ -78,13 +78,13 @@ end
 --[[--
    load own surfaces
 ]]
-function Tileset:loadSurfaces()
+function Tileset.loadSurfaces(self)
    self.named = {}
    setmetatable(self, Tileset)
    for i, v in ipairs(self) do
 	  v.w = v.imagewidth // v.tilewidth
 	  v.h = v.imageheight // v.tileheight
-	  if v.tiles[1].properties.color then
+	  if v.tiles[1].properties and v.tiles[1].properties.color then
 		 local s = Surface.newBlank(v.imagewidth, v.imageheight)
 		 Surface.blendmode(s, BLENDMODE_BLEND)
 		 --Surface.fill(s,0,0,200,200,255,0,255,255)
