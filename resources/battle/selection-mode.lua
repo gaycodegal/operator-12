@@ -114,21 +114,22 @@ either click buttons, or try and place a slug
 ]]
 function SlugSelect.MouseDown(x,y)
    if BattleUI.MouseDown(x,y) then
-	  return
+      return
    end
    local px, py = Map.positionToCoords(x,y)	  
    if map:valid(px, py) then
-	  local ind = map:indexOf(px, py)
-	  if S.imates[ind] and S.choice then
-		 local choice = {px, py, S.choice}
-		 if S.imates[ind] ~= true then
-			S.choices[S.imates[ind]] = choice
-		 else
-			local cind = #S.choices + 1
-			table.insert(S.choices, cind, choice)
-			S.imates[ind] = cind
-		 end
-	  end
+      local ind = map:indexOf(px, py)
+      if not S.imates then return end -- Player didn't spawn any slugs this time      
+      if S.imates[ind] and S.choice then -- Player wants to spawn a slug
+	 local choice = {px, py, S.choice}
+	 if S.imates[ind] ~= true then
+	    S.choices[S.imates[ind]] = choice
+	 else
+	    local cind = #S.choices + 1
+	    table.insert(S.choices, cind, choice)
+	    S.imates[ind] = cind
+	 end
+      end
    end
 end
 
