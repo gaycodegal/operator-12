@@ -27,8 +27,7 @@ function ListButton.new(name, fns, texts, height, space, align)
    space = space or 0
    height = height or 30
    local nb = #fns
-   self = {}
-   setmetatable(self, LB)
+   self = New(LB)
    self.name = name
    self.fns = fns
    self.texts = texts
@@ -191,7 +190,7 @@ function ListButton.Start()
 	  {LB.testClick,LB.testClick,LB.testClick,LB.testClick},
 	  {"a","bb", "cs", "doo", "eff"},
 	  60, 10, 3)
-   LB.scene = {{s="screen",c=LB.buttons.container}}
+   LB.scene = {{s="screen",c={LB.buttons.container}}}
    LB.named, LB.scene = UIElement.getNamed(
 	  LB.scene, getStyles({"list-button", "screen"}))
    LB.buttons:init(LB.named)
