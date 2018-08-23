@@ -11,7 +11,7 @@ Segment = Class()
    @param c connections
 ]]
 function Segment.new (p, n, spr, pos, slug, c)
-   self = {p=p,n=n,spr=spr,pos=pos, slug=slug, c=c}
+   local self = {p=p,n=n,spr=spr,pos=pos, slug=slug, c=c}
    setmetatable(self, Segment)
    self:insert(p, n)
    return self

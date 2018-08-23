@@ -3,8 +3,10 @@ require("tiled/tilesets")
 Sector=Class()
 local S = Sector
 Sector.speed = 10
+
+
 function Sector.new(data)
-   self = {}
+   local self = {}
    self.data = data
    self.sprites = {}
    self.x = 0
