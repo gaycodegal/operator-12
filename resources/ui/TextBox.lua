@@ -8,6 +8,12 @@ TextBox = Class()
    Create a new textbox
 
    @param self 
+   @param self.text
+   @param self.layout
+   @param self.layout.e
+   @param self.layout.e.justify optional
+   @param self.layout.e.fg optional
+   @param self.layout.e.bg optional
 
    @return new textbox
 ]]
@@ -18,7 +24,7 @@ function TextBox.new(self)
    self.fg = layout.e.fg or {255,255,255,255}
    self.bg = layout.e.bg or {0,0,0,0}
    self.direction = layout.e.direction
-   self:resize()
+   self:setStart()
    return self
 end
 
@@ -40,8 +46,17 @@ end
    @param start 
 ]]
 function TextBox:setStart(start)
-   self.start = start or 0
+   self.start = start or 1
    self:resize()
+end
+
+--[[
+desc.
+
+@return
+]]
+function TextBox:next()
+   self:setStart(self.displaying)
 end
 
 --[[--
@@ -52,6 +67,11 @@ function TextBox:resize()
    self.rect = self.layout:rect()
    local r = self.rect
    local text = self.text
+   if self.start > #text then
+	  text = ""
+   elseif self.start ~= 1 then
+	  text = string.sub(text, self.start)
+   end
    if self.direction == 2 then
 	  local len, h = Text.charsInTextbox(
 		 self.text,

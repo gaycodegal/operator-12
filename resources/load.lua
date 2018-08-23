@@ -4,16 +4,20 @@ require("ui/UIElement")
 require("ui/ListButton")
 require("level-select/load")
 require("viewer/load")
+require("world/load")
+require("dialogue/overlay")
 MainMenu = {}
 local M = MainMenu
 
 --[[--
-   on click callback to load map select
+   generic no-arg controller switcher
 ]]
-function MainMenu.toMapSelect()
-   M.End()
-   Util.setController(MapSelect)
-   Start()
+function MainMenu.switchTo(controller)
+   return function()
+	  M.End()
+	  Util.setController(controller)
+	  Start(0,{})
+   end
 end
 
 --[[--
@@ -56,8 +60,8 @@ end
 function MainMenu.Start()
    M.buttons = ListButton.new(
 	  "menu",
-	  {M.toMapSelect,M.toCredits},
-	  {"Level Selection", "Credits/Thanks"},
+	  {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
+	  {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
 	  60, 10, 2)
    M.scene = {{s="screen",c={M.buttons.container}}}
    M.named, M.scene = UIElement.getNamed(

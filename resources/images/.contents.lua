@@ -1,1 +1,1 @@
-return {"arrs.png","check.png","headsprites.png","tailsprites.png","testbody.png","testhead.png","tile.png","tiles.png"}
+return {"arrs.png","check.png","headsprites.png","sectors/","tailsprites.png","testbody.png","testhead.png","tile.png","tiles.png"}

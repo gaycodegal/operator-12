@@ -1,1 +1,1 @@
-return {"save.lua"}
+return {"save.lua","static/"}
