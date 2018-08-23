@@ -37,6 +37,17 @@ function Class()
 end
 
 --[[--
+   creates a new already metareplaced instance
+   
+   @param class Class to create an instance of
+]]
+function New(class)
+   self = {}
+   setmetatable(self, class)
+   return self
+end
+
+--[[--
    make everything in x global
 
    @param x table
