@@ -5,9 +5,9 @@ require "tiled/tilesets"
 World = {}
 local W = World
 --[[--
-Load a sector of the world map.
+   Load a sector of the world map.
 
-@param argv[2] name of sector
+   @param argv[2] name of sector
 ]]
 function World.Start(argc, argv)
    framedelay = 1000//60
@@ -32,7 +32,7 @@ function World.Resize(w, h)
 end
 
 --[[--
-draw shit, update map
+   draw shit, update map
 ]]
 function World.Update()
    --Update = static.quit
@@ -41,7 +41,7 @@ function World.Update()
 end
 
 --[[
-destroy shit
+   destroy shit
 ]]
 function World.End()
    W.sector:destroy()
@@ -51,7 +51,7 @@ end
 --[[--
    pan camera about map or quit
 
-@param key 
+   @param key 
 ]]
 function World.KeyDown(key)
    if key == KEY_ESCAPE then
@@ -68,9 +68,9 @@ function World.KeyDown(key)
 end
 
 --[[--
-Stop panning or quit
+   Stop panning or quit
 
-@param key 
+   @param key 
 ]]
 function World.KeyUp(key)
    if key == KEY_ESCAPE then
@@ -89,10 +89,10 @@ end
 --[[
    Trigger movement/attack or whatever other action is currently active
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 
-@return
+   @return
 ]]
 function World.MouseDown(x, y)
 

@@ -50,6 +50,11 @@ function TextBox:setStart(start)
    self:resize()
 end
 
+--[[
+desc.
+
+@return
+]]
 function TextBox:next()
    self:setStart(self.displaying)
 end
