@@ -27,7 +27,7 @@ function ListButton.new(name, fns, texts, height, space, align)
    space = space or 0
    height = height or 30
    local nb = #fns
-   self = New(LB)
+   local self = New(LB)
    self.name = name
    self.fns = fns
    self.texts = texts

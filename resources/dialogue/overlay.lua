@@ -3,18 +3,16 @@ local isMain = Util.isMain()
 require("ui/UIElement")
 require("ui/ListButton")
 require("ui/TextBox")
-Dialogue = {}
+Dialogue = Class()
 local D = Dialogue
 
 --[[--
 @param dialogue Dialogue 
 ]]
 function Dialogue.new(dialogue, point)
-   self = {}--New(Dialogue)
-   setmetatable(self, D)
+   local self = New(D)
    self.next = function () D.next(self) end
-   local x = ListButton.new("dialogue",{self.next},{"Next"},60,10,3)
-   self.buttons = x
+   self.buttons = ListButton.new("dialogue",{self.next},{"Next"},60,10,3)
    
    local style = getStyles({"list-button", "screen"})
    local named, scene = UIElement.getNamed(
@@ -66,7 +64,8 @@ end
 
 function Dialogue.Resize(w,h)
    SCREEN_WIDTH, SCREEN_HEIGHT = w,h
-   Dialogue:resize()
+   local x = D.test
+   D.test:resize()
 end
 
 function Dialogue.End()
