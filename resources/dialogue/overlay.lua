@@ -7,7 +7,13 @@ Dialogue = Class()
 local D = Dialogue
 
 --[[--
-@param dialogue Dialogue 
+   Dialogue - basic ui for textual interactions with the story,
+   other npcs and such
+
+   @param dialogue Tree of currently loaded dialogue
+   @param point Entry point into `dialogue` tree
+
+   @return new boy
 ]]
 function Dialogue.new(dialogue, point)
    local self = New(D)
@@ -27,47 +33,82 @@ function Dialogue.new(dialogue, point)
    return self
 end
 
+--[[--
+   fetches the text from a dialogue at a point
+
+   @param dialogue 
+   @param point 
+
+   @return text
+]]
 function Dialogue:fetchText(dialogue, point)
    return dialogue[point].text
 end
 
+--[[--
+   go to the next bit of unread text
+]]
 function Dialogue:next()
    self.textbox:next()
 end
 
+--[[--
+   draw the dialogue
+]]
 function Dialogue:draw()
    self.buttons:draw()
    self.textbox:draw()
 end
 
+--[[--
+   resize that boy
+]]
 function Dialogue:resize()
    UIElement.recalc(self.scene)
    self.buttons:resize()
    self.textbox:resize()
 end
 
+--[[--
+   destroy the boy
+]]
 function Dialogue:destroy()
    self.buttons:destroy()
    self.textbox:destroy()
 end
 
+--[[
+   start
+]]
 function Dialogue.Start()
    D.test = Dialogue.new({
 		 catpoint={text="cats"}
-   }, "catpoint")
+						 }, "catpoint")
 end
 
+--[[
+   updato
+]]
 function Dialogue.Update()
    --Update=static.quit
    D.test:draw()
 end
 
+--[[
+   resizando
+
+   @param w 
+   @param h 
+]]
 function Dialogue.Resize(w,h)
    SCREEN_WIDTH, SCREEN_HEIGHT = w,h
    local x = D.test
    D.test:resize()
 end
 
+--[[
+   end
+]]
 function Dialogue.End()
    D.test:destroy()
 end

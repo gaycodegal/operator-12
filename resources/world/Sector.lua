@@ -5,6 +5,14 @@ local S = Sector
 Sector.speed = 10
 
 
+--[[--
+   A sector is basically all the content that can be viewed at once in
+   the world map. A rectangular area. Scrollable and such
+
+   @param data data of the sector
+
+   @return new sector
+]]
 function Sector.new(data)
    local self = {}
    self.data = data
@@ -39,6 +47,9 @@ function Sector:update()
    self.y = self.y - self.dy
 end
 
+--[[--
+   load a sector's textures and sprites
+]]
 function Sector:load()
    local t = self.tiles
    Tileset.loadSurfaces(t)
@@ -50,12 +61,18 @@ function Sector:load()
    end
 end
 
+--[[--
+   draw the boy
+]]
 function Sector:draw()
    for i,s in ipairs(self.sprites) do
 	  s:draw(self.x,self.y)
    end
 end
 
+--[[--
+   destroy the boy
+]]
 function Sector:destroy()
    for i,s in ipairs(self.sprites) do
 	  s:destroy()
