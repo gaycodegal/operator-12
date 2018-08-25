@@ -17,7 +17,8 @@ local D = Dialogue
 ]]
 function Dialogue.new(dialogue, point)
    local self = New(D)
-   self.next = function () D.next(self) end
+   self.dialogue = dialogue
+   self.point = point
    self.buttons = ListButton.new("dialogue",{self.next},{"Next"},60,10,3)
    
    local style = getStyles({"list-button", "screen"})
@@ -25,10 +26,9 @@ function Dialogue.new(dialogue, point)
 	  {{s="screen",c={self.buttons.container}}}, style)
    self.buttons:init(named)
    self.scene = scene
-   self.dialogue = named[1]
    self.buttons.child.e = {}
    self.textbox = TextBox.new({
-		 text=D:fetchText(dialogue, point),
+		 text=self:fetchText(),
 		 layout=self.buttons.child})
    return self
 end
@@ -36,20 +36,44 @@ end
 --[[--
    fetches the text from a dialogue at a point
 
-   @param dialogue 
-   @param point 
-
    @return text
 ]]
-function Dialogue:fetchText(dialogue, point)
-   return dialogue[point].text
+function Dialogue:fetchText()
+   return self.dialogue[self.point].text
+end
+
+--[[--
+   fetches the point's node from a dialogue
+
+   @return node {text=,buttons={fns=,texts=}}
+]]
+function Dialogue:fetch()
+   return self.dialogue[self.point]
 end
 
 --[[--
    go to the next bit of unread text
+   if all text is read, display the current dialogue node's buttons
 ]]
 function Dialogue:next()
-   self.textbox:next()
+   table.print(self)
+   print("a")
+   if self.textbox:next() then
+	  print("B")
+	  local buttons = self:fetch().buttons
+	  if buttons then
+		 print("C")
+		 self.buttons:setButtons(buttons.fns, buttons.texts)
+	  end
+   end
+end
+
+function Dialogue:go(dialogue, point)
+   self.dialogue = dialogue
+   self.point = point
+   print(self:fetchText())
+   self.textbox:setText(self:fetchText())
+   self.buttons:setButtons({self.next},{"Next"})
 end
 
 --[[--
@@ -58,6 +82,15 @@ end
 function Dialogue:draw()
    self.buttons:draw()
    self.textbox:draw()
+end
+
+function Dialogue:click(x,y)
+   local b = self.buttons:which(x,y)
+   if b then
+	  b.click(self)
+	  return true
+   end
+   return false
 end
 
 --[[--
@@ -77,13 +110,21 @@ function Dialogue:destroy()
    self.textbox:destroy()
 end
 
+function Dialogue.open(name)
+   return dofile("dialogue/story/"..name..".lua")
+end
+
 --[[
    start
 ]]
 function Dialogue.Start()
-   D.test = Dialogue.new({
-		 catpoint={text="cats"}
-						 }, "catpoint")
+   D.test = Dialogue.new(Dialogue.open("test"), "main-entry")
+end
+
+function Dialogue.MouseDown(x,y)
+   if D.test then
+	  D.test:click(x,y)
+   end
 end
 
 --[[
@@ -111,6 +152,7 @@ end
 ]]
 function Dialogue.End()
    D.test:destroy()
+   D.test = nil
 end
 
 Util.try(isMain, D)

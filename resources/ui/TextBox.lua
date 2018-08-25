@@ -35,7 +35,7 @@ end
    @param start 
 ]]
 function TextBox:setText(text, start)
-   self.start = start or 0
+   self.start = start or 1
    self.text = text
    self:resize()
 end
@@ -56,7 +56,13 @@ desc.
 @return
 ]]
 function TextBox:next()
-   self:setStart(self.displaying)
+   local text = self.text
+   self:setStart(self.start + self.displaying)
+   local ltext = #text
+   if self.start > ltext then
+	  self.start = ltext + 1
+   end
+   return self.start > ltext
 end
 
 --[[--
