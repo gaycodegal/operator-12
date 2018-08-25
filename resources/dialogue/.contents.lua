@@ -1,1 +1,1 @@
-return {"overlay.lua","test-text.lua"}
+return {"overlay.lua","story/","test-text.lua","util.lua"}
