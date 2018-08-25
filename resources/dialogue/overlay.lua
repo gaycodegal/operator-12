@@ -68,6 +68,12 @@ function Dialogue:next()
    end
 end
 
+--[[
+Goes to a dialogue/point pair, loads dialogue
+
+@param dialogue 
+@param point 
+]]
 function Dialogue:go(dialogue, point)
    self.dialogue = dialogue
    self.point = point
@@ -84,6 +90,14 @@ function Dialogue:draw()
    self.textbox:draw()
 end
 
+--[[
+click on button
+
+@param x 
+@param y 
+
+@return whether any button was clicked
+]]
 function Dialogue:click(x,y)
    local b = self.buttons:which(x,y)
    if b then
@@ -110,6 +124,13 @@ function Dialogue:destroy()
    self.textbox:destroy()
 end
 
+--[[
+open a dialogue file
+
+@param name 
+
+@return contents
+]]
 function Dialogue.open(name)
    return dofile("dialogue/story/"..name..".lua")
 end
@@ -121,6 +142,12 @@ function Dialogue.Start()
    D.test = Dialogue.new(Dialogue.open("test"), "main-entry")
 end
 
+--[[
+mouse down
+
+@param x 
+@param y 
+]]
 function Dialogue.MouseDown(x,y)
    if D.test then
 	  D.test:click(x,y)
