@@ -1,0 +1,10 @@
+
+Operator 12 was developed by:
+Steph Oro
+Eric Londres
+
+Operator 12's source is at present under the MIT license
+
+View online at https://github.com/stephoro/operator-12
+
+:D

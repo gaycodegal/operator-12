@@ -13,7 +13,7 @@ local H = Heap
    @return new boi
 ]]
 function Heap.new(cmp)
-   self = {}
+   local self = {}
    self.size = 0
    self.data = {}
    self.cmp = cmp or Heap.cmp
