@@ -113,7 +113,7 @@ static const struct luaL_Reg music_meta[] = {
     {"pause", l_music_pause},
     {"resume", l_music_resume},
     {"destroy", l_music_destroy},
-	{"__index", l_meta_indexer},
+    {"__index", l_meta_indexer},
     {NULL, NULL}};
 
 static int l_texture_new(lua_State *L) {
