@@ -118,6 +118,22 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 
 ## Classes Exposed to Lua via C++
 
+### Music
+
+- new(source)
+    - returns 1
+- play(music,times)
+    - returns 0
+- setPosition(music,position)
+    - returns 0
+- pause(music)
+    - returns 0
+- resume(music)
+    - returns 0
+- destroy(music)
+    - returns 0
+
+
 ### Sprite
 
 - new(Texture, x, y, w, h, sx, sy)

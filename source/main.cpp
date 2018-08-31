@@ -13,9 +13,15 @@ int start() {
   }
   /* initialize TTF */
   if (TTF_Init() == -1) {
-    printf("Could not initialize SDLTTF SDL_Error: %s\n", SDL_GetError());
+    printf("Could not initialize SDL_TTF SDL_Error: %s\n", SDL_GetError());
     return 1;
   }
+
+  if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+    printf("Could not initialize SDL_MIXER SDL_Error: %s\n", SDL_GetError());
+    return 1;
+  }
+
   Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
   window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
@@ -45,6 +51,7 @@ int end() {
   if (gFont != NULL)
     TTF_CloseFont(gFont);
   gFont = NULL;
+  Mix_CloseAudio();
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();
@@ -100,6 +107,7 @@ int main(int argc, char *argv[]) {
       return 1;
     }
   }
+
   long lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoidArgv(L, "Start", argc - 1, argv + 1);
@@ -172,6 +180,7 @@ int main(int argc, char *argv[]) {
   if (globalTypeExists(L, LUA_TFUNCTION, "End"))
     callLuaVoid(L, "End");
   lua_close(L);
+
   end();
   return 0;
 }

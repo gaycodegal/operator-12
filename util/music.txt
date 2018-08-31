@@ -1,0 +1,31 @@
+"music_"
+"new"
+["source"]
+["char *"]
+["string"]
+1
+"play"
+["music", "times"]
+["Mix_Music **", "int"]
+["userdata", "number"]
+0
+"setPosition"
+["music", "position"]
+["Mix_Music **", "double"]
+["userdata", "number"]
+0
+"pause"
+["music"]
+["Mix_Music **"]
+["userdata"]
+0
+"resume"
+["music"]
+["Mix_Music **"]
+["userdata"]
+0
+"destroy"
+["music"]
+["Mix_Music **"]
+["userdata"]
+0
