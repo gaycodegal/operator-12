@@ -1,5 +1,5 @@
 #include "lua_sprites.hpp"
-
+/*
 static int l_music_new(lua_State *L) {
   char *source;
   if (!lua_isstring(L, -1)) {
@@ -115,7 +115,7 @@ static const struct luaL_Reg music_meta[] = {
     {"destroy", l_music_destroy},
     {"__index", l_meta_indexer},
     {NULL, NULL}};
-
+*/
 static int l_texture_new(lua_State *L) {
   // printLuaStack(L, "new_tex");
   char *path;
@@ -986,7 +986,7 @@ static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
                                              {"__index", l_meta_indexer},
                                              {NULL, NULL}};
 
-static const struct luaClassList game[] = {{"Music", music_meta},
+static const struct luaClassList game[] = {//{"Music", music_meta},
                                            {"Texture", texture_meta},
                                            {"Sprite", spritemeta},
                                            {"static", static_meta},
