@@ -8,11 +8,19 @@
 #include <SDL_ttf.h>
 #include <Windows.h>
 
+#elif __EMSCRIPTEN__
+
+#include <emscripten.h>
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <unistd.h>
+
 #else
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
+#include <SDL/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 #include <unistd.h>
 

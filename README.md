@@ -63,10 +63,10 @@ You can check the [org](./org) folder for more information about planned content
 
 Custom Libraries you'll need
 
-- SDL2-Dev `apt-get install libsdl2-dev`
-- SDL2-Image-Dev `apt-get install libsdl2-image-dev`
-- SDL2-TTF-Dev `apt-get install libsdl2-ttf-dev`
-- SDL2-Mixer-Dev `apt-get install libsdl2-mixer-dev`
+- SDL2-Dev `apt install libsdl2-dev`
+- SDL2-Image-Dev `apt install libsdl2-image-dev`
+- SDL2-TTF-Dev `apt install libsdl2-ttf-dev`
+- SDL-Mixer-Dev `apt install libsdl-mixer1.2-dev`
 - Lua 5.3.4
   - Installation instructions available at [www.lua.org](https://www.lua.org/download.html)
   - Should be located in ~/lua

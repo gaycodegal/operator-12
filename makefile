@@ -3,11 +3,23 @@ SRC=./source
 LUA=$(HOME)/lua/src
 OBJS = $(patsubst %.cpp,%.o,$(wildcard $(SRC)/*.cpp))
 CC = g++
-CPPFLAGS = --std=c++11 -L$(LUA) -I$(LUA) -I$(INC)
-LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -llua -ldl -lm
+LINKER_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL_mixer -llua -ldl -lm
 OBJ_NAME = main
+
+ifneq (,$(findstring wasm,$(MAKECMDGOALS)))
+OBJ_NAME = out/op12.html
+LUAO=$(HOME)/lua/lua.o
+CC = emcc
+EMFLAGS = -s USE_SDL=2 -s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s ALLOW_MEMORY_GROWTH=1
+endif
+
+CPPFLAGS = --std=c++11 -L$(LUA) -I$(LUA) -I$(INC) $(EMFLAGS)
+
 all: $(OBJS)
 	$(CC) $(OBJS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+wasm: $(OBJS)
+	mkdir -p out
+	$(CC) $(OBJS) $(LUAO) $(CPPFLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME) --preload-file resources/
 clean:
 	rm -f $(OBJS) $(wildcard *~) $(wildcard $(SRC)/*~) $(wildcard $(INC)/*~)
 fclean:

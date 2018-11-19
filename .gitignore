@@ -4,5 +4,6 @@ main
 *.hidden.*
 tiled/*.png
 tiled/*.lua
+out/*
 docs/*
 .#*

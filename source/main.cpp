@@ -17,10 +17,10 @@ int start() {
     return 1;
   }
 
-  if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+  /*if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
     printf("Could not initialize SDL_MIXER SDL_Error: %s\n", SDL_GetError());
     return 1;
-  }
+    }*/
 
   Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
 
@@ -51,7 +51,7 @@ int end() {
   if (gFont != NULL)
     TTF_CloseFont(gFont);
   gFont = NULL;
-  Mix_CloseAudio();
+  //Mix_CloseAudio();
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();
@@ -78,8 +78,74 @@ static inline long getMS() {
       .count();
 }
 
+lua_State *L;
+long lastTick;
+int updateExists;
+int keydownExists;
+int keyupExists;
+int mousedownExists;
+int mousemoveExists;
+int mouseupExists;
+SDL_Event e;
+void one_iter(){
+  // Handle events on queue
+  while (SDL_PollEvent(&e) != 0) {
+    // User requests quit
+    if (e.type == SDL_QUIT) {
+      quit = true;
+    } // User presses a key
+    else if (keydownExists && e.type == SDL_KEYDOWN) {
+      lua_getglobal(L, "KeyDown");
+      lua_pushnumber(L, e.key.keysym.sym);
+      callErr(L, "KeyDown", 1);
+    } else if (keyupExists && e.type == SDL_KEYUP) {
+      lua_getglobal(L, "KeyUp");
+      lua_pushnumber(L, e.key.keysym.sym);
+      callErr(L, "KeyUp", 1);
+    } else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
+	       e.type == SDL_MOUSEBUTTONUP) {
+      // Get mouse position
+      switch (e.type) {
+      case SDL_MOUSEBUTTONDOWN:
+	mouseHelper(L, e.type, "MouseDown", mousedownExists);
+	break;
+      case SDL_MOUSEMOTION:
+	mouseHelper(L, e.type, "MouseMove", mousemoveExists);
+	break;
+      case SDL_MOUSEBUTTONUP:
+	mouseHelper(L, e.type, "MouseUp", mouseupExists);
+	break;
+      }
+    } else if (e.type == SDL_WINDOWEVENT &&
+	       e.window.event == SDL_WINDOWEVENT_RESIZED) {
+      lua_getglobal(L, "Resize");
+      lua_pushnumber(L, e.window.data1);
+      lua_pushnumber(L, e.window.data2);
+      callErr(L, "Resize", 2);
+    }
+  }
+
+  SDL_RenderClear(globalRenderer);
+  long nowTick = getMS();
+  long delta = (nowTick - lastTick);
+  long tdelta = delta;
+  if (delta <= 0) {
+    delta = 0;
+  }
+  if (updateExists) {
+    lua_getglobal(L, "Update");
+    lua_pushnumber(L, delta / 1000.0f);
+    lua_pushnumber(L, tdelta);
+    callErr(L, "Update", 2);
+  }
+  lastTick = nowTick;
+  SDL_RenderPresent(globalRenderer);
+  if (!quit)
+    SDL_WaitEventTimeout(NULL, framedelay);
+}
+
+
 int main(int argc, char *argv[]) {
-  lua_State *L;
   quit = false;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
@@ -108,73 +174,25 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  long lastTick = getMS();
+  lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoidArgv(L, "Start", argc - 1, argv + 1);
-  int updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
-  int keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
-  int keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
-  int mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
-  int mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
-  int mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
-  SDL_Event e;
+  updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
+  keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
+   keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
+   mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
+   mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
+   mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
   // While application is running
+#ifdef __EMSCRIPTEN__
+   // void emscripten_set_main_loop(em_callback_func func, int fps, int simulate_infinite_loop);
+   emscripten_set_main_loop(one_iter, 60, 1);
+#else
+      
   if (updateExists) {
     while (!quit) {
-      // Handle events on queue
-      while (SDL_PollEvent(&e) != 0) {
-        // User requests quit
-        if (e.type == SDL_QUIT) {
-          quit = true;
-        } // User presses a key
-        else if (keydownExists && e.type == SDL_KEYDOWN) {
-          lua_getglobal(L, "KeyDown");
-          lua_pushnumber(L, e.key.keysym.sym);
-          callErr(L, "KeyDown", 1);
-        } else if (keyupExists && e.type == SDL_KEYUP) {
-          lua_getglobal(L, "KeyUp");
-          lua_pushnumber(L, e.key.keysym.sym);
-          callErr(L, "KeyUp", 1);
-        } else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
-                   e.type == SDL_MOUSEBUTTONUP) {
-          // Get mouse position
-          switch (e.type) {
-          case SDL_MOUSEBUTTONDOWN:
-            mouseHelper(L, e.type, "MouseDown", mousedownExists);
-            break;
-          case SDL_MOUSEMOTION:
-            mouseHelper(L, e.type, "MouseMove", mousemoveExists);
-            break;
-          case SDL_MOUSEBUTTONUP:
-            mouseHelper(L, e.type, "MouseUp", mouseupExists);
-            break;
-          }
-        } else if (e.type == SDL_WINDOWEVENT &&
-                   e.window.event == SDL_WINDOWEVENT_RESIZED) {
-          lua_getglobal(L, "Resize");
-          lua_pushnumber(L, e.window.data1);
-          lua_pushnumber(L, e.window.data2);
-          callErr(L, "Resize", 2);
-        }
-      }
-
-      SDL_RenderClear(globalRenderer);
-      long nowTick = getMS();
-      long delta = (nowTick - lastTick);
-      long tdelta = delta;
-      if (delta <= 0) {
-        delta = 0;
-      }
-      if (updateExists) {
-        lua_getglobal(L, "Update");
-        lua_pushnumber(L, delta / 1000.0f);
-        lua_pushnumber(L, tdelta);
-        callErr(L, "Update", 2);
-      }
-      lastTick = nowTick;
-      SDL_RenderPresent(globalRenderer);
-      if (!quit)
-        SDL_WaitEventTimeout(NULL, framedelay);
+      
+      one_iter();
     }
   }
   if (globalTypeExists(L, LUA_TFUNCTION, "End"))
@@ -182,5 +200,6 @@ int main(int argc, char *argv[]) {
   lua_close(L);
 
   end();
+#endif
   return 0;
 }
