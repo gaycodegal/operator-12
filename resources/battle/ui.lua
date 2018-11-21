@@ -9,18 +9,20 @@ local B = BattleUI
 ]]
 function BattleUI.init()
    B.actions = ListButton.new(
-	  "actions",
-	  {},
-	  {},
-	  30, 10, 3)
+      "actions",
+      {},
+      {},
+      30, 10, 3)
    B.scene = {{s="screen",c={
-				  {s="actionsPanel", c={B.actions.container}}
-			 }}}
+		  {s="money", n="money"},
+		  {s="actionsPanel", c={B.actions.container}}
+	     }}}
    B.named, B.scene = UIElement.getNamed(
-	  B.scene, getStyles({"screen", "list-button", "battle-ui"}))
+      B.scene, getStyles({"screen", "list-button", "battle-ui"}))
    B.actions:init(B.named)
    B.actions.child.e = {bg={0,0,0,128}}
    B.t = TextBox.new({text="testing testing 123", layout=B.actions.child})
+   B.money = TextBox.new({text="0$", layout=B.named.money})
 end
 
 --[[--
@@ -33,7 +35,7 @@ end
 function BattleUI.getSlugText(slug)
    local s = slug.stats
    return table.concat({"moves: ", tostring(s.moves),"\n",
-						"max size: ", tostring(s.maxsize),"\n"})
+			"max size: ", tostring(s.maxsize),"\n"})
 end
 
 --[[--
@@ -48,9 +50,9 @@ end
 ]]
 function BattleUI.fn(i, slug)
    return function ()
-	  slug.action = slug.stats.skills[i]
-	  Player.beginAttack()
-	  return true
+      slug.action = slug.stats.skills[i]
+      Player.beginAttack()
+      return true
    end
 end
 
@@ -64,8 +66,8 @@ function BattleUI.setSlug(slug)
    local fns = {}
    local texts = {}
    for i = 1,#slug.stats.skills do
-	  table.insert(fns, B.fn(i, slug))
-	  table.insert(texts, slug.stats.skills[i].skill)
+      table.insert(fns, B.fn(i, slug))
+      table.insert(texts, slug.stats.skills[i].skill)
    end
    B.slug = slug
    B.t:setText(B.getSlugText(slug))
@@ -80,6 +82,7 @@ function BattleUI.resize()
    UIElement.recalc(B.scene)
    B.actions:resize()
    B.t:resize()
+   B.money:resize()
 end
 
 --[[--
@@ -88,6 +91,7 @@ end
 function BattleUI.draw()
    B.actions:draw()
    B.t:draw()
+   B.money:draw()
 end
 
 --[[--
@@ -96,11 +100,13 @@ end
 function BattleUI.destroy()
    B.actions:destroy()
    B.t:destroy()
+   B.money:destroy()
    B.slug = nil
    B.scene = nil
    B.named = nil
    B.actions = nil
    B.t = nil
+   B.money = nil
 end
 
 --[[--
@@ -114,7 +120,7 @@ end
 function BattleUI.MouseDown(x, y)
    local b = B.actions:which(x,y)
    if b then
-	  return b:click()
+      return b:click()
    end
    return false
 end
