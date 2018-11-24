@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="13" height="13" tilewidth="32" tileheight="32" infinite="0" nextobjectid="19">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="13" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="21">
  <tileset firstgid="1" source="tiles.tsx"/>
- <layer name="Tile Layer 1" width="13" height="13">
+ <layer id="1" name="Tile Layer 1" width="13" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,3,3,0,0,0,0,0,
@@ -18,7 +18,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup name="slug">
+ <objectgroup id="2" name="slug">
   <object id="3" name="Slug1" type="test" x="144" y="147">
    <properties>
     <property name="index" type="int" value="1"/>
@@ -61,6 +61,17 @@
     <property name="index" type="int" value="1"/>
     <property name="team" type="int" value="2"/>
    </properties>
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="3" name="objects">
+  <object id="19" name="50$" type="money" x="112" y="209">
+   <properties>
+    <property name="value" type="int" value="50"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="20" name="goal" type="goal" x="77" y="272">
    <point/>
   </object>
  </objectgroup>
