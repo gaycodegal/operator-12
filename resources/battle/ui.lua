@@ -24,7 +24,7 @@ function BattleUI.init()
    B.actions.child.e = {bg={0,0,0,128}}
    B.t = TextBox.new({text="testing testing 123", layout=B.actions.child})
    B.money = MoneyUI.new(B.named)
-   B.money:add(12)
+   player.money:listen(B.money)
 end
 
 --[[--

@@ -11,14 +11,16 @@ Collectable.types.money = MoneyObject
    @param value money the object will impart on capture
 ]]
 function MoneyObject.new (spr, pos, value)
-   return Collectable.new(spr, pos, value, MoneyObject.take)
+   local item = Collectable.new(spr, pos, MoneyObject.take)
+   item.value = value
+   return item
 end
 
 --[[--
    spawn a new money object from a tiled object
-   @param spr sprite
+   @param v a tiled object
+   @param v.properties.value money item will impart on capture
    @param pos now owned by segment
-   @param value money the object will impart on capture
 ]]
 function MoneyObject.spawn (v, pos)
    return MoneyObject.new(Collectable.sheet.named.money, pos, v.properties.value)
@@ -29,7 +31,6 @@ end
    @param player player that took money
    @param slug slug that took money
 ]]
-function MoneyObject:take(player, slug)
-   self:removeFromMap()
+function MoneyObject:take(slug)
    player.money:add(self.value)
 end
