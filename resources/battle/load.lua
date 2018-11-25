@@ -14,6 +14,7 @@ Load the slugs, load the map, prepare for battle
 @param argv[2] name of map to load
 ]]
 function Battle.Start(argc, argv)
+   player = PlayerModel.new()
    name = argv[2]
    dofile("slug/slug.lua")
    framedelay = 1000//60
@@ -66,6 +67,8 @@ function Battle.End()
    map:destroy()
    BattleUI.destroy()
    map = nil
+   player:destroy()
+   player = nil
 end
 
 --[[--

@@ -20,7 +20,7 @@ local Heal = Skills.Heal
    @return whether action can run
 ]]
 function Damage.can(initiator, object, _, _, _)
-   if not object then
+   if not object or not object.slug then
 	  return false
    end
    local dx = object.pos[1]-initiator.head.pos[1]
@@ -56,7 +56,7 @@ end
    @return whether action can run
 ]]
 function Heal.can(initiator, object, _, _, _)
-   if not object then
+   if not object or not object.slug then
 	  return false
    end
    local dx = object.pos[1]-initiator.head.pos[1]

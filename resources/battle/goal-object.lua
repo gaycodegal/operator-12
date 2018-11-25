@@ -10,18 +10,17 @@ Collectable.types.goal = GoalObject
    @param pos now owned by segment
    @param value money the object will impart on capture
 ]]
-function GoalObject.new (spr, pos, value)
-   return Collectable.new(spr, pos, value, GoalObject.take)
+function GoalObject.new (spr, pos)
+   return Collectable.new(spr, pos, GoalObject.take)
 end
 
 --[[--
    spawn a new money object from a tiled object
-   @param spr sprite
-   @param pos now owned by segment
+   @param unused a tiled object
    @param value money the object will impart on capture
 ]]
-function GoalObject.spawn (v, pos)
-   return GoalObject.new(Collectable.sheet.named.goal, pos, v.properties.value)
+function GoalObject.spawn (unused, pos)
+   return GoalObject.new(Collectable.sheet.named.goal, pos)
 end
 
 --[[--
@@ -29,7 +28,6 @@ end
    @param player player that took money
    @param slug slug that took money
 ]]
-function GoalObject:take(player, slug)
-   self:removeFromMap()
-   player.money:add(self.value)
+function GoalObject:take(slug)
+   Player.win()
 end

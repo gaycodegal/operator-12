@@ -2,6 +2,7 @@ require("util")
 require("battle/collectable")
 require("battle/goal-object")
 require("money/object")
+require("model/player")
 Map = Class()
 
 Map.tilesep = 10

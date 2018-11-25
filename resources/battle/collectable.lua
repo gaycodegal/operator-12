@@ -8,11 +8,10 @@ C.types = {}
    creates a new money object
    @param spr sprite
    @param pos now owned by segment
-   @param value money the object will impart on capture
    @param take function to activate on collection
 ]]
-function Collectable.new (spr, pos, value, take)
-   local self = {spr=spr, pos=pos, v=value, take=take}
+function Collectable.new (spr, pos, take)
+   local self = {spr=spr, pos=pos, take=take, item=true}
    setmetatable(self, C)
    return self
 end

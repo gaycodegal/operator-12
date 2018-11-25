@@ -5,13 +5,11 @@ local M = MoneyUI
 
 function MoneyUI.new(named)
    local t = TextBox.new({text="0$", layout=named.money})
-   t.add = M.add
-   t.money = 0
+   t.set = M.set
    return t
 end
 
-function MoneyUI:add(x)
-   self.money = self.money + x
+function MoneyUI:set(x)
    self:setText(tostring(x) .. "$")
 end
 
