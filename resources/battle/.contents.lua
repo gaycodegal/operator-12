@@ -1,1 +1,1 @@
-return {"load.lua","map.lua","overlay.lua","selection-mode.lua","ui.lua"}
+return {"collectable.lua","load.lua","map.lua","overlay.lua","selection-mode.lua","ui.lua"}

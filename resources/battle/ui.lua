@@ -1,6 +1,7 @@
 require("util")
 require("ui/ListButton")
 require("ui/TextBox")
+require("money/ui")
 BattleUI = {}
 local B = BattleUI
 
@@ -18,11 +19,12 @@ function BattleUI.init()
 		  {s="actionsPanel", c={B.actions.container}}
 	     }}}
    B.named, B.scene = UIElement.getNamed(
-      B.scene, getStyles({"screen", "list-button", "battle-ui"}))
+      B.scene, getStyles({"screen", "money", "list-button", "battle-ui"}))
    B.actions:init(B.named)
    B.actions.child.e = {bg={0,0,0,128}}
    B.t = TextBox.new({text="testing testing 123", layout=B.actions.child})
-   B.money = TextBox.new({text="0$", layout=B.named.money})
+   B.money = MoneyUI.new(B.named)
+   player.money:listen(B.money)
 end
 
 --[[--

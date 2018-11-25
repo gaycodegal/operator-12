@@ -13,7 +13,7 @@ CC = emcc
 EMFLAGS = -s USE_SDL=2 -s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s ALLOW_MEMORY_GROWTH=1
 endif
 
-CPPFLAGS = --std=c++11 -L$(LUA) -I$(LUA) -I$(INC) $(EMFLAGS)
+CPPFLAGS = --std=c++11 -O2 -L$(LUA) -I$(LUA) -I$(INC) $(EMFLAGS)
 
 all: $(OBJS)
 	$(CC) $(OBJS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
