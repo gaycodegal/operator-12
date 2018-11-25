@@ -4,7 +4,7 @@
 
 Operator 12 is going to be my answer to why aren't there more puzzle/story driven games like [Nightfall](http://biomediaproject.com/bmp/files/LEGO/gms/online/Spybotics/TheNightfallIncident/). Hopefully will include a good story, some nice audio & visuals, and some fun puzzles. Planned as a series, with a smaller inital game to test the waters and then a larger v2 game to improve upon the story and gameplay of the first.
 
-This project itself is a V2. The original Operator 12 only got so far as to have mock battles (A* pathing, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
+This project itself is a V2. A version of the current work compiled to WebAssembly can be found [here](http://stephoro.github.io/apps/operator-12/).  The original Operator 12 only got so far as to have mock battles (A* pathing, quad-trees, visual representations etc.) and the code was lacking in quality. Now I've graduated college and have the skills to do this properly. Again I'll keep the scope generally quite small for the first release and try not to do anything fancy.
 
 The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for your side of the battle. You are #12, you report to #2. There will be more story behind the names as you get to know your organization.
 
