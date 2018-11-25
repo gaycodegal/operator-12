@@ -64,7 +64,6 @@ function Battle.End()
    overlay = nil
    Slug.unload()
    map:destroy()
-   Slug.despawn()
    BattleUI.destroy()
    map = nil
 end
