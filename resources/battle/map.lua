@@ -44,7 +44,9 @@ function Map.new (data)
    for i, dat in ipairs(tmap) do
       t:makeTile(i, dat)
    end
-   Collectable.spawn(data.layers[3].objects)
+   if #data.layers >= 3 then
+      Collectable.spawn(data.layers[3].objects)
+   end
    Slug.load()
    Slug.spawn(data.layers[2].objects)
    for k,v in pairs(slugs) do

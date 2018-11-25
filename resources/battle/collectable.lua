@@ -67,7 +67,9 @@ end
    Destroys associated objects created in the spawn function
 ]]
 function Collectable.despawn()
-   C.sheet:destroyTilesets()
+   if C.sheet then
+      C.sheet:destroyTilesets()
+   end
    C.sheet = nil
    C.items = nil
 end
