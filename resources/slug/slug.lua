@@ -271,6 +271,7 @@ function Slug.despawn()
 		 v:destroy()
 	  end
    end
+   slugs = nil
 end
 
 --[[--

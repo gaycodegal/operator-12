@@ -76,6 +76,21 @@ function Tileset:initTile(set, dat)
 end
 
 --[[--
+   Loads a tileset from a named sheet resource
+   @param name sheets/<name>.lua
+]]
+function Tileset.fromSheet(name)
+   local sheet = {
+      name=name,
+      dofile("sheets/"..name..".lua")
+   }
+   Tileset.loadSurfaces(sheet)
+   sheet:asTextures()
+   sheet:loadTilesets()
+   return sheet
+end
+
+--[[--
    load own surfaces
 ]]
 function Tileset.loadSurfaces(self)

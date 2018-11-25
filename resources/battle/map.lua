@@ -1,4 +1,7 @@
 require("util")
+require("battle/collectable")
+require("battle/goal-object")
+require("money/object")
 Map = Class()
 
 Map.tilesep = 10
@@ -40,13 +43,13 @@ function Map.new (data)
    for i, dat in ipairs(tmap) do
       t:makeTile(i, dat)
    end
+   Collectable.spawn(data.layers[3].objects)
    Slug.load()
    Slug.spawn(data.layers[2].objects)
    for k,v in pairs(slugs) do
       t.slug = v
    end
    t:recenter()
-   debug.debug()
    return t
 end
 
@@ -215,4 +218,7 @@ function Map:destroy()
 	 v:destroy()
       end
    end
+
+   Slug.despawn()
+   Collectable.despawn()
 end

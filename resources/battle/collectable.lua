@@ -1,7 +1,8 @@
 require("util")
 
-Collectable = class()
+Collectable = Class()
 local C = Collectable
+C.types = {}
 
 --[[--
    creates a new money object
@@ -40,4 +41,34 @@ function Collectable:draw()
    local w = tilew
    local h = tileh
    Texture.renderCopy(s.tex, s.x, s.y, w, h, x, y, w, h)
+end
+
+--[[--
+   spawn collectables from Tiled lua file
+   @param data sourced from tiled_map.layers[3].objects
+]]
+function Collectable.spawn(data)
+   if not data then
+      return
+   end
+   local collectables = {}
+   C.items = collectables
+   C.sheet = Tileset.fromSheet("collectables")
+   for i, v in ipairs(data) do
+      local item = C.types[v.type].spawn(v, {
+	 (v.x // map.tilesize) + 1,
+	 (v.y // map.tilesize) + 1
+      })
+      table.insert(collectables, item)
+      item:addToMap()
+   end
+end
+
+--[[--
+   Destroys associated objects created in the spawn function
+]]
+function Collectable.despawn()
+   C.sheet:destroyTilesets()
+   C.sheet = nil
+   C.items = nil
 end

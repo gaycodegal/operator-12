@@ -1,8 +1,8 @@
 require("util")
 require("battle/collectable")
 
-MoneyObject = {}
-Collectable.types.money = MoneyObject
+GoalObject = {}
+Collectable.types.goal = GoalObject
 
 --[[--
    creates a new money object
@@ -10,8 +10,8 @@ Collectable.types.money = MoneyObject
    @param pos now owned by segment
    @param value money the object will impart on capture
 ]]
-function MoneyObject.new (spr, pos, value)
-   return Collectable.new(spr, pos, value, MoneyObject.take)
+function GoalObject.new (spr, pos, value)
+   return Collectable.new(spr, pos, value, GoalObject.take)
 end
 
 --[[--
@@ -20,8 +20,8 @@ end
    @param pos now owned by segment
    @param value money the object will impart on capture
 ]]
-function MoneyObject.spawn (v, pos)
-   return MoneyObject.new(Collectable.sheet.named.money, pos, v.properties.value)
+function GoalObject.spawn (v, pos)
+   return GoalObject.new(Collectable.sheet.named.goal, pos, v.properties.value)
 end
 
 --[[--
@@ -29,7 +29,7 @@ end
    @param player player that took money
    @param slug slug that took money
 ]]
-function MoneyObject:take(player, slug)
+function GoalObject:take(player, slug)
    self:removeFromMap()
    player.money:add(self.value)
 end
