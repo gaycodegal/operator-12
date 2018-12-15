@@ -1,11 +1,12 @@
 #include "main.hpp"
-#define SDL_ACTIVE
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 SDL_Window *window;
 SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
 TTF_Font *gFont = NULL;
+bool doInitSDL = false;
+
 int start() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -46,6 +47,8 @@ int start() {
 }
 
 int end() {
+  if (!doInitSDL)
+    return 0;
   if (window != NULL)
     SDL_DestroyWindow(window);
   if (gFont != NULL)
@@ -74,8 +77,8 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
 
 static inline long getMS() {
   return std::chrono::duration_cast<std::chrono::milliseconds>(
-             std::chrono::system_clock::now().time_since_epoch())
-      .count();
+							       std::chrono::system_clock::now().time_since_epoch())
+    .count();
 }
 
 lua_State *L;
@@ -145,48 +148,80 @@ void one_iter(){
 }
 
 
+std::string openConfig(const char * path) {
+  std::string ret = "load.lua";
+  L = luaL_newstate();
+  luaL_openlibs(L);
+  luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
+
+  if (path == NULL) {
+    if (!loadLuaFile(L, "config.lua", 1)) {
+      return NULL;
+    }
+  } else {
+    if (!loadLuaFile(L, (std::string(path) + "/config.lua").c_str(), 1)) {
+      return NULL;
+    }
+  }
+
+  lua_getfield(L, -1, "load");
+  ret = std::string(lua_tostring(L, -1));
+  lua_pop(L, 1);
+  lua_getfield(L, -1, "doInitSDL");
+  doInitSDL = lua_toboolean(L, -1);
+  lua_pop(L, 1);
+  
+  lua_close(L);
+  return ret;
+}
+
+
 int main(int argc, char *argv[]) {
   quit = false;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
 #else
-  chdir("resources");
+  int unused = chdir("resources");
 #endif
-#ifdef SDL_ACTIVE
-  if (start() != 0) {
-    end();
-    return 1;
+
+  std::string path;
+  if (argc < 2) {
+    path = openConfig(NULL);
+  } else {
+    path = openConfig(argv[1]);
   }
-#endif
+  
+  
+  if (doInitSDL) {
+    if (start() != 0) {
+      end();
+      return 1;
+    }
+  }
+  
   L = luaL_newstate();
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
 
-  if (argc < 2) {
-    if (!loadLuaFile(L, "load.lua")) {
-      end();
-      return 1;
-    }
-  } else {
-    if (!loadLuaFile(L, (std::string(argv[1]) + ".lua").c_str())) {
-      end();
-      return 1;
-    }
+  if (!loadLuaFile(L, path.c_str(), 0)) {
+    end();
+    return 1;
   }
+
 
   lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoidArgv(L, "Start", argc - 1, argv + 1);
   updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
   keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
-   keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
-   mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
-   mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
-   mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
+  keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
+  mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
+  mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
+  mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
   // While application is running
 #ifdef __EMSCRIPTEN__
-   // void emscripten_set_main_loop(em_callback_func func, int fps, int simulate_infinite_loop);
-   emscripten_set_main_loop(one_iter, 60, 1);
+  // void emscripten_set_main_loop(em_callback_func func, int fps, int simulate_infinite_loop);
+  emscripten_set_main_loop(one_iter, 60, 1);
 #else
       
   if (updateExists) {

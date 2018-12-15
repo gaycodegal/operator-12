@@ -8,8 +8,10 @@
 
 /**
    loads a lua file named <fname> into the state <L>
+
+   file returns maximally <nresults>
  */
-int loadLuaFile(lua_State *L, const char *fname);
+int loadLuaFile(lua_State *L, const char *fname, int nresults);
 
 /**
    checks whether a global variable <name> exists of type <type>
