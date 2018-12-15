@@ -1,4 +1,5 @@
 require("util")
+require("data/save")
 local isMain = Util.isMain()
 Flex = {}
 local F = Flex
@@ -64,7 +65,18 @@ function Flex.makebox(direction, odirection, size, osize, x, ox)
 end
 
 function Flex.Start()
-   
+   print("hi")
+   err, res = xpcall(Flex.calculateRects,
+		     debug.traceback,
+		     {children={
+			 {{1,"w"},{1,"w"}},
+			 {{1,"w"},{1,"w"}},
+		     }},
+		     {0,0,100,100},
+		     1,
+		     2)
+   print(res)
+   print(table.tostring(res))
 end
 
 function Flex.Update()
