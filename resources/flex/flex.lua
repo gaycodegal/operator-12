@@ -1,3 +1,7 @@
+require("flex/UIGroup")
+require("flex/UIView")
+horizontal = 1
+vertical = 2
 Flex = {}
 --[[
    cell: {axis=1|2, class=string, size={int, "dp"|"sp"|"w"}, children?={cell+}}
@@ -75,12 +79,71 @@ function Flex.makebox(direction, odirection, x, ox, size, osize)
    return rect
 end
 
-function Flex.init(cell, rects, data)
+function Flex.new(cell, rects)
    local objects = {}
-   for i, child in ipairs(children) do
+   objects.n = #rects
+   for i, rect in ipairs(rects) do
+      local child = cell.children[i]
+      if (not child.class) and child.children then
+	 child.class = UIGroup
+      end
       if child.class then
-	 local class = _G[child.class]
-	 objects[i] = class.new(cell, rects[i], data)
+	 local class = child.class
+	 objects[i] = class.new(child, rect)
+      end
+      if child.children then
+	 objects[i].children = Flex.new(child, rect.children)
+      end
+   end
+   return objects
+end
+
+function Flex.setData(objects, data)
+   for i = 1, objects.n do
+      local child = objects[i]
+      local dat = data[i]
+      if child then
+	 objects[i]:setData(data)
+	 if child.children then
+	    Flex.setData(child.children, data.children)
+	 end
+      end
+   end
+end
+
+function Flex.setRects(objects, rects)
+   for i = 1, objects.n do
+      local child = objects[i]
+      local rect = rects[i]
+      if child then
+	 objects[i]:setRect(rect)
+	 if child.children then
+	    Flex.setRects(child.children, rect.children)
+	 end
+      end
+   end
+end
+
+function Flex.draw(objects)
+   for i = 1, objects.n do
+      local child = objects[i]
+      if child then
+	 objects[i]:draw()
+	 if child.children then
+	    Flex.draw(child.children)
+	 end
+      end
+   end
+end
+
+function Flex.destroy(objects)
+   for i = 1, objects.n do
+      local child = objects[i]
+      if child then
+	 objects[i]:destroy()
+	 if child.children then
+	    Flex.destroy(child.children)
+	 end
       end
    end
 end
