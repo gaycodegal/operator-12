@@ -12,6 +12,7 @@ function UIGroup:setRect(rect)
 end
 
 function UIGroup:setData(data)
+   Flex.setData(self.children, data)
 end
 
 function UIGroup:draw()
