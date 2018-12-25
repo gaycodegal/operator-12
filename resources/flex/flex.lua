@@ -1,4 +1,5 @@
 require("flex/UIGroup")
+require("flex/UIListGroup")
 require("flex/UIView")
 horizontal = 1
 vertical = 2
@@ -89,7 +90,7 @@ function Flex.new(cell, rects)
       end
       if child.class then
 	 local class = child.class
-	 objects[i] = class.new(child, rect)
+	 objects[i] = class.new(child, rect, i)
       end
       if child.children then
 	 objects[i].children = Flex.new(child, rect.children)
@@ -101,12 +102,17 @@ end
 function Flex.setData(objects, data)
    for i = 1, objects.n do
       local child = objects[i]
-      local dat = data[i]
       if child then
-	 objects[i]:setData(data)
-	 if child.children then
-	    Flex.setData(child.children, data.children)
-	 end
+	 child:setData(data, i)
+      end
+   end
+end
+
+function Flex.setDataList(objects, data)
+   for i = 1, objects.n do
+      local child = objects[i]
+      if child then
+	 child:setData(data[i], i)
       end
    end
 end
