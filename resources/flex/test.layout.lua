@@ -11,7 +11,7 @@ return {
 	  {class=UIView,
 	   size={1,"w"},
 	   color="00ff00"},
-	     
+
 	  {class=UIView,
 	   size={50,"dp"},
 	   color="ff00ff"},
@@ -24,7 +24,7 @@ return {
 	   size={50,"dp"},
 	   color="ff00ff"},
       }},
-      
+
       {class=UIView,
        size={1,"w"},
        color="0000ff"},

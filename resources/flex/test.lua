@@ -5,17 +5,10 @@ require("flex/flex")
 local F = Flex
 
 function Flex.Start()
-   print("hi")
    cells = dofile("flex/test.layout.lua")
    rects = Flex.calculateRects(cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
-   print(rects)
-   print(table.tostring(rects))
    things = Flex.new(cells, rects)
-   print("things")
-   Flex.setData(things,
-		rects
-   )
-   print("end")
+   Flex.setData(things, nil)
 end
 
 function Flex.Update()
