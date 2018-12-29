@@ -1,5 +1,7 @@
 require("util")
 local isMain = Util.isMain()
+require("flex/flex")
+require("data/save")
 require("ui/UIElement")
 require("ui/ListButton")
 require("level-select/load")
@@ -14,10 +16,45 @@ local M = MainMenu
 ]]
 function MainMenu.switchTo(controller)
    return function()
-	  M.End()
-	  Util.setController(controller)
-	  Start(0,{})
+      M.End()
+      Util.setController(controller)
+      Start(0,{})
    end
+end
+
+function MainMenu.layout()
+   local class = UIView
+   local rows, cols = 4, 4
+
+   local space = {size={10, "dp"}}
+   local childRow = {}
+   local key = 1
+   for i = 1, 2 * rows, 2 do
+      local childCol = {}
+      for j = 1, 2 * cols, 2 do
+	 childCol[j] = space
+	 childCol[j + 1] = {class=class,
+			    size={1,"w"},
+			    color="ff00ff",
+			    key=key}
+	 key = key + 1
+      end
+      childCol[2 * cols + 1] = space
+      childRow[i] = space
+      childRow[i + 1] = {axis=vertical,
+			 size={1,"w"},
+			 children=childCol}
+   end
+   childRow[2 * rows + 1] = space
+   
+   return {
+      axis=vertical,
+      children={
+	 {axis=horizontal,
+	  size={1,"w"},
+	  children=childRow}
+      }
+   }
 end
 
 --[[--
@@ -38,7 +75,7 @@ end
 function MainMenu.MouseDown(x,y)
    local b = M.buttons:which(x,y)
    if b then
-	  b:click()
+      b:click()
    end
 end
 
@@ -50,23 +87,30 @@ end
 ]]
 function MainMenu.Resize(w,h)
    Util.Resize(w,h)
-   UIElement.recalc(M.scene)
-   M.buttons:resize()
+   local rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   Flex.setRects(M.views, rects)
+   --UIElement.recalc(M.scene)
+   --M.buttons:resize()
+   
 end
 
 --[[--
    Basic menu setup
 ]]
 function MainMenu.Start()
-   M.buttons = ListButton.new(
-	  "menu",
-	  {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
-	  {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
-	  60, 10, 2)
-   M.scene = {{s="screen",c={M.buttons.container}}}
-   M.named, M.scene = UIElement.getNamed(
-	  M.scene, getStyles({"list-button", "screen"}))
-   M.buttons:init(M.named)
+   M.cells = M.layout()
+   local rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   --[[M.buttons = ListButton.new(
+      "menu",
+      {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
+      {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
+      60, 10, 2)
+      M.scene = {{s="screen",c={M.buttons.container}}}
+      M.named, M.scene = UIElement.getNamed(
+      M.scene, getStyles({"list-button", "screen"}))
+      M.buttons:init(M.named)]]
+   M.views = Flex.new(M.cells, rects)
+   Flex.setData(M.views, nil)
 end
 
 --[[
@@ -74,14 +118,17 @@ end
 ]]
 function MainMenu.Update()
    --Update=static.quit
-   M.buttons:draw()
+   Flex.draw(M.views)
+   --M.buttons:draw()
 end
 
 --[[
    destroy shit
 ]]
 function MainMenu.End()
-   M.buttons:destroy()
+   Flex.destroy(M.views)
+   M.views = nil
+   M.cells = nil
 end
 
 Util.try(isMain, M)
