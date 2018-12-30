@@ -1,6 +1,7 @@
 require("flex/UIGroup")
 require("flex/UIListGroup")
 require("flex/UIView")
+require("flex/UIButton")
 horizontal = 1
 vertical = 2
 Flex = {}
