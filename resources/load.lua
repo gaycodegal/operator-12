@@ -23,7 +23,7 @@ function MainMenu.switchTo(controller)
 end
 
 function MainMenu.layout()
-   local class = UIView
+   local class = UIButton
    local rows, cols = 4, 4
 
    local space = {size={10, "dp"}}
@@ -41,16 +41,16 @@ function MainMenu.layout()
       end
       childCol[2 * cols + 1] = space
       childRow[i] = space
-      childRow[i + 1] = {axis=vertical,
+      childRow[i + 1] = {axis=horizontal,
 			 size={1,"w"},
 			 children=childCol}
    end
    childRow[2 * rows + 1] = space
    
    return {
-      axis=vertical,
+      axis=horizontal,
       children={
-	 {axis=horizontal,
+	 {axis=vertical,
 	  size={1,"w"},
 	  children=childRow}
       }
@@ -110,7 +110,11 @@ function MainMenu.Start()
       M.scene, getStyles({"list-button", "screen"}))
       M.buttons:init(M.named)]]
    M.views = Flex.new(M.cells, rects)
-   Flex.setData(M.views, nil)
+   local data = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
+   for i, v in ipairs(data) do
+      data[i] = {text=v}
+   end
+   Flex.setData(M.views, data)
 end
 
 --[[
