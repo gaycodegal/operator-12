@@ -73,10 +73,7 @@ end
    @param y 
 ]]
 function MainMenu.MouseDown(x,y)
-   local b = M.buttons:which(x,y)
-   if b then
-      b:click()
-   end
+   Flex.click({x, y}, M.views, M.rects)
 end
 
 --[[
@@ -87,8 +84,8 @@ end
 ]]
 function MainMenu.Resize(w,h)
    Util.Resize(w,h)
-   local rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
-   Flex.setRects(M.views, rects)
+   M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   Flex.setRects(M.views, M.rects)
    --UIElement.recalc(M.scene)
    --M.buttons:resize()
    
@@ -99,7 +96,7 @@ end
 ]]
 function MainMenu.Start()
    M.cells = M.layout()
-   local rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
    --[[M.buttons = ListButton.new(
       "menu",
       {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
@@ -109,12 +106,16 @@ function MainMenu.Start()
       M.named, M.scene = UIElement.getNamed(
       M.scene, getStyles({"list-button", "screen"}))
       M.buttons:init(M.named)]]
-   M.views = Flex.new(M.cells, rects)
+   M.views = Flex.new(M.cells, M.rects)
    local data = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
    for i, v in ipairs(data) do
-      data[i] = {text=v}
+      data[i] = {text=v, click=M.click}
    end
    Flex.setData(M.views, data)
+end
+
+function MainMenu.click(object, pt)
+   print("click reg @", pt[1], pt[2], object.text)
 end
 
 --[[
@@ -133,6 +134,7 @@ function MainMenu.End()
    Flex.destroy(M.views)
    M.views = nil
    M.cells = nil
+   M.rects = nil
 end
 
 Util.try(isMain, M)
