@@ -123,10 +123,40 @@ function Flex.setRects(objects, rects)
       local child = objects[i]
       local rect = rects[i]
       if child then
-	 objects[i]:setRect(rect)
+	 child:setRect(rect)
 	 if child.children then
 	    Flex.setRects(child.children, rect.children)
 	 end
+      end
+   end
+end
+
+function Flex.isInBound(pt, rect)
+   return pt[1] >= rect[1] and pt[1] <= rect[1] + rect[3] and pt[2] >= rect[2] and pt[2] <= rect[2] + rect[4]
+end
+
+function Flex.doClick(object, pt)
+   if object.click then
+      return object.click(object, pt)
+   end
+end
+
+function Flex.click(pt, objects, rects)
+   return Flex.objectAtPoint(pt, objects, rects, Flex.doClick)
+end
+
+function Flex.objectAtPoint(pt, objects, rects, fn)
+   for i = 1, objects.n do
+      local child = objects[i]
+      local rect = rects[i]
+      if child and Flex.isInBound(pt, rect) then
+	 if child.children then
+	    local result = Flex.objectAtPoint(pt, child.children, rect.children, fn)
+	    if result then
+	       return result
+	    end
+	 end
+	 return fn(child, pt)
       end
    end
 end
