@@ -26,8 +26,10 @@ end
 
 function UIButton:setData(data)
    UIView.setBackground(self, data)
-   if data[self.key] then
-      self.text = data[self.key].text
+   if data and data[self.key] then
+      data = data[self.key]
+      self.text = data.text
+      self.click = data.click -- click fn
       self:setRect(self.rect)
    end
 end
