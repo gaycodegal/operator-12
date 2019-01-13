@@ -6,16 +6,16 @@
 1
 "destroy"
 ["self"]
-["custom"]
-["table"]
+["TiledMap *"]
+["userdata"]
 0
 "move"
 ["self", "x", "y"]
-["custom", "int", "int"]
-["table", "number", "number"]
+["TiledMap *", "int", "int"]
+["userdata", "number", "number"]
 0
 "draw"
 ["self"]
-["custom"]
-["table"]
+["TiledMap *"]
+["userdata"]
 0

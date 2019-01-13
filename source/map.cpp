@@ -41,22 +41,59 @@ TiledTexture::TiledTexture(lua_State *L) {
   imageWidth = getInt(L, "imagewidth");
   imageHeight = getInt(L, "imageheight");
   count = getInt(L, "tilecount");
-
-  //
 }
 
 TiledTexture::~TiledTexture() {}
 
 TiledMap::TiledMap(lua_State *L) {
+  // Init Props
+  tileWidth = getInt(L, "tilewidth");
+  tileHeight = getInt(L, "tileheight");
+  width = getInt(L, "width");
+  height = getInt(L, "height");
+
+  // Init tilesets
   getTable(L, "tilesets");
   nTilesets = getLen(L, -1);
   tilesets = new TiledTexture *[nTilesets];
   for (int i = 0; i < nTilesets; ++i) {
-    getTableAtIndex(L, i);
+    getTableAtIndex(L, i + 1);
     tilesets[i] = new TiledTexture(L);
     lua_pop(L, 1);
   }
   lua_pop(L, 1);
+
+  // Init array
+  int nTiles = width * height;
+  tiles = new int[width * height];
+  
+  getTable(L, "layers");
+  getTableAtIndex(L, 1);
+  getTable(L, "data");
+
+  for(int i = 0; i < nTiles; ++i) {
+    lua_rawgeti(L, -1, i + 1);
+    tiles[i] = lua_tointeger(L, -1);
+    lua_pop(L, 1);
+  }
+  
+  lua_pop(L, 3);
+}
+
+int TiledMap::drawTile(int x, int y, int tx, int ty) {
+  int tile = getTile(x, y);
+}
+
+int TiledMap::getTile(int x, int y) {
+  return tiles[toIndex(x, y)];
+}
+
+int TiledMap::positionValid(int x, int y) {
+  return x > 0 && x < width && y > 0 && y < height;
+}
+
+int TiledMap::toIndex(int x, int y) {
+  return x + y * width;
 }
 
 TiledMap::~TiledMap() {
