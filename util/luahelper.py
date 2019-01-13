@@ -9,11 +9,13 @@ def createMethod(name, argnames, argtypes, luatypes, nret):
     i = 0
     for n, t, lua in zip(argnames[::-1], argtypes[::-1], luatypes[::-1]):
         lua2 = "userdata" if "userdata" in lua else lua
+        if "userdata" not in lua and "integer" not in lua:
+            t = "(%s)" % t
         built.append("""if (!lua_is%s(L, -1)) {
   lua_pop(L, %i);
   return 0;
 }
-%s = (%s)lua_to%s(L, -1);
+%s = %slua_to%s(L, -1);
 lua_pop(L, 1);
 """ % (lua, len(argnames) - i, n, t, lua2))
         i += 1
