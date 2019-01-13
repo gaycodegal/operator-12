@@ -6,10 +6,8 @@ class TiledTexture {
 private:
   std::string imageName;
   SDL_Texture *texture;
-  int tileWidth;
-  int tileHeight;
-  int imageWidth;
-  int imageHeight;
+  int tileWidth, tileHeight;
+  int imageWidth, imageHeight;
   int count;
   int cols;
 
@@ -27,12 +25,21 @@ private:
   TiledTexture **tilesets;
 
   int x, y;
+  int tileWidth, tileHeight;
+  int width, height;
 
+  int *tiles;
 public:
   TiledMap(lua_State *L);
   ~TiledMap();
+
   void draw(int x, int y);
   void move(int x, int y);
+
+  int drawTile(int x, int y, int tx, int ty);
+  int getTile(int x, int y);
+  int positionValid(int x, int y);
+  int toIndex(int x, int y);
 };
 
 #endif
