@@ -616,8 +616,8 @@ static int l_surface_newBlank(lua_State *L) {
   lua_pop(L, 1);
   Uint32 rmask, gmask, bmask, amask;
 
-  /* SDL interprets each pixel as a 32-bit number, so our masks must depend
-         on the endianness (byte order) of the machine */
+/* SDL interprets each pixel as a 32-bit number, so our masks must depend
+       on the endianness (byte order) of the machine */
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
   rmask = 0xff000000;
   gmask = 0x00ff0000;
@@ -986,13 +986,9 @@ static const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
                                              {"__index", l_meta_indexer},
                                              {NULL, NULL}};
 
-static const struct luaClassList game[] = {//{"Music", music_meta},
-                                           {"Texture", texture_meta},
-                                           {"Sprite", spritemeta},
-                                           {"static", static_meta},
-                                           {"Surface", surface_meta},
-                                           {"TTF", ttf_meta},
-                                           {NULL, NULL}};
+static const struct luaClassList game[] = { //{"Music", music_meta},
+    {"Texture", texture_meta}, {"Sprite", spritemeta}, {"static", static_meta},
+    {"Surface", surface_meta}, {"TTF", ttf_meta},      {NULL, NULL}};
 
 struct luaConstInt {
   const char *name;
