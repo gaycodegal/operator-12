@@ -29,7 +29,7 @@ static int l_music_play(lua_State *L) {
     lua_pop(L, 2);
     return 0;
   }
-  times = (int)lua_tonumber(L, -1);
+  times = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -152,13 +152,13 @@ static int l_texture_newTarget(lua_State *L) {
     lua_pop(L, 2);
     return 0;
   }
-  height = (int)lua_tonumber(L, -1);
+  height = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 1);
     return 0;
   }
-  width = (int)lua_tonumber(L, -1);
+  width = lua_tointeger(L, -1);
   lua_pop(L, 1);
 
   Uint32 pixformat = SDL_PIXELFORMAT_RGBA8888;
@@ -236,49 +236,49 @@ static int l_texture_renderCopy(lua_State *L) {
     lua_pop(L, 9);
     return 0;
   }
-  dh = (int)lua_tonumber(L, -1);
+  dh = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 8);
     return 0;
   }
-  dw = (int)lua_tonumber(L, -1);
+  dw = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 7);
     return 0;
   }
-  dy = (int)lua_tonumber(L, -1);
+  dy = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 6);
     return 0;
   }
-  dx = (int)lua_tonumber(L, -1);
+  dx = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 5);
     return 0;
   }
-  sh = (int)lua_tonumber(L, -1);
+  sh = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 4);
     return 0;
   }
-  sw = (int)lua_tonumber(L, -1);
+  sw = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 3);
     return 0;
   }
-  sy = (int)lua_tonumber(L, -1);
+  sy = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
     return 0;
   }
-  sx = (int)lua_tonumber(L, -1);
+  sx = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -336,14 +336,14 @@ static int l_draw_sprite(lua_State *L) {
     lua_pop(L, 3);
     return 0;
   }
-  y = (int)lua_tonumber(L, -1);
+  y = lua_tointeger(L, -1);
   lua_pop(L, 1);
 
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
     return 0;
   }
-  x = (int)lua_tonumber(L, -1);
+  x = lua_tointeger(L, -1);
   lua_pop(L, 1);
 
   if (!lua_isuserdata(L, -1)) {
@@ -381,7 +381,7 @@ static int l_static_wait(lua_State *L) {
     lua_pop(L, 1);
     return 0;
   }
-  t = (int)lua_tonumber(L, -1);
+  t = lua_tointeger(L, -1);
   lua_pop(L, 1);
   SDL_Delay(t);
   return 0;
@@ -394,7 +394,7 @@ static int l_static_framedelay(lua_State *L) {
     lua_pop(L, 1);
     return 0;
   }
-  t = (int)lua_tonumber(L, -1);
+  t = lua_tointeger(L, -1);
   lua_pop(L, 1);
   framedelay = t;
   return 0;
@@ -458,13 +458,13 @@ static int l_move_sprite(lua_State *L) {
     lua_pop(L, 3);
     return 0;
   }
-  y = (int)lua_tonumber(L, -1);
+  y = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
     return 0;
   }
-  x = (int)lua_tonumber(L, -1);
+  x = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -484,13 +484,13 @@ static int l_size_sprite(lua_State *L) {
     lua_pop(L, 3);
     return 0;
   }
-  h = (int)lua_tonumber(L, -1);
+  h = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
     return 0;
   }
-  w = (int)lua_tonumber(L, -1);
+  w = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -513,7 +513,7 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
-  sy = (int)lua_tonumber(L, -1);
+  sy = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 6);
@@ -521,7 +521,7 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
-  sx = (int)lua_tonumber(L, -1);
+  sx = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 5);
@@ -529,7 +529,7 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
-  h = (int)lua_tonumber(L, -1);
+  h = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 4);
@@ -537,7 +537,7 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
-  w = (int)lua_tonumber(L, -1);
+  w = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 3);
@@ -545,7 +545,7 @@ static int l_new_sprite(lua_State *L) {
     lua_pushnil(L);
     return 1;
   }
-  y = (int)lua_tonumber(L, -1);
+  y = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
@@ -554,7 +554,7 @@ static int l_new_sprite(lua_State *L) {
     return 1;
   }
 
-  x = (int)lua_tonumber(L, -1);
+  x = lua_tointeger(L, -1);
   lua_pop(L, 1);
 
   // printf("here %s\n", lua_typename(L, lua_type(L, -1)));
@@ -606,13 +606,13 @@ static int l_surface_newBlank(lua_State *L) {
     lua_pop(L, 2);
     return 0;
   }
-  height = (int)lua_tonumber(L, -1);
+  height = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 1);
     return 0;
   }
-  width = (int)lua_tonumber(L, -1);
+  width = lua_tointeger(L, -1);
   lua_pop(L, 1);
   Uint32 rmask, gmask, bmask, amask;
 
@@ -668,49 +668,49 @@ static int l_surface_fill(lua_State *L) {
     lua_pop(L, 9);
     return 0;
   }
-  a = (int)lua_tonumber(L, -1);
+  a = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 8);
     return 0;
   }
-  b = (int)lua_tonumber(L, -1);
+  b = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 7);
     return 0;
   }
-  g = (int)lua_tonumber(L, -1);
+  g = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 6);
     return 0;
   }
-  r = (int)lua_tonumber(L, -1);
+  r = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 5);
     return 0;
   }
-  height = (int)lua_tonumber(L, -1);
+  height = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 4);
     return 0;
   }
-  width = (int)lua_tonumber(L, -1);
+  width = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 3);
     return 0;
   }
-  y = (int)lua_tonumber(L, -1);
+  y = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
     return 0;
   }
-  x = (int)lua_tonumber(L, -1);
+  x = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 1);
@@ -749,13 +749,13 @@ static int l_surface_blit(lua_State *L) {
     lua_pop(L, 4);
     return 0;
   }
-  y = (int)lua_tonumber(L, -1);
+  y = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 3);
     return 0;
   }
-  x = (int)lua_tonumber(L, -1);
+  x = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 2);
@@ -815,49 +815,49 @@ static int l_surface_blitScale(lua_State *L) {
     lua_pop(L, 10);
     return 0;
   }
-  dh = (int)lua_tonumber(L, -1);
+  dh = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 9);
     return 0;
   }
-  dw = (int)lua_tonumber(L, -1);
+  dw = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 8);
     return 0;
   }
-  dy = (int)lua_tonumber(L, -1);
+  dy = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 7);
     return 0;
   }
-  dx = (int)lua_tonumber(L, -1);
+  dx = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 6);
     return 0;
   }
-  sh = (int)lua_tonumber(L, -1);
+  sh = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 5);
     return 0;
   }
-  sw = (int)lua_tonumber(L, -1);
+  sw = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 4);
     return 0;
   }
-  sy = (int)lua_tonumber(L, -1);
+  sy = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 3);
     return 0;
   }
-  sx = (int)lua_tonumber(L, -1);
+  sx = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_islightuserdata(L, -1)) {
     lua_pop(L, 2);
@@ -921,25 +921,25 @@ static int l_ttf_surface(lua_State *L) {
     lua_pop(L, 5);
     return 0;
   }
-  a = (int)lua_tonumber(L, -1);
+  a = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 4);
     return 0;
   }
-  b = (int)lua_tonumber(L, -1);
+  b = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 3);
     return 0;
   }
-  g = (int)lua_tonumber(L, -1);
+  g = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 2);
     return 0;
   }
-  r = (int)lua_tonumber(L, -1);
+  r = lua_tointeger(L, -1);
   lua_pop(L, 1);
   if (!lua_isstring(L, -1)) {
     lua_pop(L, 1);
