@@ -1,0 +1,21 @@
+"map_"
+"new"
+["tiled_map"]
+["custom"]
+["table"]
+1
+"destroy"
+["self"]
+["custom"]
+["table"]
+0
+"move"
+["self", "x", "y"]
+["custom", "int", "int"]
+["table", "number", "number"]
+0
+"draw"
+["self"]
+["custom"]
+["table"]
+0
