@@ -54,7 +54,7 @@ int end() {
   if (gFont != NULL)
     TTF_CloseFont(gFont);
   gFont = NULL;
-  //Mix_CloseAudio();
+  // Mix_CloseAudio();
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();
@@ -77,8 +77,8 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
 
 static inline long getMS() {
   return std::chrono::duration_cast<std::chrono::milliseconds>(
-							       std::chrono::system_clock::now().time_since_epoch())
-    .count();
+             std::chrono::system_clock::now().time_since_epoch())
+      .count();
 }
 
 lua_State *L;
@@ -90,7 +90,7 @@ int mousedownExists;
 int mousemoveExists;
 int mouseupExists;
 SDL_Event e;
-void one_iter(){
+void one_iter() {
   // Handle events on queue
   while (SDL_PollEvent(&e) != 0) {
     // User requests quit
@@ -106,21 +106,21 @@ void one_iter(){
       lua_pushnumber(L, e.key.keysym.sym);
       callErr(L, "KeyUp", 1);
     } else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
-	       e.type == SDL_MOUSEBUTTONUP) {
+               e.type == SDL_MOUSEBUTTONUP) {
       // Get mouse position
       switch (e.type) {
       case SDL_MOUSEBUTTONDOWN:
-	mouseHelper(L, e.type, "MouseDown", mousedownExists);
-	break;
+        mouseHelper(L, e.type, "MouseDown", mousedownExists);
+        break;
       case SDL_MOUSEMOTION:
-	mouseHelper(L, e.type, "MouseMove", mousemoveExists);
-	break;
+        mouseHelper(L, e.type, "MouseMove", mousemoveExists);
+        break;
       case SDL_MOUSEBUTTONUP:
-	mouseHelper(L, e.type, "MouseUp", mouseupExists);
-	break;
+        mouseHelper(L, e.type, "MouseUp", mouseupExists);
+        break;
       }
     } else if (e.type == SDL_WINDOWEVENT &&
-	       e.window.event == SDL_WINDOWEVENT_RESIZED) {
+               e.window.event == SDL_WINDOWEVENT_RESIZED) {
       lua_getglobal(L, "Resize");
       lua_pushnumber(L, e.window.data1);
       lua_pushnumber(L, e.window.data2);
@@ -147,8 +147,7 @@ void one_iter(){
     SDL_WaitEventTimeout(NULL, framedelay);
 }
 
-
-std::string openConfig(const char * path) {
+std::string openConfig(const char *path) {
   std::string ret = "load.lua";
   L = luaL_newstate();
   luaL_openlibs(L);
@@ -170,11 +169,10 @@ std::string openConfig(const char * path) {
   lua_getfield(L, -1, "doInitSDL");
   doInitSDL = lua_toboolean(L, -1);
   lua_pop(L, 1);
-  
+
   lua_close(L);
   return ret;
 }
-
 
 int main(int argc, char *argv[]) {
   quit = false;
@@ -190,15 +188,14 @@ int main(int argc, char *argv[]) {
   } else {
     path = openConfig(argv[1]);
   }
-  
-  
+
   if (doInitSDL) {
     if (start() != 0) {
       end();
       return 1;
     }
   }
-  
+
   L = luaL_newstate();
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
@@ -207,7 +204,6 @@ int main(int argc, char *argv[]) {
     end();
     return 1;
   }
-
 
   lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
@@ -218,15 +214,16 @@ int main(int argc, char *argv[]) {
   mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
   mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
   mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
-  // While application is running
+// While application is running
 #ifdef __EMSCRIPTEN__
-  // void emscripten_set_main_loop(em_callback_func func, int fps, int simulate_infinite_loop);
+  // void emscripten_set_main_loop(em_callback_func func, int fps, int
+  // simulate_infinite_loop);
   emscripten_set_main_loop(one_iter, 60, 1);
 #else
-      
+
   if (updateExists) {
     while (!quit) {
-      
+
       one_iter();
     }
   }
