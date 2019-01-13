@@ -6,16 +6,26 @@
 1
 "destroy"
 ["self"]
-["TiledMap *"]
+["*(TiledMap **)"]
 ["userdata"]
 0
 "move"
 ["self", "x", "y"]
-["TiledMap *", "int", "int"]
-["userdata", "number", "number"]
+["*(TiledMap **)", "", ""]
+["userdata", "integer", "integer"]
 0
 "draw"
 ["self"]
-["TiledMap *"]
+["*(TiledMap **)"]
 ["userdata"]
 0
+"getTile"
+["self", "x", "y"]
+["*(TiledMap **)", "", ""]
+["userdata", "integer", "integer"]
+1
+"positionValid"
+["self", "x", "y"]
+["*(TiledMap **)", "", ""]
+["userdata", "integer", "integer"]
+1
