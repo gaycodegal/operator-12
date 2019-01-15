@@ -5,8 +5,8 @@ main
 tiled/*.png
 tiled/*.lua
 bazel*
-third_party/*
+third_party/
 !BUILD
-out/*
-docs/*
+out/
+docs/
 .#*
