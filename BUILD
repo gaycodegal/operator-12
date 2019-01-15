@@ -1,4 +1,4 @@
-lua_dir = "lua/src/"
+lua_dir = "third_party/lua/src/"
 lua_hdrs = glob([lua_dir+"*.h"])
 lua_no_include = ["lua.c", "luac.c"]
 lua_srcs = lua_hdrs + glob([lua_dir+"*.c"], exclude=[lua_dir + x for x in lua_no_include])
