@@ -374,9 +374,7 @@ static int l_static_quit(lua_State *L) {
 }
 
 static int l_static_wait(lua_State *L) {
-  // printLuaStack(L, "static_wait");
   int t;
-  Sprite *s;
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 1);
     return 0;
@@ -389,7 +387,6 @@ static int l_static_wait(lua_State *L) {
 
 static int l_static_framedelay(lua_State *L) {
   int t;
-  Sprite *s;
   if (!lua_isnumber(L, -1)) {
     lua_pop(L, 1);
     return 0;
