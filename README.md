@@ -72,20 +72,47 @@ Custom Libraries you'll need
   - Should be located in ~/lua
   - You don't need command-line lua
 
-And Obviously you'll need `g++` to compile, and `make` to use my makefile.
+You'll also need `g++` to compile C++ code.
 
+## Compilation
 
-## Building
+### Bazel
 
-Just run `make` after installing all the software
+With [bazel.build](https://bazel.build) compilation is
 
+    bazel build //:operator-12
+
+Pros:
+- It works well, and I find Bazel's BUILD files a lot more comprehensible than make files.
+- Easy to make things cross platform.
+- Will be the 'supported' compilation method in the future.
+Cons:
+- No WASM support yet; I have to learn a bit more about CROSSTOOL files first.
+
+### Make
+
+With `make` compilation is
+
+    make
+
+Pros:
+- WASM support
+Cons
+- Bad at cross platform
 
 ## Running 
 
+### Bazel
+
+To run the main program (will automatically compile if necessary).
+
+    bazel run //:operator-12
+
+You can also specify which lua file to run as the main. For instance `bazel run //:operator-12 surface-tests` will run the surface tests lua file as the main lua file.
+
+### Make
+
 Just run `./main` after building is complete
-
-You can also specify which lua file to run as the main. For instance `./main surface-tests` will run the surface tests lua file as the main lua file.
-
 
 ## Doxygen
 

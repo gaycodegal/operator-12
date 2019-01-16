@@ -9,3 +9,4 @@ cc_binary(
     data = glob(["resources/**"]),
     linkopts = ["-lSDL2", "-lSDL2_image", "-lSDL2_ttf", "-lSDL_mixer", "-ldl", "-lm"],
 )
+
