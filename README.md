@@ -13,7 +13,7 @@ The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for yo
 
 - Layout Generator
 	- Generates resizing functions from layout definitions.
-	- usage `./main ui/style-writer <name>`
+	- usage `./main ui <name>`
 		- see name:`screen` for a simple example
 - UIElement
 	- resizable elements generated from a layout style and a list of elements/data to be styled
