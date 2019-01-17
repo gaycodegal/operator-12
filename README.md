@@ -9,43 +9,6 @@ This project itself is a V2. A version of the current work compiled to WebAssemb
 The name Operator 12 stems from Prisoner (TV 1967-68)-style naming system for your side of the battle. You are #12, you report to #2. There will be more story behind the names as you get to know your organization.
 
 
-## Features
-
-- Layout Generator
-	- Generates resizing functions from layout definitions.
-	- usage `bazel run //:operator-12 ui/style-writer <name>`
-		- see name:`screen` for a simple example
-- UIElement
-	- resizable elements generated from a layout style and a list of elements/data to be styled
-- Button
-	- can click them and they do *things*
-- Movement Overlay
-- Text
-	- Can Render text in boxes
-- TextBox
-	- For when Text just isn't enough
-- Escape key closes game.
-- Map
-	- Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
-		- Sample map file found in resources/maps
-	- currently handles drawing of a loaded map
-	- hopefully will eventually only handle map data and be moved to C++
-	- can scroll/pan with arrow keys
-- Segment
-	- Linked list node part of the slug
-- Slug
-	- the basic entity of the game
-	- essentially a linked list moving about the game-board
-	- can move about the board if clicked one space away from 'head'
-	- can damage other slugs and kill them
-	- regen size as they move up to a max size
-	- Enemy slugs controlled by computer AI
-- Slug/Slugdefs
-	- holds info on what sprites are associated with which slug-type
-- Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
-	- I got windows working actually!
-
-
 ## Planned Content
 
 You can check the [org](./org) folder for more information about planned content. Although as I develop the story to my liking there will be spoilers there. Opening it in emacs' orgmode should allow you to avoid looking at anything involved with the story.
@@ -56,10 +19,10 @@ You can check the [org](./org) folder for more information about planned content
 - Started from my sdl2-lua project as a base.
 - C++ provides access to SDL2 rendering tools
 - Most of the Code base is Lua, which creates the game.
-	- Project runs quickly on my 2013 chromebook, so it'll probably run fine on mobile.
+    - Project runs quickly on my 2013 chromebook, so it'll probably run fine on mobile.
 
 
-## Installation
+## Library Installation
 
 Custom Libraries you'll need
 
@@ -69,12 +32,14 @@ Custom Libraries you'll need
 - SDL-Mixer-Dev `apt install libsdl-mixer1.2-dev`
 - Lua 5.3.4
   - Installation instructions available at [www.lua.org](https://www.lua.org/download.html)
-  - Should be located in ~/lua
+  - Should be located in third_party/lua
   - You don't need command-line lua
 
 You'll also need `g++` to compile C++ code.
 
+
 ## Compilation
+
 
 ### Bazel
 
@@ -83,11 +48,19 @@ With [bazel.build](https://bazel.build) compilation is
     bazel build //:operator-12
 
 Pros:
+- Builds for: Linux, Windows
 - It works well, and I find Bazel's BUILD files a lot more comprehensible than make files.
 - Easy to make things cross platform.
-- Will be the 'supported' compilation method in the future.
+- The supported compilation method.
 Cons:
 - No WASM support yet; I have to learn a bit more about CROSSTOOL files first.
+
+Note that on Windows, while Bazel will build the operator-12.exe for you, it will not
+move files into the .runfiles directory. It will also not move all the .dlls needed
+from their third_party location to their required location. I will eventually create
+a build rule to create a tar/zip file containing all the relevant files required to run
+the game.
+
 
 ### Make
 
@@ -95,14 +68,11 @@ With `make` compilation is
 
     make
 
-Pros:
-- WASM support
-Cons
-- Bad at cross platform
+Make exists purely for WASM builds until further notice. However, the makefile will
+also build for linux.
 
-## Running 
 
-### Bazel
+## Running
 
 To run the main program (will automatically compile if necessary).
 
@@ -110,9 +80,6 @@ To run the main program (will automatically compile if necessary).
 
 You can also specify which lua file to run as the main. For instance `bazel run //:operator-12 surface-tests` will run the surface tests lua file as the main lua file.
 
-### Make
-
-Just run `./main` after building is complete
 
 ## Doxygen
 
@@ -124,6 +91,43 @@ Run `python3 extract-docs.py > out.hidden.c && doxygen Doxyfile` to generate the
 See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 
+## Features
+
+- Layout Generator
+    - Generates resizing functions from layout definitions.
+    - usage `bazel run //:operator-12 ui/style-writer <name>`
+        - see name:`screen` for a simple example
+- UIElement
+    - resizable elements generated from a layout style and a list of elements/data to be styled
+- Button
+    - can click them and they do *things*
+- Movement Overlay
+- Text
+    - Can Render text in boxes
+- TextBox
+    - For when Text just isn't enough
+- Escape key closes game.
+- Map
+    - Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
+        - Sample map file found in resources/maps
+    - currently handles drawing of a loaded map
+    - hopefully will eventually only handle map data and be moved to C++
+    - can scroll/pan with arrow keys
+- Segment
+    - Linked list node part of the slug
+- Slug
+    - the basic entity of the game
+    - essentially a linked list moving about the game-board
+    - can move about the board if clicked one space away from 'head'
+    - can damage other slugs and kill them
+    - regen size as they move up to a max size
+    - Enemy slugs controlled by computer AI
+- Slug/Slugdefs
+    - holds info on what sprites are associated with which slug-type
+- Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
+    - I got windows working actually!
+
+
 ## C++ / Lua Methods
 
 You can generate method stubs with `python3 luahelper.py < surface.txt > surface.hidden.c` anything with `.hidden.` in it's file name is ignored by the git ignore. See surface.txt and luahelper.py for understanding of what's generated. You'll have to use auto-indentation from something like emacs or a C++ IDE to indent it, but at least you don't have to write it.
@@ -132,11 +136,11 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 
 - Start(argc, argv)
 - Update(msFraction, msTrue)
-	- Called every frame, and after every event
+    - Called every frame, and after every event
 - End
 - Resize(width, height)
-	- Window has resized to (width, height).
-	- Globals will not be modified by this at this time.
+    - Window has resized to (width, height).
+    - Globals will not be modified by this at this time.
 - KeyDown(which)
 - KeyUp(which)
 - MouseDown(x, y)
@@ -178,10 +182,10 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 ### Texture
 
 - new(source)
-	- doesn't create an object (userdata), only a pointer (lightuserdata)
-	- returns texture, width, height
+    - doesn't create an object (userdata), only a pointer (lightuserdata)
+    - returns texture, width, height
 - destroy(texture)
-	- returns 0
+    - returns 0
 - newTarget(width,height)
     - returns 1
 - setRGBMask(texture,r,g,b)
@@ -229,9 +233,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 - static.quit()
     - exits the engine
 - static.wait(time)
-	- wait `time` ms immediately
+    - wait `time` ms immediately
 - static.framedelay(time)
-	- wait `time` ms after screen is displayed
+    - wait `time` ms after screen is displayed
 - static.setRenderTarget(texture)
     - returns 0
 - static.unsetRenderTarget()
@@ -245,38 +249,38 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 ## Global Constants Exposed to Lua via C++
 
 - Keys
-	- `KEY_UP`, `KEY_DOWN`, `KEY_LEFT`, `KEY_RIGHT`, `KEY_ESCAPE`
+    - `KEY_UP`, `KEY_DOWN`, `KEY_LEFT`, `KEY_RIGHT`, `KEY_ESCAPE`
 - Screen Dimensions
-	- `SCREEN_WIDTH`, `SCREEN_HEIGHT`
+    - `SCREEN_WIDTH`, `SCREEN_HEIGHT`
 - Blend Modes
-	- `BLENDMODE_NONE`, `BLENDMODE_BLEND`, `BLENDMODE_ADD`, `BLENDMODE_MOD`
+    - `BLENDMODE_NONE`, `BLENDMODE_BLEND`, `BLENDMODE_ADD`, `BLENDMODE_MOD`
 
 
 ## Tests
 
 - Text
-	- `bazel run //:operator-12 text/test`
-	- Use arrow keys to navigate the rendered README!
+    - `bazel run //:operator-12 text/test`
+    - Use arrow keys to navigate the rendered README!
 - Surface
-	- `bazel run //:operator-12 surface-tests`
+    - `bazel run //:operator-12 surface-tests`
 - Texture
-	- `bazel run //:operator-12 texture-tests`
+    - `bazel run //:operator-12 texture-tests`
 
 ## View Controllers
 
 - Battle
-  - `bazel run //:operator-12 battle/load <map-name>.lua`
-  - controls battles
+    - `bazel run //:operator-12 battle/load <map-name>.lua`
+    - controls battles
 - Viewer
-  - `bazel run //:operator-12 viewer/load <path> <sep>`
-  - view shit, mostly just the copyright infos for stuff
+    - `bazel run //:operator-12 viewer/load <path> <sep>`
+    - view shit, mostly just the copyright infos for stuff
 - MainMenu
-  - `bazel run //:operator-12`
-  - mostly just for easy access to stuff
+    - `bazel run //:operator-12`
+    - mostly just for easy access to stuff
 - MapSelect
-  - `bazel run //:operator-12 level-select/load`
-  - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
-  - As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
+    - `bazel run //:operator-12 level-select/load`
+    - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
+    - As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
   
   
 ## Legal
