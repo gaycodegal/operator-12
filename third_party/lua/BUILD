@@ -9,6 +9,7 @@ cc_library(
     name = "lua-lib",
     hdrs = lua_hdrs,
     srcs = lua_lib_srcs,
+    includes = [lua_dir],
     visibility = ["//visibility:public"],
 )
 
