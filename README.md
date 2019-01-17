@@ -52,6 +52,7 @@ Pros:
 - It works well, and I find Bazel's BUILD files a lot more comprehensible than make files.
 - Easy to make things cross platform.
 - The supported compilation method.
+
 Cons:
 - No WASM support yet; I have to learn a bit more about CROSSTOOL files first.
 
