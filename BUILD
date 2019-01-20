@@ -23,3 +23,16 @@ cc_binary(
     data = glob(["resources/**"]),
     linkopts = ["-lSDL2", "-lSDL2_image", "-lSDL2_ttf", "-lSDL_mixer", "-ldl", "-lm"],
 )
+
+cc_library(
+    name = "op12-android",
+    srcs = ["test/simple_main.c"],
+    deps = ["//third_party/sdl2:sdl2-android"],
+    linkopts = ["-static-libgcc -ldl -lm -lGLESv1_CM -lGLESv2 -llog -landroid"],
+)
+
+alias(
+    name = "jni_library",
+    actual = ":op12-android",
+    visibility = ["//visibility:public"],
+)
