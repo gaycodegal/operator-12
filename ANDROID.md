@@ -9,8 +9,10 @@ Removed the .arm in the compile commands - the SDL2 make files were ignoring thi
 
 Changed //third_party/sdl2/app-android/src/main/java/org/libsdl/app/SDLActivity.java to only load `libapp.so`.
 
+Changed //third_party/sdl2/app-android/src/main/java/org/libsdl/app/HIDDeviceManager.java to not load `libhidapi.java`
+
 app-android folder is the corresponding app folder that SDL2 generates on build. Not quite helpful; will reconfigure the project later.
 
 # Build
 
-    bazel build //third_party/sdl2/android-project/app/src/main:app --fat_apk_cpu=x86
+    bazel build //third_party/sdl2/app-android/src/main:app --fat_apk_cpu=x86
