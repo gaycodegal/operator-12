@@ -5,12 +5,12 @@ Had to install an older version of NDK due to being unsupported by latest bazel
 
     wget https://dl.google.com/android/repository/android-ndk-r18-linux-x86_64.zip
 
-Turned off `SDL_DYNAMIC_API` in SDL_dynapi.h - couldn't figure out how to properly make dynapi work with Bazel on Android.
+Removed the .arm in the compile commands - the SDL2 make files were ignoring this directive (.arm means only compile on arm platforms. However, SDL would compile these sources on all platforms. Bazel, meanwhile, would respect this and then the required functions would not be included in the final .so)
+
+Changed //third_party/sdl2/app-android/src/main/java/org/libsdl/app/SDLActivity.java to only load `libapp.so`.
+
+app-android folder is the corresponding app folder that SDL2 generates on build. Not quite helpful; will reconfigure the project later.
 
 # Build
 
     bazel build //third_party/sdl2/android-project/app/src/main:app --fat_apk_cpu=x86
-
-ndk-build NDK_PROJECT_PATH=null NDK_OUT=build/android/obj NDK_LIBS_OUT=build/android/lib APP_BUILD_SCRIPT=Android.mk APP_ABI=armeabi-v7a arm64-v8a x86 x86_64 APP_PLATFORM=android-14 APP_MODULES=SDL2 SDL2_main
-
-ndk-build NDK_PROJECT_PATH=null NDK_OUT=build/android/obj NDK_LIBS_OUT=build/android/lib APP_BUILD_SCRIPT=Android.mk APP_ABI=x86 APP_PLATFORM=android-16 APP_MODULES=SDL2 SDL2_main
