@@ -27,7 +27,7 @@ cc_binary(
 cc_library(
     name = "op12-android",
     srcs = ["test/simple_main.c"],
-    deps = ["//third_party/sdl2:sdl2-android"],
+    deps = ["//third_party/sdl2/app/jni/SDL:SDL2_static"],
     linkopts = ["-static-libgcc -ldl -lm -lGLESv1_CM -lGLESv2 -llog -landroid"],
 )
 
