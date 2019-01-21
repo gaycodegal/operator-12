@@ -6,9 +6,9 @@ android_binary(
     manifest = "AndroidManifest.xml",
     resource_files = glob(["res/**/*"]),
     srcs = glob([
-        "java/org/libsdl/app/*.java",
+        "java/**/*.java",
     ]),
     deps = [
-        "//:jni_library",
+        "//third_party/sdl2/app/jni/src:main",
     ],
 )
