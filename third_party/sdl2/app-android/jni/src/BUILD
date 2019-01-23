@@ -22,5 +22,6 @@ cc_library(
     data = ["hello_world.bmp"],
     deps = [
         "//third_party/sdl2/app-android/jni/SDL:SDL2_static",
+        "//third_party/sdl2-image:SDL_image",
     ],
 )
