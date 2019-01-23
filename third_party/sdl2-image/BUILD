@@ -29,20 +29,21 @@ options_sdl_image = make_cc_options(
     deps = ["//third_party/sdl2/app-android/jni/SDL:SDL2_static"],
 )
 
-SUPPORT_PNG = False
+SUPPORT_PNG = True
 
 options_sdl_image = conditional_cc_options_add(
     SUPPORT_PNG,
     options_sdl_image,
     copts = ["-DLOAD_PNG"],
     linkopts = ["-lz"],
-    deps = ["external/libpng-1.6.32:libpng"],
+    deps = ["//third_party/sdl2-image/external/libpng-1.6.32:png"],
 )
 
 print(options_sdl_image)
 
 cc_library(
     name = "SDL_image",
+    includes = [""], #necessary to export SDL_image.h
     hdrs = glob(["*.h"]),
     srcs = [
         "IMG.c",
