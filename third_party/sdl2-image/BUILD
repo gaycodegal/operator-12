@@ -1,5 +1,7 @@
 licenses(["notice"]) # MIT license
 
+load("//bzl:condition-include.bzl", "make_cc_options", "conditional_cc_options_add")
+
 cc_library(
     name = "sdl2-image",
     includes = ["include/"],
@@ -22,15 +24,21 @@ cc_import(
 # thus allowing:
 #     SUPPORT_PNG=True bazel build ...
 
-SDL_Image_COPTS = ["-DLOAD_BMP", "-DLOAD_GIF", "-DLOAD_LBM", "-DLOAD_PCX", "-DLOAD_PNM", "-DLOAD_SVG", "-DLOAD_TGA", "-DLOAD_XCF", "-DLOAD_XPM", "-DLOAD_XV"]
-SDL_Image_DEPS = ["//third_party/sdl2/app-android/jni/SDL:SDL2_static"]
-SDL_Image_LINKOPTS = []
+options_sdl_image = make_cc_options(
+    copts = ["-DLOAD_BMP", "-DLOAD_GIF", "-DLOAD_LBM", "-DLOAD_PCX", "-DLOAD_PNM", "-DLOAD_SVG", "-DLOAD_TGA", "-DLOAD_XCF", "-DLOAD_XPM", "-DLOAD_XV"],
+    deps = ["//third_party/sdl2/app-android/jni/SDL:SDL2_static"],
+)
 
-#SUPPORT_PNG = False
-#if SUPPORT_PNG:
-#    SDL_Image_COPTS += ["-DLOAD_PNG"]
-#    SDL_Image_DEPS += ["external/libpng-1.6.32:libpng"]
-#    SDL_Image_LINKOPTS += ["-lz"]
+SUPPORT_PNG = False
+conditional_cc_options_add(
+    SUPPORT_PNG,
+    options_sdl_image,
+    copts = ["-DLOAD_PNG"],
+    linkopts = ["-lz"],
+    deps = ["external/libpng-1.6.32:libpng"],
+)
+
+print(options_sdl_image)
 
 cc_library(
     name = "SDL_image",
@@ -54,8 +62,8 @@ cc_library(
         "IMG_xv.c",
         "IMG_xxx.c",
     ],
-    copts = SDL_Image_COPTS,
-    linkopts = SDL_Image_LINKOPTS,
-    deps = SDL_Image_DEPS,
+    copts = options_sdl_image["copts"],
+    linkopts = options_sdl_image["linkopts"],
+    deps = options_sdl_image["deps"],
     visibility = ["//visibility:public"],    
 )
