@@ -30,7 +30,8 @@ options_sdl_image = make_cc_options(
 )
 
 SUPPORT_PNG = False
-conditional_cc_options_add(
+
+options_sdl_image = conditional_cc_options_add(
     SUPPORT_PNG,
     options_sdl_image,
     copts = ["-DLOAD_PNG"],
