@@ -40,7 +40,7 @@ SDL_SRCS = SDL_HDRS + glob([
 
 SDL_COPTS = ["-DANDROID", "-DGL_GLEXT_PROTOTYPES"]
 SDL_INCLUDES = ["include/"]
-SDL_LINKOPTS = ["-static-libgcc -ldl -lGLESv1_CM -lGLESv2 -llog -landroid"]
+SDL_LINKOPTS = ["-ldl -lm -lc -lGLESv1_CM -lGLESv2 -llog -landroid"]
 SDL_DEPS = [":libhidapi.so"]
 
 cc_binary(
