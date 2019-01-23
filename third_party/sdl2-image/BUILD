@@ -26,15 +26,15 @@ SDL_Image_COPTS = ["-DLOAD_BMP", "-DLOAD_GIF", "-DLOAD_LBM", "-DLOAD_PCX", "-DLO
 SDL_Image_DEPS = ["//third_party/sdl2/app-android/jni/SDL:SDL2_static"]
 SDL_Image_LINKOPTS = []
 
-SUPPORT_PNG = False
-if SUPPORT_PNG:
-    SDL_Image_COPTS += ["-DLOAD_PNG"]
-    SDL_Image_DEPS += ["external/libpng-1.6.32:libpng"]
-    SDL_Image_LINKOPTS += ["-lz"]
+#SUPPORT_PNG = False
+#if SUPPORT_PNG:
+#    SDL_Image_COPTS += ["-DLOAD_PNG"]
+#    SDL_Image_DEPS += ["external/libpng-1.6.32:libpng"]
+#    SDL_Image_LINKOPTS += ["-lz"]
 
 cc_library(
     name = "SDL_image",
-    hdrs = ["SDL_image.h"],
+    hdrs = glob(["*.h"]),
     srcs = [
         "IMG.c",
         "IMG_bmp.c",
@@ -51,11 +51,11 @@ cc_library(
         "IMG_WIC.c",
         "IMG_xcf.c",
         "IMG_xpm.c", # was supposed to be arm only
-        "IMG_xv.c ",
+        "IMG_xv.c",
         "IMG_xxx.c",
     ],
     copts = SDL_Image_COPTS,
-    linkoptsSDL_Image_LINKOPTS,
+    linkopts = SDL_Image_LINKOPTS,
     deps = SDL_Image_DEPS,
     visibility = ["//visibility:public"],    
 )
