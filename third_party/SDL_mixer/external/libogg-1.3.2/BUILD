@@ -1,4 +1,4 @@
-licenses(["notice"]) # MIT license
+licenses(["notice"]) # BSD license
 
 cc_library(
     name = "ogg",
