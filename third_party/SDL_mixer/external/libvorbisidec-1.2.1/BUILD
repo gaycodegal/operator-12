@@ -1,4 +1,4 @@
-licenses(["notice"]) # MIT licens
+licenses(["notice"]) # BSD license
 
 config_setting(
     name = "arm_build",
