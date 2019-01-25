@@ -19,9 +19,10 @@ cc_library(
     name = "main",
     srcs = glob(["*.cpp"]),
     visibility = ["//visibility:public"],
-    data = ["hello_world.bmp"],
     deps = [
         "//third_party/sdl2/app-android/jni/SDL:SDL2_static",
-        "//third_party/sdl2-image:SDL_image",
+        "//third_party/SDL_image",
+        "//third_party/SDL_ttf",
+        "//third_party/SDL_mixer",
     ],
 )
