@@ -8,6 +8,16 @@
 #include <SDL_ttf.h>
 #include <Windows.h>
 
+#elif ANDROID
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <jni.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 #elif __EMSCRIPTEN__
 
 #include <emscripten.h>

@@ -19,7 +19,7 @@ cc_import(
 
 options_sdl_mixer = make_cc_options(
     copts = ["-DLOAD_BMP", "-DLOAD_GIF", "-DLOAD_LBM", "-DLOAD_PCX", "-DLOAD_PNM", "-DLOAD_SVG", "-DLOAD_TGA", "-DLOAD_XCF", "-DLOAD_XPM", "-DLOAD_XV"],
-    deps = ["//third_party/sdl2/app-android/jni/SDL:SDL2_static"],
+    deps = ["//third_party/SDL"],
 )
 
 SUPPORT_OGG = True

@@ -92,6 +92,6 @@ cc_library(
     srcs = ["SDL_ttf.c"],
     copts = ["-DFT2_BUILD_LIBRARY"],
     includes = [""], # for SDL_ttf.h
-    deps = ["//third_party/sdl2/app-android/jni/SDL:SDL2_static", ":freetype"],
+    deps = ["//third_party/SDL", ":freetype"],
     visibility = ["//visibility:public"],
 )

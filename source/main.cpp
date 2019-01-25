@@ -144,7 +144,7 @@ void one_iter(){
     SDL_WaitEventTimeout(NULL, framedelay);
 }
 
-#undef main
+//#undef main
 int main(int argc, char *argv[]) {
   quit = false;
 #ifdef _WIN32
