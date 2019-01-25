@@ -15,4 +15,4 @@ app-android folder is the corresponding app folder that SDL2 generates on build.
 
 # Build
 
-    bazel build //third_party/sdl2/app-android/src/main:app --fat_apk_cpu=x86
+    bazel build //third_party/sdl2/app-android/src/main:app --fat_apk_cpu=x86 --spawn_strategy=standalone

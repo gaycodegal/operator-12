@@ -5,4 +5,6 @@ android_ndk_repository(
     name = "androidndk",
     api_level=19,
 )
-workspace(name = "operator12")
+workspace(
+    name = "operator12",
+)

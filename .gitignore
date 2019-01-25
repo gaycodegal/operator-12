@@ -6,7 +6,8 @@ tiled/*.png
 tiled/*.lua
 bazel*
 third_party/
-!BUILD
+!*BUILD
 out/
 docs/
+test/
 .#*
