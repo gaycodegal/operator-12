@@ -373,6 +373,23 @@ static int l_static_quit(lua_State *L) {
   return 0;
 }
 
+static int l_static_readfile(lua_State *L) {
+  char * name;
+  if (!lua_isstring(L, -1)) {
+    lua_pop(L, 1);
+    return 0;
+  }
+  name = (char *)lua_tostring(L, -1);
+  lua_pop(L, 1);
+  Sint64 size;
+  char * s = fileRead(name, size);
+  if (s == NULL) {
+    return 0;
+  }
+  lua_pushlstring(L, s, (size_t)size);
+  return 1;
+}
+
 static int l_static_wait(lua_State *L) {
   int t;
   if (!lua_isnumber(L, -1)) {
@@ -438,14 +455,15 @@ static int l_static_renderBlendmode(lua_State *L) {
 }
 
 static const struct luaL_Reg static_meta[] = {
-    {"quit", l_static_quit},
-    {"wait", l_static_wait},
-    {"framedelay", l_static_framedelay},
-    {"setRenderTarget", l_static_setRenderTarget},
-    {"unsetRenderTarget", l_static_unsetRenderTarget},
-    {"renderClear", l_static_renderClear},
-    {"renderBlendmode", l_static_renderBlendmode},
-    {NULL, NULL}};
+  {"quit", l_static_quit},
+  {"wait", l_static_wait},
+  {"readfile", l_static_readfile},
+  {"framedelay", l_static_framedelay},
+  {"setRenderTarget", l_static_setRenderTarget},
+  {"unsetRenderTarget", l_static_unsetRenderTarget},
+  {"renderClear", l_static_renderClear},
+  {"renderBlendmode", l_static_renderBlendmode},
+  {NULL, NULL}};
 
 static int l_move_sprite(lua_State *L) {
   // printLuaStack(L, "move_sprite");

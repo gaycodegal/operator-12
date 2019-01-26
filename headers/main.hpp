@@ -17,7 +17,8 @@
 #include <jni.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <android/log.h>
+#define printf(...) __android_log_print(ANDROID_LOG_DEBUG, "PRINTF", __VA_ARGS__)
 #elif __EMSCRIPTEN__
 
 #include <emscripten.h>
