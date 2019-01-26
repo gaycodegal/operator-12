@@ -387,6 +387,7 @@ static int l_static_readfile(lua_State *L) {
     return 0;
   }
   lua_pushlstring(L, s, (size_t)size);
+  delete[] s;
   return 1;
 }
 
