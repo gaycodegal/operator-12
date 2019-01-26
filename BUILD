@@ -1,9 +1,9 @@
 windows_deps = select({
     "@bazel_tools//src/conditions:windows": [
-        "//third_party/sdl2",
-        "//third_party/sdl2-mixer",
-        "//third_party/sdl2-image",
-        "//third_party/sdl2-ttf",
+        "//third_party/SDL",
+        "//third_party/SDL_mixer",
+        "//third_party/SDL_image",
+        "//third_party/SDL_ttf",
     ],
     "//conditions:default": [],
 })
@@ -90,10 +90,4 @@ alias(
     actual = ":op12-android-resources",
     #actual = ":simple-resources",
     visibility = ["//visibility:public"],
-)
-
-cc_binary(
-    name = "replace",
-    srcs = ["test/reploc.c"],
-    copts = ["-Dsquib(...)=printf(__VA_ARGS__)"],
 )

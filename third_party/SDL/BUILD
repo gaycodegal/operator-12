@@ -1,9 +1,20 @@
 licenses(["notice"]) # MIT license
 
+ALIAS = select({
+    "@bazel_tools//src/conditions:windows": ":sdl2-windows",
+    "//conditions:default": ":sdl2-android",
+})
+
+alias(
+    name = "SDL",
+    actual = ALIAS,
+    visibility = ["//visibility:public"],
+)
+
 SDL_HDRS = glob(["include/*.h"])
 
 cc_library(
-	name = "sdl2",
+	name = "sdl2-windows",
 	includes = ["include/"],
 	deps = ["sdl2-dll"],
     visibility = ["//visibility:public"],
@@ -72,7 +83,7 @@ cc_binary(
 
 
 cc_library(
-    name = "SDL",
+    name = "sdl2-android",
     srcs = SDL_SRCS,
     hdrs = SDL_HDRS,
     includes = SDL_INCLUDES,

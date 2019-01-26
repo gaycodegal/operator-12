@@ -1,9 +1,20 @@
 licenses(["notice"]) # MIT license
 
+ALIAS = select({
+    "@bazel_tools//src/conditions:windows": ":sdl2-mixer-windows",
+    "//conditions:default": ":sdl2-mixer-android",
+})
+
+alias(
+    name = "SDL_mixer",
+    actual = ALIAS,
+    visibility = ["//visibility:public"],
+)
+
 load("//bzl:condition-include.bzl", "make_cc_options", "conditional_cc_options_add")
 
 cc_library(
-	name = "sdl2-mixer",
+	name = "sdl2-mixer-windows",
 	includes = ["include/"],
 	deps = ["sdl2-mixer-dll"],
     visibility = ["//visibility:public"],
@@ -39,7 +50,7 @@ options_sdl_mixer = conditional_cc_options_add(
 )
 
 cc_library(
-    name = "SDL_mixer",
+    name = "sdl2-mixer-android",
     includes = [""], #necessary to export SDL_mixer.h
     hdrs = glob(["*.h"]),
     srcs = glob(["*.c"], exclude = ["playmus.c", "playwave.c"]),
