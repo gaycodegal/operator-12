@@ -206,7 +206,6 @@ int main(int argc, char **argv){
    emscripten_set_main_loop(one_iter, 60, 1);
 #else
       
-   printf("before quit: %d update: %d\n", quit, updateExists);
   if (updateExists) {
     while (!quit) {
       

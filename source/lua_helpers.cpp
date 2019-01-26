@@ -78,6 +78,7 @@ char *fileRead(const char *fname, Sint64 &size){
   }
   char *c = new char[size + 1];
   SDL_RWread(io, c, size, 1);
+  SDL_RWclose(io);
   c[size] = 0;
   return c;
 }
