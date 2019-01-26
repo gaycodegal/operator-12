@@ -65,11 +65,36 @@ int globalTypeExists(lua_State *L, int type, const char *name) {
   return toptype == type;
 }
 
+char *fileRead(const char *fname, Sint64 &size) {
+  SDL_RWops *io = SDL_RWFromFile(fname, "rb");
+  if (io == NULL) {
+    printf("No such file %s\n", fname);
+    return NULL;
+  }
+  size = SDL_RWsize(io);
+  if (size == -1) {
+    SDL_RWclose(io);
+    return NULL;
+  }
+  char *c = new char[size + 1];
+  SDL_RWread(io, c, size, 1);
+  SDL_RWclose(io);
+  c[size] = 0;
+  return c;
+}
+
 int loadLuaFile(lua_State *L, const char *fname) {
-  if (luaL_loadfile(L, fname)) {
-    printf("failed to load %s with error:%s\n", fname, lua_tostring(L, -1));
+  Sint64 s;
+  char *file = fileRead(fname, s);
+  if (file == NULL) {
     return 0;
   }
+  if (luaL_loadstring(L, file)) {
+    printf("failed to load %s with error:%s\n", fname, lua_tostring(L, -1));
+    delete[] file;
+    return 0;
+  }
+  delete[] file;
   if (lua_pcall(L, 0, 0, 0)) {
     /* PRIMING RUN. FORGET THIS AND YOU'RE TOAST */
     printf("failed to call %s with error:%s\n", fname, lua_tostring(L, -1));
