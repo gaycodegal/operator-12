@@ -65,7 +65,7 @@ int globalTypeExists(lua_State *L, int type, const char *name) {
   return toptype == type;
 }
 
-char *fileRead(const char *fname, Sint64 &size){
+char *fileRead(const char *fname, Sint64 &size) {
   SDL_RWops *io = SDL_RWFromFile(fname, "rb");
   if (io == NULL) {
     printf("No such file %s\n", fname);
