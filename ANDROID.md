@@ -23,7 +23,7 @@ lua file io doesn't work so falling back to SDL's file io internally.
 - Didn't import SDL-image JPG/WEBP support
 - Didn't import anything other than ogg-vorbis from SDL-mixer
 - Still haven't fixed lua's io module
-- Still haven't fixed android not importing my .contents.lua files
+- Doesn't support files beginning with '.'; couldn't figure out a fix with bazel.
 
 # Library Versions
 
