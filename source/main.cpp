@@ -1,7 +1,7 @@
 #include "main.hpp"
 #define SDL_ACTIVE
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+int SCREEN_WIDTH = 640;
+int SCREEN_HEIGHT = 480;
 SDL_Window *window;
 SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
@@ -23,7 +23,14 @@ int start() {
     }*/
 
   Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-
+#ifdef ANDROID
+  SDL_DisplayMode displayMode;
+  if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0) {
+    SCREEN_WIDTH = displayMode.w;
+    SCREEN_HEIGHT = displayMode.h;
+  }
+  initopts |= SDL_WINDOW_FULLSCREEN;
+#endif
   window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             initopts);
@@ -51,7 +58,7 @@ int end() {
   if (gFont != NULL)
     TTF_CloseFont(gFont);
   gFont = NULL;
-  //Mix_CloseAudio();
+  // Mix_CloseAudio();
   TTF_Quit();
   IMG_Quit();
   SDL_Quit();
@@ -87,7 +94,7 @@ int mousedownExists;
 int mousemoveExists;
 int mouseupExists;
 SDL_Event e;
-void one_iter(){
+void one_iter() {
   // Handle events on queue
   while (SDL_PollEvent(&e) != 0) {
     // User requests quit
@@ -103,21 +110,21 @@ void one_iter(){
       lua_pushnumber(L, e.key.keysym.sym);
       callErr(L, "KeyUp", 1);
     } else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
-	       e.type == SDL_MOUSEBUTTONUP) {
+               e.type == SDL_MOUSEBUTTONUP) {
       // Get mouse position
       switch (e.type) {
       case SDL_MOUSEBUTTONDOWN:
-	mouseHelper(L, e.type, "MouseDown", mousedownExists);
-	break;
+        mouseHelper(L, e.type, "MouseDown", mousedownExists);
+        break;
       case SDL_MOUSEMOTION:
-	mouseHelper(L, e.type, "MouseMove", mousemoveExists);
-	break;
+        mouseHelper(L, e.type, "MouseMove", mousemoveExists);
+        break;
       case SDL_MOUSEBUTTONUP:
-	mouseHelper(L, e.type, "MouseUp", mouseupExists);
-	break;
+        mouseHelper(L, e.type, "MouseUp", mouseupExists);
+        break;
       }
     } else if (e.type == SDL_WINDOWEVENT &&
-	       e.window.event == SDL_WINDOWEVENT_RESIZED) {
+               e.window.event == SDL_WINDOWEVENT_RESIZED) {
       lua_getglobal(L, "Resize");
       lua_pushnumber(L, e.window.data1);
       lua_pushnumber(L, e.window.data2);
@@ -144,14 +151,20 @@ void one_iter(){
     SDL_WaitEventTimeout(NULL, framedelay);
 }
 
+#ifndef ANDROID
 #undef main
-int main(int argc, char *argv[]) {
+#endif
+
+int main(int argc, char **argv) {
   quit = false;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
+#elif ANDROID
+// already in resources
 #else
   chdir("resources");
 #endif
+
 #ifdef SDL_ACTIVE
   if (start() != 0) {
     end();
@@ -161,6 +174,14 @@ int main(int argc, char *argv[]) {
   L = luaL_newstate();
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
+#ifdef ANDROID
+
+  if (!loadLuaFile(L, "android.lua")) {
+    end();
+    return 1;
+  }
+
+#else
 
   if (argc < 2) {
     if (!loadLuaFile(L, "load.lua")) {
@@ -173,25 +194,27 @@ int main(int argc, char *argv[]) {
       return 1;
     }
   }
+#endif
 
   lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoidArgv(L, "Start", argc - 1, argv + 1);
   updateExists = globalTypeExists(L, LUA_TFUNCTION, "Update");
   keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
-   keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
-   mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
-   mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
-   mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
-  // While application is running
+  keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
+  mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
+  mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
+  mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
+// While application is running
 #ifdef __EMSCRIPTEN__
-   // void emscripten_set_main_loop(em_callback_func func, int fps, int simulate_infinite_loop);
-   emscripten_set_main_loop(one_iter, 60, 1);
+  // void emscripten_set_main_loop(em_callback_func func, int fps, int
+  // simulate_infinite_loop);
+  emscripten_set_main_loop(one_iter, 60, 1);
 #else
-      
+
   if (updateExists) {
     while (!quit) {
-      
+
       one_iter();
     }
   }

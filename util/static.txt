@@ -9,6 +9,11 @@
 ["int"]
 ["number"]
 0
+"readfile"
+["name"]
+["char *"]
+["string"]
+1
 "framedelay"
 ["r"]
 ["int"]

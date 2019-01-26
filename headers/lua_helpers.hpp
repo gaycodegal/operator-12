@@ -5,6 +5,11 @@
    the library name as exposed to lua.
  */
 #define LUA_LIBNAME "Game"
+/**
+   reads in the text content of a file.
+   allocates and returns a c string.
+ */
+char *fileRead(const char *fname, Sint64 &size);
 
 /**
    loads a lua file named <fname> into the state <L>
