@@ -28,6 +28,7 @@ android_library(
     name = "op12-android-resources",
     manifest = "//third_party/app-android/src/main:AndroidManifest.xml",
     assets = glob(["resources/**/*"]),
+    javacopts=["-DANDROID_AAPT_IGNORE=\"\""],
     assets_dir = "resources/",
     custom_package="com.temp.test",
     visibility = ["//visibility:public"],
