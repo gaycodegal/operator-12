@@ -58,8 +58,8 @@ struct luaClassList {
 };
 
 // Screen dimension constants
-extern const int SCREEN_WIDTH;
-extern const int SCREEN_HEIGHT;
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 // global SDL2 variables
 extern SDL_Window *window;
 extern SDL_Surface *screenSurface;

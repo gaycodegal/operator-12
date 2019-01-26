@@ -12,4 +12,13 @@ function require(modname)
    package.loaded[modname] = x
    return package.loaded[modname]
 end
-require("load.lua")
+
+function dofile(fname)
+   local mod = Game.static.readfile(fname)
+   local x = load(mod)
+   if x then
+      x = x()
+   end
+   return x
+end
+require("load")

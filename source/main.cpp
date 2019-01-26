@@ -1,7 +1,7 @@
 #include "main.hpp"
 #define SDL_ACTIVE
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+int SCREEN_WIDTH = 640;
+int SCREEN_HEIGHT = 480;
 SDL_Window *window;
 SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
@@ -23,7 +23,14 @@ int start() {
     }*/
 
   Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-
+#ifdef ANDROID
+  SDL_DisplayMode displayMode;
+  if( SDL_GetCurrentDisplayMode( 0, &displayMode ) == 0 ){
+    SCREEN_WIDTH = displayMode.w;
+    SCREEN_HEIGHT = displayMode.h;
+  }
+  initopts |= SDL_WINDOW_FULLSCREEN;
+#endif
   window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             initopts);
