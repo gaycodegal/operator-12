@@ -1015,7 +1015,9 @@ struct luaConstInt {
   const int val;
 };
 
-static const struct luaConstInt globints[] = {
+int luaopen_sprites(lua_State *L) {
+  printf("screen {%i, %i}\n", SCREEN_WIDTH, SCREEN_HEIGHT);
+  static const struct luaConstInt globints[] = {
     {"SCREEN_WIDTH", SCREEN_WIDTH},
     {"SCREEN_HEIGHT", SCREEN_HEIGHT},
     {"KEY_UP", SDLK_UP},
@@ -1104,7 +1106,6 @@ static const struct luaConstInt globints[] = {
     {"BLENDMODE_MOD", SDL_BLENDMODE_MOD},
     {NULL, 0}};
 
-int luaopen_sprites(lua_State *L) {
   int count = 0;
   lua_newtable(L);
   struct luaClassList *ptr = (struct luaClassList *)game;
