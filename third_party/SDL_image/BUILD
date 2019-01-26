@@ -1,9 +1,20 @@
 licenses(["notice"]) # MIT license
 
+ALIAS = select({
+    "@bazel_tools//src/conditions:windows": ":sdl2-image-windows",
+    "//conditions:default": ":sdl2-image-android",
+})
+
+alias(
+    name = "SDL_image",
+    actual = ALIAS,
+    visibility = ["//visibility:public"],
+)
+
 load("//bzl:condition-include.bzl", "make_cc_options", "conditional_cc_options_add")
 
 cc_library(
-    name = "sdl2-image",
+    name = "sdl2-image-windows",
     includes = ["include/"],
     deps = ["sdl2-image-dll"],
     visibility = ["//visibility:public"],
@@ -40,7 +51,7 @@ options_sdl_image = conditional_cc_options_add(
 )
 
 cc_library(
-    name = "SDL_image",
+    name = "sdl2-image-android",
     includes = [""], #necessary to export SDL_image.h
     hdrs = glob(["*.h"]),
     srcs = [

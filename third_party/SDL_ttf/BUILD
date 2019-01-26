@@ -1,8 +1,20 @@
 licenses(["notice"]) # MIT license
+
+ALIAS = select({
+    "@bazel_tools//src/conditions:windows": ":sdl2-ttf-windows",
+    "//conditions:default": ":sdl2-ttf-android",
+})
+
+alias(
+    name = "SDL_ttf",
+    actual = ALIAS,
+    visibility = ["//visibility:public"],
+)
+
 load(":freebuilder.bzl", "freetype_libs")
 
 cc_library(
-    name = "sdl2-ttf",
+    name = "sdl2-ttf-windows",
     includes = ["include/"],
     deps = ["sdl2-ttf-dll"],
     visibility = ["//visibility:public"],
@@ -87,7 +99,7 @@ cc_library(
 )
 
 cc_library(
-    name = "SDL_ttf",
+    name = "sdl2-ttf-android",
     hdrs = ["SDL_ttf.h"],
     srcs = ["SDL_ttf.c"],
     copts = ["-DFT2_BUILD_LIBRARY"],
