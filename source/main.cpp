@@ -144,14 +144,20 @@ void one_iter(){
     SDL_WaitEventTimeout(NULL, framedelay);
 }
 
-//#undef main
-int main(int argc, char *argv[]) {
+#ifndef ANDROID
+#undef main
+#endif
+
+int main(int argc, char **argv){
   quit = false;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
+#elif ANDROID
+  //already in resources
 #else
   chdir("resources");
 #endif
+  
 #ifdef SDL_ACTIVE
   if (start() != 0) {
     end();
@@ -161,6 +167,14 @@ int main(int argc, char *argv[]) {
   L = luaL_newstate();
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
+#ifdef ANDROID
+
+  if (!loadLuaFile(L, "android.lua")) {
+    end();
+    return 1;
+  }
+
+#else
 
   if (argc < 2) {
     if (!loadLuaFile(L, "load.lua")) {
@@ -173,7 +187,10 @@ int main(int argc, char *argv[]) {
       return 1;
     }
   }
+#endif
 
+  
+  
   lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
     callLuaVoidArgv(L, "Start", argc - 1, argv + 1);
@@ -189,6 +206,7 @@ int main(int argc, char *argv[]) {
    emscripten_set_main_loop(one_iter, 60, 1);
 #else
       
+   printf("before quit: %d update: %d\n", quit, updateExists);
   if (updateExists) {
     while (!quit) {
       

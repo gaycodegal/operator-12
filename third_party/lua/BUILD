@@ -13,6 +13,19 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "lua-lib-android",
+    hdrs = lua_hdrs,
+    srcs = lua_lib_srcs,
+    includes = [lua_dir],
+    copts=[
+        "-include android-lua.h",
+    ],
+    deps = ["//extras:lua-android-include"],
+    linkopts = ["-ldl -lm -landroid -llog"],
+    visibility = ["//visibility:public"],
+)
+
 cc_binary(
     name = "lua",
     srcs = ["src/lua.c"],
