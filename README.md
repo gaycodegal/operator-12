@@ -22,69 +22,19 @@ You can check the [org](./org) folder for more information about planned content
     - Project runs quickly on my 2013 chromebook, so it'll probably run fine on mobile.
 
 
-## Library Installation
+## Installation, Building, Running
 
-Custom Libraries you'll need
+Builds are similar across platforms, but library installation usually differs. For each platform you will need [bazel.build](https://bazel.build) set up for C++ development targeting whatever platform you wish to build for. Specific instruction is available for:
+- [Linux](./LINUX.md)
+- [Windows](./WINDOWS.md)
+- [Android](./ANDROID.md)
 
-- SDL2-Dev `apt install libsdl2-dev`
-- SDL2-Image-Dev `apt install libsdl2-image-dev`
-- SDL2-TTF-Dev `apt install libsdl2-ttf-dev`
-- SDL-Mixer-Dev `apt install libsdl-mixer1.2-dev`
-- Lua 5.3.4
-  - Installation instructions available at [www.lua.org](https://www.lua.org/download.html)
-  - Should be located in third_party/lua
-  - You don't need command-line lua
-
-You'll also need `g++` to compile C++ code.
-
-
-## Compilation
-
-
-### Bazel
-
-With [bazel.build](https://bazel.build) compilation is
-
-    bazel build //:operator-12
-
-Pros:
-- Builds for: Linux, Windows
-- It works well, and I find Bazel's BUILD files a lot more comprehensible than make files.
-- Easy to make things cross platform.
-- The supported compilation method.
-
-Cons:
-- No WASM support yet; I have to learn a bit more about CROSSTOOL files first.
-
-Note that on Windows, while Bazel will build the operator-12.exe for you, it will not
-move files into the .runfiles directory. It will also not move all the .dlls needed
-from their third_party location to their required location. I will eventually create
-a build rule to create a tar/zip file containing all the relevant files required to run
-the game.
-
-
-### Make
-
-With `make` compilation is
-
-    make
-
-Make exists purely for WASM builds until further notice. However, the makefile will
-also build for linux.
-
-
-## Running
-
-To run the main program (will automatically compile if necessary).
-
-    bazel run //:operator-12
-
-You can also specify which lua file to run as the main. For instance `bazel run //:operator-12 surface-tests` will run the surface tests lua file as the main lua file.
+In general assume that if copying in a folder for a `third_party` library you should merge the source and my corresponding `third_party` sub-directory. If you are asked whether to replace a specific file, you should assume the version that came with this project's git is the correct version.
 
 
 ## Doxygen
 
-Run `python3 extract-docs.py > out.hidden.c && doxygen Doxyfile` to generate the docs. It's a horrible way to do it but it was easiest for me
+Run `python3 extract-docs.py > out.hidden.c && doxygen Doxyfile` to generate the docs. It's a horrible way to do it but it was easiest for me. Eventually I'll have a bazel target for generating docs.
 
 
 ## Contributing
@@ -125,8 +75,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
     - Enemy slugs controlled by computer AI
 - Slug/Slugdefs
     - holds info on what sprites are associated with which slug-type
-- Technically cross-platform, although you'll have the easiest time with Linux. I'm developing it on linux, releases will have multiple OS (and mobile if I'm not lazy).
-    - I got windows working actually!
+- Cross-platform.
 
 
 ## C++ / Lua Methods
