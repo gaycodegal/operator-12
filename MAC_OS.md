@@ -28,3 +28,7 @@ Custom Libraries you'll need from libsdl.org listed below. Install the SDL2 fram
 	
 You can also specify which lua file to run as the main. For instance `bazel run //:operator-12 surface-tests` will run the surface tests lua file as the main lua file.
 
+
+# Caveats
+
+Creates an executable, but not a full packaged app. Probably due to components being missing like a info.plist file.
