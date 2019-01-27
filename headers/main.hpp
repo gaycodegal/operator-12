@@ -20,6 +20,14 @@
 #include <unistd.h>
 #define printf(...)                                                            \
   __android_log_print(ANDROID_LOG_DEBUG, "PRINTF", __VA_ARGS__)
+#elif __APPLE__
+
+#include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
+#include <SDL2_ttf/SDL_ttf.h>
+#include <SDL2_mixer/SDL_mixer.h>
+#include <unistd.h>
+
 #elif __EMSCRIPTEN__
 
 #include <SDL.h>
@@ -30,8 +38,8 @@
 
 #else
 
-#include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <unistd.h>
