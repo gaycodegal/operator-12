@@ -21,6 +21,7 @@ cc_binary(
 	"headers/",
     ],
     data = glob(["resources/**"]),
+    copts = ["-std=c++11"],
     linkopts = ["-lSDL2", "-lSDL2_image", "-lSDL2_ttf", "-lSDL_mixer", "-ldl", "-lm"],
 )
 
