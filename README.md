@@ -27,6 +27,7 @@ You can check the [org](./org) folder for more information about planned content
 Builds are similar across platforms, but library installation usually differs. For each platform you will need [bazel.build](https://bazel.build) set up for C++ development targeting whatever platform you wish to build for. Specific instruction is available for:
 - [Linux](./LINUX.md)
 - [Windows](./WINDOWS.md)
+- [MacOS](./MAC_OS.md)
 - [Android](./ANDROID.md)
 
 In general assume that if copying in a folder for a `third_party` library you should merge the source and my corresponding `third_party` sub-directory. If you are asked whether to replace a specific file, you should assume the version that came with this project's git is the correct version.
@@ -96,6 +97,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 - MouseDown(x, y)
 - MouseMove(x, y)
 - MouseUp(x, y)
+
 
 ## Classes Exposed to Lua via C++
 
