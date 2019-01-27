@@ -5,6 +5,6 @@ Eric Londres
 
 Operator 12's source is at present under the MIT license
 
-View online at https://github.com/stephoro/operator-12
+View online at https://github.com/gaycodegal/operator-12
 
 :D

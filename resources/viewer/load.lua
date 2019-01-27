@@ -16,9 +16,7 @@ function Viewer.readAll(dir, sep)
    local texts = {}
    local sources = listdir(dir)
    for i, source in ipairs(sources) do
-	  local f = io.open(dir..source, "r")
-	  texts[i] = f:read("a")
-	  f:close()
+      texts[i] = static.readfile(dir..source)
    end
    return table.concat(texts, sep)
 end
@@ -32,7 +30,7 @@ end
 ]]
 function Viewer.Start(argc, argv)
    if argc < 3 then	
-	  argv = {"viewer/load", "licenses/", "\n\n"}
+      argv = {"viewer/load", "licenses/", "\n\n"}
    end
    V.stext = V.readAll(argv[2], argv[3])
    V.reset()
@@ -62,10 +60,10 @@ function Viewer.reset()
    local i = 1
    local l = Text.charsInTextbox(text, SCREEN_WIDTH, SCREEN_HEIGHT)
    while l > 0 do
-	  V.texts[i] = string.sub(text,1,l)
-	  text = string.sub(text,l + 1)
-	  i = i + 1
-	  l = Text.charsInTextbox(text, SCREEN_WIDTH, SCREEN_HEIGHT)
+      V.texts[i] = string.sub(text,1,l)
+      text = string.sub(text,l + 1)
+      i = i + 1
+      l = Text.charsInTextbox(text, SCREEN_WIDTH, SCREEN_HEIGHT)
    end
    V.updateForPage(1)
 end
@@ -75,11 +73,11 @@ end
 ]]
 function Viewer.free()
    if V.tex then
-	  Texture.destroy(V.tex)
+      Texture.destroy(V.tex)
    end
    V.tex = nil
    if V.spr then
-	  V.spr:destroy()
+      V.spr:destroy()
    end
    V.spr = nil
 end
@@ -91,7 +89,7 @@ end
 ]]
 function Viewer.updateForPage(p)
    if V.texts[p] == nil then
-	  return
+      return
    end
    V.free()
    V.page = p
@@ -117,6 +115,14 @@ function Viewer.End()
    V.stext = nil
 end
 
+function Viewer.MouseDown(x,y)
+   if x > SCREEN_WIDTH/2 then
+      V.updateForPage(V.page + 1)
+   else
+      V.updateForPage(V.page - 1)
+   end
+end
+
 --[[
    move around pages
 
@@ -124,15 +130,15 @@ end
 ]]
 function Viewer.KeyDown(key)
    if key == KEY_ESCAPE then
-	  static.quit()
+      static.quit()
    elseif key == KEY_UP then
-	  V.updateForPage(V.page - 1)
+      V.updateForPage(V.page - 1)
    elseif key == KEY_DOWN then
-	  V.updateForPage(V.page + 1)
+      V.updateForPage(V.page + 1)
    elseif key == KEY_LEFT then
-	  V.updateForPage(V.page - 1)
+      V.updateForPage(V.page - 1)
    elseif key == KEY_RIGHT then
-	  V.updateForPage(V.page + 1)
+      V.updateForPage(V.page + 1)
    end
 end
 
