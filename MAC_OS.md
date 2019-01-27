@@ -5,7 +5,7 @@ Install bazel on Mac OS set up for C++ development. Make sure to install Xcode &
 
 # Library Installation
 
-Custom Libraries you'll need
+Custom Libraries you'll need from libsdl.org listed below. Install the SDL2 frameworks in `/Library/Frameworks`. Be sure to get the development libraries (hosted on libsdl as `.dmg`s).
 
 - SDL2-Dev
 - SDL2-Image-Dev
@@ -15,8 +15,6 @@ Custom Libraries you'll need
   - Installation instructions available at [www.lua.org](https://www.lua.org/download.html)
   - Should be located in `third_party/lua` such that `third_party/lua/src` is the lua `src/` directory. You don't particularly need the `docs` directory, but it's usually useful when developing in lua to have the docs handy.
   - You don't need command-line lua
-
-Install the SDL2 frameworks in /Library/Frameworks
 
 
 # Compilation
