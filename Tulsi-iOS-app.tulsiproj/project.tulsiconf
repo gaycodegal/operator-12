@@ -1,0 +1,23 @@
+{
+  "configDefaults" : {
+    "optionSet" : {
+
+    }
+  },
+  "packages" : [
+    "",
+    "extras",
+    "bzl",
+    "third_party/SDL_ttf",
+    "third_party/SDL_mixer",
+    "third_party/SDL_image",
+    "third_party/SDL",
+    "third_party/lua",
+    "third_party/SDL_image/external/libpng-1.6.32",
+    "third_party/SDL_mixer/external/libogg-1.3.2",
+    "third_party/SDL_mixer/external/libvorbisidec-1.2.1",
+    "app-ios"
+  ],
+  "projectName" : "Operator-12",
+  "workspaceRoot" : ".."
+}

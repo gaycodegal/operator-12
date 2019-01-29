@@ -1,0 +1,10 @@
+{
+  "optionSet" : {
+    "BazelPath" : {
+      "p" : "/Users/zythlander/bin/bazel"
+    },
+    "WorkspaceRootPath" : {
+      "p" : "/Users/zythlander/git/operator-12"
+    }
+  }
+}

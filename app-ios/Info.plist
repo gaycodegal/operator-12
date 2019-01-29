@@ -5,9 +5,9 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>PRODUCT_NAME</string>
+	<string>testapp</string>
 	<key>CFBundleExecutable</key>
-	<string>EXECUTABLE_NAME</string>
+	<string>testapp</string>
 	<key>CFBundleIconFile</key>
 	<string>Icon</string>
 	<key>CFBundleIdentifier</key>
