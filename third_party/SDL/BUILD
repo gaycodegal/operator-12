@@ -28,7 +28,7 @@ cc_import(
     visibility = ["//visibility:public"],
 )
 
-SDL_SRCS = SDL_HDRS + glob([
+SDL_SRCS_ANDROID = SDL_HDRS + glob([
     "src/**/*.h",
     "src/*.c",
     "src/audio/*.c",
@@ -65,18 +65,18 @@ SDL_SRCS = SDL_HDRS + glob([
     "src/test/*.c",
 ])
 
-SDL_COPTS = ["-DANDROID", "-DGL_GLEXT_PROTOTYPES"]
+SDL_COPTS_ANDROID = ["-DANDROID", "-DGL_GLEXT_PROTOTYPES"]
 SDL_INCLUDES = ["include/"]
-SDL_LINKOPTS = ["-ldl -lm -lGLESv1_CM -lGLESv2 -llog -landroid"]
-SDL_DEPS = [":libhidapi.so"]
+SDL_LINKOPTS_ANDROID = ["-ldl -lm -lGLESv1_CM -lGLESv2 -llog -landroid"]
+SDL_DEPS_ANDROID = [":libhidapi.so"]
 
 cc_binary(
     name = "libSDL2.so",
-    srcs = SDL_SRCS,
-    copts = SDL_COPTS,
+    srcs = SDL_SRCS_ANDROID,
+    copts = SDL_COPTS_ANDROID,
     includes = SDL_INCLUDES,
-    linkopts = SDL_LINKOPTS, 
-    deps = SDL_DEPS,
+    linkopts = SDL_LINKOPTS_ANDROID, 
+    deps = SDL_DEPS_ANDROID,
     visibility = ["//visibility:public"],
     linkshared=True,
 )
@@ -84,11 +84,11 @@ cc_binary(
 
 cc_library(
     name = "sdl2-android",
-    srcs = SDL_SRCS,
+    srcs = SDL_SRCS_ANDROID,
     hdrs = SDL_HDRS,
     includes = SDL_INCLUDES,
-    copts = SDL_COPTS,
-    linkopts = SDL_LINKOPTS, 
+    copts = SDL_COPTS_ANDROID,
+    linkopts = SDL_LINKOPTS_ANDROID, 
     deps = [":hidapi_static"],
     visibility = ["//visibility:public"],
 )
@@ -110,4 +110,60 @@ cc_library(
     includes = ["src/hidapi/hidapi/"],
     copts = ["-std=c++11"],
     linkopts = ["-llog"],
+)
+
+SDL_SRCS_IOS = glob([
+    "src/**/*.h",
+    "src/*.c",
+    "src/audio/*.c",
+    "src/audio/coreaudio/*.m",
+    "src/audio/dummy/*.c",
+    "src/atomic/SDL_atomic.c",
+    "src/atomic/SDL_spinlock.c",
+    "src/cpuinfo/*.c",
+    "src/dynapi/*.c",
+    "src/events/*.c",
+    "src/file/*.c",
+    "src/file/cocoa/*.m",
+    "src/filesystem/*.m",
+    "src/haptic/*.c",
+    "src/haptic/dummy/*.c",
+    "src/hidapi/ios/*.m",
+    "src/joystick/*.c",
+    "src/joystick/iphoneos/*.m",
+    "src/joystick/hidapi/*.c",
+    "src/loadso/dummy/*.c",
+    "src/loadso/dlopen/*.c",
+    "src/power/*.c",
+    "src/power/uikit/*.m",
+    "src/filesystem/android/*.c",
+    "src/sensor/*.c",
+    "src/sensor/coremotion/*.m",
+    "src/sensor/dummy/*.c",
+    "src/render/*.c",
+    "src/render/metal/*.m",
+    "src/render/opengles/*.c",
+    "src/render/opengles2/*.c",
+    "src/render/software/*.c",
+    "src/stdlib/*.c",
+    "src/thread/*.c",
+    "src/thread/pthread/*.c",
+    "src/timer/*.c",
+    "src/timer/unix/*.c",
+    "src/video/*.c",
+    "src/video/uikit/*.m",
+    "src/video/dummy/*.c",
+    "src/video/yuv2rgb/*.c",
+])
+
+#print(SDL_SRCS_IOS)
+
+objc_library(
+    name = "sdl2-ios",
+    srcs = SDL_SRCS_IOS,
+    hdrs = SDL_HDRS,
+    textual_hdrs=glob(["src/thread/generic/*.c",]),
+    includes = SDL_INCLUDES,
+    #copts = ["-DGL_GLEXT_PROTOTYPES"],
+    visibility = ["//visibility:public"],
 )

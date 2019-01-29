@@ -1,6 +1,6 @@
 #ifndef _LUA_HELPERS_HPP_
 #define _LUA_HELPERS_HPP_
-#include "main.hpp"
+#include "main.h"
 /**
    the library name as exposed to lua.
  */

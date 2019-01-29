@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "main.h"
 #define SDL_ACTIVE
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
@@ -151,7 +151,7 @@ void one_iter() {
     SDL_WaitEventTimeout(NULL, framedelay);
 }
 
-#ifndef ANDROID
+#if !defined(ANDROID) && !defined(__IOS__)
 #undef main
 #endif
 
@@ -174,7 +174,7 @@ int main(int argc, char **argv) {
   L = luaL_newstate();
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
-#ifdef ANDROID
+#if defined(ANDROID) || defined(__IOS__)
 
   if (!loadLuaFile(L, "android.lua")) {
     end();

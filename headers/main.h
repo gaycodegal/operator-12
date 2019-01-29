@@ -20,6 +20,14 @@
 #include <unistd.h>
 #define printf(...)                                                            \
   __android_log_print(ANDROID_LOG_DEBUG, "PRINTF", __VA_ARGS__)
+#elif __IOS__
+
+#include "SDL.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
+#include "SDL_mixer.h"
+#include "unistd.h"
+
 #elif __APPLE__
 
 #include <SDL2/SDL.h>
@@ -52,9 +60,9 @@ extern "C" {
 #include <lua.h>
 #include <lualib.h>
 };
-#include "lua_helpers.hpp"
-#include "lua_sprites.hpp"
-#include "sprite.hpp"
+#include "lua_helpers.h"
+#include "lua_sprites.h"
+#include "sprite.h"
 #include <chrono>
 #include <stdio.h>
 #include <string>

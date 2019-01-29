@@ -1,4 +1,4 @@
-#include "sprite.hpp"
+#include "sprite.h"
 
 SDL_Texture *loadTexture(const char *path, int &w, int &h) {
   // The final texture

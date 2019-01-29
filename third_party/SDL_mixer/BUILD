@@ -30,7 +30,7 @@ cc_import(
 
 options_sdl_mixer = make_cc_options(
     copts = ["-DLOAD_BMP", "-DLOAD_GIF", "-DLOAD_LBM", "-DLOAD_PCX", "-DLOAD_PNM", "-DLOAD_SVG", "-DLOAD_TGA", "-DLOAD_XCF", "-DLOAD_XPM", "-DLOAD_XV"],
-    deps = ["//third_party/SDL"],
+    deps = [],
 )
 
 SUPPORT_OGG = True
@@ -56,6 +56,16 @@ cc_library(
     srcs = glob(["*.c"], exclude = ["playmus.c", "playwave.c"]),
     copts = options_sdl_mixer["copts"],
     linkopts = options_sdl_mixer["linkopts"],
-    deps = options_sdl_mixer["deps"],
+    deps = ["//third_party/SDL"] + options_sdl_mixer["deps"],
+    visibility = ["//visibility:public"],    
+)
+
+objc_library(
+    name = "sdl2-mixer-ios",
+    includes = [""], #necessary to export SDL_mixer.h
+    hdrs = glob(["*.h"]),
+    srcs = glob(["*.c"], exclude = ["playmus.c", "playwave.c"]),
+    copts = options_sdl_mixer["copts"],
+    deps = ["//third_party/SDL:sdl2-ios"] + options_sdl_mixer["deps"],
     visibility = ["//visibility:public"],    
 )

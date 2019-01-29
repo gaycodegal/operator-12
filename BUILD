@@ -1,3 +1,5 @@
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
+
 DEPS = select({
     "@bazel_tools//src/conditions:windows": [
         "//third_party/lua:lua-lib",
@@ -57,12 +59,41 @@ cc_binary(
     linkopts = LINKOPTS,
 )
 
+objc_library(
+    name = "test-ios",
+    #name = "operator-12-ios",
+    #hdrs = glob([
+    #]),
+    srcs = glob([
+        "headers/*.h",
+        "source/*.cpp",
+    ]),
+    deps = [
+        "//third_party/lua:lua-lib-objc",
+        "//third_party/SDL:sdl2-ios",
+        "//third_party/SDL_image:sdl2-image-ios",
+        "//third_party/SDL_ttf:sdl2-ttf-ios",
+        "//third_party/SDL_mixer:sdl2-mixer-ios",
+    ],
+    includes = [
+	"headers/",
+    ],
+    structured_resources = glob(["resources/**"]),
+    sdk_frameworks=["GameController", "Foundation", "UIKit", "OpenGLES", "QuartzCore", "CoreAudio", "AudioToolbox", "CoreGraphics", "CoreMotion", "AVFoundation", "ImageIO", "CoreServices"],
+    copts = [
+        "-D__IOS__",
+        "-std=c++11",
+        "-stdlib=libc++",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 android_library(
     name = "op12-android-resources",
     manifest = "//third_party/app-android/src/main:AndroidManifest.xml",
     assets = glob(["resources/**/*"]),
     assets_dir = "resources/",
-    custom_package="com.temp.test",
+    custom_package="com.yourcompany.${PRODUCT_NAME:identifier}",
     visibility = ["//visibility:public"],
 )
 

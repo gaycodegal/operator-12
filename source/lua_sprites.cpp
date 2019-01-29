@@ -1,4 +1,4 @@
-#include "lua_sprites.hpp"
+#include "lua_sprites.h"
 /*
 static int l_music_new(lua_State *L) {
   char *source;

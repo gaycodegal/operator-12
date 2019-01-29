@@ -1,6 +1,6 @@
 #ifndef _SPRITE_HPP_
 #define _SPRITE_HPP_
-#include "main.hpp"
+#include "main.h"
 SDL_Texture *loadTexture(const char *path, int &w, int &h);
 
 /**

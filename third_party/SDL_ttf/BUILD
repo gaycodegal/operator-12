@@ -80,7 +80,12 @@ LIBS = [x.split("/") for x in [
 # but it wouldn't build otherwise
 freetype_libs(
     FREETYPE_LIBRARY_PATH,
-    LIBS
+    LIBS,
+    [":freetype-headers", "//extras:gzip-ios-include"],
+    [
+        "-DFT2_BUILD_LIBRARY",
+        "-include ios-gzip.h",
+    ],
 )
 
 cc_library(
@@ -105,5 +110,15 @@ cc_library(
     copts = ["-DFT2_BUILD_LIBRARY"],
     includes = [""], # for SDL_ttf.h
     deps = ["//third_party/SDL", ":freetype"],
+    visibility = ["//visibility:public"],
+)
+
+objc_library(
+    name = "sdl2-ttf-ios",
+    hdrs = ["SDL_ttf.h"],
+    srcs = ["SDL_ttf.c"],
+    copts = ["-DFT2_BUILD_LIBRARY"],
+    includes = [""], # for SDL_ttf.h
+    deps = ["//third_party/SDL:sdl2-ios", ":freetype"],
     visibility = ["//visibility:public"],
 )
