@@ -82,6 +82,7 @@ TiledMap::TiledMap(lua_State *L) {
 
 int TiledMap::drawTile(int x, int y, int tx, int ty) {
   int tile = getTile(x, y);
+  return 0;
 }
 
 int TiledMap::getTile(int x, int y) {

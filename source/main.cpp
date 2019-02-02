@@ -1,6 +1,6 @@
 #include "main.hpp"
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+int SCREEN_WIDTH = 640;
+int SCREEN_HEIGHT = 480;
 SDL_Window *window;
 SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
@@ -24,7 +24,14 @@ int start() {
     }*/
 
   Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-
+#ifdef ANDROID
+  SDL_DisplayMode displayMode;
+  if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0) {
+    SCREEN_WIDTH = displayMode.w;
+    SCREEN_HEIGHT = displayMode.h;
+  }
+  initopts |= SDL_WINDOW_FULLSCREEN;
+#endif
   window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             initopts);
@@ -174,10 +181,16 @@ std::string openConfig(const char *path) {
   return ret;
 }
 
-int main(int argc, char *argv[]) {
+#ifndef ANDROID
+#undef main
+#endif
+
+int main(int argc, char **argv) {
   quit = false;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
+#elif ANDROID
+// already in resources
 #else
   int unused = chdir("resources");
 #endif
@@ -200,10 +213,17 @@ int main(int argc, char *argv[]) {
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
 
+#ifdef ANDROID
+  if (!loadLuaFile(L, "android.lua")) {
+    end();
+    return 1;
+  }
+#else
   if (!loadLuaFile(L, path.c_str(), 0)) {
     end();
     return 1;
   }
+#endif
 
   lastTick = getMS();
   if (globalTypeExists(L, LUA_TFUNCTION, "Start"))
