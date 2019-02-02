@@ -13,6 +13,15 @@ alias(
 
 load(":freebuilder.bzl", "freetype_libs")
 
+#zlib1 already included by SDL_png
+filegroup(
+    name = "extra_libs",
+    srcs = [
+        "lib/x64/libfreetype-6.dll",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "sdl2-ttf-windows",
     includes = ["include/"],

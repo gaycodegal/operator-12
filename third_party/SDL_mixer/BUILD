@@ -13,6 +13,16 @@ alias(
 
 load("//bzl:condition-include.bzl", "make_cc_options", "conditional_cc_options_add")
 
+filegroup(
+    name = "extra_libs",
+    srcs = [
+        "lib/x64/libogg-0.dll",
+        "lib/x64/libvorbis-0.dll",
+        "lib/x64/libvorbisfile-3.dll",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
 	name = "sdl2-mixer-windows",
 	includes = ["include/"],

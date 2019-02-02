@@ -13,6 +13,15 @@ alias(
 
 load("//bzl:condition-include.bzl", "make_cc_options", "conditional_cc_options_add")
 
+filegroup(
+    name = "extra_libs",
+    srcs = [
+        "lib/x64/zlib1.dll",
+        "lib/x64/libpng16-16.dll",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_library(
     name = "sdl2-image-windows",
     includes = ["include/"],

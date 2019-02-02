@@ -57,6 +57,21 @@ cc_binary(
     linkopts = LINKOPTS,
 )
 
+TOP_CONTENT = [
+    "//:operator-12",
+    "//third_party/SDL_ttf:extra_libs",
+    "//third_party/SDL_mixer:extra_libs",
+    "//third_party/SDL_image:extra_libs",
+]
+TOP_CONT_LOCS = " ".join(["$(locations %s)" % x for x in TOP_CONTENT])
+genrule(
+    name = "packaged",
+    srcs = TOP_CONTENT,
+    outs = ["packaged.zip"],
+    cmd = "zip -qj $@ %s && zip -qur $@ resources/"
+    % TOP_CONT_LOCS,
+)
+
 android_library(
     name = "op12-android-resources",
     manifest = "//third_party/app-android/src/main:AndroidManifest.xml",
