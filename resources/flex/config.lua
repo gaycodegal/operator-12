@@ -1,4 +1,4 @@
 return {
-   load="flex/test.lua",
-   doInitSDL=true
+   load="flex/test-static.lua",
+   doInitSDL=false
 }
