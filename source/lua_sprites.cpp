@@ -1012,7 +1012,6 @@ struct luaConstInt {
 };
 
 int luaopen_sprites(lua_State *L) {
-  printf("screen {%i, %i}\n", SCREEN_WIDTH, SCREEN_HEIGHT);
   static const struct luaConstInt globints[] = {
       {"SCREEN_WIDTH", SCREEN_WIDTH},
       {"SCREEN_HEIGHT", SCREEN_HEIGHT},

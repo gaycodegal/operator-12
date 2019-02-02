@@ -158,7 +158,6 @@ std::string openConfig(const char *path) {
   std::string ret = "load.lua";
   L = luaL_newstate();
   luaL_openlibs(L);
-  luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
 
   if (path == NULL) {
     if (!loadLuaFile(L, "config.lua", 1)) {

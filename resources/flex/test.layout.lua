@@ -9,6 +9,7 @@ return {
 	   color="ff00ff"},
 
 	  {class=UIView,
+	   name = "testing",
 	   size={1,"w"},
 	   color="00ff00"},
 

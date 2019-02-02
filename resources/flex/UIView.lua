@@ -25,6 +25,9 @@ end
 function UIView.new(cell, rect)
    local self = {rect=rect}
    setmetatable(self, UIView)
+   if cell.name then
+	  self.name = cell.name
+   end
    self:setBackground(cell)
    return self
 end

@@ -34,9 +34,9 @@ function MainMenu.layout()
       for j = 1, 2 * cols, 2 do
 	 childCol[j] = space
 	 childCol[j + 1] = {class=class,
+						name=key,
 			    size={1,"w"},
-			    color="ff00ff",
-			    key=key}
+			    color="ff00ff"}
 	 key = key + 1
       end
       childCol[2 * cols + 1] = space
@@ -96,8 +96,7 @@ end
 ]]
 function MainMenu.Start()
    M.cells = M.layout()
-   M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
-   --[[M.buttons = ListButton.new(
+   --[[M.buttons = FListButton.new(
       "menu",
       {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
       {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
@@ -106,12 +105,17 @@ function MainMenu.Start()
       M.named, M.scene = UIElement.getNamed(
       M.scene, getStyles({"list-button", "screen"}))
       M.buttons:init(M.named)]]
+   M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
    M.views = Flex.new(M.cells, M.rects)
-   local data = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
+   local data = {"EEE", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
+   local named = Flex.getNamed(M.views) 
    for i, v in ipairs(data) do
-      data[i] = {text=v, click=M.click}
+	  local dat = {text=v, click=M.click}
+	  if i > 6 then
+		 dat = {color="00ff0000"}
+	  end
+      named[i]:setData(dat)
    end
-   Flex.setData(M.views, data)
 end
 
 function MainMenu.click(object, pt)

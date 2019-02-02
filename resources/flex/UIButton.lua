@@ -6,6 +6,9 @@ UIButton = Class()
 function UIButton.new(cell, rect)
    local self = {rect=rect, key=cell.key, text=""}
    UIView.setBackground(self, cell)
+   if cell.name then
+	  self.name = cell.name
+   end
    setmetatable(self, UIButton)
    return self
 end
@@ -16,9 +19,11 @@ function UIButton:setRect(rect)
    self:destroy()
    if r[3] > 0 and r[4] > 0 then
       local s = UIView.makeBackground(self, rect)
-      local text, l, h = Text.textbox(self.text, 2, r[3], r[4], {255,255,255,255})
-      Surface.blit(s, text, 0, (r[4] - h) // 2)
-      Surface.destroy(text)
+	  if self.text and #self.text > 0 then
+		 local text, l, h = Text.textbox(self.text, 2, r[3], r[4], {255,255,255,255})
+		 Surface.blit(s, text, 0, (r[4] - h) // 2)
+		 Surface.destroy(text)
+	  end
       self.t = Surface.textureFrom(s)
       Surface.destroy(s)
    end
@@ -26,12 +31,9 @@ end
 
 function UIButton:setData(data)
    UIView.setBackground(self, data)
-   if data and data[self.key] then
-      data = data[self.key]
-      self.text = data.text
-      self.click = data.click -- click fn
-      self:setRect(self.rect)
-   end
+   self.text = data.text
+   self.click = data.click -- click fn
+   self:setRect(self.rect)
 end
 
 function UIButton:draw()

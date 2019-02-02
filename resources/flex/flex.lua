@@ -100,24 +100,6 @@ function Flex.new(cell, rects)
    return objects
 end
 
-function Flex.setData(objects, data)
-   for i = 1, objects.n do
-      local child = objects[i]
-      if child then
-	 child:setData(data, i)
-      end
-   end
-end
-
-function Flex.setDataList(objects, data)
-   for i = 1, objects.n do
-      local child = objects[i]
-      if child then
-	 child:setData(data[i], i)
-      end
-   end
-end
-
 function Flex.setRects(objects, rects)
    for i = 1, objects.n do
       local child = objects[i]
@@ -159,6 +141,25 @@ function Flex.objectAtPoint(pt, objects, rects, fn)
 	 return fn(child, pt)
       end
    end
+end
+
+function Flex.getNamed(objects)
+   return Flex._getNamed(objects, {})
+end
+
+function Flex._getNamed(objects, named)
+   for i = 1, objects.n do
+      local child = objects[i]
+      if child then
+		 if child.name then
+			named[child.name] = child
+		 end
+		 if child.children then
+			Flex._getNamed(child.children, named)
+		 end
+      end
+   end
+   return named
 end
 
 function Flex.draw(objects)
