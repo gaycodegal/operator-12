@@ -2,11 +2,11 @@ import json
 import os
 
 def listall(path):
-    things = sorted([x for x in os.listdir(path) if x != ".contents.lua" and not x.endswith("~")])
+    things = sorted([x for x in os.listdir(path) if x != "contents.lua" and not x.endswith("~")])
     for i, thing in enumerate(things):
         if os.path.isdir(os.path.join(path, thing)):
             things[i] = thing + "/"
-    with open(os.path.join(path, ".contents.lua"), 'w') as f:
+    with open(os.path.join(path, "contents.lua"), 'w') as f:
         f.write('return {' + ','.join([json.dumps(x) for x in things]) + '}') 
     for i, thing in enumerate(things):
         if os.path.isdir(thing):
