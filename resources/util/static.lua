@@ -66,7 +66,7 @@ end
    @return contents
 ]]
 function listdir(path)
-   return dofile(path .. ".contents.lua")
+   return dofile(path .. "contents.lua")
 end
 
 --[[--
