@@ -24,4 +24,8 @@ Custom Libraries you'll need from libsdl.org listed below. For all of the SDL li
 
 # Running
 
-While Bazel will build the operator-12.exe for you, it will not move files into the .runfiles directory. It will also not move all the .dlls needed from their third_party location to their required location. I will eventually create a build rule to create a tar/zip file containing all the relevant files required to run the game.
+Bazel on windows doesn't automatically bring together all the files you need and instead writes a MANIFEST file. Additionally, I found it hard to get all the DLLs in the right place for building. Thus there's a genrule `//:packaged` that creates a zip file with all the necessary files in it. To create this run:
+
+	bazel build //:packaged --spawn_strategy=standalone
+
+Then simply extract the zip and run the `operator-12.exe` program within.
