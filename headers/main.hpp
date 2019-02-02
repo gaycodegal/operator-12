@@ -8,6 +8,26 @@
 #include <SDL_ttf.h>
 #include <Windows.h>
 
+#elif ANDROID
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <android/log.h>
+#include <jni.h>
+#include <stdlib.h>
+#include <unistd.h>
+#define printf(...)                                                            \
+  __android_log_print(ANDROID_LOG_DEBUG, "PRINTF", __VA_ARGS__)
+#elif __APPLE__
+
+#include <SDL2/SDL.h>
+#include <SDL2_image/SDL_image.h>
+#include <SDL2_ttf/SDL_ttf.h>
+#include <SDL2_mixer/SDL_mixer.h>
+#include <unistd.h>
+
 #elif __EMSCRIPTEN__
 
 #include <SDL.h>
@@ -20,6 +40,7 @@
 
 //#include <SDL/SDL_mixer.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <unistd.h>
@@ -50,8 +71,8 @@ struct luaClassList {
 };
 
 // Screen dimension constants
-extern const int SCREEN_WIDTH;
-extern const int SCREEN_HEIGHT;
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 // global SDL2 variables
 extern SDL_Window *window;
 extern SDL_Surface *screenSurface;
