@@ -4,7 +4,7 @@ Util.isMain()
 
 UIButton = Class()
 function UIButton.new(cell, rect)
-   local self = {rect=rect, key=cell.key, text=""}
+   local self = {rect=rect}
    UIView.setBackground(self, cell)
    if cell.name then
 	  self.name = cell.name
@@ -33,7 +33,9 @@ function UIButton:setData(data)
    UIView.setBackground(self, data)
    self.text = data.text
    self.click = data.click -- click fn
-   self:setRect(self.rect)
+   if self.rect then
+	  self:setRect(self.rect)
+   end
 end
 
 function UIButton:draw()

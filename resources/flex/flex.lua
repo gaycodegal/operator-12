@@ -1,5 +1,5 @@
 require("flex/UIGroup")
-require("flex/UIListGroup")
+require("flex/UIList")
 require("flex/UIView")
 require("flex/UIButton")
 horizontal = 1
@@ -148,7 +148,8 @@ function Flex.getNamed(objects)
 end
 
 function Flex._getNamed(objects, named)
-   for i = 1, objects.n do
+   local len = objects.n or #objects
+   for i = 1, len do
       local child = objects[i]
       if child then
 		 if child.name then
