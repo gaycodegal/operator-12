@@ -213,7 +213,7 @@ int main(int argc, char **argv) {
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
 
 #ifdef ANDROID
-  if (!loadLuaFile(L, "android.lua")) {
+  if (!loadLuaFile(L, "android.lua", 0)) {
     end();
     return 1;
   }
