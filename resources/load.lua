@@ -95,19 +95,15 @@ end
    Basic menu setup
 ]]
 function MainMenu.Start()
-   M.cells = M.layout()
-   --[[M.buttons = FListButton.new(
-      "menu",
-      {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
-      {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
-      60, 10, 2)
-      M.scene = {{s="screen",c={M.buttons.container}}}
-      M.named, M.scene = UIElement.getNamed(
-      M.scene, getStyles({"list-button", "screen"}))
-      M.buttons:init(M.named)]]
+   M.cells = dofile("layout.lua")--M.layout()
    M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
    M.views = Flex.new(M.cells, M.rects)
-   local data = {"EEE", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
+   local named = Flex.getNamed(M.views)
+   ListButton.init(named.main,
+				   {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
+				   {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
+				   60, 10, 2)
+   --[[local data = {"EEE", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
    local named = Flex.getNamed(M.views) 
    for i, v in ipairs(data) do
 	  local dat = {text=v, click=M.click}
@@ -115,7 +111,7 @@ function MainMenu.Start()
 		 dat = {color="00ff0000"}
 	  end
       named[i]:setData(dat)
-   end
+	  end]]
 end
 
 function MainMenu.click(object, pt)
