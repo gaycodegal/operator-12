@@ -14,6 +14,7 @@ function UIList.new(cell, rect)
 end
 
 function UIList:setData(cells, children)
+   self:destroy()
    self.cells = cells
     -- avoid sub-calls to children by different name
    self.c = children
@@ -21,6 +22,7 @@ function UIList:setData(cells, children)
 end
 
 function UIList:setRect(rect)
+   self.rect = rect
    if self.cells and self.c then
 	  local cell = {
 		 axis=vertical,
@@ -40,7 +42,9 @@ function UIList:draw()
 end
 
 function UIList:destroy()
-   Flex.destroy(self.c)
+   if self.c then
+	  Flex.destroy(self.c)
+   end
    self.rects = nil
    self.cells = nil
 end

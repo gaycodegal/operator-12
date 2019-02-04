@@ -9,22 +9,19 @@ local B = BattleUI
    Makes the list button and text box that is gonna be displaying the slug's stats
 ]]
 function BattleUI.init()
-   B.actions = ListButton.new(
-      "actions",
-      {},
-      {},
-      30, 10, 3)
-   B.scene = {{s="screen",c={
-		  {s="money", n="money"},
-		  {s="actionsPanel", c={B.actions.container}}
-	     }}}
-   B.named, B.scene = UIElement.getNamed(
-      B.scene, getStyles({"screen", "money", "list-button", "battle-ui"}))
-   B.actions:init(B.named)
-   B.actions.child.e = {bg={0,0,0,128}}
-   B.t = TextBox.new({text="testing testing 123", layout=B.actions.child})
-   B.money = MoneyUI.new(B.named)
-   player.money:listen(B.money)
+   B.cells = dofile("battle/layout.lua")
+   local named = Flex.getNamed(B.cells.children)
+   print(table.tostring(named))
+   named.actions.size[1] = ListButton.heightOf(3, 30, 10)
+   B.rects = Flex.calculateRects(B.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   B.views = Flex.new(B.cells, B.rects)
+   B.named = Flex.getNamed(B.views)
+   ListButton.init(B.named.actions,
+				   {},
+				   {},
+				   30, 10)
+   --B.money = MoneyUI.new(B.named)
+   --player.money:listen(B.money)
 end
 
 --[[--
@@ -72,43 +69,44 @@ function BattleUI.setSlug(slug)
       table.insert(texts, slug.stats.skills[i].skill)
    end
    B.slug = slug
-   B.t:setText(B.getSlugText(slug))
-   B.actions:setButtons(fns,texts)
-   B.t:resize()
+   ListButton.init(B.named.actions,
+				   fns,
+				   texts,
+				   30, 10)
+   --B.t:setText(B.getSlugText(slug))
+   --B.actions:setButtons(fns,texts)
+   --B.t:resize()
 end
 
 --[[--
    resize shit
 ]]
 function BattleUI.resize()
-   UIElement.recalc(B.scene)
-   B.actions:resize()
-   B.t:resize()
-   B.money:resize()
+   B.rects = Flex.calculateRects(B.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   Flex.setRects(B.views, B.rects)
 end
 
 --[[--
    draw shit
 ]]
 function BattleUI.draw()
-   B.actions:draw()
-   B.t:draw()
-   B.money:draw()
+   Flex.draw(B.views)
+   --B.actions:draw()
+   --B.t:draw()
+   --B.money:draw()
 end
 
 --[[--
    destroy shit
 ]]
 function BattleUI.destroy()
-   B.actions:destroy()
-   B.t:destroy()
-   B.money:destroy()
+   Flex.destroy(B.views)
    B.slug = nil
    B.scene = nil
    B.named = nil
-   B.actions = nil
-   B.t = nil
-   B.money = nil
+   B.views = nil
+   B.cells = nil
+   B.rects = nil
 end
 
 --[[--
