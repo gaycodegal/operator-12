@@ -28,7 +28,7 @@ function Start()
 end
 
 --[[
-   draw shit
+   draw things
 ]]
 function Update()
    --Update = static.quit
@@ -38,7 +38,7 @@ function Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function End()
    for i, t in ipairs(ts) do

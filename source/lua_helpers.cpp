@@ -37,7 +37,7 @@ int l_meta_indexer(lua_State *L) {
 void callLuaVoid(lua_State *L, const char *name) {
   lua_getglobal(L, name); /* function to be called */
   if (lua_pcall(L, 0, 0, 0) != 0)
-    printf("we fucked up calling:%s error:%s\n", name, lua_tostring(L, -1));
+    printf("we messed up calling:%s error:%s\n", name, lua_tostring(L, -1));
 }
 
 void callLuaVoidArgv(lua_State *L, const char *name, int argc, char **argv) {
@@ -49,12 +49,12 @@ void callLuaVoidArgv(lua_State *L, const char *name, int argc, char **argv) {
     lua_rawseti(L, -2, i + 1);
   }
   if (lua_pcall(L, 2, 0, 0) != 0)
-    printf("we fucked up calling:%s error:%s\n", name, lua_tostring(L, -1));
+    printf("we messed up calling:%s error:%s\n", name, lua_tostring(L, -1));
 }
 
 void callErr(lua_State *L, const char *name, int nargs) {
   if (lua_pcall(L, nargs, 0, 0) != 0)
-    printf("we fucked up calling:%s error:%s\n", name, lua_tostring(L, -1));
+    printf("we messed up calling:%s error:%s\n", name, lua_tostring(L, -1));
 }
 
 int globalTypeExists(lua_State *L, int type, const char *name) {

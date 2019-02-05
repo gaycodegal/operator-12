@@ -32,7 +32,7 @@ function Battle.Start(argc, argv)
 end
 
 --[[
-   resize shit
+   resize things
 
    @param w 
    @param h 
@@ -45,7 +45,7 @@ function Battle.Resize(w, h)
 end
 
 --[[--
-draw shit, update map
+draw things, update map
 ]]
 function Battle.Update()
    --Update = static.quit
@@ -58,7 +58,7 @@ function Battle.Update()
 end
 
 --[[
-destroy shit
+destroy things
 ]]
 function Battle.End()
    Tileset.destroyTilesets(overlay)

@@ -79,7 +79,7 @@ function BattleUI.setButtons(fns, texts)
 end
 
 --[[--
-   resize shit
+   resize things
 ]]
 function BattleUI.resize()
    B.rects = Flex.calculateRects(B.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
@@ -87,14 +87,14 @@ function BattleUI.resize()
 end
 
 --[[--
-   draw shit
+   draw things
 ]]
 function BattleUI.draw()
    Flex.draw(B.views)
 end
 
 --[[--
-   destroy shit
+   destroy things
 ]]
 function BattleUI.destroy()
    Flex.destroy(B.views)

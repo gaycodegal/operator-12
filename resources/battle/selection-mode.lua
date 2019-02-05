@@ -86,7 +86,7 @@ function SlugSelect.Finish()
 end
 
 --[[--
-   draw shit, update map
+   draw things, update map
 ]]
 function SlugSelect.Update()
    --Update = static.quit

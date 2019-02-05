@@ -100,7 +100,7 @@ function Viewer.updateForPage(p)
 end
 
 --[[
-   draw shit
+   draw things
 ]]
 function Viewer.Update()
    --Update = static.quit
@@ -108,7 +108,7 @@ function Viewer.Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function Viewer.End()
    V.free()

@@ -157,7 +157,7 @@ function MapSelect.Update(t, ticks)
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function MapSelect.End()
    M.destroyButtons()
