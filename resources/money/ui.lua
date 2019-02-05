@@ -12,5 +12,3 @@ end
 function MoneyUI:set(x)
    self:setData({text=tostring(x) .. "$"})
 end
-
-
