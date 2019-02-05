@@ -4,6 +4,9 @@ Util.isMain()
 
 UIView = Class()
 
+--[[
+   basic view for flex
+]]
 function UIView:makeBackground(rect)
    if self.color then
       local r = rect

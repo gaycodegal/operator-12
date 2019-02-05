@@ -2,6 +2,11 @@ require("util")
 Util.isMain()
 
 UITextBox = Class()
+--[[
+   A textbox that works with flex.
+
+   complies with flex constructor.
+]]
 function UITextBox.new(cell, rect)
    local self = {}
    if cell.name then
@@ -21,6 +26,14 @@ function UITextBox.new(cell, rect)
    return self
 end
 
+--[[
+   set all textbox properties
+
+   @param data
+   @param data.fg foreground (text) color
+   @param data.bg background color
+   @param data.j justification
+]]
 function UITextBox:setProps(data)
    if not data then
 	  data = {}
@@ -59,9 +72,9 @@ function UITextBox:setStart(start)
 end
 
 --[[
-desc.
-
-@return
+   go to next unseen bit of text
+   
+   @return bool whether has shown all text already
 ]]
 function UITextBox:next()
    local text = self.text
@@ -73,6 +86,9 @@ function UITextBox:next()
    return self.start > ltext
 end
 
+--[[
+   set the boy's text
+]]
 function UITextBox:setRect(rect)
    self.rect = rect
    local r = self.rect
@@ -112,16 +128,25 @@ function UITextBox:setRect(rect)
    end
 end
 
+--[[
+   set the boy's data. don't use tbh
+]]
 function UITextBox:setData(data)
    self:setText(data.text, data.start)
 end
 
+--[[
+   draw the boy
+]]
 function UITextBox:draw()
    if self.spr then
 	  self.spr:draw(0,0)
    end
 end
 
+--[[
+   destroy the boy
+]]
 function UITextBox:destroy()
    if self.spr then
 	  self.spr:destroy()

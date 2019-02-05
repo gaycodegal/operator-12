@@ -2,6 +2,9 @@ require("util")
 Util.isMain()
 
 UIGroup = Class()
+--[[
+   arbitrary grouping ui class
+]]
 function UIGroup.new(cell, rect)
    local self = {}
    setmetatable(self, UIGroup)
