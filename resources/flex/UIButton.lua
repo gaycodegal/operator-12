@@ -2,6 +2,10 @@ require("util")
 Util.isMain()
 
 UIButton = Class()
+
+--[[
+   Create a button, conforms to flex constructor
+]]
 function UIButton.new(cell, rect)
    local self = {rect=rect,text=cell.text}
    UIView.setBackground(self, cell)
@@ -16,6 +20,9 @@ function UIButton.new(cell, rect)
    return self
 end
 
+--[[
+   set the button's rect
+]]
 function UIButton:setRect(rect)
    self.rect = rect
    local r = self.rect
@@ -32,6 +39,9 @@ function UIButton:setRect(rect)
    end
 end
 
+--[[
+   set the button's data
+]]
 function UIButton:setData(data)
    UIView.setBackground(self, data)
    self.text = data.text
@@ -41,12 +51,18 @@ function UIButton:setData(data)
    end
 end
 
+--[[
+   click the button, respecting the desired context
+]]
 function UIButton:click(pt)
    if self.fn then
 	  return self.fn(self.context, pt, self)
    end
 end
 
+--[[
+   draw the button
+]]
 function UIButton:draw()
    if self.t then
       local r = self.rect
@@ -54,6 +70,9 @@ function UIButton:draw()
    end
 end
 
+--[[
+   destroy the boy
+]]
 function UIButton:destroy()
    if self.t then
       Texture.destroy(self.t)
