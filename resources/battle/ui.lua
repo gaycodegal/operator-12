@@ -2,7 +2,7 @@ require("util")
 require("ui/ListButton")
 require("ui/TextBox")
 require("money/ui")
-BattleUI = {}
+BattleUI = {bHeight=30, bSpace=10}
 local B = BattleUI
 
 --[[--
@@ -11,7 +11,7 @@ local B = BattleUI
 function BattleUI.init()
    B.cells = dofile("battle/layout.lua")
    local named = Flex.getNamed(B.cells.children)
-   named.actions.size[1] = ListButton.heightOf(3, 30, 10)
+   named.actions.size[1] = ListButton.heightOf(3, B.bHeight, B.bSpace) + B.bSpace + B.bHeight // 2
    B.rects = Flex.calculateRects(B.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
    B.views = Flex.new(B.cells, B.rects)
    B.named = Flex.getNamed(B.views)
@@ -65,10 +65,7 @@ function BattleUI.setSlug(slug)
       table.insert(texts, slug.stats.skills[i].skill)
    end
    B.slug = slug
-   ListButton.init(B.named.actions,
-				   fns,
-				   texts,
-				   30, 10)
+   B.setButtons(fns, texts)
    B.named.info:setData({text=B.getSlugText(slug)})
    --B.actions:setButtons(fns,texts)
    --B.t:resize()
@@ -78,7 +75,7 @@ function BattleUI.setButtons(fns, texts)
    ListButton.init(B.named.actions,
 				   fns,
 				   texts,
-				   30, 10)
+				   B.bHeight, B.bSpace)
 end
 
 --[[--
