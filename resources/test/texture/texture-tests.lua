@@ -1,4 +1,3 @@
-print("hero thereo")
 require("util")
 local isMain = Util.isMain()
 
@@ -37,7 +36,7 @@ function Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function End()
    Texture.destroy(t)

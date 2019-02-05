@@ -1,11 +1,12 @@
 #include "main.hpp"
-#define SDL_ACTIVE
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
 SDL_Window *window;
 SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
 TTF_Font *gFont = NULL;
+bool doInitSDL = false;
+
 int start() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -53,6 +54,8 @@ int start() {
 }
 
 int end() {
+  if (!doInitSDL)
+    return 0;
   if (window != NULL)
     SDL_DestroyWindow(window);
   if (gFont != NULL)
@@ -151,6 +154,32 @@ void one_iter() {
     SDL_WaitEventTimeout(NULL, framedelay);
 }
 
+std::string openConfig(const char *path) {
+  std::string ret = "load.lua";
+  L = luaL_newstate();
+  luaL_openlibs(L);
+
+  if (path == NULL) {
+    if (!loadLuaFile(L, "config.lua", 1)) {
+      return NULL;
+    }
+  } else {
+    if (!loadLuaFile(L, (std::string(path) + "/config.lua").c_str(), 1)) {
+      return NULL;
+    }
+  }
+
+  lua_getfield(L, -1, "load");
+  ret = std::string(lua_tostring(L, -1));
+  lua_pop(L, 1);
+  lua_getfield(L, -1, "doInitSDL");
+  doInitSDL = lua_toboolean(L, -1);
+  lua_pop(L, 1);
+
+  lua_close(L);
+  return ret;
+}
+
 #ifndef ANDROID
 #undef main
 #endif
@@ -162,37 +191,36 @@ int main(int argc, char **argv) {
 #elif ANDROID
 // already in resources
 #else
-  chdir("resources");
+  int unused = chdir("resources");
 #endif
 
-#ifdef SDL_ACTIVE
-  if (start() != 0) {
-    end();
-    return 1;
+  std::string path;
+  if (argc < 2) {
+    path = openConfig(NULL);
+  } else {
+    path = openConfig(argv[1]);
   }
-#endif
+
+  if (doInitSDL) {
+    if (start() != 0) {
+      end();
+      return 1;
+    }
+  }
+
   L = luaL_newstate();
   luaL_openlibs(L);
   luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
-#ifdef ANDROID
 
-  if (!loadLuaFile(L, "android.lua")) {
+#ifdef ANDROID
+  if (!loadLuaFile(L, "android.lua", 0)) {
     end();
     return 1;
   }
-
 #else
-
-  if (argc < 2) {
-    if (!loadLuaFile(L, "load.lua")) {
-      end();
-      return 1;
-    }
-  } else {
-    if (!loadLuaFile(L, (std::string(argv[1]) + ".lua").c_str())) {
-      end();
-      return 1;
-    }
+  if (!loadLuaFile(L, path.c_str(), 0)) {
+    end();
+    return 1;
   }
 #endif
 

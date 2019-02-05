@@ -38,6 +38,7 @@
 
 #else
 
+//#include <SDL/SDL_mixer.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_image.h>
@@ -52,12 +53,15 @@ extern "C" {
 #include <lua.h>
 #include <lualib.h>
 };
-#include "lua_helpers.hpp"
-#include "lua_sprites.hpp"
-#include "sprite.hpp"
 #include <chrono>
 #include <stdio.h>
 #include <string>
+
+#include "drawable.hpp"
+#include "lua_helpers.hpp"
+#include "lua_sprites.hpp"
+#include "map.hpp"
+#include "sprite.hpp"
 /**
    used for creating lists of classes mapped to names
  */

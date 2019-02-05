@@ -22,7 +22,7 @@ function Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function End()
    music:destroy()
