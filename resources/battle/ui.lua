@@ -11,17 +11,13 @@ local B = BattleUI
 function BattleUI.init()
    B.cells = dofile("battle/layout.lua")
    local named = Flex.getNamed(B.cells.children)
-   print(table.tostring(named))
    named.actions.size[1] = ListButton.heightOf(3, 30, 10)
    B.rects = Flex.calculateRects(B.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
    B.views = Flex.new(B.cells, B.rects)
    B.named = Flex.getNamed(B.views)
-   ListButton.init(B.named.actions,
-				   {},
-				   {},
-				   30, 10)
-   --B.money = MoneyUI.new(B.named)
-   --player.money:listen(B.money)
+   BattleUI.setButtons({}, {})
+   local money = MoneyUI.new(B.named)
+   player.money:listen(B.money)
 end
 
 --[[--
@@ -73,9 +69,16 @@ function BattleUI.setSlug(slug)
 				   fns,
 				   texts,
 				   30, 10)
-   --B.t:setText(B.getSlugText(slug))
+   B.named.info:setData({text=B.getSlugText(slug)})
    --B.actions:setButtons(fns,texts)
    --B.t:resize()
+end
+
+function BattleUI.setButtons(fns, texts)
+   ListButton.init(B.named.actions,
+				   fns,
+				   texts,
+				   30, 10)
 end
 
 --[[--
@@ -91,9 +94,6 @@ end
 ]]
 function BattleUI.draw()
    Flex.draw(B.views)
-   --B.actions:draw()
-   --B.t:draw()
-   --B.money:draw()
 end
 
 --[[--
@@ -118,9 +118,5 @@ end
    @return true if click should be consumed. false otherwise
 ]]
 function BattleUI.MouseDown(x, y)
-   local b = B.actions:which(x,y)
-   if b then
-      return b:click()
-   end
-   return false
+   return Flex.click({x, y}, B.views, B.rects)
 end

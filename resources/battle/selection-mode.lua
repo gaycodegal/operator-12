@@ -34,8 +34,8 @@ function SlugSelect.setUI()
    end
    table.insert(texts,"done")
    table.insert(fns, S.Finish)
-   --BattleUI.t:setText("Click a slug type, then click a spawn-spot to set the slug!")
-   --BattleUI.actions:setButtons(fns,texts)
+   BattleUI.named.info:setData({text="Click a slug type, then click a spawn-spot to set the slug!"})
+   BattleUI.setButtons(fns,texts)
    --BattleUI.t:resize()
 end
 
