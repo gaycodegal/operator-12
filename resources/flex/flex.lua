@@ -31,11 +31,11 @@ function Flex.calculateRects(cell, rect)
    for i, child in ipairs(children) do
       local amount = child.size
       if amount[2] == "dp" then -- density dependant pix
-	 flexible = flexible - amount[1]
+		 flexible = flexible - amount[1]
       elseif amount[2] == "sp" then -- scalable pix
-	 flexible = flexible - amount[1]
+		 flexible = flexible - amount[1]
       elseif amount[2] == "w" then --weight
-	 weight = weight + amount[1]
+		 weight = weight + amount[1]
       end
    end
    local rects = {}
@@ -44,19 +44,19 @@ function Flex.calculateRects(cell, rect)
       local amount = child.size
       local mass = 0
       if amount[2] == "dp" then -- density dependant pix
-	 mass = amount[1]
+		 mass = amount[1]
       elseif amount[2] == "sp" then -- scalable pix
-	 mass = amount[1]
+		 mass = amount[1]
       elseif amount[2] == "w" and flexible >= 0 then --weight
-	 mass = math.ceil(amount[1] / weight * flexible)
-	 if mass > flexible then
-	    mass = flexible
-	 end
-	 flexible = flexible - mass
-	 weight = weight - amount[1]
+		 mass = math.ceil(amount[1] / weight * flexible)
+		 if mass > flexible then
+			mass = flexible
+		 end
+		 flexible = flexible - mass
+		 weight = weight - amount[1]
       end
       if mass > size then
-	 mass = size
+		 mass = size
       end
       size = size - mass
       rects[i] = Flex.makebox(direction, odirection, x, ox, mass, osize)
@@ -66,7 +66,7 @@ function Flex.calculateRects(cell, rect)
    --generate children rects
    for i, child in ipairs(children) do
       if child.children then
-	 rects[i].children = Flex.calculateRects(child, rects[i])
+		 rects[i].children = Flex.calculateRects(child, rects[i])
       end
    end
 
@@ -88,14 +88,14 @@ function Flex.new(cell, rects)
    for i, rect in ipairs(rects) do
       local child = cell.children[i]
       if (not child.class) and child.children then
-	 child.class = UIGroup
+		 child.class = UIGroup
       end
       if child.class then
-	 local class = child.class
-	 objects[i] = class.new(child, rect, i)
+		 local class = child.class
+		 objects[i] = class.new(child, rect, i)
       end
       if child.children then
-	 objects[i].children = Flex.new(child, rect.children)
+		 objects[i].children = Flex.new(child, rect.children)
       end
    end
    return objects
@@ -106,10 +106,10 @@ function Flex.setRects(objects, rects)
       local child = objects[i]
       local rect = rects[i]
       if child then
-	 child:setRect(rect)
-	 if child.children then
-	    Flex.setRects(child.children, rect.children)
-	 end
+		 child:setRect(rect)
+		 if child.children then
+			Flex.setRects(child.children, rect.children)
+		 end
       end
    end
 end
@@ -133,13 +133,13 @@ function Flex.objectAtPoint(pt, objects, rects, fn)
       local child = objects[i]
       local rect = rects[i]
       if child and Flex.isInBound(pt, rect) then
-	 if child.children then
-	    local result = Flex.objectAtPoint(pt, child.children, rect.children, fn)
-	    if result then
-	       return result
-	    end
-	 end
-	 return fn(child, pt)
+		 if child.children then
+			local result = Flex.objectAtPoint(pt, child.children, rect.children, fn)
+			if result then
+			   return result
+			end
+		 end
+		 return fn(child, pt)
       end
    end
 end
@@ -168,10 +168,10 @@ function Flex.draw(objects)
    for i = 1, objects.n do
       local child = objects[i]
       if child then
-	 objects[i]:draw()
-	 if child.children then
-	    Flex.draw(child.children)
-	 end
+		 objects[i]:draw()
+		 if child.children then
+			Flex.draw(child.children)
+		 end
       end
    end
 end
@@ -180,10 +180,10 @@ function Flex.destroy(objects)
    for i = 1, objects.n do
       local child = objects[i]
       if child then
-	 objects[i]:destroy()
-	 if child.children then
-	    Flex.destroy(child.children)
-	 end
+		 objects[i]:destroy()
+		 if child.children then
+			Flex.destroy(child.children)
+		 end
       end
    end
 end

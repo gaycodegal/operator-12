@@ -71,11 +71,11 @@ function BattleUI.setSlug(slug)
    --B.t:resize()
 end
 
-function BattleUI.setButtons(fns, texts)
+function BattleUI.setButtons(fns, texts, context)
    ListButton.init(B.named.actions,
 				   fns,
 				   texts,
-				   B.bHeight, B.bSpace)
+				   B.bHeight, B.bSpace, context)
 end
 
 --[[--
