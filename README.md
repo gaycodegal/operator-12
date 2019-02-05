@@ -219,7 +219,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
     - controls battles
 - Viewer
     - `bazel run //:operator-12 viewer <path>/ <sep>`
-    - view shit, mostly just the copyright infos for stuff
+    - view stuff, mostly just the copyright infos for stuff
 - MainMenu
     - `bazel run //:operator-12`
     - mostly just for easy access to stuff
