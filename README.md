@@ -45,10 +45,6 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## Features
 
-- Layout Generator
-    - Generates resizing functions from layout definitions.
-    - usage `bazel run //:operator-12 ui/style-writer <name>`
-        - see name:`screen` for a simple example
 - UIElement
     - resizable elements generated from a layout style and a list of elements/data to be styled
 - Button
@@ -210,27 +206,24 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 
 ## Tests
 
-- Text
-    - `bazel run //:operator-12 text/test`
-    - Use arrow keys to navigate the rendered README!
 - Surface
-    - `bazel run //:operator-12 surface-tests`
+    - `bazel run //:operator-12 test/surface`
 - Texture
-    - `bazel run //:operator-12 texture-tests`
+    - `bazel run //:operator-12 test/texture`
 
 ## View Controllers
 
 - Battle
-    - `bazel run //:operator-12 battle/load <map-name>.lua`
+    - `bazel run //:operator-12 battle <map-name>.lua`
     - controls battles
 - Viewer
-    - `bazel run //:operator-12 viewer/load <path> <sep>`
+    - `bazel run //:operator-12 viewer <path>/ <sep>`
     - view shit, mostly just the copyright infos for stuff
 - MainMenu
     - `bazel run //:operator-12`
     - mostly just for easy access to stuff
 - MapSelect
-    - `bazel run //:operator-12 level-select/load`
+    - `bazel run //:operator-12 level-select`
     - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
     - As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
   
@@ -241,6 +234,6 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 I'm going to work in a Powered-by-Lua image eventually into the project. 
 Also the MOZART NBP font (by Nate Halley) is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
 
-Thanks/Licenses page in testing at `bazel run //:operator-12 viewer/load` this simply displays all the licenses used by/planned to be used by the project when compiled & linked. These are located [here](./resources/licenses/).
+Thanks/Licenses page in testing at `bazel run //:operator-12 viewer` this simply displays all the licenses used by/planned to be used by the project when compiled & linked. These are located [here](./resources/licenses/).
 
 I have obtained permission to do the work necessary to finish this project from my company via [iarc](https://opensource.google.com/docs/iarc/), which is a wonderful thing.
