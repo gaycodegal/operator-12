@@ -121,7 +121,7 @@ function MainMenu.click(object, pt)
 end
 
 --[[
-   draw shit
+   draw things
 ]]
 function MainMenu.Update()
    --Update=static.quit
@@ -130,7 +130,7 @@ function MainMenu.Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function MainMenu.End()
    Flex.destroy(M.views)

@@ -37,7 +37,7 @@ function Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function End()
    Texture.destroy(t)
