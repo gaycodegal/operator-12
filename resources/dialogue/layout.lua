@@ -1,10 +1,10 @@
 return {
    axis=vertical,
    children={
-	  {class=UIButton,
-		   name="text",
+	  {class=UITextBox,
+		   name="textbox",
 		   text="testing",
-		   color="ff0000",
+		   bg="ff0000",
 		   size={1,"w"}},
 	  {class=UIList,
 	   name = "actions",

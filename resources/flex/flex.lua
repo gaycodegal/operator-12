@@ -1,5 +1,6 @@
 require("flex/UIGroup")
 require("flex/UIList")
+require("flex/UITextBox")
 require("flex/UIView")
 require("flex/UIButton")
 horizontal = 1

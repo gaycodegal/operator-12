@@ -1,11 +1,11 @@
 require("util")
-require("tiled/tilesets")
 Util.isMain()
 
 UIButton = Class()
 function UIButton.new(cell, rect)
    local self = {rect=rect,text=cell.text}
    UIView.setBackground(self, cell)
+   self.context = cell.context
    if cell.name then
 	  self.name = cell.name
    end
@@ -35,10 +35,17 @@ end
 function UIButton:setData(data)
    UIView.setBackground(self, data)
    self.text = data.text
-   self.click = data.click -- click fn
+   self.fn = data.click -- click fn
    if self.rect then
 	  self:setRect(self.rect)
    end
+end
+
+function UIButton:click(pt)
+   if self.fn then
+	  return self.fn(self.context, pt, self)
+   end
+   return true
 end
 
 function UIButton:draw()
