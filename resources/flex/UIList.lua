@@ -34,7 +34,7 @@ function UIList:setRect(rect)
 end
 
 function UIList:click(pt)
-   Flex.click(pt, self.c, self.rects)
+   return Flex.click(pt, self.c, self.rects)
 end
 
 function UIList:draw()
