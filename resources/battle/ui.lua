@@ -17,7 +17,7 @@ function BattleUI.init()
    B.named = Flex.getNamed(B.views)
    BattleUI.setButtons({}, {})
    local money = MoneyUI.new(B.named)
-   player.money:listen(B.money)
+   player.money:listen(money)
 end
 
 --[[--
