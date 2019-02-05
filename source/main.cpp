@@ -207,6 +207,7 @@ int main(int argc, char **argv) {
       return 1;
     }
   }
+#endif
 
   L = luaL_newstate();
   luaL_openlibs(L);

@@ -30,8 +30,7 @@ Specific Library Versions are indicated due to the necessity that BUILD files co
 
 # Build
 
-    bazel build //third_party/sdl2/app-android/src/main:app --fat_apk_cpu=x86 --spawn_strategy=standalone
-	
+    bazel build //third_party/app-android/src/main:app --fat_apk_cpu=x86 --spawn_strategy=standalone
 
 CPU target may changed based on what device you wish to target. You can find out the cpu of your test device using.
 
@@ -44,7 +43,9 @@ CPU target may changed based on what device you wish to target. You can find out
 
 # Running
 
-    bazel mobile-install //third_party/sdl2/app-android/src/main:app --fat_apk_cpu=x86 --spawn_strategy=standalone --start_app
+Again do remember to make sure the CPU target is set properly as listed above; it will run with the wrong cpu build arcitecture, it will just give you a cryptic error instead of running the game.
+
+    bazel mobile-install //third_party/app-android/src/main:app --fat_apk_cpu=x86 --spawn_strategy=standalone --start_app
 
 
 # Changes
