@@ -1,6 +1,6 @@
 ListButton = {}
 
-function ListButton.init(elem, fns, texts, height, space)
+function ListButton.init(elem, fns, texts, height, space, context)
    space = space or 0
    height = height or 30
    local nb = #fns
@@ -12,7 +12,7 @@ function ListButton.init(elem, fns, texts, height, space)
    local bi = 1
    for i = 1, nb do
 	  table.insert(cells, btn)
-	  local b = UIButton.new({})
+	  local b = UIButton.new({context=context})
 	  b:setData({
 			color="0000ff",
 			text=texts[i],
