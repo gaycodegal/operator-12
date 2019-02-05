@@ -4,6 +4,8 @@ require("ui/UIElement")
 require("ui/ListButton")
 require("ui/TextBox")
 Dialogue = Class()
+Dialogue.bHeight = 60
+Dialogue.bSpace = 10
 local D = Dialogue
 
 --[[--
@@ -17,20 +19,24 @@ local D = Dialogue
 ]]
 function Dialogue.new(dialogue, point)
    local self = New(D)
+   self.cells = dofile("dialogue/layout.lua")
+   local named = Flex.getNamed(self.cells.children)
+   named.actions.size[1] = ListButton.heightOf(3, self.bHeight, self.bSpace) + self.bSpace + self.bHeight // 2
+   self.rects = Flex.calculateRects(self.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
+   self.views = Flex.new(self.cells, self.rects)
+   self.named = Flex.getNamed(self.views)
+   self:setButtons({}, {})
+
    self.dialogue = dialogue
    self.point = point
-   self.buttons = ListButton.new("dialogue",{self.next},{"Next"},60,10,3)
-   
-   local style = getStyles({"list-button", "screen"})
-   local named, scene = UIElement.getNamed(
-	  {{s="screen",c={self.buttons.container}}}, style)
-   self.buttons:init(named)
-   self.scene = scene
-   self.buttons.child.e = {}
-   self.textbox = TextBox.new({
-		 text=self:fetchText(),
-		 layout=self.buttons.child})
    return self
+end
+
+function Dialogue:setButtons(fns, texts)
+   ListButton.init(self.named.actions,
+				   fns,
+				   texts,
+				   self.bHeight, self.bSpace)
 end
 
 --[[--
@@ -57,13 +63,10 @@ end
 ]]
 function Dialogue:next()
    table.print(self)
-   print("a")
    if self.textbox:next() then
-	  print("B")
 	  local buttons = self:fetch().buttons
 	  if buttons then
-		 print("C")
-		 self.buttons:setButtons(buttons.fns, buttons.texts)
+		 self:setButtons(buttons.fns, buttons.texts)
 	  end
    end
 end
@@ -79,7 +82,7 @@ function Dialogue:go(dialogue, point)
    self.point = point
    print(self:fetchText())
    self.textbox:setText(self:fetchText())
-   self.buttons:setButtons({self.next},{"Next"})
+   self:setButtons({self.next},{"Next"})
 end
 
 --[[--
