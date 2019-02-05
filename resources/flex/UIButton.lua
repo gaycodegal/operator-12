@@ -45,7 +45,6 @@ function UIButton:click(pt)
    if self.fn then
 	  return self.fn(self.context, pt, self)
    end
-   return true
 end
 
 function UIButton:draw()
