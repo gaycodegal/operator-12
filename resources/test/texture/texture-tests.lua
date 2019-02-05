@@ -1,3 +1,4 @@
+print("hero thereo")
 require("util")
 local isMain = Util.isMain()
 
