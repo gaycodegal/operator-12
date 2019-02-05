@@ -45,15 +45,10 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 ## Features
 
-- UIElement
-    - resizable elements generated from a layout style and a list of elements/data to be styled
-- Button
-    - can click them and they do *things*
+- Flexible display (weight based + pixel based)
 - Movement Overlay
 - Text
     - Can Render text in boxes
-- TextBox
-    - For when Text just isn't enough
 - Escape key closes game.
 - Map
     - Can load map and slug data from Lua file exported by [Tiled](https://www.mapeditor.org/)
