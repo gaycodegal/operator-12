@@ -1,0 +1,31 @@
+"map_"
+"new"
+["tiled_map"]
+["custom"]
+["table"]
+1
+"destroy"
+["self"]
+["*(TiledMap **)"]
+["userdata"]
+0
+"move"
+["self", "x", "y"]
+["*(TiledMap **)", "", ""]
+["userdata", "integer", "integer"]
+0
+"draw"
+["self"]
+["*(TiledMap **)"]
+["userdata"]
+0
+"getTile"
+["self", "x", "y"]
+["*(TiledMap **)", "", ""]
+["userdata", "integer", "integer"]
+1
+"positionValid"
+["self", "x", "y"]
+["*(TiledMap **)", "", ""]
+["userdata", "integer", "integer"]
+1

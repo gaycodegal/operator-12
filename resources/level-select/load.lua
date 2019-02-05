@@ -30,6 +30,41 @@ function MapSelect.destroyButtons()
    M.buttons = {}
 end
 
+function MapSelect.layout()
+   local class = UIView
+   local rows, cols = 4, 4
+
+   local space = {size={10, "dp"}}
+   local childRow = {}
+   local key = 1
+   for i = 1, 2 * rows, 2 do
+      local childCol = {}
+      for j = 1, 2 * cols, 2 do
+	 childCol[j] = space
+	 childCol[j + 1] = {class=class,
+			    size={1,"w"},
+			    color="ff00ff",
+			    key=key}
+	 key = key + 1
+      end
+      childCol[2 * cols + 1] = space
+      childRow[i] = space
+      childRow[i + 1] = {axis=vertical,
+			 size={1,"w"},
+			 children=childCol}
+   end
+   childRow[2 * rows + 1] = space
+   
+   return {
+      axis=vertical,
+      children={
+	 {axis=horizontal,
+	  size={1,"w"},
+	  children=childRow}
+      }
+   }
+end
+
 --[[--
    page select which maps to display
 
@@ -122,7 +157,7 @@ function MapSelect.Update(t, ticks)
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function MapSelect.End()
    M.destroyButtons()

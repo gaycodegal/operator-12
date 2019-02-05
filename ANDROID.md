@@ -31,7 +31,6 @@ Specific Library Versions are indicated due to the necessity that BUILD files co
 # Build
 
     bazel build //third_party/app-android/src/main:app --fat_apk_cpu=x86 --spawn_strategy=standalone
-	
 
 CPU target may changed based on what device you wish to target. You can find out the cpu of your test device using.
 

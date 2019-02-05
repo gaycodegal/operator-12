@@ -4,16 +4,6 @@
 SDL_Texture *loadTexture(const char *path, int &w, int &h);
 
 /**
-   anything that can draw itself to the current sdl2 context
- */
-class Drawable {
-public:
-  Drawable() {}
-  virtual ~Drawable() {}
-  virtual void draw(int x, int y) = 0;
-};
-
-/**
    The a sprite that contains all info necessary to draw itself
  */
 class Sprite : public Drawable {

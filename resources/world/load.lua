@@ -20,7 +20,7 @@ function World.Start(argc, argv)
 end
 
 --[[
-   resize shit
+   resize things
 
    @param w 
    @param h 
@@ -32,7 +32,7 @@ function World.Resize(w, h)
 end
 
 --[[--
-   draw shit, update map
+   draw things, update map
 ]]
 function World.Update()
    --Update = static.quit
@@ -41,7 +41,7 @@ function World.Update()
 end
 
 --[[
-   destroy shit
+   destroy things
 ]]
 function World.End()
    W.sector:destroy()

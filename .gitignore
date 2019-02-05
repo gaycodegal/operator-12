@@ -9,5 +9,4 @@ third_party/
 !*BUILD
 out/
 docs/
-test/
 .#*
