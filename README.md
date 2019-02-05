@@ -225,7 +225,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 - MapSelect
     - `bazel run //:operator-12 level-select`
     - map loading menu, based on maps in the [resources/maps](./resources/maps) folder
-    - As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `.contents.lua` file in whatever directory you've added files to.
+    - As there isn't a cross-platform listdir operation in SDL2 or Lua, I've opted to handle this with a python script. Running `python3 listdir.py` from within the resources folder will refresh the list. If you don't like python, just edit the `contents.lua` file in whatever directory you've added files to.
   
   
 ## Legal
