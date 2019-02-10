@@ -5,7 +5,11 @@ require("flex/UIView")
 require("flex/UIButton")
 horizontal = 1
 vertical = 2
-Flex = {}
+Flex = {
+   rDrag = 5,
+   vertical = vertical,
+   horizontal = horizontal,
+}
 
 --[[
    calculate the rects that views will take up given the
@@ -157,6 +161,24 @@ function Flex.isInBound(pt, rect)
 end
 
 --[[
+   Function that makes objectAtPoint work to find draggable objects
+   @return returns nil if not a draggable object, object otherwise
+]]
+function Flex.doGetDraggable(object, pt)
+   if object.draggable then
+      return object
+   end
+end
+
+--[[
+   If there is a draggable object at point fetch it
+   @return returns nil if no a draggable object at point, view otherwise
+]]
+function Flex.getDraggable(pt, views, rects)
+   return Flex.objectAtPoint(pt, views, rects, Flex.doGetDraggable)
+end
+
+--[[
    Function that makes objectAtPoint work as a clicking function
    @return non nil/false if click was consumed, nil/false otherwise
 ]]
@@ -229,7 +251,7 @@ function Flex.draw(views)
    for i = 1, views.n do
       local child = views[i]
       if child then
-		 views[i]:draw()
+		 views[i]:draw(0, 0)
 		 if child.children then
 			Flex.draw(child.children)
 		 end
@@ -250,4 +272,31 @@ function Flex.destroy(views)
 		 end
       end
    end
+end
+
+function Flex.mouseDown(M, x, y)
+   M.draggable = Flex.getDraggable({x, y}, M.views, M.rects)
+   M.last = {x, y}
+   M.dragging = false
+end
+
+function Flex.mouseMove(M, x, y)
+   local last = M.last
+   if M.draggable then
+	  local dx = x - last[1]
+	  local dy = y - last[2]
+	  if M.dragging or math.abs(dx) > Flex.rDrag or math.abs(dy) > Flex.rDrag then
+		 M.draggable:moveBy(dx, dy)
+		 M.last = {x, y}
+		 M.dragging = true
+	  end
+   end
+end
+
+function Flex.mouseUp(M, x, y)
+   if not M.dragging then
+	  Flex.click({x, y}, M.views, M.rects)
+   end
+   M.draggable = nil
+   M.dragging = false
 end

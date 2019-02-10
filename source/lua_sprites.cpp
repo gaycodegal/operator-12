@@ -415,6 +415,54 @@ static int l_static_framedelay(lua_State *L) {
   return 0;
 }
 
+static int l_static_setRenderClip(lua_State *L) {
+  int x;
+  int y;
+  int w;
+  int h;
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 4);
+	return 0;
+  }
+  h = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 3);
+	return 0;
+  }
+  w = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 2);
+	return 0;
+  }
+  y = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+  if (!lua_isnumber(L, -1)) {
+	lua_pop(L, 1);
+	return 0;
+  }
+  x = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+  SDL_Rect rect;
+  rect.x = x;
+  rect.y = y;
+  rect.w = w;
+  rect.h = h;
+  SDL_RenderSetClipRect(globalRenderer, &rect);
+  return 0;
+}
+
+static int l_static_getRenderClip(lua_State *L) {
+  SDL_Rect rect;
+  SDL_RenderGetClipRect(globalRenderer, &rect);
+  lua_pushinteger(L, rect.x);
+  lua_pushinteger(L, rect.y);
+  lua_pushinteger(L, rect.w);
+  lua_pushinteger(L, rect.h);
+  return 4;
+}
+
 static int l_static_setRenderTarget(lua_State *L) {
   SDL_Texture *texture;
   if (!lua_islightuserdata(L, -1)) {
@@ -456,15 +504,17 @@ static int l_static_renderBlendmode(lua_State *L) {
 }
 
 static const struct luaL_Reg static_meta[] = {
-    {"quit", l_static_quit},
-    {"wait", l_static_wait},
-    {"readfile", l_static_readfile},
-    {"framedelay", l_static_framedelay},
-    {"setRenderTarget", l_static_setRenderTarget},
-    {"unsetRenderTarget", l_static_unsetRenderTarget},
-    {"renderClear", l_static_renderClear},
-    {"renderBlendmode", l_static_renderBlendmode},
-    {NULL, NULL}};
+  {"quit", l_static_quit},
+  {"wait", l_static_wait},
+  {"readfile", l_static_readfile},
+  {"framedelay", l_static_framedelay},
+  {"setRenderClip", l_static_setRenderClip},
+  {"getRenderClip", l_static_getRenderClip},
+  {"setRenderTarget", l_static_setRenderTarget},
+  {"unsetRenderTarget", l_static_unsetRenderTarget},
+  {"renderClear", l_static_renderClear},
+  {"renderBlendmode", l_static_renderBlendmode},
+  {NULL, NULL}};
 
 static int l_move_sprite(lua_State *L) {
   // printLuaStack(L, "move_sprite");

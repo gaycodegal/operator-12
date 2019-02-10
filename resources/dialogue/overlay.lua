@@ -61,6 +61,7 @@ end
    if all text is read, display the current dialogue node's buttons
 ]]
 function Dialogue:next(b, c)
+   self.named.actions:moveTo(0, 0)
    if self.named.textbox:next() then
 	  local buttons = self:fetch().buttons
 	  if buttons then
@@ -76,6 +77,7 @@ Goes to a dialogue/point pair, loads dialogue
 @param point 
 ]]
 function Dialogue:go(dialogue, point)
+   self.named.actions:moveTo(0, 0)
    self.dialogue = dialogue
    self.point = point
    self.named.textbox:setText(self:fetchText())
@@ -141,15 +143,33 @@ function Dialogue.Start()
 end
 
 --[[
-mouse down
+   standard Flex mouse down
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 ]]
 function Dialogue.MouseDown(x,y)
-   if D.test then
-	  D.test:click(x,y)
-   end
+   Flex.mouseDown(D.test, x, y)
+end
+
+--[[
+   standard Flex mouse move
+
+   @param x 
+   @param y 
+]]
+function Dialogue.MouseMove(x,y)
+   Flex.mouseMove(D.test, x, y)
+end
+
+--[[
+   standard Flex mouse up
+
+   @param x 
+   @param y 
+]]
+function Dialogue.MouseUp(x,y)
+   Flex.mouseUp(D.test, x, y)
 end
 
 --[[

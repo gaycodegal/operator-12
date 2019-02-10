@@ -67,13 +67,33 @@ function MainMenu.toCredits()
 end
 
 --[[
-   click button
+   standard Flex mouse down
 
    @param x 
    @param y 
 ]]
 function MainMenu.MouseDown(x,y)
-   Flex.click({x, y}, M.views, M.rects)
+   Flex.mouseDown(M, x, y)
+end
+
+--[[
+   standard Flex mouse move
+
+   @param x 
+   @param y 
+]]
+function MainMenu.MouseMove(x,y)
+   Flex.mouseMove(M, x, y)
+end
+
+--[[
+   standard Flex mouse up
+
+   @param x 
+   @param y 
+]]
+function MainMenu.MouseUp(x,y)
+   Flex.mouseUp(M, x, y)
 end
 
 --[[
