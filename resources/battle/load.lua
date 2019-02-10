@@ -27,6 +27,7 @@ function Battle.Start(argc, argv)
    overlay:asTextures()
    overlay:loadTilesets()
    BattleUI.init()
+   BattleUI.map = map
    static.framedelay(framedelay)
    SlugSelect.Begin(dofile("data/static/inv.lua"))
 end
@@ -124,13 +125,7 @@ end
 @return
 ]]
 function Battle.MouseDown(x, y)
-   if BattleUI.MouseDown(x,y) then
-	  return
-   end
-   if active ~= nil then
-	  local px, py = Map.positionToCoords(x,y)	  
-	  active(px,py)
-   end
+   BattleUI.MouseDown(x,y)
 end
 
 function Battle.MouseMove(x, y)
@@ -138,7 +133,13 @@ function Battle.MouseMove(x, y)
 end
 
 function Battle.MouseUp(x, y)
-   BattleUI.MouseUp(x, y)
+   if BattleUI.MouseUp(x, y) then
+	  return
+   end
+   if active ~= nil then
+	  local px, py = Map.positionToCoords(x,y)	  
+	  active(px,py)
+   end
 end
 
 Util.try(isMain, Battle)

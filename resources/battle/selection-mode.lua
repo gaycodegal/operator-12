@@ -106,16 +106,7 @@ function SlugSelect.Update()
    BattleUI.draw()
 end
 
---[[--
-either click buttons, or try and place a slug
-
-@param x 
-@param y 
-]]
-function SlugSelect.MouseDown(x,y)
-   if BattleUI.MouseDown(x,y) then
-      return
-   end
+function SlugSelect.PlaceSlug(x, y)
    local px, py = Map.positionToCoords(x,y)	  
    if map:valid(px, py) then
       local ind = map:indexOf(px, py)
@@ -133,12 +124,25 @@ function SlugSelect.MouseDown(x,y)
    end
 end
 
+--[[--
+either click buttons, or try and place a slug
+
+@param x 
+@param y 
+]]
+function SlugSelect.MouseDown(x,y)
+   BattleUI.MouseDown(x,y)
+end
+
 function SlugSelect.MouseMove(x, y)
    BattleUI.MouseMove(x, y)
 end
 
 function SlugSelect.MouseUp(x, y)
-   BattleUI.MouseUp(x, y)
+   if BattleUI.MouseUp(x, y) then
+	  return
+   end
+   SlugSelect.PlaceSlug(x, y)
 end
 
 --[[--

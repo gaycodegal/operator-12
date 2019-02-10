@@ -104,6 +104,8 @@ function BattleUI.destroy()
    B.views = nil
    B.cells = nil
    B.rects = nil
+   B.map = nil
+   B.draggable = nil
 end
 
 --[[
@@ -114,6 +116,7 @@ end
 ]]
 function BattleUI.MouseDown(x,y)
    Flex.mouseDown(B, x, y)
+   B.draggable = B.map
    if B.draggable then
 	  return true
    end
@@ -136,5 +139,5 @@ end
    @param y 
 ]]
 function BattleUI.MouseUp(x,y)
-   Flex.mouseUp(B, x, y)
+   return Flex.mouseUp(B, x, y)
 end

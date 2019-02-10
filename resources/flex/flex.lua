@@ -294,9 +294,11 @@ function Flex.mouseMove(M, x, y)
 end
 
 function Flex.mouseUp(M, x, y)
+   local result = true
    if not M.dragging then
-	  Flex.click({x, y}, M.views, M.rects)
+	  result = Flex.click({x, y}, M.views, M.rects)
    end
    M.draggable = nil
    M.dragging = false
+   return result
 end
