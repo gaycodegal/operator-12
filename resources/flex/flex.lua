@@ -9,7 +9,7 @@ require("flex/UITextBox")
 require("flex/UIView")
 require("flex/UIButton")
 
---[[
+--[[--
    calculate the rects that views will take up given the
    parent rect (usually {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}
    and the view's layout cell.
@@ -81,7 +81,7 @@ function Flex.calculateRects(cell, rect, nolimit)
    return rects
 end
 
---[[
+--[[--
    helper function to make a rect
 
    @param direction primary direction either 1|2 (horizontal|vertical)
@@ -102,7 +102,7 @@ function Flex.makebox(direction, odirection, x, ox, size, osize)
    return rect
 end
 
---[[
+--[[--
    Initialize the views given the layout (cell) and the rects
    these should occupy
 
@@ -129,7 +129,7 @@ function Flex.new(cell, rects)
    return views
 end
 
---[[
+--[[--
    Set the rects of views
    
    @param views to have their rects set
@@ -148,7 +148,7 @@ function Flex.setRects(views, rects)
    end
 end
 
---[[
+--[[--
    is `pt` in `rect`
    @param pt point to check
    @param rect to test if in
@@ -168,7 +168,7 @@ function Flex.doGetDraggable(object, pt)
    end
 end
 
---[[
+--[[--
    If there is a draggable object at point fetch it
    @return returns nil if no a draggable object at point, view otherwise
 ]]
@@ -186,7 +186,7 @@ function Flex.doClick(object, pt)
    end
 end
 
---[[
+--[[--
    Do click at point
    @return non nil/false if click was consumed, nil/false otherwise
 ]]
@@ -194,7 +194,7 @@ function Flex.click(pt, views, rects)
    return Flex.objectAtPoint(pt, views, rects, Flex.doClick)
 end
 
---[[
+--[[--
    Apply a function to a view at a point
    @return result of calling fn on view at point
 ]]
@@ -214,7 +214,7 @@ function Flex.objectAtPoint(pt, views, rects, fn)
    end
 end
 
---[[
+--[[--
    Get all named members of views
    @return dict of {name=view...}
 ]]
@@ -242,7 +242,7 @@ function Flex._getNamed(views, named)
    return named
 end
 
---[[
+--[[--
    Draw the views
 ]]
 function Flex.draw(views)
@@ -257,7 +257,7 @@ function Flex.draw(views)
    end
 end
 
---[[
+--[[--
    destroy the views
 ]]
 function Flex.destroy(views)
@@ -272,12 +272,24 @@ function Flex.destroy(views)
    end
 end
 
+--[[--
+   Handles the common scenario of clicking / dragging mouse down
+   @param M module or object doing the clicking
+   @param x coord
+   @param y coord
+]]
 function Flex.mouseDown(M, x, y)
    M.draggable = Flex.getDraggable({x, y}, M.views, M.rects)
    M.last = {x, y}
    M.dragging = false
 end
 
+--[[--
+   Handles the common scenario of clicking / dragging mouse move
+   @param M module or object doing the clicking
+   @param x coord
+   @param y coord
+]]
 function Flex.mouseMove(M, x, y)
    local last = M.last
    if M.draggable then
@@ -291,6 +303,12 @@ function Flex.mouseMove(M, x, y)
    end
 end
 
+--[[--
+   Handles the common scenario of clicking / dragging mouse up
+   @param M module or object doing the clicking
+   @param x coord
+   @param y coord
+]]
 function Flex.mouseUp(M, x, y)
    local result = true
    if not M.dragging then
@@ -301,6 +319,9 @@ function Flex.mouseUp(M, x, y)
    return result
 end
 
+--[[--
+   loads a file in the flex scope
+]]
 function Flex.load(fname)
    return uloadfile(fname, "bt", Flex)
 end
