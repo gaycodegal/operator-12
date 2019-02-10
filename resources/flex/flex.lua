@@ -6,7 +6,7 @@ require("flex/UIButton")
 horizontal = 1
 vertical = 2
 Flex = {
-   rDrag = 5,
+   rDrag = 10,
    vertical = vertical,
    horizontal = horizontal,
 }
@@ -20,7 +20,7 @@ Flex = {
    @param rect {X, Y, W, H}
    @return rects of the cells
 ]]
-function Flex.calculateRects(cell, rect)
+function Flex.calculateRects(cell, rect, nolimit)
    local direction = cell.axis
    local odirection = 1
    if direction == 1 then
@@ -65,7 +65,7 @@ function Flex.calculateRects(cell, rect)
 		 flexible = flexible - mass
 		 weight = weight - amount[1]
       end
-      if mass > size then
+      if not nolimit and mass > size then
 		 mass = size
       end
       size = size - mass
