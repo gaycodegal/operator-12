@@ -152,8 +152,10 @@ end
 function UITextBox:destroy()
    if self.spr then
 	  self.spr:destroy()
+	  self.spr = nil
    end
    if self.tex then
 	  Texture.destroy(self.tex)
+	  self.tex = nil
    end
 end
