@@ -44,8 +44,16 @@ function UIList:setRect(rect)
 		 axis=vertical,
 		 children = self.cells,
 	  }
-	  self.rects = Flex.calculateRects(cell, self.rect)
+	  self.rects = Flex.calculateRects(cell, self.rect, true)
 	  Flex.setRects(self.c, self.rects)
+	  if self.draggable then
+		 local height = 0
+		 local a = self.axis
+		 for i,v in ipairs(self.rects) do
+			height = height + v[a + 2]
+		 end
+		 self.height = height
+	  end
    end
 end
 
@@ -67,7 +75,11 @@ function UIList:moveBy(dx, dy)
    local a = self.axis
    local sd = self.delta
    sd[a] = sd[a] + d[a]
-   if sd[a] < 0 then
+   local diff = self.height - self.rect[a + 2]
+   if sd[a] < -diff then
+	  sd[a] = -diff
+   end
+   if sd[a] > 0 then
 	  sd[a] = 0
    end
 end

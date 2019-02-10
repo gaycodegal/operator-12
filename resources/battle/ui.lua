@@ -116,10 +116,11 @@ end
 ]]
 function BattleUI.MouseDown(x,y)
    Flex.mouseDown(B, x, y)
-   B.draggable = B.map
    if B.draggable then
 	  return true
    end
+   B.draggable = B.map
+   return true
 end
 
 --[[
