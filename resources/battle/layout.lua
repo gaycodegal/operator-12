@@ -10,6 +10,7 @@ return {
 		   color="000000cc",
 		   size={1,"w"}},
 		  {class=UIList,
+		   axis = vertical,
 		   name = "actions",
 		   size={100,"dp"}}
 	   }},

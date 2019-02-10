@@ -133,4 +133,12 @@ function Battle.MouseDown(x, y)
    end
 end
 
+function Battle.MouseMove(x, y)
+   BattleUI.MouseMove(x, y)
+end
+
+function Battle.MouseUp(x, y)
+   BattleUI.MouseUp(x, y)
+end
+
 Util.try(isMain, Battle)

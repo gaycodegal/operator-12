@@ -106,14 +106,35 @@ function BattleUI.destroy()
    B.rects = nil
 end
 
---[[--
-   handle click
+--[[
+   standard Flex mouse down
 
    @param x 
    @param y 
-
-   @return true if click should be consumed. false otherwise
 ]]
-function BattleUI.MouseDown(x, y)
-   return Flex.click({x, y}, B.views, B.rects)
+function BattleUI.MouseDown(x,y)
+   Flex.mouseDown(B, x, y)
+   if B.draggable then
+	  return true
+   end
+end
+
+--[[
+   standard Flex mouse move
+
+   @param x 
+   @param y 
+]]
+function BattleUI.MouseMove(x,y)
+   Flex.mouseMove(B, x, y)
+end
+
+--[[
+   standard Flex mouse up
+
+   @param x 
+   @param y 
+]]
+function BattleUI.MouseUp(x,y)
+   Flex.mouseUp(B, x, y)
 end

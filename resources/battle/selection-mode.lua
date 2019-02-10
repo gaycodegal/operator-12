@@ -133,6 +133,14 @@ function SlugSelect.MouseDown(x,y)
    end
 end
 
+function SlugSelect.MouseMove(x, y)
+   BattleUI.MouseMove(x, y)
+end
+
+function SlugSelect.MouseUp(x, y)
+   BattleUI.MouseUp(x, y)
+end
+
 --[[--
    pan camera about map or quit
 
