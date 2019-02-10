@@ -181,6 +181,11 @@ function Map:mousedown(x,y)
    end
 end
 
+function Map:moveBy(x, y)
+   self.x = self.x + x
+   self.y = self.y + y
+end
+
 -- draw map to screen
 function Map:draw()
    local i = 1
