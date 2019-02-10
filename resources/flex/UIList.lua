@@ -7,7 +7,12 @@ UIList = Class()
    create a list, conforms to flex constructor
 ]]
 function UIList.new(cell, rect)
-   local self = {rect=rect}
+   local self = {
+	  rect = rect,
+	  draggable = (cell.axis ~= nil),
+	  delta = {0, 0},
+	  axis = cell.axis,
+   }
    UIView.setBackground(self, cell)
    if cell.name then
 	  self.name = cell.name
@@ -45,9 +50,34 @@ function UIList:setRect(rect)
 end
 
 --[[
+   set the list's drag to dx, dy
+]]
+function UIList:moveTo(dx, dy)
+   self.delta = {0, 0}
+   self:moveBy(dx, dy)
+end
+
+--[[
+   drag the list by dx, dy
+   @param dx delta x
+   @param dy delta y
+]]
+function UIList:moveBy(dx, dy)
+   local d = {dx, dy}
+   local a = self.axis
+   local sd = self.delta
+   sd[a] = sd[a] + d[a]
+   if sd[a] < 0 then
+	  sd[a] = 0
+   end
+end
+
+--[[
    click the boy
 ]]
 function UIList:click(pt)
+   local d = self.delta
+   pt = {pt[1] - d[1], pt[2] - d[2]}
    return Flex.click(pt, self.c, self.rects)
 end
 
@@ -55,7 +85,19 @@ end
    draw the boy
 ]]
 function UIList:draw()
-   Flex.draw(self.c)
+   local r = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}
+   local rs = self.rect
+   static.setRenderClip(rs[1], rs[2], rs[3], rs[4])
+   local x = self.delta[1]
+   local y = self.delta[2]
+   local v = self.c
+   for i = 1,v.n do
+	  if v[i] then
+		 v[i]:draw(x, y)
+	  end
+   end
+   rs = r
+   static.setRenderClip(rs[1], rs[2], rs[3], rs[4])
 end
 
 --[[

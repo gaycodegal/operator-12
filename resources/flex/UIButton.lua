@@ -63,10 +63,10 @@ end
 --[[
    draw the button
 ]]
-function UIButton:draw()
+function UIButton:draw(x, y)
    if self.t then
       local r = self.rect
-      Texture.renderCopy(self.t, 0, 0, r[3], r[4], r[1], r[2], r[3], r[4])
+      Texture.renderCopy(self.t, 0, 0, r[3], r[4], r[1] + x, r[2] + y, r[3], r[4])
    end
 end
 

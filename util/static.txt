@@ -19,6 +19,16 @@
 ["int"]
 ["number"]
 0
+"setRenderClip"
+["x", "y", "w", "h"]
+["", "", "", ""]
+["integer", "integer", "integer", "integer"]
+0
+"getRenderClip"
+[]
+[]
+[]
+4
 "setRenderTarget"
 ["texture"]
 ["SDL_Texture *"]
