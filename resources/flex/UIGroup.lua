@@ -1,7 +1,8 @@
 require("util")
-Util.isMain()
 
 UIGroup = Class()
+Flex.UIGroup = UIGroup
+
 --[[
    arbitrary grouping ui class
 ]]

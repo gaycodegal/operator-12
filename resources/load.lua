@@ -115,7 +115,7 @@ end
    Basic menu setup
 ]]
 function MainMenu.Start()
-   M.cells = dofile("layout.lua")
+   M.cells = Flex.load("layout.lua")
    local named = Flex.getNamed(M.cells.children)
    named.main.size[1] = ListButton.heightOf(4, 60, 10)
    M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})

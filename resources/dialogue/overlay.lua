@@ -17,7 +17,7 @@ local D = Dialogue
 ]]
 function Dialogue.new(dialogue, point)
    local self = New(D)
-   self.cells = dofile("dialogue/layout.lua")
+   self.cells = Flex.load("dialogue/layout.lua")
    local named = Flex.getNamed(self.cells.children)
    named.actions.size[1] = ListButton.heightOf(3, self.bHeight, self.bSpace) + self.bSpace + self.bHeight // 2
    self.rects = Flex.calculateRects(self.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})

@@ -2,6 +2,7 @@ require("util")
 Util.isMain()
 
 UIList = Class()
+Flex.UIList = UIList
 
 --[[
    create a list, conforms to flex constructor

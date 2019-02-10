@@ -3,6 +3,7 @@ require("tiled/tilesets")
 Util.isMain()
 
 UIView = Class()
+Flex.UIView = UIView
 
 --[[
    basic view for flex

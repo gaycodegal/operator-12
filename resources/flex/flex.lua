@@ -1,15 +1,13 @@
+Flex = {
+   rDrag = 10,
+   horizontal = 1,
+   vertical = 2,
+}
 require("flex/UIGroup")
 require("flex/UIList")
 require("flex/UITextBox")
 require("flex/UIView")
 require("flex/UIButton")
-horizontal = 1
-vertical = 2
-Flex = {
-   rDrag = 10,
-   vertical = vertical,
-   horizontal = horizontal,
-}
 
 --[[
    calculate the rects that views will take up given the
@@ -301,4 +299,8 @@ function Flex.mouseUp(M, x, y)
    M.draggable = nil
    M.dragging = false
    return result
+end
+
+function Flex.load(fname)
+   return uloadfile(fname, "bt", Flex)
 end

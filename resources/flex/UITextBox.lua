@@ -2,6 +2,8 @@ require("util")
 Util.isMain()
 
 UITextBox = Class()
+Flex.UITextBox = UITextBox
+
 --[[
    A textbox that works with flex.
 

@@ -1,5 +1,14 @@
 UpdateStack = {}
 
+function uloadfile(fname, mode, env)
+   local mod = Game.static.readfile(fname)
+   local x = load(mod, fname, mode, env)
+   if x then
+      x = x()
+   end
+   return x
+end
+
 --[[--
    indexing checks metatable first
    and falls back to object if that fails
