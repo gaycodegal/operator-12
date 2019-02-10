@@ -15,10 +15,11 @@ end
 
 function dofile(fname)
    local mod = Game.static.readfile(fname)
-   local x = load(mod)
+   local x = load(mod, fname)
    if x then
       x = x()
    end
    return x
 end
+
 require("load")

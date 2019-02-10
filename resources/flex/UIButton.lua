@@ -2,6 +2,7 @@ require("util")
 Util.isMain()
 
 UIButton = Class()
+Flex.UIButton = UIButton
 
 --[[
    Create a button, conforms to flex constructor

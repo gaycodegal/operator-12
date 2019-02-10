@@ -9,7 +9,7 @@ local B = BattleUI
    Makes the list button and text box that is gonna be displaying the slug's stats
 ]]
 function BattleUI.init()
-   B.cells = dofile("battle/layout.lua")
+   B.cells = Flex.load("battle/layout.lua")
    local named = Flex.getNamed(B.cells.children)
    named.actions.size[1] = ListButton.heightOf(3, B.bHeight, B.bSpace) + B.bSpace + B.bHeight // 2
    B.rects = Flex.calculateRects(B.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
