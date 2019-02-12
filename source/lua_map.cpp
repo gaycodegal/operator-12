@@ -12,9 +12,8 @@ static int l_map_new(lua_State *L) {
   return 1;
 }
 
-
 static int l_map_destroy(lua_State *L) {
-  TiledMap * self;
+  TiledMap *self;
   if (!lua_isuserdata(L, -1)) {
     lua_pop(L, 1);
     return 0;
@@ -26,7 +25,7 @@ static int l_map_destroy(lua_State *L) {
 }
 
 static int l_map_move(lua_State *L) {
-  TiledMap * self;
+  TiledMap *self;
   int x;
   int y;
   if (!lua_isnumber(L, -1)) {
@@ -53,7 +52,7 @@ static int l_map_move(lua_State *L) {
 }
 
 static int l_map_draw(lua_State *L) {
-  TiledMap * self;
+  TiledMap *self;
   if (!lua_isuserdata(L, -1)) {
     lua_pop(L, 1);
     return 0;
@@ -65,12 +64,11 @@ static int l_map_draw(lua_State *L) {
   return 0;
 }
 
-static const struct luaL_Reg map_meta[] = {
-  {"new", l_map_new},
-  {"destroy", l_map_destroy},
-  {"move", l_map_move},
-  {"draw", l_map_draw},
-  {NULL, NULL}};
+static const struct luaL_Reg map_meta[] = {{"new", l_map_new},
+                                           {"destroy", l_map_destroy},
+                                           {"move", l_map_move},
+                                           {"draw", l_map_draw},
+                                           {NULL, NULL}};
 
 static const struct luaClassList game[] = {{"TiledMap", map_meta},
                                            {NULL, NULL}};

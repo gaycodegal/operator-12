@@ -82,6 +82,20 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
   }
 }
 
+void mouseWheelHelper(lua_State *L, int dx, int dy, const char *event,
+                      bool fn_exists) {
+  int x, y;
+  SDL_GetMouseState(&x, &y);
+  if (fn_exists) {
+    lua_getglobal(L, event);
+    lua_pushnumber(L, x);
+    lua_pushnumber(L, y);
+    lua_pushnumber(L, dx);
+    lua_pushnumber(L, dy);
+    callErr(L, event, 4);
+  }
+}
+
 static inline long getMS() {
   return std::chrono::duration_cast<std::chrono::milliseconds>(
              std::chrono::system_clock::now().time_since_epoch())
@@ -96,6 +110,8 @@ int keyupExists;
 int mousedownExists;
 int mousemoveExists;
 int mouseupExists;
+int mousewheelExists;
+int mousescrollExists;
 SDL_Event e;
 void one_iter() {
   // Handle events on queue
@@ -126,6 +142,8 @@ void one_iter() {
         mouseHelper(L, e.type, "MouseUp", mouseupExists);
         break;
       }
+    } else if (e.type == SDL_MOUSEWHEEL) {
+      mouseWheelHelper(L, e.wheel.x, e.wheel.y, "MouseWheel", mousewheelExists);
     } else if (e.type == SDL_WINDOWEVENT &&
                e.window.event == SDL_WINDOWEVENT_RESIZED) {
       lua_getglobal(L, "Resize");
@@ -233,6 +251,7 @@ int main(int argc, char **argv) {
   mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
   mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
   mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
+  mousewheelExists = globalTypeExists(L, LUA_TFUNCTION, "MouseWheel");
 // While application is running
 #ifdef __EMSCRIPTEN__
   // void emscripten_set_main_loop(em_callback_func func, int fps, int

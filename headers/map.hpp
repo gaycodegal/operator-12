@@ -29,6 +29,7 @@ private:
   int width, height;
 
   int *tiles;
+
 public:
   TiledMap(lua_State *L);
   ~TiledMap();

@@ -85,6 +85,9 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
     - Globals will not be modified by this at this time.
 - KeyDown(which)
 - KeyUp(which)
+- MouseWheel(x, y, dx, dy)
+    - x & y are the current mouse position
+    - dx & dy are the scroll delta
 - MouseDown(x, y)
 - MouseMove(x, y)
 - MouseUp(x, y)
