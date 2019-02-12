@@ -6,7 +6,7 @@ Util = {}
 ]]
 function Util.KeyUp(key)
    if key == KEY_ESCAPE then
-	  static.quit()
+      static.quit()
    end
 end
 
@@ -26,6 +26,16 @@ end
 function Util.Resize(w, h)
    SCREEN_WIDTH = w
    SCREEN_HEIGHT = h
+end
+
+--[[--
+   mousewheel fallback
+
+   @param x 
+   @param y 
+]]
+function Util.MouseWheel(x, y, dx, dy)
+   
 end
 
 --[[--
@@ -64,13 +74,13 @@ end
    @param controller 
 ]]
 function Util.setController(controller)
-   local f = {"Start", "Update", "End", "Resize", "KeyDown", "KeyUp", "MouseDown", "MouseMove", "MouseUp"}
+   local f = {"Start", "Update", "End", "Resize", "KeyDown", "KeyUp", "MouseWheel", "MouseDown", "MouseMove", "MouseUp"}
    for i, v in ipairs(f) do
-	  if controller[v] then
-		 rawset(_G, v, controller[v])
-	  else
-		 rawset(_G, v, Util[v])
-	  end
+      if controller[v] then
+	 rawset(_G, v, controller[v])
+      else
+	 rawset(_G, v, Util[v])
+      end
    end
 end
 
@@ -83,7 +93,7 @@ end
 ]]
 function Util.isMain()
    if Util.main then
-	  return false
+      return false
    end
    Util.main = true
    return true
@@ -97,6 +107,6 @@ end
 ]]
 function Util.try(isMain, controller)
    if isMain then
-	  Util.setController(controller)
+      Util.setController(controller)
    end
 end
