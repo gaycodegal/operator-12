@@ -162,6 +162,10 @@ function Dialogue.MouseMove(x,y)
    Flex.mouseMove(D.test, x, y)
 end
 
+function Dialogue.MouseWheel(x,y,dx,dy)
+   Flex.mouseWheel(D.test, x, y, dx, dy)
+end
+
 --[[
    standard Flex mouse up
 

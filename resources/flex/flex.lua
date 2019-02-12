@@ -273,6 +273,33 @@ function Flex.destroy(views)
 end
 
 --[[--
+   Handles the common scenario of mouse wheel
+   @param M module or object doing the clicking
+   @param x coord
+   @param y coord
+   @param dx scroll dx
+   @param dx scroll dy
+]]
+function Flex.mouseWheel(M, x, y, dx, dy)
+   local draggable = Flex.getDraggable({x, y}, M.views, M.rects)
+   if draggable then
+      if dx < 0 then
+	 dx = -10
+      elseif dx > 0 then
+	 dx = 10
+      end
+      if dy < 0 then
+	 dy = -10
+      elseif dy > 0 then
+	 dy = 10
+      end
+      draggable:moveBy(dx, dy)
+   end
+   
+   return draggable
+end
+
+--[[--
    Handles the common scenario of clicking / dragging mouse down
    @param M module or object doing the clicking
    @param x coord
@@ -316,6 +343,7 @@ function Flex.mouseUp(M, x, y)
    end
    M.draggable = nil
    M.dragging = false
+   M.last = nil
    return result
 end
 
