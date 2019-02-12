@@ -133,6 +133,24 @@ function BattleUI.MouseMove(x,y)
    Flex.mouseMove(B, x, y)
 end
 
+function BattleUI.MouseWheel(x,y,dx,dy)
+   if not Flex.mouseWheel(B, x, y, dx, dy) then
+      if dx < 0 then
+	 dx = -10
+      elseif dx > 0 then
+	 dx = 10
+      end
+      if dy < 0 then
+	 dy = -10
+      elseif dy > 0 then
+	 dy = 10
+      end
+      if B.map then
+	 B.map:moveBy(dx, dy)
+      end
+   end
+end
+
 --[[
    standard Flex mouse up
 

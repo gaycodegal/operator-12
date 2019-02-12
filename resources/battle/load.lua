@@ -116,6 +116,10 @@ function Battle.KeyUp(key)
    end
 end
 
+function Battle.MouseWheel(x,y,dx,dy)
+   BattleUI.MouseWheel(x, y, dx, dy)
+end
+
 --[[
    Trigger movement/attack or whatever other action is currently active
 

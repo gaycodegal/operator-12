@@ -96,6 +96,10 @@ function MainMenu.MouseUp(x,y)
    Flex.mouseUp(M, x, y)
 end
 
+function MainMenu.MouseWheel(x,y,dx,dy)
+   Flex.mouseWheel(M, x, y, dx, dy)
+end
+
 --[[
    resize
 

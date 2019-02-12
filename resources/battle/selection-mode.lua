@@ -124,6 +124,10 @@ function SlugSelect.PlaceSlug(x, y)
    end
 end
 
+function SlugSelect.MouseWheel(x,y,dx,dy)
+   BattleUI.MouseWheel(x, y, dx, dy)
+end
+
 --[[--
    either click buttons, or try and place a slug
 
