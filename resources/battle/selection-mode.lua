@@ -4,33 +4,33 @@ SlugSelect = {}
 local S = SlugSelect
 
 --[[--
-callback gen, set active choice to slug.
+   callback gen, set active choice to slug.
 
-should probably update textbox text
+   should probably update textbox text
 
-@param i index into choice
-@param slugs slugs
+   @param i index into choice
+   @param slugs slugs
 
-@return callback
+   @return callback
 ]]
 function SlugSelect.fn(i, slugs)
    return function()
-	  S.choice = slugs[i]
+      S.choice = slugs[i]
    end
 end
 
 --[[--
-Set up buttons so one can choose which slug to place.
+   Set up buttons so one can choose which slug to place.
 
-Should include pagination.
+   Should include pagination.
 ]]
 function SlugSelect.setUI()
    local slugs = S.inv.slugs
    local fns = {}
    local texts = {}
    for i = 1,#slugs do
-	  table.insert(fns, S.fn(i, slugs))
-	  table.insert(texts, slugs[i].type)
+      table.insert(fns, S.fn(i, slugs))
+      table.insert(texts, slugs[i].type)
    end
    table.insert(texts,"done")
    table.insert(fns, S.Finish)
@@ -40,14 +40,14 @@ function SlugSelect.setUI()
 end
 
 --[[--
-Sets self as controller, takes some functions from Battle
-Loads possible slug choices for use
+   Sets self as controller, takes some functions from Battle
+   Loads possible slug choices for use
 
-@param inv Player's inventory
+   @param inv Player's inventory
 ]]
 function SlugSelect.Begin(inv)
    for i,v in pairs({"Resize", "Start", "End"}) do
-	  S[v] = Battle[v]
+      S[v] = Battle[v]
    end
 
    Util.setController(S)
@@ -58,23 +58,23 @@ function SlugSelect.Begin(inv)
    S.choices = {}
    
    for i,m in ipairs(S.mates) do
-	  S.imates[map:indexOf(m.pos[1], m.pos[2])] = true
+      S.imates[map:indexOf(m.pos[1], m.pos[2])] = true
    end
 
    S.setUI()
 end
 
 --[[--
-cleans up memory, hands control back to Battle
+   cleans up memory, hands control back to Battle
 ]]
 function SlugSelect.Finish()
    local spawners = slugs["spawner"]
    if spawners then
-	  spawners:damage(spawners.size)
+      spawners:damage(spawners.size)
    end
    for i,c in ipairs(S.choices) do
-	  local name = "spawned-"..i
-	  slugs[name] = Slug.new({sprites = c[3].type, segs = {{c[1],c[2]}}, name=name, team=1, spawner = false})
+      local name = "spawned-"..i
+      slugs[name] = Slug.new({sprites = c[3].type, segs = {{c[1],c[2]}}, name=name, team=1, spawner = false})
    end
    S.inv = nil
    S.choice = nil
@@ -93,15 +93,15 @@ function SlugSelect.Update()
    map:update()
    map:draw()
    for i,v in ipairs(S.choices) do
-	  local x,y,s = v[1],v[2],v[3].type
-	  local t = Slug.defs[s].tiles[1]
-	  x, y = Map.basePosition(x, y)
-	  Texture.renderCopy(t.tex,
-						 t.x,t.y,t.w,t.h,
-						 x + map.x,
-						 y + map.y,
-						 map.tilesize,
-						 map.tilesize)
+      local x,y,s = v[1],v[2],v[3].type
+      local t = Slug.defs[s].tiles[1]
+      x, y = Map.basePosition(x, y)
+      Texture.renderCopy(t.tex,
+			 t.x,t.y,t.w,t.h,
+			 x + map.x,
+			 y + map.y,
+			 map.tilesize,
+			 map.tilesize)
    end
    BattleUI.draw()
 end
@@ -125,10 +125,10 @@ function SlugSelect.PlaceSlug(x, y)
 end
 
 --[[--
-either click buttons, or try and place a slug
+   either click buttons, or try and place a slug
 
-@param x 
-@param y 
+   @param x 
+   @param y 
 ]]
 function SlugSelect.MouseDown(x,y)
    BattleUI.MouseDown(x,y)
@@ -140,7 +140,7 @@ end
 
 function SlugSelect.MouseUp(x, y)
    if BattleUI.MouseUp(x, y) then
-	  return
+      return
    end
    SlugSelect.PlaceSlug(x, y)
 end
@@ -148,37 +148,37 @@ end
 --[[--
    pan camera about map or quit
 
-@param key 
+   @param key 
 ]]
 function SlugSelect.KeyDown(key)
    if key == KEY_ESCAPE then
-	  static.quit()
+      static.quit()
    elseif key == KEY_UP then
-	  map.dy = -map.speed
+      map.dy = -map.speed
    elseif key == KEY_DOWN then
-	  map.dy = map.speed
+      map.dy = map.speed
    elseif key == KEY_LEFT then
-	  map.dx = -map.speed
+      map.dx = -map.speed
    elseif key == KEY_RIGHT then
-	  map.dx = map.speed
+      map.dx = map.speed
    end
 end
 
 --[[--
-Stop panning or quit
+   Stop panning or quit
 
-@param key 
+   @param key 
 ]]
 function SlugSelect.KeyUp(key)
    if key == KEY_ESCAPE then
-	  static.quit()
+      static.quit()
    elseif key == KEY_UP and map.dy < 0 then
-	  map.dy = 0
+      map.dy = 0
    elseif key == KEY_DOWN and map.dy > 0 then
-	  map.dy = 0
+      map.dy = 0
    elseif key == KEY_LEFT and map.dx < 0 then
-	  map.dx = 0
+      map.dx = 0
    elseif key == KEY_RIGHT and map.dx > 0 then
-	  map.dx = 0
+      map.dx = 0
    end
 end
