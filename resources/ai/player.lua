@@ -9,6 +9,7 @@ function Player.prepareCurrentSlug()
    local slug = Player.slugs[Player.turni]
    local head = slug.head
    Player.slug = slug
+   Player.gameOver = false
    Player.pos = head.pos
    Player.moves = slug.stats.moves
    active = Player.move
@@ -29,6 +30,7 @@ end
    Trigger player losing the battle
 ]]
 function Player.lose()
+   Player.gameOver = true
    End()
    Util.setController(MapSelect)
    Start()
@@ -38,6 +40,7 @@ end
    Trigger player battle win
 ]]
 function Player.win()
+   Player.gameOver = true
    End()
    Util.setController(MapSelect)
    Start()
@@ -48,7 +51,7 @@ end
 ]]
 function Player.returnControl()
    if Player.slug then
-	  Player.slug:destroyOverlay()
+      Player.slug:destroyOverlay()
    end
    Player.slug = nil
    Player.pos = nil
@@ -67,18 +70,18 @@ function Player.prepareForTurn()
    Player.turni = 1 -- which slug's turn is it
    j = 1
    for i, slug in pairs(slugs) do
-	  if slug then
-		 if slug.team == 1 then
-			Player.slugs[j] = slug
-			j = j + 1
-		 end
-	  end
+      if slug then
+	 if slug.team == 1 then
+	    Player.slugs[j] = slug
+	    j = j + 1
+	 end
+      end
    end
    Player.nslugs = j-1 -- number of enemies to go.
    if Player.nslugs <= 0 then
-	  Player.returnControl()
-	  Player.lose()
-	  return
+      Player.returnControl()
+      Player.lose()
+      return
    end
    Player.prepareCurrentSlug()   
 end
@@ -91,14 +94,17 @@ end
 ]]
 function Player.move(x, y)
    if Player.moves > 0 then
-	  if Player.slug:move(x,y) then
-		 Player.moves = Player.moves - 1
-	  end
+      if Player.slug:move(x,y) then
+	 Player.moves = Player.moves - 1
+      end
    end
    Player.slug:destroyOverlay()
+   if Player.gameOver then
+      return
+   end
    Player.slug:movementOverlay(Player.moves)
    if Player.moves <= 0 then
-	  Player.beginAttack()
+      Player.beginAttack()
    end
 end
 
@@ -115,20 +121,20 @@ function Player.attack(x,y)
    local obj = map.objects[ind]
    local skill = Skills[Player.slug.action.skill]
    if skill.can(Player.slug, obj, ind, x, y)  then
-	  skill.act(Player.slug, obj, ind, x, y)
+      skill.act(Player.slug, obj, ind, x, y)
    end
    Player.nextTurn()
 end
 
 --[[--
-moves onto the next slug or team
+   moves onto the next slug or team
 ]]
 function Player.nextTurn()
    Player.turni = Player.turni + 1
    if Player.turni > Player.nslugs then
-	  Player.returnControl()
-	  AI.prepareForEnemyTurns()
+      Player.returnControl()
+      AI.prepareForEnemyTurns()
    else
-	  Player.prepareCurrentSlug()
+      Player.prepareCurrentSlug()
    end
 end
