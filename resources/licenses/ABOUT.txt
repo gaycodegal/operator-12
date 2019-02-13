@@ -1,9 +1,10 @@
+Click the left and right sides of the screen to turn the pages, alternatively use the arrow keys of a connected keyboard.
 
 Operator 12 was developed by:
 Steph Oro
 Eric Londres
 
-Operator 12's source is at present under the MIT license
+Operator 12's source is at present under the MIT license. It relies on open source third party libraries. Their licenses follow this message.
 
 View online at https://github.com/gaycodegal/operator-12
 
