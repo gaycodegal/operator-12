@@ -1,4 +1,4 @@
-#include "map.hpp"
+#include "map.h"
 
 int getLen(lua_State *L, int i) {
   lua_len(L, i);

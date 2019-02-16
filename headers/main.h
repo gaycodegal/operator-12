@@ -57,11 +57,13 @@ extern "C" {
 #include <stdio.h>
 #include <string>
 
-#include "drawable.hpp"
-#include "lua_helpers.hpp"
-#include "lua_sprites.hpp"
-#include "map.hpp"
-#include "sprite.hpp"
+#include "drawable.h"
+#include "lua_helpers.h"
+#include "lua_texture.h"
+#include "lua_static.h"
+#include "lua_sprites.h"
+#include "map.h"
+#include "sprite.h"
 /**
    used for creating lists of classes mapped to names
  */
@@ -79,6 +81,8 @@ extern SDL_Surface *screenSurface;
 extern SDL_Renderer *globalRenderer;
 extern TTF_Font *gFont;
 
+// set true to exit program at end of loop
 extern bool quit;
+// delay between this and the next frame
 extern int framedelay;
 #endif

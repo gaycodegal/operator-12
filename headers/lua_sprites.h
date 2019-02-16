@@ -1,6 +1,6 @@
-#ifndef _LUA_SPRITES_HPP_
-#define _LUA_SPRITES_HPP_
-#include "main.hpp"
+#ifndef _LUA_SPRITES_H_
+#define _LUA_SPRITES_H_
+#include "main.h"
 
 /**
    loads the sprite library into lua

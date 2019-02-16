@@ -1,4 +1,4 @@
-#include "lua_helpers.hpp"
+#include "lua_helpers.h"
 
 void set_meta(lua_State *L, int ind, const char *name) {
   lua_getglobal(L, "Game");
