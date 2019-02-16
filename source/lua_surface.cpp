@@ -346,7 +346,7 @@ static int l_surface_destroy(lua_State *L) {
   return 0;
 }
 
-static const struct luaL_Reg surface_meta[] = {
+const struct luaL_Reg surface_meta[] = {
     {"new", l_surface_new},
     {"newBlank", l_surface_newBlank},
     {"blendmode", l_surface_blendmode},
