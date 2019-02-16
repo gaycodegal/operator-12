@@ -70,5 +70,5 @@ static int l_ttf_size(lua_State *L) {
   return 2;
 }
 
-static const struct luaL_Reg ttf_meta[] = {
+const struct luaL_Reg ttf_meta[] = {
     {"surface", l_ttf_surface}, {"size", l_ttf_size}, {NULL, NULL}};
