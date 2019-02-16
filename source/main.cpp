@@ -228,7 +228,7 @@ int main(int argc, char **argv) {
 
   L = luaL_newstate();
   luaL_openlibs(L);
-  luaL_requiref(L, LUA_LIBNAME, luaopen_sprites, 1);
+  luaL_requiref(L, LUA_LIBNAME, luaopen_gamelibs, 1);
 
 #ifdef ANDROID
   if (!loadLuaFile(L, "android.lua", 0)) {
