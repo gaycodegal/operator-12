@@ -1,10 +1,18 @@
 #include "lua_static.h"
 
+/**
+   triggers shutdown on end of loop
+ */
 static int l_static_quit(lua_State *L) {
   quit = true;
   return 0;
 }
 
+/**
+   Reads a file using SDL's internal read system
+
+   Lua's read system only works on certain systems.
+ */
 static int l_static_readfile(lua_State *L) {
   char *name;
   if (!lua_isstring(L, -1)) {
@@ -23,6 +31,9 @@ static int l_static_readfile(lua_State *L) {
   return 1;
 }
 
+/**
+   pauses execution for some milliseconds immediately
+ */
 static int l_static_wait(lua_State *L) {
   int t;
   if (!lua_isnumber(L, -1)) {
@@ -35,6 +46,9 @@ static int l_static_wait(lua_State *L) {
   return 0;
 }
 
+/**
+   sets time to delay after frame is complete
+ */
 static int l_static_framedelay(lua_State *L) {
   int t;
   if (!lua_isnumber(L, -1)) {
@@ -47,6 +61,9 @@ static int l_static_framedelay(lua_State *L) {
   return 0;
 }
 
+/**
+   Sets the global clip rect of the renderer
+ */
 static int l_static_setRenderClip(lua_State *L) {
   int x;
   int y;
@@ -85,6 +102,9 @@ static int l_static_setRenderClip(lua_State *L) {
   return 0;
 }
 
+/**
+   gets the global render clip rect
+ */
 static int l_static_getRenderClip(lua_State *L) {
   SDL_Rect rect;
   SDL_RenderGetClipRect(globalRenderer, &rect);
@@ -95,6 +115,9 @@ static int l_static_getRenderClip(lua_State *L) {
   return 4;
 }
 
+/**
+   Sets the texture to be the render target
+ */
 static int l_static_setRenderTarget(lua_State *L) {
   SDL_Texture *texture;
   if (!lua_islightuserdata(L, -1)) {
@@ -107,11 +130,17 @@ static int l_static_setRenderTarget(lua_State *L) {
   return 0;
 }
 
+/**
+   Sets the render target back to the screen
+ */
 static int l_static_unsetRenderTarget(lua_State *L) {
   SDL_SetRenderTarget(globalRenderer, NULL);
   return 0;
 }
 
+/**
+   clears renderer
+ */
 static int l_static_renderClear(lua_State *L) {
   SDL_SetRenderDrawColor(globalRenderer, 0x00, 0x00, 0x00, 0x00);
   SDL_Rect rect;
@@ -123,6 +152,9 @@ static int l_static_renderClear(lua_State *L) {
   return 0;
 }
 
+/**
+   Sets the render blend mode
+ */
 static int l_static_renderBlendmode(lua_State *L) {
   SDL_BlendMode mode;
   if (!lua_isnumber(L, -1)) {
