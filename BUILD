@@ -17,6 +17,7 @@ COPTS = select({
          "-stdlib=libc++",
 	 "-F/Library/Frameworks",
     ],
+    "@bazel_tools//src/conditions:windows": [],
     "//conditions:default": [
         "-std=c++11",
     ],
@@ -32,6 +33,7 @@ LINKOPTS = select({
         "-ldl",
         "-lm",
     ],
+    "@bazel_tools//src/conditions:windows": [],
     "//conditions:default": [
         "-lSDL2",
         "-lSDL2_image",
@@ -45,7 +47,7 @@ LINKOPTS = select({
 cc_binary(
     name = "operator-12",
     srcs = glob([
-        "headers/*.hpp",
+        "headers/*.h",
         "source/*.cpp",
     ]),
     deps = DEPS,
@@ -85,7 +87,7 @@ cc_library(
     name = "op12-android",
     srcs = glob([
         "source/*.cpp",
-        "headers/*.hpp",
+        "headers/*.h",
     ]),
     includes = [
 	"headers/",

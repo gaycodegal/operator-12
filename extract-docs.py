@@ -35,8 +35,9 @@ def matcher(obj):
     print("   @fn", obj.group(2))
     print("*/")
     return "tst"
+
 def listall(path):
-    things = sorted([x for x in os.listdir(path) if x != ".contents.lua" and x.endswith(".lua") and x.count(".") == 1 and os.path.isfile(os.path.join(path, x))])
+    things = sorted([x for x in os.listdir(path) if x != "contents.lua" and x.endswith(".lua") and x.count(".") == 1 and os.path.isfile(os.path.join(path, x))])
     for name in things:
         full = os.path.join(path, name)
         contents = ""

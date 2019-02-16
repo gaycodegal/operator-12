@@ -1,5 +1,5 @@
-#ifndef _DRAWABLE_HPP_
-#define _DRAWABLE_HPP_
+#ifndef _DRAWABLE_H_
+#define _DRAWABLE_H_
 
 /**
    anything that can draw itself to the current sdl2 context

@@ -1,6 +1,6 @@
-#ifndef _MAP_HPP_
-#define _MAP_HPP_
-#include "main.hpp"
+#ifndef _MAP_H_
+#define _MAP_H_
+#include "main.h"
 
 class TiledTexture {
 private:

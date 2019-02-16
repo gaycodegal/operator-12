@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "main.h"
 int SCREEN_WIDTH = 640;
 int SCREEN_HEIGHT = 480;
 SDL_Window *window;
