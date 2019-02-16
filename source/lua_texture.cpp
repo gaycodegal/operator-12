@@ -224,12 +224,11 @@ static int l_texture_blendmode(lua_State *L) {
   return 0;
 }
 
-const struct luaL_Reg texture_meta[] = {
-    {"new", l_texture_new},
-    {"destroy", l_texture_destroy},
-    {"newTarget", l_texture_newTarget},
-    {"setRGBMask", l_texture_setRGBMask},
-    {"setAMask", l_texture_setAMask},
-    {"renderCopy", l_texture_renderCopy},
-    {"blendmode", l_texture_blendmode},
-    {NULL, NULL}};
+const struct luaL_Reg texture_meta[] = {{"new", l_texture_new},
+                                        {"destroy", l_texture_destroy},
+                                        {"newTarget", l_texture_newTarget},
+                                        {"setRGBMask", l_texture_setRGBMask},
+                                        {"setAMask", l_texture_setAMask},
+                                        {"renderCopy", l_texture_renderCopy},
+                                        {"blendmode", l_texture_blendmode},
+                                        {NULL, NULL}};

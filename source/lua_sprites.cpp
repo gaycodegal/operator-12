@@ -170,9 +170,9 @@ static int l_new_sprite(lua_State *L) {
 }
 
 const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
-                                             {"draw", l_draw_sprite},
-                                             {"destroy", l_free_sprite},
-                                             {"move", l_move_sprite},
-                                             {"size", l_size_sprite},
-                                             {"__index", l_meta_indexer},
-                                             {NULL, NULL}};
+                                      {"draw", l_draw_sprite},
+                                      {"destroy", l_free_sprite},
+                                      {"move", l_move_sprite},
+                                      {"size", l_size_sprite},
+                                      {"__index", l_meta_indexer},
+                                      {NULL, NULL}};
