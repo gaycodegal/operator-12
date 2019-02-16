@@ -60,6 +60,8 @@ extern "C" {
 #include "drawable.h"
 #include "lua_helpers.h"
 #include "lua_texture.h"
+#include "lua_surface.h"
+#include "lua_ttf.h"
 #include "lua_static.h"
 #include "lua_sprites.h"
 #include "map.h"

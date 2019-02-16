@@ -59,4 +59,9 @@ void printLuaStack(lua_State *L, const char *name);
  */
 int l_meta_indexer(lua_State *L);
 
+/**
+   loads the sprite library into lua
+ */
+int luaopen_gamelibs(lua_State *L);
+
 #endif
