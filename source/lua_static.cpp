@@ -167,7 +167,7 @@ static int l_static_renderBlendmode(lua_State *L) {
   return 0;
 }
 
-static const struct luaL_Reg static_meta[] = {
+const struct luaL_Reg static_meta[] = {
     {"quit", l_static_quit},
     {"wait", l_static_wait},
     {"readfile", l_static_readfile},
