@@ -109,13 +109,13 @@ struct luaConstInt {
 };
 
 int luaopen_gamelibs(lua_State *L) {
-  static const struct luaClassList game[] = {{"Music", music_meta},
-                                             {"Texture", texture_meta},
-                                             {"Sprite", spritemeta},
-                                             {"static", static_meta},
-                                             {"Surface", surface_meta},
-                                             {"TTF", ttf_meta},
-                                             {NULL, NULL}};
+  static const struct luaClassList game[] = {
+#ifndef NO_MUSIC
+      {"Music", music_meta},
+#endif
+      {"Texture", texture_meta}, {"Sprite", spritemeta},
+      {"static", static_meta},   {"Surface", surface_meta},
+      {"TTF", ttf_meta},         {NULL, NULL}};
 
   static const struct luaConstInt globints[] = {
       {"SCREEN_WIDTH", SCREEN_WIDTH},

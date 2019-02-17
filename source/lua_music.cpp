@@ -107,14 +107,13 @@ static int l_music_destroy(lua_State *L) {
   return 0;
 }
 
-const struct luaL_Reg music_meta[] = {
-    {"new", l_music_new},
-    {"play", l_music_play},
-    {"setPosition", l_music_setPosition},
-    {"pause", l_music_pause},
-    {"resume", l_music_resume},
-    {"destroy", l_music_destroy},
-    {"__index", l_meta_indexer},
-    {NULL, NULL}};
+const struct luaL_Reg music_meta[] = {{"new", l_music_new},
+                                      {"play", l_music_play},
+                                      {"setPosition", l_music_setPosition},
+                                      {"pause", l_music_pause},
+                                      {"resume", l_music_resume},
+                                      {"destroy", l_music_destroy},
+                                      {"__index", l_meta_indexer},
+                                      {NULL, NULL}};
 
 #endif

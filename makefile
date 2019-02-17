@@ -10,7 +10,7 @@ ifneq (,$(findstring wasm,$(MAKECMDGOALS)))
 OBJ_NAME = out/op12.html
 LUAO=third_party/lua/lua.o
 CC = emcc
-EMFLAGS = -s USE_SDL=2 -s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s ALLOW_MEMORY_GROWTH=1
+EMFLAGS = -DNO_MUSIC -s USE_SDL=2 -s USE_SDL_TTF=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS='["png"]' -s ALLOW_MEMORY_GROWTH=1
 endif
 
 CPPFLAGS = --std=c++11 -O2 -L$(LUA) -I$(LUA) -I$(INC) $(EMFLAGS)
