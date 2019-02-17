@@ -346,14 +346,13 @@ static int l_surface_destroy(lua_State *L) {
   return 0;
 }
 
-const struct luaL_Reg surface_meta[] = {
-    {"new", l_surface_new},
-    {"newBlank", l_surface_newBlank},
-    {"blendmode", l_surface_blendmode},
-    {"fill", l_surface_fill},
-    {"size", l_surface_size},
-    {"blit", l_surface_blit},
-    {"textureFrom", l_surface_textureFrom},
-    {"blitScale", l_surface_blitScale},
-    {"destroy", l_surface_destroy},
-    {NULL, NULL}};
+const struct luaL_Reg surface_meta[] = {{"new", l_surface_new},
+                                        {"newBlank", l_surface_newBlank},
+                                        {"blendmode", l_surface_blendmode},
+                                        {"fill", l_surface_fill},
+                                        {"size", l_surface_size},
+                                        {"blit", l_surface_blit},
+                                        {"textureFrom", l_surface_textureFrom},
+                                        {"blitScale", l_surface_blitScale},
+                                        {"destroy", l_surface_destroy},
+                                        {NULL, NULL}};
