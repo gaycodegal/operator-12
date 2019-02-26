@@ -36,7 +36,7 @@ LINKOPTS = select({
         "-lSDL2",
         "-lSDL2_image",
         "-lSDL2_ttf",
-        "-lSDL_mixer",
+        "-lSDL2_mixer",
         "-ldl",
         "-lm",
     ],
