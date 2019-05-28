@@ -15,11 +15,17 @@ name = name[:-2] + ".d"
 if not os.path.isfile(name):
     exit(0)
 
-regex = re.compile("^\s*#/")
+regex = re.compile("^\s*/")
 contents = ""
+valid_lines = lambda x: not regex.match(x)
 
+# filter out absolute paths
+# possibly misses short absolute paths of the form:
+# relative_path /absolute_path
+# could be avoided but i'm lazy.
 with open(name, "r") as f:
-    lines = "".join(filter(regex.match, f.readlines()))
+    lines = "".join(filter(valid_lines, f.readlines()))
 
+# write the valid ones to disk
 with open(name, "w") as f:
     f.write(lines)
