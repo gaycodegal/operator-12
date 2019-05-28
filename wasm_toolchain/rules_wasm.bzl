@@ -14,6 +14,13 @@ def wasm_binary(
     postfixes = POSTFIXES[:POSTFIXES.index(extension) + 1]
     fullnames = [basename + postfix for postfix in postfixes]
     o_name = basename + ".o"
+
+    #check if .data file will be generated
+    for copt in copts:
+        if copt.startswith("--preload"):
+            fullnames.append(basename + ".data")
+            break
+    
     native.cc_binary(
         name = o_name,
         srcs = srcs,
