@@ -1,0 +1,13 @@
+# Create a new CROSSTOOL file for our toolchain.
+
+build:asmjs --crosstool_top=//wasm_toolchain:emscripten
+
+# Use --cpu as a differentiator.
+
+build:asmjs --cpu=asmjs
+
+# Specify a "sane" C++ toolchain for the host platform.
+
+build:asmjs --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+
+build --spawn_strategy=standalone
