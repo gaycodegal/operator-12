@@ -42,7 +42,8 @@ def wasm_binary(
     # if all they want is a .o do no more
     if extension == ".o":
         return
-    
+
+    # generate .html, .js, .wasm, and .data as applicable.
     native.genrule(
         name = "_" + name,
         srcs = data + [o_name],
