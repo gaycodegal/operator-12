@@ -1,3 +1,5 @@
+load("//wasm_toolchain:rules_wasm.bzl", "wasm_binary")
+
 DEPS = select({
     "@bazel_tools//src/conditions:windows": [
         "//third_party/lua:lua-lib",
@@ -34,6 +36,14 @@ LINKOPTS = select({
         "-lm",
     ],
     "@bazel_tools//src/conditions:windows": [],
+    "//wasm_toolchain:asmjs" : [
+        "-s USE_SDL=2",
+        "-s USE_SDL_TTF=2",
+        "-s USE_SDL_IMAGE=2",
+        "-s SDL2_IMAGE_FORMATS='[\"png\"]'",
+        "-s ALLOW_MEMORY_GROWTH=1",
+        "--preload-file resources/",
+    ],
     "//conditions:default": [
         "-lSDL2",
         "-lSDL2_image",
@@ -56,6 +66,30 @@ cc_binary(
     ],
     data = glob(["resources/**"]),
     copts = COPTS,
+    linkopts = LINKOPTS,
+)
+
+wasm_binary(
+    name = "operator-12.html",
+    srcs = glob([
+        "headers/*.h",
+        "source/*.cpp",
+    ]),
+    deps = DEPS,
+    includes = [
+	"headers/",
+    ],
+    data = glob(["resources/**"]),
+    copts = [
+        "-std=c++11",
+        "-DNO_MUSIC",
+        "-s USE_SDL=2",
+        "-s USE_SDL_TTF=2",
+        "-s USE_SDL_IMAGE=2",
+        "-s SDL2_IMAGE_FORMATS='[\"png\"]'",
+        "-s ALLOW_MEMORY_GROWTH=1",
+        "--preload-file resources/",
+    ],
     linkopts = LINKOPTS,
 )
 
