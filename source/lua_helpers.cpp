@@ -1,5 +1,38 @@
 #include "lua_helpers.h"
 
+int getLen(lua_State *L, int i) {
+  lua_len(L, i);
+  int result = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+  return result;
+}
+
+void getTable(lua_State *L, const char *named) {
+  lua_pushstring(L, named);
+  lua_gettable(L, -2);
+}
+
+void getTableAtIndex(lua_State *L, int i) {
+  lua_pushinteger(L, i);
+  lua_gettable(L, -2);
+}
+
+int getInt(lua_State *L, const char *named) {
+  lua_pushstring(L, named);
+  lua_gettable(L, -2);
+  int result = lua_tointeger(L, -1);
+  lua_pop(L, 1);
+  return result;
+}
+
+std::string getString(lua_State *L, const char *named) {
+  lua_pushstring(L, named);
+  lua_gettable(L, -2);
+  std::string result = std::string(lua_tostring(L, -1));
+  lua_pop(L, 1);
+  return result;
+}
+
 void set_meta(lua_State *L, int ind, const char *name) {
   lua_getglobal(L, "Game");
   lua_getfield(L, -1, name);

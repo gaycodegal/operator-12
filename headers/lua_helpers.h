@@ -1,6 +1,32 @@
 #ifndef _LUA_HELPERS_H_
 #define _LUA_HELPERS_H_
 #include "main.h"
+
+/**
+   get the length of object at stack index i
+ */
+int getLen(lua_State *L, int i);
+
+/**
+   load a table from a name
+ */
+void getTable(lua_State *L, const char *named);
+
+/**
+   load a table from an index
+ */
+void getTableAtIndex(lua_State *L, int i);
+
+/**
+   get an int from a table
+ */
+int getInt(lua_State *L, const char *named);
+
+/**
+   get a string from a table
+ */
+std::string getString(lua_State *L, const char *named);
+
 /**
    the library name as exposed to lua.
  */

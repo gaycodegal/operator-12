@@ -16,7 +16,7 @@ function World.Start(argc, argv)
 	  name = "main"
    end
    static.framedelay(framedelay)
-   W.sector = Sector.new(dofile("world/sectors/"..name..".lua"))
+   
 end
 
 --[[
@@ -35,7 +35,7 @@ end
    draw things, update map
 ]]
 function World.Update()
-   --Update = static.quit
+   Update = static.quit
    W.sector:update()
    W.sector:draw()
 end
