@@ -1,4 +1,4 @@
-#include "lua_sprites.h"
+#include "lua_sprite.h"
 
 static int l_draw_sprite(lua_State *L) {
   Sprite *s;

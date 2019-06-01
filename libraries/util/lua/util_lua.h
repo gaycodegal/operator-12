@@ -1,15 +1,13 @@
-#ifndef _LUA_HELPERS_H_
-#define _LUA_HELPERS_H_
-#include "main.h"
+#ifndef _UTIL_LUA_H_
+#define _UTIL_LUA_H_
+
+#include "lua_include.h"
+#include "util_files.h"
+
 /**
    the library name as exposed to lua.
  */
 #define LUA_LIBNAME "Game"
-/**
-   reads in the text content of a file.
-   allocates and returns a c string.
- */
-char *fileRead(const char *fname, Sint64 &size);
 
 /**
    loads a lua file named <fname> into the state <L>
@@ -58,10 +56,5 @@ void printLuaStack(lua_State *L, const char *name);
    class methods (and static class vars/functions).
  */
 int l_meta_indexer(lua_State *L);
-
-/**
-   loads the sprite library into lua
- */
-int luaopen_gamelibs(lua_State *L);
 
 #endif

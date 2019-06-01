@@ -209,7 +209,7 @@ int main(int argc, char **argv) {
 #elif ANDROID
 // already in resources
 #else
-  int unused = chdir("resources");
+  chdir("resources");
 #endif
 
   std::string path;

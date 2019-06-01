@@ -1,6 +1,11 @@
 #ifndef _SPRITE_H_
 #define _SPRITE_H_
-#include "main.h"
+
+#include "globals.h"
+#include "util_lua.h"
+#include "drawable.h"
+#include "sdl_include.h"
+
 SDL_Texture *loadTexture(const char *path, int &w, int &h);
 
 /**

@@ -49,18 +49,12 @@ static int l_music_play(lua_State *L) {
 }
 
 static int l_music_setPosition(lua_State *L) {
-  Mix_Music *music;
   double position;
   if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  position = (double)lua_tonumber(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isuserdata(L, -1)) {
     lua_pop(L, 1);
     return 0;
   }
+  position = (double)lua_tonumber(L, -1);
   lua_pop(L, 1);
   if (Mix_SetMusicPosition(position) == -1) {
     lua_pushstring(L, (Mix_GetError()));
@@ -70,23 +64,11 @@ static int l_music_setPosition(lua_State *L) {
 }
 
 static int l_music_pause(lua_State *L) {
-  Mix_Music **music;
-  if (!lua_isuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  lua_pop(L, 1);
   Mix_PauseMusic();
   return 0;
 }
 
 static int l_music_resume(lua_State *L) {
-  Mix_Music **music;
-  if (!lua_isuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  lua_pop(L, 1);
   Mix_ResumeMusic();
   return 0;
 }
