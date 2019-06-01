@@ -1,4 +1,4 @@
-#include "main.h"
+#include "lua_map.h"
 
 static int l_map_new(lua_State *L) {
   if (!lua_istable(L, -1)) {

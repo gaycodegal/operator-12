@@ -1,6 +1,10 @@
 #ifndef _MAP_H_
 #define _MAP_H_
-#include "main.h"
+
+#include "globals.h"
+#include "drawable.h"
+#include "util_lua.h"
+#include "sdl_include.h"
 
 class TiledTexture {
 private:

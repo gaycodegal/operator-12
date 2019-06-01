@@ -1,17 +1,11 @@
 load("//wasm_toolchain:rules_wasm.bzl", "wasm_binary")
 
-DEPS = select({
-    "@bazel_tools//src/conditions:windows": [
-        "//third_party/lua:lua-lib",
-        "//third_party/SDL",
-        "//third_party/SDL_mixer",
-        "//third_party/SDL_image",
-        "//third_party/SDL_ttf",
-    ],
-    "//conditions:default": [
-        "//third_party/lua:lua-lib",
-    ],
-})
+DEPS = [
+    "//libraries/std/include",
+    "//libraries/lua/include",
+    "//libraries/lua/loader",
+    "//libraries/sdl/include",
+]
 
 COPTS = select({
     "@bazel_tools//src/conditions:darwin": [
@@ -57,13 +51,10 @@ LINKOPTS = select({
 cc_binary(
     name = "operator-12",
     srcs = glob([
-        "headers/*.h",
-        "source/*.cpp",
+        "cpp/*.h",
+        "cpp/*.cpp",
     ]),
     deps = DEPS,
-    includes = [
-	"headers/",
-    ],
     data = glob(["resources/**"]),
     copts = COPTS,
     linkopts = LINKOPTS,
@@ -72,17 +63,13 @@ cc_binary(
 wasm_binary(
     name = "operator-12.html",
     srcs = glob([
-        "headers/*.h",
-        "source/*.cpp",
+        "cpp/*.h",
+        "cpp/*.cpp",
     ]),
     deps = DEPS,
-    includes = [
-	"headers/",
-    ],
     data = glob(["resources/**"]),
     copts = [
         "-std=c++11",
-        "-DNO_MUSIC",
         "-s USE_SDL=2",
         "-s USE_SDL_TTF=2",
         "-s USE_SDL_IMAGE=2",
@@ -120,12 +107,9 @@ android_library(
 cc_library(
     name = "op12-android",
     srcs = glob([
-        "source/*.cpp",
-        "headers/*.h",
+        "cpp/*.h",
+        "cpp/*.cpp",
     ]),
-    includes = [
-	"headers/",
-    ],
     copts = ["-DANDROID"],
     deps = [
         "//third_party/lua:lua-lib-android",
