@@ -45,7 +45,7 @@ def wasm_binary(
 
     # generate .html, .js, .wasm, and .data as applicable.
     native.genrule(
-        name = "_" + name,
+        name = name + ".all",
         srcs = data + [o_name],
         outs = fullnames,
         cmd = "wasm_toolchain/em_gen.sh \"$(location :" + o_name + ")\" -o \"$(@D)/" + name +"\" " + " ".join(copts), 

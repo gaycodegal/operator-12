@@ -7,6 +7,9 @@ SDL_Renderer *globalRenderer;
 TTF_Font *gFont = NULL;
 bool doInitSDL = false;
 
+// Our opengl context handle
+SDL_GLContext mainContext;
+
 int start() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -32,6 +35,7 @@ int start() {
   }
   initopts |= SDL_WINDOW_FULLSCREEN;
 #endif
+  
   window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             initopts);
@@ -39,6 +43,12 @@ int start() {
     printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
     return 1;
   }
+
+  // Create our opengl context and attach it to our window
+  mainContext = SDL_GL_CreateContext(window);
+
+  setOpenGLAttributes();
+
   globalRenderer = SDL_CreateRenderer(window, -1, 0);
   if (!globalRenderer) {
     printf("Could not create renderer SDL_Error: %s\n", SDL_GetError());
@@ -51,6 +61,25 @@ int start() {
   }
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
   return 0;
+}
+
+bool setOpenGLAttributes() {
+  // Set our OpenGL version.
+  // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+  // 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+
+  // Turn on double buffering with a 24bit Z buffer.
+  // You may need to change this to 16 or 32 for your system
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+  // This makes our buffer swap syncronized with the monitor's vertical refresh
+  SDL_GL_SetSwapInterval(1);
+
+  return true;
 }
 
 int end() {
@@ -153,7 +182,8 @@ void one_iter() {
     }
   }
 
-  SDL_RenderClear(globalRenderer);
+  glClear(GL_COLOR_BUFFER_BIT);
+
   long nowTick = getMS();
   long delta = (nowTick - lastTick);
   long tdelta = delta;
@@ -167,7 +197,7 @@ void one_iter() {
     callErr(L, "Update", 2);
   }
   lastTick = nowTick;
-  SDL_RenderPresent(globalRenderer);
+  SDL_GL_SwapWindow(window);
   if (!quit)
     SDL_WaitEventTimeout(NULL, framedelay);
 }

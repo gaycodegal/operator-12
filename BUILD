@@ -43,13 +43,14 @@ LINKOPTS = select({
         "-lSDL2_image",
         "-lSDL2_ttf",
         "-lSDL2_mixer",
+        "-lGL",
         "-ldl",
         "-lm",
     ],
 })
 
 cc_binary(
-    name = "operator-12",
+    name = "opengl-wasm",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
@@ -61,7 +62,7 @@ cc_binary(
 )
 
 wasm_binary(
-    name = "operator-12.html",
+    name = "opengl-wasm.html",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
@@ -81,7 +82,7 @@ wasm_binary(
 )
 
 TOP_CONTENT = [
-    "//:operator-12",
+    "//:opengl-wasm",
     "//third_party/SDL_ttf:extra_libs",
     "//third_party/SDL_mixer:extra_libs",
     "//third_party/SDL_image:extra_libs",

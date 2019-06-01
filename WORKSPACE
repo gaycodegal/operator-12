@@ -6,5 +6,5 @@ android_ndk_repository(
     api_level=19,
 )
 workspace(
-    name = "operator12",
+    name = "opengl_wasm",
 )
