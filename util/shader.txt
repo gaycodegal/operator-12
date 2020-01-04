@@ -1,0 +1,11 @@
+"shader_"
+"new"
+["vert", "frag"]
+["char *", "char *"]
+["string", "string"]
+1
+"use"
+[]
+[]
+[]
+0

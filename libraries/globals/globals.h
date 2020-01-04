@@ -13,7 +13,7 @@ extern SDL_Renderer *globalRenderer;
 extern TTF_Font *gFont;
 
 // set true to exit program at end of loop
-extern bool quit;
+extern int quit;
 // delay between this and the next frame
 extern int framedelay;
 

@@ -1,1 +1,0 @@
-return {"collectables.lua"}

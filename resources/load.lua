@@ -1,166 +1,75 @@
 require("util")
 local isMain = Util.isMain()
-require("flex/flex")
-require("data/save")
-require("ui/UIElement")
-require("ui/ListButton")
-require("level-select/load")
-require("viewer/load")
-require("world/load")
-require("dialogue/overlay")
-MainMenu = {}
-local M = MainMenu
+Demo = {}
+local D = Demo
+D.box = {
+      -1, 1, 1, -- Top left
+   1, 1, 1, -- Top right
+   1,-1, 1, -- Bottom right 
+      -1,-1, 1
+} -- Bottom left
+D.colors = {
+   0.0, 1.0, 0.0, 1.0, -- Top left
+   1.0, 1.0, 0.0, 1.0, -- Top right
+   1.0, 0.0, 0.0, 1.0, -- Bottom right 
+   0.0, 0.0, 1.0, 1.0, -- Bottom left
+}
 
---[[--
-   generic no-arg controller switcher
+positionAttr = 0
+colorAttr = 1
+--[[
+   draw things
 ]]
-function MainMenu.switchTo(controller)
-   return function()
-      M.End()
-      Util.setController(controller)
-      Start(0,{})
+function Demo.Start()
+   D.shader = Shader.new("shaders/shader.vert", "shaders/shader.frag")
+   D.shader:use()
+   box = FloatArray.new(#D.box)
+   for i = 1, #D.box do
+      box[i - 1] = D.box[i]
    end
-end
-
-function MainMenu.layout()
-   local class = UIButton
-   local rows, cols = 4, 4
-
-   local space = {size={10, "dp"}}
-   local childRow = {}
-   local key = 1
-   for i = 1, 2 * rows, 2 do
-      local childCol = {}
-      for j = 1, 2 * cols, 2 do
-	 childCol[j] = space
-	 childCol[j + 1] = {class=class,
-						name=key,
-			    size={1,"w"},
-			    color="ff00ff"}
-	 key = key + 1
-      end
-      childCol[2 * cols + 1] = space
-      childRow[i] = space
-      childRow[i + 1] = {axis=horizontal,
-			 size={1,"w"},
-			 children=childCol}
+   colors = FloatArray.new(#D.colors)
+   for i = 1, #D.colors do
+      colors[i - 1] = D.colors[i]
    end
-   childRow[2 * rows + 1] = space
+
+   vb_point = GL.genBuffer()
+   vb_color = GL.genBuffer()
+   va = GL.genVertexArray()
    
-   return {
-      axis=horizontal,
-      children={
-	 {axis=vertical,
-	  size={1,"w"},
-	  children=childRow}
-      }
-   }
-end
+   GL.bindVertexArray(va)
 
---[[--
-   on click callback to load credits
-]]
-function MainMenu.toCredits()
-   M.End()
-   Util.setController(Viewer)
-   Start(3, {"viewer/load", "licenses/", "\n\n"})
-end
+   GL.bindBuffer(GL_ARRAY_BUFFER, vb_point)
+   GL.bufferData(GL_ARRAY_BUFFER, #box * GLFLOAT_SIZE, box, GL_STATIC_DRAW)
+   -- each point is of size 3
+   GL.vertexAttribPointer(positionAttr, 3, GL_FLOAT, false, 0, 0)
+   GL.enableVertexAttribArray(positionAttr)
 
---[[
-   standard Flex mouse down
+   GL.bindBuffer(GL_ARRAY_BUFFER, vb_color)
+   GL.bufferData(GL_ARRAY_BUFFER, #colors * GLFLOAT_SIZE, colors, GL_STATIC_DRAW)
+   -- each color is of size 4
+   GL.vertexAttribPointer(colorAttr, 4, GL_FLOAT, false, 0, 0)
 
-   @param x 
-   @param y 
-]]
-function MainMenu.MouseDown(x,y)
-   Flex.mouseDown(M, x, y)
-end
+   GL.bindBuffer(GL_ARRAY_BUFFER, 0)
 
---[[
-   standard Flex mouse move
-
-   @param x 
-   @param y 
-]]
-function MainMenu.MouseMove(x,y)
-   Flex.mouseMove(M, x, y)
-end
-
---[[
-   standard Flex mouse up
-
-   @param x 
-   @param y 
-]]
-function MainMenu.MouseUp(x,y)
-   Flex.mouseUp(M, x, y)
-end
-
-function MainMenu.MouseWheel(x,y,dx,dy)
-   Flex.mouseWheel(M, x, y, dx, dy)
-end
-
---[[
-   resize
-
-   @param w 
-   @param h 
-]]
-function MainMenu.Resize(w,h)
-   Util.Resize(w,h)
-   M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
-   Flex.setRects(M.views, M.rects)
-   --UIElement.recalc(M.scene)
-   --M.buttons:resize()
-   
-end
-
---[[--
-   Basic menu setup
-]]
-function MainMenu.Start()
-   M.cells = Flex.load("layout.lua")
-   local named = Flex.getNamed(M.cells.children)
-   named.main.size[1] = ListButton.heightOf(4, 60, 10)
-   M.rects = Flex.calculateRects(M.cells, {0,0,SCREEN_WIDTH,SCREEN_HEIGHT})
-   M.views = Flex.new(M.cells, M.rects)
-   named = Flex.getNamed(M.views)
-   ListButton.init(named.main,
-				   {M.switchTo(MapSelect),M.toCredits,M.switchTo(World),M.switchTo(Dialogue)},
-				   {"Level Selection", "Credits/Thanks", "World Map Test", "Dialogue Test"},
-				   60, 10)
-   --[[local data = {"EEE", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p"}
-   local named = Flex.getNamed(M.views) 
-   for i, v in ipairs(data) do
-	  local dat = {text=v, click=M.click}
-	  if i > 6 then
-		 dat = {color="00ff0000"}
-	  end
-      named[i]:setData(dat)
-	  end]]
-end
-
-function MainMenu.click(object, pt)
-   print("click reg @", pt[1], pt[2], object.text)
 end
 
 --[[
    draw things
 ]]
-function MainMenu.Update()
+function Demo.Update()
    --Update=static.quit
-   Flex.draw(M.views)
-   --M.buttons:draw()
+   GL.enableVertexAttribArray(colorAttr)
+   -- Equivalent of LINE_LOOP for triangles
+   GL.drawArrays(GL_TRIANGLE_FAN, 0, 4)
 end
 
 --[[
    destroy things
 ]]
-function MainMenu.End()
-   Flex.destroy(M.views)
-   M.views = nil
-   M.cells = nil
-   M.rects = nil
+function Demo.End()
+   D.shader:destroy()
+   colors:destroy()
+   box:destroy()
 end
 
-Util.try(isMain, M)
+Util.try(isMain, D)

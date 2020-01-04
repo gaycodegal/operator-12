@@ -9,6 +9,9 @@
 #include "lua_surface.h"
 #include "lua_texture.h"
 #include "lua_ttf.h"
+#include "bound_shader.h"
+#include "bound_gl_static.h"
+#include "bound_float_array.h"
 
 /**
    loads the sprite library into lua

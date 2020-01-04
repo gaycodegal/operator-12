@@ -3,6 +3,7 @@
 
 #include "lua_include.h"
 #include "util_files.h"
+#include "globals.h"
 
 /**
    the library name as exposed to lua.

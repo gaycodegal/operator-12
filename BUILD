@@ -1,4 +1,5 @@
 load("//wasm_toolchain:rules_wasm.bzl", "wasm_binary")
+load("//bzl:vars.bzl", "COPTS", "LINKOPTS", "COPTS_ASMJS")
 
 DEPS = [
     "//libraries/std/include",
@@ -7,50 +8,8 @@ DEPS = [
     "//libraries/sdl/include",
 ]
 
-COPTS = select({
-    "@bazel_tools//src/conditions:darwin": [
-        "-std=c++11",
-         "-stdlib=libc++",
-	 "-F/Library/Frameworks",
-    ],
-    "@bazel_tools//src/conditions:windows": [],
-    "//conditions:default": [
-        "-std=c++11",
-    ],
-})
-
-LINKOPTS = select({
-    "@bazel_tools//src/conditions:darwin": [
-        "-F/Library/Frameworks",
-        "-framework SDL2",
-        "-framework SDL2_image",
-        "-framework SDL2_ttf",
-        "-framework SDL2_mixer",
-        "-ldl",
-        "-lm",
-    ],
-    "@bazel_tools//src/conditions:windows": [],
-    "//wasm_toolchain:asmjs" : [
-        "-s USE_SDL=2",
-        "-s USE_SDL_TTF=2",
-        "-s USE_SDL_IMAGE=2",
-        "-s SDL2_IMAGE_FORMATS='[\"png\"]'",
-        "-s ALLOW_MEMORY_GROWTH=1",
-        "--preload-file resources/",
-    ],
-    "//conditions:default": [
-        "-lSDL2",
-        "-lSDL2_image",
-        "-lSDL2_ttf",
-        "-lSDL2_mixer",
-        "-lGL",
-        "-ldl",
-        "-lm",
-    ],
-})
-
 cc_binary(
-    name = "opengl-wasm",
+    name = "main",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
@@ -59,30 +18,25 @@ cc_binary(
     data = glob(["resources/**"]),
     copts = COPTS,
     linkopts = LINKOPTS,
+    visibility = ["//visibility:public"],
 )
 
 wasm_binary(
-    name = "opengl-wasm.html",
+    name = "main.html",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
     ]),
     deps = DEPS,
     data = glob(["resources/**"]),
-    copts = [
-        "-std=c++11",
-        "-s USE_SDL=2",
-        "-s USE_SDL_TTF=2",
-        "-s USE_SDL_IMAGE=2",
-        "-s SDL2_IMAGE_FORMATS='[\"png\"]'",
-        "-s ALLOW_MEMORY_GROWTH=1",
-        "--preload-file resources/",
+    copts = COPTS_ASMJS + [
+        "--preload-file resources/"
     ],
     linkopts = LINKOPTS,
 )
 
 TOP_CONTENT = [
-    "//:opengl-wasm",
+    "//:main",
     "//third_party/SDL_ttf:extra_libs",
     "//third_party/SDL_mixer:extra_libs",
     "//third_party/SDL_image:extra_libs",

@@ -6,6 +6,9 @@
 #include "lua_loader.h"
 #include "sprite.h"
 
+#include "shader.h"
+
 bool setOpenGLAttributes();
+bool postWindowGLStuff();
 
 #endif

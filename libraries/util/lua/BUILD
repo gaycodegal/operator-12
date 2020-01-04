@@ -12,6 +12,7 @@ cc_library(
     linkopts = LINKOPTS,
     deps = [
         "//libraries/lua/include",
+        "//libraries/globals",
         "//libraries/util/files",
     ],
     includes = [""],

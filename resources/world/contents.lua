@@ -1,1 +1,0 @@
-return {"Sector.lua","load.lua","sectors/"}

@@ -6,8 +6,6 @@ SDL_Surface *screenSurface;
 SDL_Renderer *globalRenderer;
 TTF_Font *gFont = NULL;
 bool doInitSDL = false;
-
-// Our opengl context handle
 SDL_GLContext mainContext;
 
 int start() {
@@ -36,6 +34,7 @@ int start() {
   initopts |= SDL_WINDOW_FULLSCREEN;
 #endif
   
+  setOpenGLAttributes();
   window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             initopts);
@@ -44,12 +43,9 @@ int start() {
     return 1;
   }
 
-  // Create our opengl context and attach it to our window
   mainContext = SDL_GL_CreateContext(window);
-
-  setOpenGLAttributes();
-
   globalRenderer = SDL_CreateRenderer(window, -1, 0);
+  
   if (!globalRenderer) {
     printf("Could not create renderer SDL_Error: %s\n", SDL_GetError());
     return 1;
@@ -60,24 +56,35 @@ int start() {
     return 1;
   }
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+  postWindowGLStuff();
+
   return 0;
 }
 
-bool setOpenGLAttributes() {
-  // Set our OpenGL version.
-  // SDL_GL_CONTEXT_CORE gives us only the newer version, deprecated functions are disabled
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+bool postWindowGLStuff() {
 
-  // 3.2 is part of the modern versions of OpenGL, but most video cards whould be able to run it
+  // Sync buffer swap with monitor's vertical refresh
+  SDL_GL_SetSwapInterval(1);
+
+  // allow the useful stuff
+  glewExperimental = GL_TRUE; 
+  glewInit();
+
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  return true;
+}
+
+bool setOpenGLAttributes() {
+  //EGL_CONTEXT_CLIENT_VERSION must be set for WASM to be happy
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
 
   // Turn on double buffering with a 24bit Z buffer.
-  // You may need to change this to 16 or 32 for your system
+  // May be 16 or 32 for other systems
   SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
-  // This makes our buffer swap syncronized with the monitor's vertical refresh
-  SDL_GL_SetSwapInterval(1);
 
   return true;
 }
@@ -90,6 +97,7 @@ int end() {
   if (gFont != NULL)
     TTF_CloseFont(gFont);
   gFont = NULL;
+
   // Mix_CloseAudio();
   TTF_Quit();
   IMG_Quit();
@@ -97,7 +105,7 @@ int end() {
   return 0;
 }
 
-bool quit = false;
+int quit = 0;
 int framedelay = 1000 / 60;
 
 void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
@@ -147,7 +155,7 @@ void one_iter() {
   while (SDL_PollEvent(&e) != 0) {
     // User requests quit
     if (e.type == SDL_QUIT) {
-      quit = true;
+      quit = 1;
     } // User presses a key
     else if (keydownExists && e.type == SDL_KEYDOWN) {
       lua_getglobal(L, "KeyDown");
@@ -183,7 +191,6 @@ void one_iter() {
   }
 
   glClear(GL_COLOR_BUFFER_BIT);
-
   long nowTick = getMS();
   long delta = (nowTick - lastTick);
   long tdelta = delta;
@@ -233,7 +240,7 @@ std::string openConfig(const char *path) {
 #endif
 
 int main(int argc, char **argv) {
-  quit = false;
+  quit = 0;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
 #elif ANDROID
@@ -301,5 +308,8 @@ int main(int argc, char **argv) {
 
   end();
 #endif
+  if (quit < 0) {
+    return -quit;
+  }
   return 0;
 }

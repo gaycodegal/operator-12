@@ -11,3 +11,5 @@ build:asmjs --cpu=asmjs
 build:asmjs --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
 build --spawn_strategy=standalone
+
+test --test_output=all

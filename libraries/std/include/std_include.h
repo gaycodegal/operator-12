@@ -1,5 +1,8 @@
 #ifndef _STD_INCLUDE_H_
 #define _STD_INCLUDE_H_
+
+#include <vector>
+
 #ifdef _WIN32
 
 #include <Windows.h>
