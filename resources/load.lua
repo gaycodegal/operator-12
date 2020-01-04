@@ -63,6 +63,8 @@ function Demo.Start()
    
    GL.bindBuffer(GL_ARRAY_BUFFER, 0)
 
+   GL.enableVertexAttribArray(0)
+
    mode = GL_FILL
 end
 
@@ -72,10 +74,12 @@ end
 function Demo.Update()
    --Update=static.quit
    GL.enableVertexAttribArray(colorAttr)
-   -- Equivalent of LINE_LOOP for triangles
-   --GL.drawArrays(GL_TRIANGLE_FAN, 0, 4)
-   GL.bindBuffer(GL_ELEMENT_ARRAY_BUFFER, eab)
+   GL.bindVertexArray(va)
+
    GL.drawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
+
+   GL.bindVertexArray(0)
+   GL.enableVertexAttribArray(0)
 
 end
 
