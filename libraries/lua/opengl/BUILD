@@ -34,6 +34,11 @@ lua_bind_cpp(
 )
 
 lua_bind_cpp(
+    name = "bound_uint_array",
+    src = "lua_uint_array.cpp",
+)
+
+lua_bind_cpp(
     name = "bound_shader",
     src = "lua_shader.cpp",
 )

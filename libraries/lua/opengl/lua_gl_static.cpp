@@ -1,6 +1,6 @@
 #include "sdl_include.h"
 #include "lua_include.h"
-#include "lua_float_array.h"
+#include "lua_gl_static.h"
 #include "util_lua.h"
 
 /**
@@ -55,10 +55,10 @@ static void gl_bind_vertex_array(lua_Integer va) {
    @lua-name bufferData
    @lua-arg target: int
    @lua-arg size: int
-   @lua-arg data: Struct FloatArray
+   @lua-arg data: Struct VoidArray
    @lua-arg usage: int
  */
-static void gl_buffer_data(lua_Integer target, lua_Integer size, FloatArray* data, lua_Integer usage) {
+static void gl_buffer_data(lua_Integer target, lua_Integer size, VoidArray* data, lua_Integer usage) {
   if (data->data == NULL) {
     return;
   }
@@ -96,11 +96,33 @@ static void l_gl_clear() {
 }
 
 /**
+   @lua-name drawElements
+   @lua-arg mode: int
+   @lua-arg count: int
+   @lua-arg type: int
+   @lua-arg indices: int
+ */
+static void l_gl_drawElements(lua_Integer mode, lua_Integer count, lua_Integer type, lua_Integer indicies) {
+  glDrawElements(mode, count, type, reinterpret_cast<const void*>(indicies));
+}
+
+/**
    @lua-name drawArrays
    @lua-arg mode: int
    @lua-arg first: int
    @lua-arg count: int
  */
-static void l_gl_drawArrays(int mode, int first, int count) {
+static void l_gl_drawArrays(lua_Integer mode, lua_Integer first, lua_Integer count) {
   glDrawArrays(mode, first, count);
+}
+
+/**
+   @lua-name polygonMode
+   @lua-arg face: int
+   @lua-arg mode: int
+ */
+static void l_gl_polygonMode(lua_Integer face, lua_Integer mode) {
+#ifndef __EMSCRIPTEN__
+  glPolygonMode(face, mode);
+#endif
 }

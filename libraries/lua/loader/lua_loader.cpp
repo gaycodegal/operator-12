@@ -18,10 +18,18 @@ int luaopen_gamelibs(lua_State *L) {
       {"TTF", ttf_meta},
       {"GL", bound_gl_static_meta},
       {"FloatArray", bound_float_array_meta},
+      {"UIntArray", bound_uint_array_meta},
       {NULL, NULL}};
 
   static const struct luaConstInt globints[] = {
-    {"GLFLOAT_SIZE", sizeof(GLfloat)},
+    // gl fill face
+    {"GL_FRONT", GL_FRONT},
+    {"GL_BACK", GL_BACK},
+    {"GL_FRONT_AND_BACK", GL_FRONT_AND_BACK},
+    // gl fill mode
+    {"GL_POINT", GL_POINT},
+    {"GL_LINE", GL_LINE},
+    {"GL_FILL", GL_FILL},
     //gl
     {"GL_ARRAY_BUFFER", GL_ARRAY_BUFFER}, // Vertex attributes
     {"GL_ATOMIC_COUNTER_BUFFER", GL_ATOMIC_COUNTER_BUFFER}, // Atomic counter storage
@@ -60,7 +68,8 @@ int luaopen_gamelibs(lua_State *L) {
     {"GL_DYNAMIC_DRAW", GL_DYNAMIC_DRAW},
     {"GL_DYNAMIC_READ", GL_DYNAMIC_READ},
     {"GL_DYNAMIC_COPY", GL_DYNAMIC_COPY},
-    
+
+    // draw mode
     {"GL_POINTS", GL_POINTS},
     {"GL_LINE_STRIP", GL_LINE_STRIP},
     {"GL_LINE_LOOP", GL_LINE_LOOP},

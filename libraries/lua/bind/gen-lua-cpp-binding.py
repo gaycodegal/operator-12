@@ -84,8 +84,8 @@ def struct_lpush(arg_type):
     return """
     memcpy(lua_newuserdata(L, sizeof({ctype})), &retVal, sizeof({ctype}));
     
-    set_meta(L, -1, "{ctype}");
-""".format(ctype = arg_type[1])
+    set_meta(L, -1, "{ltype}");
+""".format(ctype = arg_type[1], ltype = arg_type[2])
 
 def class_lpush(arg_type):
     ctype = lua_ctypeof(arg_type)

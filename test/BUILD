@@ -7,3 +7,13 @@ sh_test(
         "//:main",
     ],
 )
+
+sh_test(
+    name = "uint_array_test",
+    args = ["$(location //:main)", "test/uint_array"],
+    srcs = ["test.sh"],
+    size = "small",
+    data = [
+        "//:main",
+    ],
+)

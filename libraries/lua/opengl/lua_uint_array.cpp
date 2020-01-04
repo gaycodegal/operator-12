@@ -3,17 +3,17 @@
 /**
    @lua-name new
    @lua-arg length: int
-   @lua-return Struct VoidArray FloatArray
+   @lua-return Struct VoidArray UIntArray
  */
-static VoidArray float_array_new(lua_Integer length) {
+static VoidArray uint_array_new(lua_Integer length) {
   VoidArray array;
-  array.data = reinterpret_cast<void*>(new GLfloat[length]);
+  array.data = reinterpret_cast<void*>(new GLuint[length]);
   array.length = length;
   return array;
 }
 
 /**
-   If indexing with a number, return the number at that index,
+   If indexing with a int, return the int at that index,
    otherwise, fetch whatever value is stored in the metatable for that key
 
    @lua-meta
@@ -37,7 +37,7 @@ static int __index(lua_State *L) {
       return 0;
     }
 
-    lua_pushnumber(L, reinterpret_cast<GLfloat*>(self->data)[key]);
+    lua_pushinteger(L, reinterpret_cast<GLuint*>(self->data)[key]);
     return 1;
   }
 
@@ -57,20 +57,20 @@ static int __index(lua_State *L) {
 }
 
 /**
-   do array[number] = number
+   do array[number] = int
    @lua-name __newindex
    @lua-arg self: Struct VoidArray
    @lua-arg key: int
-   @lua-arg value: number
+   @lua-arg value: int
  */
-static void __newindex(VoidArray* self, lua_Integer key, lua_Number value) {
+static void __newindex(VoidArray* self, lua_Integer key, lua_Integer value) {
   if (self->data == NULL) {
     return;
   }
   if (key < 0 || key >= self->length) {
     return;
   }
-  reinterpret_cast<GLfloat*>(self->data)[key] = value;
+  reinterpret_cast<GLuint*>(self->data)[key] = value;
 }
 
 /**
@@ -92,21 +92,21 @@ static lua_Integer __len(VoidArray* self) {
    @lua-arg self: Struct VoidArray
    @lua-return int
  */
-static lua_Integer float_array_bytes(VoidArray* self) {
+static lua_Integer uint_array_bytes(VoidArray* self) {
   if (self->data == NULL) {
     return -1;
   }
-  return self->length * sizeof(GLfloat);
+  return self->length * sizeof(GLuint);
 }
 
 /**
    @lua-name destroy
    @lua-arg self: Struct VoidArray
  */
-static void float_array_delete(VoidArray* self) {
+static void uint_array_delete(VoidArray* self) {
   if (self->data == NULL) {
     return;
   }
-  delete[] reinterpret_cast<GLfloat*>(self->data);
+  delete[] reinterpret_cast<GLuint*>(self->data);
   self->data = NULL;
 }

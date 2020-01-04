@@ -12,6 +12,7 @@
 #include "bound_shader.h"
 #include "bound_gl_static.h"
 #include "bound_float_array.h"
+#include "bound_uint_array.h"
 
 /**
    loads the sprite library into lua

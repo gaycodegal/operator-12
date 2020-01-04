@@ -1,11 +1,11 @@
 require("util")
 
 function Start()
-   test = {6,-2.1123415,121029,123.7123123,44.2,1.3}
-   array = FloatArray.new(6)
+   test = {6,4294967294,121029,0xFFFFFFFF,44,1}
+   array = UIntArray.new(6)
    for i=1,6 do
       array[i-1] = test[i]
-      assert(math.floor((array[i-1] - test[i])*100000 + 0.5) == 0, "failed to convert " .. test[i] .. " got " .. array[i-1])
+      assert(tostring(array[i-1]) == tostring(test[i]), "failed to convert " .. test[i] .. " got " .. array[i-1])
    end
    assert(#array == 6, "wrong size: " .. #array)
    -- try to break things
@@ -13,11 +13,11 @@ function Start()
    array[#array] = 12
    assert(array[-1] == nil, "negative indexing allowed")
    assert(array[#array] == nil, "size + 1 indexing allowed")
-   
+
    unit_byte = array:bytes() // #array
    assert(unit_byte * #array == array:bytes(), "invalid bytes")
-   assert(array:bytes() >= 1, "invalid bytes")
-   print("byte size for float is ", unit_byte)
+      assert(array:bytes() >= 1, "invalid bytes")
+   print("byte size for uint is ", unit_byte)
    
    -- normal destroy
    array:destroy()
