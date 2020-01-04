@@ -16,7 +16,27 @@ static Shader* l_shader_new(const char* vert, const char* frag) {
    @lua-arg self: Class Shader
  */
 static void l_shader_use(Shader *self) {
-  self->useProgram();
+  glUseProgram(self->program());
+}
+
+/**
+   @lua-name getUniformLocation
+   @lua-arg self: Class Shader
+   @lua-arg name: string
+   @lua-return int
+ */
+static lua_Integer shader_get_uniform_location(Shader *self, const char* name) {
+  return glGetUniformLocation(self->program(), name);
+}
+
+/**
+   @lua-name getAttribLocation
+   @lua-arg self: Class Shader
+   @lua-arg name: string
+   @lua-return int
+ */
+static lua_Integer shader_get_attrib_location(Shader *self, const char* name) {
+  return glGetAttribLocation(self->program(), name);
 }
 
 /**

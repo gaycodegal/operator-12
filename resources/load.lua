@@ -19,14 +19,15 @@ D.box.indices = {
    1, 2, 3, -- Second triangle
 }
 
-positionAttr = 0
-colorAttr = 1
 --[[
    draw things
 ]]
 function Demo.Start()
-   D.shader = Shader.new("shaders/shader.vert", "shaders/shader.frag")
-   D.shader:use()
+   shader = Shader.new("shaders/shader.vert", "shaders/shader.frag")
+   shader:use()
+   positionAttr = shader:getAttribLocation("iposition")
+   colorAttr = shader:getAttribLocation("icolor")
+   
    box = FloatArray.new(#D.box)
    for i = 1, #D.box do
       box[i - 1] = D.box[i]
@@ -87,7 +88,7 @@ end
    destroy things
 ]]
 function Demo.End()
-   D.shader:destroy()
+   shader:destroy()
    colors:destroy()
    box:destroy()
    indices:destroy()

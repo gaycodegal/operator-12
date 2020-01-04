@@ -1,7 +1,7 @@
 #include "shader.h"
 
 Shader::Shader(const char* vert, const char* frag){
-  program = glCreateProgram();
+  _program = glCreateProgram();
   ok = compileShader(vert, GL_VERTEX_SHADER)
     && compileShader(frag, GL_FRAGMENT_SHADER)
     && link();
@@ -11,18 +11,18 @@ Shader::~Shader() {
   glUseProgram(0);
     
   for (auto i : shaders) {
-    glDetachShader(program, i);
+    glDetachShader(_program, i);
   }
     
-  glDeleteProgram(program);
+  glDeleteProgram(_program);
     
   for (auto i : shaders){
     glDeleteShader(i);
   }
 }
   
-void Shader::useProgram() {
-  glUseProgram(program);
+GLuint Shader::program() {
+  return _program;
 }
 
 bool Shader::isOk() {
@@ -42,7 +42,7 @@ bool Shader::compileShader(const char* path, GLenum shaderType) {
     return false;
   }
     
-  glAttachShader(program, shader);
+  glAttachShader(_program, shader);
   shaders.push_back(shader);
   return true;
 }
@@ -60,13 +60,13 @@ GLuint Shader::loadShader(const char* path, GLenum shaderType) {
 }
 
 bool Shader::link() {
-  glLinkProgram(program);
+  glLinkProgram(_program);
  
   int success;
-  glGetProgramiv(program, GL_LINK_STATUS, &success);
+  glGetProgramiv(_program, GL_LINK_STATUS, &success);
 
   if (!success) {
-    printProgramInfoLog(program);
+    printProgramInfoLog(_program);
   }
 
   return success;
@@ -87,10 +87,10 @@ void Shader::printShaderInfoLog(GLuint shader) {
 
 void Shader::printProgramInfoLog(GLuint program) {
   GLsizei size;
-  glGetProgramiv(program, GL_INFO_LOG_LENGTH, &size);
+  glGetProgramiv(_program, GL_INFO_LOG_LENGTH, &size);
 
   GLchar* error = new GLchar[size];
-  glGetProgramInfoLog(program, size, &size, error);
+  glGetProgramInfoLog(_program, size, &size, error);
   error[size] = 0;
     
   printInfoLog("Program", error);

@@ -7,9 +7,9 @@ public:
   Shader(const char* vert, const char* frag);
   ~Shader();
   bool isOk();
-  void useProgram();
+  GLuint program();
 private:
-  GLuint program;
+  GLuint _program;
   std::vector<GLuint> shaders;
   bool ok;
 
