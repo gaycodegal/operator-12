@@ -16,6 +16,7 @@ cc_library(
     deps = [
         "//libraries/util/lua",
         "//libraries/sdl/include",
+        "//libraries/glm/include",
         "//libraries/globals",
         "//libraries/lua/include",
     ],

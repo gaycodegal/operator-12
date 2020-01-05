@@ -231,7 +231,7 @@ You can generate method stubs with `python3 luahelper.py < surface.txt > surface
 
 [MIT license](./LICENSE) for the project.
 I'm going to work in a Powered-by-Lua image eventually into the project. 
-Also the MOZART NBP font (by Nate Halley) is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details.
+Also the MOZART NBP font (by Nate Halley) is used by this project. See [its readme](./resources/fonts/mozart_readme.txt) for details. This project also makes use of code licensed under the Happy Bunny License, which imposes [additional restrictions](./resources/fonts/mozart_readme.txt) on its use. No Bunnies were made unhappy in the making of this film.
 
 Thanks/Licenses page in testing at `bazel run //:operator-12 viewer` this simply displays all the licenses used by/planned to be used by the project when compiled & linked. These are located [here](./resources/licenses/).
 
