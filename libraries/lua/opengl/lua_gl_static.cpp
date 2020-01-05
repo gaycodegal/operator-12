@@ -44,6 +44,22 @@ static void gl_bind_buffer(lua_Integer target, lua_Integer buffer) {
 }
 
 /**
+   @lua-name activeTexture
+   @lua-arg unit: int
+ */
+static void gl_activeTexture(lua_Integer unit) {
+  glActiveTexture(unit + GL_TEXTURE0);
+}
+
+/**
+   @lua-name bindTexture
+   @lua-arg texture: int
+ */
+static void gl_bindTexture(lua_Integer texture) {
+  glBindTexture(GL_TEXTURE_2D, texture);
+}
+
+/**
    @lua-name bindVertexArray
    @lua-arg va: int
  */
@@ -103,6 +119,15 @@ static void gl_clear() {
  */
 static void gl_drawElements(lua_Integer mode, lua_Integer count, lua_Integer type, lua_Integer indicies) {
   glDrawElements(mode, count, type, reinterpret_cast<const void*>(indicies));
+}
+
+/**
+   @lua-name uniform1i
+   @lua-arg location: int
+   @lua-arg v0: int
+ */
+static void gl_uniform1i(lua_Integer location, lua_Integer v0) {
+  glUniform1i(location, v0);
 }
 
 /**

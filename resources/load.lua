@@ -30,12 +30,18 @@ D.box.indices = {
 ]]
 function Demo.Start()
    GL.clearColor(1,1,1,1)
-   surface = Surface.new("images/test.png")
    shader = Shader.new("shaders/shader.vert", "shaders/shader.frag")
+   local surface = Surface.new("images/test.png")
+   image = surface:texture()
+   surface:destroy()
+   surface = Surface.new("images/testhead.png")
+   image2 = surface:texture()
+   surface:destroy()
    shader:use()
    positionAttr = shader:getAttribLocation("iposition")
    colorAttr = shader:getAttribLocation("icolor")
    texposAttr = shader:getAttribLocation("itexpos")
+   texUniform = shader:getUniformLocation("texSample")
    
    box = FloatArray.new(#D.box)
    for i = 1, #D.box do
@@ -79,13 +85,17 @@ function Demo.Start()
    GL.bufferData(GL_ELEMENT_ARRAY_BUFFER, indices:bytes(), indices, GL_STATIC_DRAW);
 
    -- tex stuff
-   image = surface:texture()
-   
-   GL.bindBuffer(GL_ARRAY_BUFFER, 0)
+
+   GL.uniform1i(0, 0)
+
+   GL.activeTexture(0)
+   GL.bindTexture(image)
+   GL.activeTexture(1)
+   GL.bindTexture(image2)
 
    GL.enableVertexAttribArray(0)
 
-   mode = GL_FILL
+   mode = true
 
    
    -- texture settings
@@ -118,17 +128,14 @@ function Demo.End()
    tex:destroy()
    box:destroy()
    indices:destroy()
-   surface:destroy()
 end
 
 function Demo.KeyUp(key)
    if key == KEY_0 then
-      if mode == GL_FILL then
-	 mode = GL_LINE
-      else
-	 mode = GL_FILL
-      end
-      GL.polygonMode(GL_FRONT_AND_BACK, mode)
+      mode = not mode
+      GL.uniform1i(texUniform, mode and 0 or 1)
+      -- GL.polygonMode(GL_FRONT_AND_BACK, mode and GL_FILL or GL_LINE)
+      --GL.activeTexture(mode and 1 or 2)
    end
    Util.KeyUp(key)
 end
