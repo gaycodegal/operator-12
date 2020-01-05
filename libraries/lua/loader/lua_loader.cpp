@@ -14,7 +14,7 @@ int luaopen_gamelibs(lua_State *L) {
       {"Sprite", spritemeta},
       {"Shader", bound_shader_meta},
       {"static", static_meta},
-      {"Surface", surface_meta},
+      {"Surface", bound_surface_meta},
       {"TTF", ttf_meta},
       {"GL", bound_gl_static_meta},
       {"FloatArray", bound_float_array_meta},
@@ -22,6 +22,25 @@ int luaopen_gamelibs(lua_State *L) {
       {NULL, NULL}};
 
   static const struct luaConstInt globints[] = {
+    // gl tex wrap
+    {"GL_CLAMP_TO_EDGE", GL_CLAMP_TO_EDGE},
+    {"GL_MIRRORED_REPEAT", GL_MIRRORED_REPEAT},
+    {"GL_REPEAT", GL_REPEAT},
+    // gl tex filter
+    {"GL_NEAREST", GL_NEAREST},
+    {"GL_LINEAR", GL_LINEAR},
+    {"GL_NEAREST_MIPMAP_NEAREST", GL_NEAREST_MIPMAP_NEAREST},
+    {"GL_LINEAR_MIPMAP_NEAREST", GL_LINEAR_MIPMAP_NEAREST},
+    {"GL_NEAREST_MIPMAP_LINEAR", GL_NEAREST_MIPMAP_LINEAR},
+    {"GL_LINEAR_MIPMAP_LINEAR", GL_LINEAR_MIPMAP_LINEAR},
+    // gl tex target
+    {"GL_TEXTURE_2D", GL_TEXTURE_2D},
+    {"GL_TEXTURE_CUBE_MAP", GL_TEXTURE_CUBE_MAP},
+    // gl tex name
+    {"GL_TEXTURE_MIN_FILTER", GL_TEXTURE_MIN_FILTER},
+    {"GL_TEXTURE_MAG_FILTER", GL_TEXTURE_MAG_FILTER},
+    {"GL_TEXTURE_WRAP_S", GL_TEXTURE_WRAP_S},
+    {"GL_TEXTURE_WRAP_T", GL_TEXTURE_WRAP_T},
     // gl fill face
     {"GL_FRONT", GL_FRONT},
     {"GL_BACK", GL_BACK},

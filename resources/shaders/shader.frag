@@ -3,11 +3,12 @@
 // required to work
 precision highp float;
 
-// matched by name
-in  vec4 ocolor;
+in vec2 otexpos;
+
+uniform sampler2D texSample;
 
 // named freely
-out vec4 color;
+out vec4 FragColor;
 void main(void) {
-    color = ocolor;
+    FragColor = texture(texSample, otexpos);
 }

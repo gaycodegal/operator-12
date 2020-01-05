@@ -10,7 +10,7 @@
    @lua-arg b: number
    @lua-arg a: number
  */
-static void l_gl_clearColor(lua_Number r, lua_Number g, lua_Number b, lua_Number a) {
+static void gl_clearColor(lua_Number r, lua_Number g, lua_Number b, lua_Number a) {
   glClearColor(r, g, b, a);
 }
 
@@ -87,11 +87,10 @@ static void gl_enable_vertex_attrib_array(lua_Integer index) {
 }
 
 
-
 /**
    @lua-name clear
  */
-static void l_gl_clear() {
+static void gl_clear() {
   glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -102,8 +101,50 @@ static void l_gl_clear() {
    @lua-arg type: int
    @lua-arg indices: int
  */
-static void l_gl_drawElements(lua_Integer mode, lua_Integer count, lua_Integer type, lua_Integer indicies) {
+static void gl_drawElements(lua_Integer mode, lua_Integer count, lua_Integer type, lua_Integer indicies) {
   glDrawElements(mode, count, type, reinterpret_cast<const void*>(indicies));
+}
+
+/**
+   @lua-name uniform1f
+   @lua-arg location: int
+   @lua-arg v0: number
+ */
+static void gl_uniform1f(lua_Integer location, lua_Number v0) {
+  glUniform1f(location, v0);
+}
+
+/**
+   @lua-name uniform2f
+   @lua-arg location: int
+   @lua-arg v0: number
+   @lua-arg v1: number
+ */
+static void gl_uniform2f(lua_Integer location, lua_Number v0, lua_Number v1) {
+  glUniform2f(location, v0, v1);
+}
+
+/**
+   @lua-name uniform3f
+   @lua-arg location: int
+   @lua-arg v0: number
+   @lua-arg v1: number
+   @lua-arg v2: number
+ */
+static void gl_uniform3f(lua_Integer location, lua_Number v0, lua_Number v1, lua_Number v2) {
+  glUniform3f(location, v0, v1, v2);
+}
+
+/**
+   @lua-name uniform4f
+   @lua-arg location: int
+   @lua-arg v0: number
+   @lua-arg v1: number
+   @lua-arg v2: number
+   @lua-arg v3: number
+ */
+static void gl_uniform4f(lua_Integer location, lua_Number v0, lua_Number v1, lua_Number v2, lua_Number v3) {
+  glUniform4f(location, v0, v1, v2, v3);
 }
 
 /**
@@ -112,16 +153,37 @@ static void l_gl_drawElements(lua_Integer mode, lua_Integer count, lua_Integer t
    @lua-arg first: int
    @lua-arg count: int
  */
-static void l_gl_drawArrays(lua_Integer mode, lua_Integer first, lua_Integer count) {
+static void gl_drawArrays(lua_Integer mode, lua_Integer first, lua_Integer count) {
   glDrawArrays(mode, first, count);
 }
+
+/**
+   @lua-name texParameterf
+   @lua-arg target: int
+   @lua-arg name: int
+   @lua-arg param: number
+ */
+static void gl_texParameterf(lua_Integer target, lua_Integer name, lua_Number param) {
+  glTexParameterf(target, name, param);
+}
+
+/**
+   @lua-name texParameteri
+   @lua-arg target: int
+   @lua-arg name: int
+   @lua-arg param: int
+ */
+static void gl_texParameteri(lua_Integer target, lua_Integer name, lua_Integer param) {
+  glTexParameteri(target, name, param);
+}
+
 
 /**
    @lua-name polygonMode
    @lua-arg face: int
    @lua-arg mode: int
  */
-static void l_gl_polygonMode(lua_Integer face, lua_Integer mode) {
+static void gl_polygonMode(lua_Integer face, lua_Integer mode) {
 #ifndef __EMSCRIPTEN__
   glPolygonMode(face, mode);
 #endif

@@ -6,7 +6,7 @@
 #include "lua_music.h"
 #include "lua_sprite.h"
 #include "lua_static.h"
-#include "lua_surface.h"
+#include "bound_surface.h"
 #include "lua_texture.h"
 #include "lua_ttf.h"
 #include "bound_shader.h"

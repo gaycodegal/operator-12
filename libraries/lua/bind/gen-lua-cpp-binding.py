@@ -18,7 +18,7 @@ luapattern = re.compile(r"@lua-([a-z]+)(.*)")
 def type_split(x):
     x = x.strip().split(" ")
     if x[0] == "Class":
-        assert len(x) == 2, "{} must have a type".format(" ".join(x))
+        assert len(x) >= 2, "{} must have a type".format(" ".join(x))
     return x
 
 parser = argparse.ArgumentParser()
@@ -90,9 +90,9 @@ def struct_lpush(arg_type):
 def class_lpush(arg_type):
     ctype = lua_ctypeof(arg_type)
     return """
-    *reinterpret_cast<{}*>(lua_newuserdata(L, sizeof({}))) = retVal;
-    set_meta(L, -1, "{}");
-""".format(ctype, ctype, arg_type[1])
+    *reinterpret_cast<{ctype}*>(lua_newuserdata(L, sizeof({ctype}))) = retVal;
+    set_meta(L, -1, "{meta}");
+""".format(ctype = ctype, meta = arg_type[-1])
 
 def string_lpush(arg_type):
     return """
@@ -214,22 +214,24 @@ with open(in_filename, "r") as in_file, open(out_filename + ".cpp", "w") as out_
     fns = []
     for match in docpattern.finditer(contents):
         values = {}
-        values["fn_name"] = fnnamepattern.search(
-            match
-            .group()
-            .split("*/")[-1]).group()[:-1]
-        for match in luapattern.finditer(match.group()):
-            name = match.group(1)
-            contents = match.group(2)
+        for lmatch in luapattern.finditer(match.group()):
+            name = lmatch.group(1)
+            contents = lmatch.group(2)
             if name not in luaforms:
                 print("@lua-{} not a valid rule".format(name))
                 sys.exit(1)
             luaforms[name](values, contents)
+        if len(values) == 0:
+            continue
+        values["fn_name"] = fnnamepattern.search(
+            match
+            .group()
+            .split("*/")[-1]).group()[:-1]
         if not "meta" in values:
             write_fn(out_file, values)
         name = values["name"]
         if "meta" in values:
-            fns.append('{{"{}", {}}},'.format(name, raw_fn_name_get(name)))
+            fns.append('{{"{}", {}}},'.format(name, values["fn_name"]))
         else:
             fns.append('{{"{}", {}}},'.format(name, fn_name_get(name)))
     if isClass:
