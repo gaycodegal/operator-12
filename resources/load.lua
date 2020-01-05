@@ -6,13 +6,13 @@ D.box = {
       -0.9, 0.9, 1, -- Top left
    0.9, 0.9, 1, -- Top right
    0.9,-0.9, 1, -- Bottom right 
-      -0.9,-0.9, 1 -- Bottom left
+      -0.9,-0.9, 1, -- Bottom left
 }
 D.tex = {
-   0, 1, -- Top left
-   1, 1, -- Top right
-   1, 0, -- Bottom right
    0, 0, -- Bottom left
+   1, 0, -- Top left
+   1, 1, -- Top right
+   0, 1, -- Bottom right
 }
 D.colors = {
    0.0, 1.0, 0.0, 1.0, -- Top left
@@ -72,8 +72,8 @@ function Demo.Start()
 
    GL.bindBuffer(GL_ARRAY_BUFFER, vb_tex)
    GL.bufferData(GL_ARRAY_BUFFER, tex:bytes(), tex, GL_STATIC_DRAW)
-   -- each color is of size 4
-   GL.vertexAttribPointer(texposAttr, 4, GL_FLOAT, false, 0, 0)
+   -- each tex coord is of size 2
+   GL.vertexAttribPointer(texposAttr, 2, GL_FLOAT, false, 0, 0)
 
    GL.bindBuffer(GL_ELEMENT_ARRAY_BUFFER, eab)
    GL.bufferData(GL_ELEMENT_ARRAY_BUFFER, indices:bytes(), indices, GL_STATIC_DRAW);
@@ -100,6 +100,7 @@ function Demo.Update()
    --Update=static.quit
    GL.enableVertexAttribArray(texposAttr)
    GL.bindVertexArray(va)
+   GL.bindBuffer(GL_ELEMENT_ARRAY_BUFFER, eab)
 
    GL.drawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
 
