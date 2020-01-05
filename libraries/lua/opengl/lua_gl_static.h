@@ -1,5 +1,4 @@
-#ifndef _LUA_GL_STATIC_H_
-#define _LUA_GL_STATIC_H_
+#pragma once
 
 #include "sdl_include.h"
 #include "lua_include.h"
@@ -12,5 +11,3 @@ struct VoidArray {
   void* data;
   GLsizeiptr length;
 };
-
-#endif

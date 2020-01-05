@@ -1,5 +1,4 @@
-#ifndef _LUA_INCLUDE_H_
-#define _LUA_INCLUDE_H_
+#pragma once
 
 #include "std_include.h"
 
@@ -17,5 +16,3 @@ struct luaClassList {
   const char *name;
   const struct luaL_Reg *meta;
 };
-
-#endif

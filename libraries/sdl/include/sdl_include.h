@@ -1,5 +1,4 @@
-#ifndef _SDL_INCLUDE_H_
-#define _SDL_INCLUDE_H_
+#pragma once
 
 #include "std_include.h"
 
@@ -56,7 +55,5 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
-
-#endif
 
 #endif
