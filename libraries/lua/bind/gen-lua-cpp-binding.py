@@ -1,4 +1,5 @@
 import argparse
+from argparse import RawTextHelpFormatter
 import sys
 import re
 import os.path
@@ -21,14 +22,38 @@ def type_split(x):
         assert len(x) >= 2, "{} must have a type".format(" ".join(x))
     return x
 
-parser = argparse.ArgumentParser()
-parser.add_argument("in_file")
-parser.add_argument("out_location")
-parser.add_argument("out_basename")
+parser = argparse.ArgumentParser(description = """
+Parses Javadoc like statements in a C++ file and generates binding functions
+to help call the functions in lua. Also outputs a metatable for linking purposes
+generates a {OUT_LOCATION}/{OUT_BASENAME}.cpp and {OUT_LOCATION}/{OUT_BASENAME}.h
+
+The .cpp file includes the contents of {IN_FILE} already, so you may use static
+functions and will not need to include {IN_FILE} in your build.
+
+javadoc functions are defined with /** */. rules are defined with `@lua-` statements
+that each occupy their own line. Possible values are:
+
+- @lua-meta
+    -   specifies that this function is a low level lua linking function and can be
+        directly included in the metatable. `@lua-name` still required.
+- @lua-name
+    -   specifies the name this function will be called by from lua
+- @lua-arg NAME: TYPE
+    -   specifies an argument to the function. Ordering of these statements
+        creates the order arguments will be accepted in.
+- @lua-return TYPE
+    -   specifies the type of value this function will return
+- @lua-constructor
+    -   specifies that this function is a constructor and the metatable should have
+        __index set to the meta-indexer, which allows class-like use of instances
+""", formatter_class=RawTextHelpFormatter)
+parser.add_argument("IN_FILE", help = "the input .cpp file")
+parser.add_argument("OUT_LOCATION", help = "the output directory")
+parser.add_argument("OUT_BASENAME", help = "output file basename")
 sys_args = parser.parse_args()
-in_filename = sys_args.in_file
-out_filename = os.path.join(sys_args.out_location, sys_args.out_basename)
-basename = sys_args.out_basename
+IN_FILEname = sys_args.IN_FILE
+out_filename = os.path.join(sys_args.OUT_LOCATION, sys_args.OUT_BASENAME)
+basename = sys_args.OUT_BASENAME
 
 def lua_return(values, x):
     values["return"] = type_split(x)
@@ -205,9 +230,9 @@ def write_fn(out, values):
     return {};
 }}\n""".format(0 if returns == None else 1))
 
-with open(in_filename, "r") as in_file, open(out_filename + ".cpp", "w") as out_file, open(out_filename + ".h", "w") as out_header:
+with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cpp", "w") as out_file, open(out_filename + ".h", "w") as out_header:
     # create the .cpp file
-    contents = in_file.read()
+    contents = IN_FILE.read()
     out_file.write('#include "{}.h"\n'.format(basename))
     out_file.write(contents)
     out_file.write("\n")
