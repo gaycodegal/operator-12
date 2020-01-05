@@ -10,6 +10,10 @@ build:asmjs --cpu=asmjs
 
 build:asmjs --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 
+# Launch HTTP Server for 'Running' WASM
+
+run:asmjs --run_under="cd bazel-bin && python -m SimpleHTTPServer 8080"
+
 build --spawn_strategy=standalone
 
 test --test_output=all
