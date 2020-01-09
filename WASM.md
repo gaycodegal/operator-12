@@ -15,6 +15,12 @@ Custom Libraries you'll need
 
 You'll also need `emscripten` to compile C++ code.
 
+You'll need the following environment variables set
+
+    export EMSCRIPTEN_TOOLCHAIN="/path/to/emsdk/emscripten/1.38.31"
+    export EMSCRIPTEN_CACHE="/path/to/.emscripten_cache"
+    export EMSCRIPTEN_CLANG="/path/to/emsdk/clang/e1.38.31_64bit"
+
 You'll need to have emscripten build the neccessary ports so run
 
     bazel sync --configure
@@ -22,12 +28,12 @@ You'll need to have emscripten build the neccessary ports so run
 
 # Compilation
 
-    bazel build //:operator-12 --spawn_strategy=standalone
+    bazel build --config asmjs //:main.html
 	
 
 # Running
 
-    bazel run //:operator-12
+    bazel run --config asmjs //:main.html
 	
-You can also specify which lua file to run as the main. For instance `bazel run //:operator-12 surface-tests` will run the surface tests lua file as the main lua file.
+You then should visit http://localhost:8080/main.html to visit the game.
 
