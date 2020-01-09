@@ -1,4 +1,7 @@
+#include "sdl_include.h"
+#include "lua_include.h"
 #include "lua_gl_static.h"
+#include "util_lua.h"
 
 /**
    @lua-name clearColor

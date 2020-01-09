@@ -34,8 +34,8 @@ filegroup(
 filegroup(
     name = "all",
     srcs = [
-        "emcc.sh",
-        "emar.sh",
+        ":emcc.sh",
+        ":emar.sh",
         ":emscripten_toolchain",
         ":emscripten_clang",
         ":emscripten_cache_content",

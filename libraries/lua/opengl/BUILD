@@ -25,6 +25,11 @@ cc_library(
 )
 
 lua_bind_cpp(
+    name = "bound_glm_static",
+    src = "lua_glm_static.cpp",
+)
+
+lua_bind_cpp(
     name = "bound_gl_static",
     src = "lua_gl_static.cpp",
 )

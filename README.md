@@ -29,6 +29,7 @@ Builds are similar across platforms, but library installation usually differs. F
 - [Windows](./WINDOWS.md)
 - [MacOS](./MAC_OS.md)
 - [Android](./ANDROID.md)
+- [WebAssembly](./WASM.md)
 
 In general assume that if copying in a folder for a `third_party` library you should merge the source and my corresponding `third_party` sub-directory. If you are asked whether to replace a specific file, you should assume the version that came with this project's git is the correct version.
 
