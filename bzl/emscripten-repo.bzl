@@ -1,7 +1,7 @@
 def _impl(repository_ctx):
     # shenanigans to get the wasm_toolchain to copy
     p = str(repository_ctx.path(Label("//wasm_toolchain:emar.sh")))
-    p = p[:-p[::-1].index("/")]
+    p = p[:-p.rindex("/")]
     repository_ctx.symlink(p, "wasm_toolchain")
 
     emtoolchain = repository_ctx.os.environ.get("EMSCRIPTEN_TOOLCHAIN")
