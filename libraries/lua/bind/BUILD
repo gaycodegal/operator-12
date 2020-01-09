@@ -6,9 +6,9 @@ exports_files(
 )
 
 py_binary(
-    name = "gen-lua-cpp-binding",
+    name = "gen_lua_cpp_binding",
     python_version = "PY3",
-    srcs = ["gen-lua-cpp-binding.py"],
+    srcs = ["gen_lua_cpp_binding.py", "lua_cpp_binding_helpers.py"],
     visibility = ["//visibility:public"],
 )
 
