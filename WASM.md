@@ -13,7 +13,7 @@ Custom Libraries you'll need
   - Should be located in `third_party/lua` such that `third_party/lua/src` is the lua `src/` directory. You don't particularly need the `docs` directory, but it's usually useful when developing in lua to have the docs handy.
   - You don't need command-line lua
 
-You'll also need `emscripten` to compile C++ code.
+You'll also need `emscripten` to compile C++ code (I'm using 1.38.31).
 
 You'll need the following environment variables set
 
