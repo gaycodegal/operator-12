@@ -10,3 +10,6 @@ third_party/
 out/
 docs/
 .#*
+wasm_toolchain/emscripten_cache
+wasm_toolchain/emscripten_toolchain
+wasm_toolchain/emscripten_clang
