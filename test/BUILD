@@ -17,3 +17,13 @@ sh_test(
         "//:main",
     ],
 )
+
+sh_test(
+    name = "glm_test",
+    args = ["$(location //:main)", "test/glm"],
+    srcs = ["test.sh"],
+    size = "small",
+    data = [
+        "//:main",
+    ],
+)
