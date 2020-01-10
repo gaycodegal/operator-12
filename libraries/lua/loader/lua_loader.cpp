@@ -17,6 +17,9 @@ int luaopen_gamelibs(lua_State *L) {
       {"Surface", bound_surface_meta},
       {"TTF", ttf_meta},
       {"GL", bound_gl_static_meta},
+      {"GLM", bound_glm_static_meta},
+      {"Mat4", bound_mat4_meta},
+      {"Vec3", bound_vec3_meta},
       {"FloatArray", bound_float_array_meta},
       {"UIntArray", bound_uint_array_meta},
       {NULL, NULL}};

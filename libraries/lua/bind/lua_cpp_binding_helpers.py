@@ -39,7 +39,8 @@ def lua_name(values, x):
     values["name"] = x.strip()
 
 def lua_arg(values, x):
-    x = [x.strip() for x in x.split(":")]
+    spliti = x.index(":")
+    x = [x.strip() for x in [x[:spliti], x[spliti + 1:]]]
     x[1] = type_split(x[1])
     assert len(x) == 2, "arg must be of the format 'name: type' {}".format(x)
     assert x[1][0] in argconvert, "{} must be in {}".format(x, argconvert)
@@ -90,9 +91,14 @@ def class_lpush(arg_type):
 
 def string_lpush(arg_type):
     return """
-    lua_pushstring(L, {});
+    lua_pushstring(L, retVal);
     delete[] retVal;
-""".format(arg_type[0])
+"""
+
+def cxx_string_lpush(arg_type):
+    return """
+    lua_pushstring(L, retVal.c_str());
+"""
 
 arggets = {
     "string": lambda n, x: n + " = lua_tostring(L, -1);",
@@ -106,6 +112,7 @@ arggets = {
     
 argputs = {
     "string": string_lpush,
+    "String": cxx_string_lpush,
     "int": lambda x: "    lua_pushinteger(L, retVal);",
     "number": lambda x: "    lua_pushnumber(L, retVal);",
     "bool": lambda x: "    lua_pushboolean(L, static_cast<int>(retVal));",
@@ -115,6 +122,7 @@ argputs = {
  
 argconvert = {
     "string": lambda x: "const char*",
+    "String": lambda x: "std::string",
     "int": lambda x: "lua_Integer",
     "number": lambda x: "lua_Number",
     "bool": lambda x: "bool",

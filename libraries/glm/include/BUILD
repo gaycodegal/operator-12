@@ -34,6 +34,7 @@ cc_library(
         "//third_party/glm",
         "//third_party/glm:gtc_matrix_transform",
         "//third_party/glm:gtc_type_ptr",
+        "//third_party/glm:gtx_string_cast",
     ],
     includes = [""],
     copts = COPTS,

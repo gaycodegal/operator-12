@@ -30,6 +30,16 @@ lua_bind_cpp(
 )
 
 lua_bind_cpp(
+    name = "bound_vec3",
+    src = "lua_vec3.cpp",
+)
+
+lua_bind_cpp(
+    name = "bound_mat4",
+    src = "lua_mat4.cpp",
+)
+
+lua_bind_cpp(
     name = "bound_gl_static",
     src = "lua_gl_static.cpp",
 )

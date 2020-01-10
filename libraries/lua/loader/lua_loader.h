@@ -11,8 +11,11 @@
 #include "lua_ttf.h"
 #include "bound_shader.h"
 #include "bound_gl_static.h"
+#include "bound_glm_static.h"
 #include "bound_float_array.h"
 #include "bound_uint_array.h"
+#include "bound_mat4.h"
+#include "bound_vec3.h"
 
 /**
    loads the sprite library into lua
