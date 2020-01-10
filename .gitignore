@@ -8,6 +8,7 @@ bazel*
 third_party/
 !*BUILD
 out/
+*.pyc
 docs/
 .#*
 wasm_toolchain/emscripten_cache
