@@ -170,6 +170,16 @@ static void gl_uniform4f(lua_Integer location, lua_Number v0, lua_Number v1, lua
 }
 
 /**
+   @lua-name uniformMatrix4f
+   @lua-arg location: int
+   @lua-arg transpose: bool
+   @lua-arg value: Class glm::mat4
+ */
+static void gl_uniformMatrix4f(lua_Integer location, bool transpose, glm::mat4* value) {
+  glUniformMatrix4fv(location, 1, transpose, glm::value_ptr(*value));
+}
+
+/**
    @lua-name drawArrays
    @lua-arg mode: int
    @lua-arg first: int

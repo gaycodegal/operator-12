@@ -24,6 +24,30 @@ static glm::mat4* mat4_rotate(glm::mat4* self, lua_Number radians, glm::vec3* ax
 }
 
 /**
+   @lua-name scale
+   @lua-arg self: Class glm::mat4
+   @lua-arg v: Class glm::vec3
+   @lua-return Class glm::mat4 Mat4
+ */
+static glm::mat4* mat4_scale(glm::mat4* self, glm::vec3* v) {
+  glm::mat4* mat = new glm::mat4();
+  *mat = glm::scale(*self, *v);
+  return mat;
+}
+
+/**
+   @lua-name translate
+   @lua-arg self: Class glm::mat4
+   @lua-arg v: Class glm::vec3
+   @lua-return Class glm::mat4 Mat4
+ */
+static glm::mat4* mat4_translate(glm::mat4* self, glm::vec3* v) {
+  glm::mat4* mat = new glm::mat4();
+  *mat = glm::translate(*self, *v);
+  return mat;
+}
+
+/**
    @lua-name __tostring
    @lua-arg self: Class glm::mat4
    @lua-return String

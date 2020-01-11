@@ -42,6 +42,11 @@ function Demo.Start()
    colorAttr = shader:getAttribLocation("icolor")
    texposAttr = shader:getAttribLocation("itexpos")
    texUniform = shader:getUniformLocation("texSample")
+   transformUniform = shader:getUniformLocation("transform")
+
+   transform = Mat4.new()
+   transform = transform:scale(Vec3.new(0.4, 0.5, 0.5))
+   GL.uniformMatrix4f(transformUniform, false, transform)
    
    box = FloatArray.new(#D.box)
    for i = 1, #D.box do

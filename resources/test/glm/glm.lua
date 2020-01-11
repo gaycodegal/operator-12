@@ -19,8 +19,8 @@ function Start()
    end
    garbage_collection_test()
    collectgarbage()
-   assert(mat4_garbage_count == 2, "mat4 garbage collection isn't working")
-   assert(v3_garbage_count == 1, "vec3 garbage collection isn't working")
+   assert(mat4_garbage_count == 3, "mat4 garbage collection isn't working "..mat4_garbage_count)
+   assert(v3_garbage_count == 2, "vec3 garbage collection isn't working "..v3_garbage_count)
    print("ok")
 end
 
@@ -33,4 +33,8 @@ function garbage_collection_test()
    
    transform = transform:rotate(GLM.radians(90), axis)
    assert(tostring(transform) == "mat4x4((-0.000000, 1.000000, 0.000000, 0.000000), (-1.000000, -0.000000, 0.000000, 0.000000), (0.000000, 0.000000, 1.000000, 0.000000), (0.000000, 0.000000, 0.000000, 1.000000))", "mat isn't proper format")
+
+   -- scale x5 in x y z dimensions
+   transform = transform:scale(Vec3.new(5,5,5))
+   assert(tostring(transform) == "mat4x4((-0.000000, 5.000000, 0.000000, 0.000000), (-5.000000, -0.000000, 0.000000, 0.000000), (0.000000, 0.000000, 5.000000, 0.000000), (0.000000, 0.000000, 0.000000, 1.000000))", "mat isn't proper format")
 end
