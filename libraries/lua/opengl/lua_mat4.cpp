@@ -24,6 +24,18 @@ static glm::mat4* mat4_rotate(glm::mat4* self, lua_Number radians, glm::vec3* ax
 }
 
 /**
+   @lua-name multMat4
+   @lua-arg self: Class glm::mat4
+   @lua-arg other: Class glm::mat4
+   @lua-return Class glm::mat4 Mat4
+ */
+static glm::mat4* mat4_multMat4(glm::mat4* self, glm::mat4* other) {
+  glm::mat4* mat = new glm::mat4();
+  *mat = *self * *other;
+  return mat;
+}
+
+/**
    @lua-name scale
    @lua-arg self: Class glm::mat4
    @lua-arg v: Class glm::vec3

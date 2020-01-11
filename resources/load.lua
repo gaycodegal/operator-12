@@ -46,6 +46,9 @@ function Demo.Start()
 
    transform = Mat4.new()
    transform = transform:scale(Vec3.new(0.4, 0.5, 0.5))
+   rotate = Mat4.new()
+   rotate = rotate:rotate(GLM.radians(1), Vec3.new(0,0,1))
+   
    GL.uniformMatrix4f(transformUniform, false, transform)
    
    box = FloatArray.new(#D.box)
@@ -112,6 +115,10 @@ end
    draw things
 ]]
 function Demo.Update()
+   transform = transform:multMat4(rotate)
+   GL.uniformMatrix4f(transformUniform, false, transform)
+
+
    --Update=static.quit
    GL.enableVertexAttribArray(texposAttr)
    GL.bindVertexArray(va)

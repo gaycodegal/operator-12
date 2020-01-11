@@ -48,31 +48,31 @@ def lua_arg(values, x):
     args.append(x)
     values["arg"] = args
 
-def struct_lget(arg_name, arg_type):
+def struct_lget(arg_name, arg_type, i):
     return """
-    {name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -1));
+    {name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
 """.format(
-        name = arg_name, ctype = arg_type[1])
+        i, name = arg_name, ctype = arg_type[1])
 
-def class_lget(arg_name, arg_type):
+def class_lget(arg_name, arg_type, i):
     return """
-    {name} = *reinterpret_cast<{ctype}*>(lua_touserdata(L, -1));
+    {name} = *reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
     if ({name} == NULL) {{
         return 0;
     }}
 """.format(
-        name = arg_name, ctype = lua_ctypeof(arg_type))
+        i, name = arg_name, ctype = lua_ctypeof(arg_type))
 
-def delete_lget(arg_name, arg_type):
+def delete_lget(arg_name, arg_type, i):
     return """
-    {ctype}* _d{name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -1));
+    {ctype}* _d{name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
     {name} = *_d{name};
     *_d{name} = NULL;
     if ({name} == NULL) {{
         return 0;
     }}
 """.format(
-        name = arg_name, ctype = lua_ctypeof(arg_type))
+        i, name = arg_name, ctype = lua_ctypeof(arg_type))
 
 def struct_lpush(arg_type):
     
@@ -101,10 +101,10 @@ def cxx_string_lpush(arg_type):
 """
 
 arggets = {
-    "string": lambda n, x: n + " = lua_tostring(L, -1);",
-    "int": lambda n, x: n + " = lua_tointeger(L, -1);",
-    "number": lambda n, x: n + " = lua_tonumber(L, -1);",
-    "bool": lambda n, x: n + " = static_cast<bool>(lua_toboolean(L, -1));",
+    "string": lambda n, x, i: n + " = lua_tostring(L, -{});".format(i),
+    "int": lambda n, x, i: n + " = lua_tointeger(L, -{});".format(i),
+    "number": lambda n, x, i: n + " = lua_tonumber(L, -{});".format(i),
+    "bool": lambda n, x, i: n + " = static_cast<bool>(lua_toboolean(L, -{}));".format(i),
     "Class": class_lget,
     "Struct": struct_lget,
     "Delete": delete_lget,
@@ -117,6 +117,7 @@ argputs = {
     "number": lambda x: "    lua_pushnumber(L, retVal);",
     "bool": lambda x: "    lua_pushboolean(L, static_cast<int>(retVal));",
     "Class": class_lpush,
+    "Self": lambda x: "",
     "Struct": struct_lpush,
 }
  
@@ -127,6 +128,7 @@ argconvert = {
     "number": lambda x: "lua_Number",
     "bool": lambda x: "bool",
     "Class": lambda x: x[1] + "*",
+    "Self": lambda x: x[1] + "*",
     "Struct": lambda x: x[1] + "*",
     "Delete": lambda x: x[1] + "*",
 }
@@ -155,8 +157,8 @@ def lua_typeguard(arg_type):
 def lua_ctypeof(arg_type):
     return argconvert[arg_type[0]](arg_type)
 
-def lua_arggetter(arg_name, arg_type):
-    return arggets[arg_type[0]](arg_name, arg_type)
+def lua_arggetter(arg_name, arg_type, i):
+    return arggets[arg_type[0]](arg_name, arg_type, i)
 
 def lua_argputter(arg_type):
     return argputs[arg_type[0]](arg_type)
@@ -176,17 +178,16 @@ def write_fn(out, values, basename):
         out.write("    {} {};\n".format(lua_ctypeof(arg_type), arg_name))
 
     # retrieve variables and guard for type
-    for (arg_name, arg_type) in args[::-1]:
+    for (i, (arg_name, arg_type)) in enumerate(args[::-1]):
         guard = lua_typeguard(arg_type)
-        arg_get = lua_arggetter(arg_name, arg_type)
+        arg_get = lua_arggetter(arg_name, arg_type, i + 1)
         out.write("""
-    if (!lua_is{guard}(L, -1)) {{
+        if (!lua_is{guard}(L, -{index})) {{
         printf("bad arg {fnname}.{name}\\n");
         return 0;
     }}
     {arg_get}
-    lua_pop(L, 1);
-""".format(guard=guard, arg_get=arg_get, fnname=name, name=arg_name))
+""".format(index=i+1, guard=guard, arg_get=arg_get, fnname=name, name=arg_name))
 
     # call the function
     fn_name = values["fn_name"]
