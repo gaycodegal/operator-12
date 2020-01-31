@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 load(":cc_toolchain_config.bzl", "cc_toolchain_config")
+=======
+>>>>>>> Stashed changes
 package(default_visibility = ['//visibility:public'])
 
 config_setting(
@@ -34,14 +37,15 @@ filegroup(
 filegroup(
     name = "all",
     srcs = [
-        ":emcc.sh",
-        ":emar.sh",
+        "emcc.sh",
+        "emar.sh",
         ":emscripten_toolchain",
         ":emscripten_clang",
         ":emscripten_cache_content",
     ],
 )
 
+<<<<<<< Updated upstream
 cc_toolchain_config(name = "asmjs_toolchain_config")
 
 cc_toolchain(
@@ -53,6 +57,19 @@ cc_toolchain(
     dwp_files = ":empty",
     linker_files = ":all",
     objcopy_files = ":empty",
+=======
+cc_toolchain(
+    name = "asmjs_toolchain",
+    toolchain_identifier = "asmjs-toolchain",
+    all_files = ":all",
+    compiler_files = ":all",
+    cpu = "asmjs",
+    dwp_files = ":empty",
+    dynamic_runtime_libs = [":empty"],
+    linker_files = ":all",
+    objcopy_files = ":empty",
+    static_runtime_libs = [":empty"],
+>>>>>>> Stashed changes
     strip_files = ":empty",
     supports_param_files = 0,
 )

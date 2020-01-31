@@ -49,7 +49,7 @@ LINKOPTS = select({
 })
 
 cc_binary(
-    name = "operator-12",
+    name = "main",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
@@ -61,7 +61,7 @@ cc_binary(
 )
 
 wasm_binary(
-    name = "operator-12.html",
+    name = "index.html",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
@@ -81,7 +81,7 @@ wasm_binary(
 )
 
 TOP_CONTENT = [
-    "//:operator-12",
+    "//:main",
     "//third_party/SDL_ttf:extra_libs",
     "//third_party/SDL_mixer:extra_libs",
     "//third_party/SDL_image:extra_libs",
@@ -96,7 +96,7 @@ genrule(
 )
 
 android_library(
-    name = "op12-android-resources",
+    name = "android-resources",
     manifest = "//third_party/app-android/src/main:AndroidManifest.xml",
     assets = glob(["resources/**/*"]),
     assets_dir = "resources/",
@@ -105,7 +105,7 @@ android_library(
 )
 
 cc_library(
-    name = "op12-android",
+    name = "android",
     srcs = glob([
         "cpp/*.h",
         "cpp/*.cpp",
@@ -123,12 +123,12 @@ cc_library(
 
 alias(
     name = "jni_library",
-    actual = ":op12-android",
+    actual = ":android",
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "jni-resources",
-    actual = ":op12-android-resources",
+    actual = ":android-resources",
     visibility = ["//visibility:public"],
 )
