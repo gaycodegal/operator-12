@@ -19,7 +19,7 @@ Custom Libraries you'll need from libsdl.org listed below. For all of the SDL li
 
 # Compilation
 
-    bazel build //:operator-12 --spawn_strategy=standalone
+    bazel build //:main --spawn_strategy=standalone
 	
 
 # Running
@@ -28,4 +28,4 @@ Bazel on windows doesn't automatically bring together all the files you need and
 
 	bazel build //:packaged --spawn_strategy=standalone
 
-Then simply extract the zip and run the `operator-12.exe` program within.
+Then simply extract the zip and run the `main.exe` program within.

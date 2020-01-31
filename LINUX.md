@@ -21,12 +21,12 @@ You'll also need `g++` to compile C++ code.
 
 # Compilation
 
-    bazel build //:operator-12 --spawn_strategy=standalone
+    bazel build //:main --spawn_strategy=standalone
 	
 
 # Running
 
-    bazel run //:operator-12
+    bazel run //:main
 	
-You can also specify which lua file to run as the main. For instance `bazel run //:operator-12 surface-tests` will run the surface tests lua file as the main lua file.
+You can also specify which lua file to run as the main. For instance `bazel run //:main surface-tests` will run the surface tests lua file as the main lua file.
 
