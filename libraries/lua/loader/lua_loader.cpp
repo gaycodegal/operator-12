@@ -10,7 +10,7 @@ int luaopen_gamelibs(lua_State *L) {
 #ifndef NO_MUSIC
       {"Music", music_meta},
 #endif
-      {"Texture", texture_meta},
+      {"Texture", bound_texture_meta},
       {"Sprite", spritemeta},
       {"static", static_meta},
       {"Surface", bound_surface_meta},

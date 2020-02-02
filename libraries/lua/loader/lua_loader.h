@@ -7,7 +7,7 @@
 #include "lua_sprite.h"
 #include "lua_static.h"
 #include "bound_surface.h"
-#include "lua_texture.h"
+#include "bound_texture.h"
 #include "bound_ttf.h"
 
 /**
