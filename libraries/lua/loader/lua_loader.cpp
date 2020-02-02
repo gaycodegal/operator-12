@@ -8,7 +8,7 @@ struct luaConstInt {
 int luaopen_gamelibs(lua_State *L) {
   static const struct luaClassList game[] = {
 #ifndef NO_MUSIC
-      {"Music", music_meta},
+      {"Music", bound_music_meta},
 #endif
       {"Texture", bound_texture_meta},
       {"Sprite", bound_sprite_meta},

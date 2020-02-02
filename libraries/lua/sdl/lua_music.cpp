@@ -1,101 +1,71 @@
-#ifndef NO_MUSIC
+#nguard NO_MUSIC
 #include "lua_music.h"
 
-static int l_music_new(lua_State *L) {
-  char *source;
-  if (!lua_isstring(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  source = (char *)lua_tostring(L, -1);
-  lua_pop(L, 1);
-  Mix_Music *music;
-  music = Mix_LoadMUS(source);
+/**
+   creates new music from a source file
+
+   @lua-constructor
+   @lua-name new
+   @lua-arg source: string
+   @lua-return Class Mix_Music Music
+ */
+static Mix_Music* l_music_new(const char* source) {
+  Mix_Music *music = Mix_LoadMUS(source);
   if (!music) {
-    lua_pushnil(L);
-    lua_pushstring(L, (Mix_GetError()));
-    return 2;
+    printf("Music error: %s\n", Mix_GetError());
   }
-
-  *reinterpret_cast<Mix_Music **>(lua_newuserdata(L, sizeof(Mix_Music *))) =
-      music;
-  set_meta(L, -1, "Music");
-  return 1;
+  return music;
 }
 
-static int l_music_play(lua_State *L) {
-  Mix_Music *music;
-  int times;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
+/**
+   plays a music n times
+
+   @lua-name play
+   @lua-arg self: Class Mix_Music
+   @lua-arg times: int
+ */
+static void l_music_play(Mix_Music* self, lua_Integer times) {
+  if (Mix_PlayMusic(self, times) == -1) {
+    printf("Music error: %s\n", Mix_GetError());
   }
-  times = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  music = *(Mix_Music **)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  if (music == NULL) {
-    return 0;
-  }
-  if (Mix_PlayMusic(music, times) == -1) {
-    lua_pushstring(L, (Mix_GetError()));
-    return 2;
-  }
-  return 0;
 }
 
-static int l_music_setPosition(lua_State *L) {
-  double position;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  position = (double)lua_tonumber(L, -1);
-  lua_pop(L, 1);
+/**
+   sets the position of the current music
+
+   @lua-name setPosition
+   @lua-arg position: number
+ */
+static void l_music_setPosition(lua_Number position) {
   if (Mix_SetMusicPosition(position) == -1) {
-    lua_pushstring(L, (Mix_GetError()));
-    return 1;
+    printf("Music error: %s\n", Mix_GetError());
   }
-  return 0;
 }
 
-static int l_music_pause(lua_State *L) {
+/**
+   pauses the current music
+
+   @lua-name pause
+ */
+static void l_music_pause() {
   Mix_PauseMusic();
-  return 0;
 }
 
-static int l_music_resume(lua_State *L) {
+/**
+   resumes the current music
+
+   @lua-name resume
+ */
+static void l_music_resume() {
   Mix_ResumeMusic();
-  return 0;
 }
 
-static int l_music_destroy(lua_State *L) {
-  Mix_Music **music;
-  if (!lua_isuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  music = (Mix_Music **)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  if (music == NULL) {
-    return 0;
-  }
-  Mix_FreeMusic(*music);
-  *music = NULL;
-  return 0;
+/**
+   frees a music
+
+   @lua-name destroy
+   @lua-arg self: Delete Mix_Music
+ */
+static void l_music_destroy(Mix_Music* self) {
+  Mix_FreeMusic(self);
 }
-
-const struct luaL_Reg music_meta[] = {{"new", l_music_new},
-                                      {"play", l_music_play},
-                                      {"setPosition", l_music_setPosition},
-                                      {"pause", l_music_pause},
-                                      {"resume", l_music_resume},
-                                      {"destroy", l_music_destroy},
-                                      {"__index", l_meta_indexer},
-                                      {NULL, NULL}};
-
-#endif

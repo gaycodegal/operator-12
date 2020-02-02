@@ -3,6 +3,4 @@
 #include "util_lua.h"
 #include "globals.h"
 
-extern const struct luaL_Reg music_meta[];
-
 #endif

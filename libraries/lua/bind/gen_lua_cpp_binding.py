@@ -40,6 +40,11 @@ basename = sys_args.OUT_BASENAME
 with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cpp", "w") as out_file, open(out_filename + ".h", "w") as out_header:
     # create the .cpp file
     contents = IN_FILE.read()
+    didguard = guard.match(contents)
+    if didguard != None:
+        contents = contents[didguard.span()[1]:]
+        groups = didguard.groups()
+        out_file.write("#if{}def {}\n".format(*groups))
     out_file.write('#include "{}.h"\n'.format(basename))
     out_file.write(contents)
     out_file.write("\n")
@@ -74,7 +79,9 @@ with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cpp", "w") as out_
         basename))
     out_file.write("\n    ".join(fns))
     out_file.write("\n")
-
+    if didguard != None:
+        out_file.write("#endif\n")
+    
     basename_upper = basename.upper()
     # create the .h file
     out_header.write("""

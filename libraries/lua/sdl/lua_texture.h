@@ -4,6 +4,4 @@
 #include "sprite.h"
 #include "globals.h"
 
-extern const struct luaL_Reg texture_meta[];
-
 #endif
