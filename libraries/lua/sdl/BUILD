@@ -1,7 +1,7 @@
 load("//bzl:vars.bzl", "COPTS", "LINKOPTS")
 load("//libraries/lua/bind:bind.bzl", "lua_bind_cpp")
 
-bound = ["lua_surface", "lua_ttf", "lua_texture"]
+bound = ["lua_surface", "lua_ttf", "lua_texture", "lua_sprite"]
 bindings = [b.replace("lua", "bound") for b in bound]
 excluded = [b + ".cpp" for b in bound]
 
@@ -33,6 +33,11 @@ lua_bind_cpp(
 lua_bind_cpp(
     name = "bound_surface",
     src = "lua_surface.cpp",
+)
+
+lua_bind_cpp(
+    name = "bound_sprite",
+    src = "lua_sprite.cpp",
 )
 
 lua_bind_cpp(

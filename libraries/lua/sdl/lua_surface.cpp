@@ -125,31 +125,19 @@ static void surface_blit(SDL_Surface *dst, SDL_Surface *src, lua_Integer x, lua_
 /**
    Create a texture from the surface
 
-   @lua-meta
    @lua-name textureFrom
+   @lua-arg self: Class SDL_Surface
+   @lua-return Class SDL_Texture Texture
  */
-static int surface_textureFrom(lua_State *L) {
-  SDL_Surface *surface;
-  if (!lua_isuserdata(L, -1)) {
-    return 0;
-  }
-  surface = *reinterpret_cast<SDL_Surface **>(lua_touserdata(L, -1));
-  lua_pop(L, 1);
-
-  if (surface == NULL) {
-    return 0;
-  }
-
+static SDL_Texture* surface_textureFrom(SDL_Surface* self) {
   // Create texture from surface pixels
   SDL_Texture *newTexture =
-      SDL_CreateTextureFromSurface(globalRenderer, surface);
+      SDL_CreateTextureFromSurface(globalRenderer, self);
   if (newTexture == NULL) {
     printf("Unable to create texture from surface! SDL Error: %s\n",
            SDL_GetError());
-    return 0;
   }
-  lua_pushlightuserdata(L, (void *)newTexture);
-  return 1;
+  return newTexture;
 }
 
 /**

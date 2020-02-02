@@ -11,7 +11,7 @@ int luaopen_gamelibs(lua_State *L) {
       {"Music", music_meta},
 #endif
       {"Texture", bound_texture_meta},
-      {"Sprite", spritemeta},
+      {"Sprite", bound_sprite_meta},
       {"static", static_meta},
       {"Surface", bound_surface_meta},
       {"TTF", bound_ttf_meta},

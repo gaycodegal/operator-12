@@ -17,7 +17,9 @@ static int l_texture_new(lua_State *L) {
   }
   path = (char *)lua_tostring(L, -1);
   lua_pop(L, 1);
-  lua_pushlightuserdata(L, (void *)loadTexture(path, w, h));
+  SDL_Texture* tex = loadTexture(path, w, h);
+  *reinterpret_cast<SDL_Texture**>(lua_newuserdata(L, sizeof(SDL_Texture*))) = tex;
+  set_meta(L, -1, "Texture");
   lua_pushnumber(L, w);
   lua_pushnumber(L, h);
   return 3;
@@ -26,186 +28,69 @@ static int l_texture_new(lua_State *L) {
 /**
    destroy a texture
 
-   @lua-meta
    @lua-name destroy
+   @lua-arg self: Delete SDL_Texture
 */
-static int l_texture_destroy(lua_State *L) {
-  SDL_Texture *tex;
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  tex = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  SDL_DestroyTexture(tex);
-  return 0;
+static void texture_destroy(SDL_Texture* self) {
+  SDL_DestroyTexture(self);
 }
 
 /**
    Creates a new texture that is capable of being a render target
 
-   @lua-meta
+   @lua-constructor
    @lua-name newTarget
+   @lua-arg width: int
+   @lua-arg height: int
+   @lua-return Class SDL_Texture Texture
  */
-static int l_texture_newTarget(lua_State *L) {
-  int width;
-  int height;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  height = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  width = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-
+static SDL_Texture* texture_newTarget(lua_Integer width, lua_Integer height) {
   Uint32 pixformat = SDL_PIXELFORMAT_RGBA8888;
-  SDL_Texture *texture = SDL_CreateTexture(
+  return SDL_CreateTexture(
       globalRenderer, pixformat, SDL_TEXTUREACCESS_TARGET, width, height);
-  lua_pushlightuserdata(L, (void *)texture);
-  return 1;
 }
 
 /**
    Sets the RGB mask of a texure
 
-   @lua-meta
    @lua-name setRGBMask
+   @lua-arg self: Class SDL_Texture
+   @lua-arg r: int
+   @lua-arg g: int
+   @lua-arg b: int
  */
-static int l_texture_setRGBMask(lua_State *L) {
-  SDL_Texture *texture;
-  Uint8 r;
-  Uint8 g;
-  Uint8 b;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 4);
-    return 0;
-  }
-  b = (Uint8)lua_tonumber(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 3);
-    return 0;
-  }
-  g = (Uint8)lua_tonumber(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  r = (Uint8)lua_tonumber(L, -1);
-  lua_pop(L, 1);
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  texture = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  SDL_SetTextureColorMod(texture, r, g, b);
-  return 0;
+static void l_texture_setRGBMask(SDL_Texture *self, lua_Integer r, lua_Integer g, lua_Integer b) {
+  SDL_SetTextureColorMod(self, r, g, b);
 }
 
 /**
    Sets the alpha mask of a texture
 
-   @lua-meta
    @lua-name setAMask
+   @lua-arg self: Class SDL_Texture
+   @lua-arg a: int
  */
-static int l_texture_setAMask(lua_State *L) {
-  SDL_Texture *texture;
-  Uint8 a;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  a = (Uint8)lua_tonumber(L, -1);
-  lua_pop(L, 1);
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  texture = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  if (SDL_SetTextureAlphaMod(texture, a) < 0) {
+static void l_texture_setAMask(SDL_Texture *self, lua_Integer a) {
+  if (SDL_SetTextureAlphaMod(self, a) < 0) {
     printf("Alpha Mod Err %s\n", SDL_GetError());
   }
-  return 0;
 }
 
 /**
    Copies a texture onto the global renderer
 
-   @lua-meta
    @lua-name renderCopy
+   @lua-arg self: Class SDL_Texture
+   @lua-arg sx: int
+   @lua-arg sy: int
+   @lua-arg sw: int
+   @lua-arg sh: int
+   @lua-arg dx: int
+   @lua-arg dy: int
+   @lua-arg dw: int
+   @lua-arg dh: int
  */
-static int l_texture_renderCopy(lua_State *L) {
-  SDL_Texture *texture;
-  int sx;
-  int sy;
-  int sw;
-  int sh;
-  int dx;
-  int dy;
-  int dw;
-  int dh;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 9);
-    return 0;
-  }
-  dh = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 8);
-    return 0;
-  }
-  dw = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 7);
-    return 0;
-  }
-  dy = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 6);
-    return 0;
-  }
-  dx = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 5);
-    return 0;
-  }
-  sh = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 4);
-    return 0;
-  }
-  sw = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 3);
-    return 0;
-  }
-  sy = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  sx = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  texture = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
+static void l_texture_renderCopy(SDL_Texture *self, lua_Integer sx, lua_Integer sy, lua_Integer sw, lua_Integer sh, lua_Integer dx, lua_Integer dy, lua_Integer dw, lua_Integer dh) {
   SDL_Rect dest;
   dest.x = dx;
   dest.y = dy;
@@ -216,31 +101,17 @@ static int l_texture_renderCopy(lua_State *L) {
   source.y = sy;
   source.w = sw;
   source.h = sh;
-  SDL_RenderCopy(globalRenderer, texture, &source, &dest);
-  return 0;
+  SDL_RenderCopy(globalRenderer, self, &source, &dest);
 }
 
 /**
    Sets the blend mode of a texture
 
-   @lua-meta
    @lua-name blendmode
+   @lua-arg self: Class SDL_Texture
+   @lua-arg mode: int
  */
-static int l_texture_blendmode(lua_State *L) {
-  SDL_Texture *texture;
-  SDL_BlendMode mode;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  mode = static_cast<SDL_BlendMode>(static_cast<int>(lua_tonumber(L, -1)));
-  lua_pop(L, 1);
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  texture = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  SDL_SetTextureBlendMode(texture, mode);
-  return 0;
+static void l_texture_blendmode(SDL_Texture *self, lua_Integer mode) {
+  SDL_BlendMode bmode = static_cast<SDL_BlendMode>(mode);
+  SDL_SetTextureBlendMode(self, bmode);
 }
