@@ -1,5 +1,11 @@
 #include "lua_sprite.h"
 
+/**
+   draw a sprite
+
+   @lua-meta
+   @lua-name draw
+ */
 static int l_draw_sprite(lua_State *L) {
   Sprite *s;
   int x, y;
@@ -27,6 +33,12 @@ static int l_draw_sprite(lua_State *L) {
   return 0;
 }
 
+/**
+   free a sprite
+
+   @lua-meta
+   @lua-name destroy
+ */
 static int l_free_sprite(lua_State *L) {
   Sprite *s;
   if (!lua_isuserdata(L, -1)) {
@@ -39,6 +51,12 @@ static int l_free_sprite(lua_State *L) {
   return 0;
 }
 
+/**
+   move a sprite
+
+   @lua-meta
+   @lua-name move
+ */
 static int l_move_sprite(lua_State *L) {
   // printLuaStack(L, "move_sprite");
   int x, y;
@@ -65,6 +83,12 @@ static int l_move_sprite(lua_State *L) {
   return 0;
 }
 
+/**
+   get a sprite's size
+
+   @lua-meta
+   @lua-name size
+ */
 static int l_size_sprite(lua_State *L) {
   // printLuaStack(L, "size_sprite");
   int w, h;
@@ -91,88 +115,22 @@ static int l_size_sprite(lua_State *L) {
   return 1;
 }
 
-static int l_new_sprite(lua_State *L) {
-  // printLuaStack(L, "new_sprite");
-  int x, y, w, h, sx, sy;
-  SDL_Texture *tex;
-  Sprite *s;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 7);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
-  sy = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 6);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
-  sx = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 5);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
-  h = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 4);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
-  w = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 3);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
-  y = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
+/**
+   creates new surface from image source
 
-  x = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-
-  // printf("here %s\n", lua_typename(L, lua_type(L, -1)));
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    // printf("abort\n");
-    lua_pushnil(L);
-    return 1;
-  }
-
-  // printf("(x %i, y %i, w %i, h %i) sx %i, sy%i\n", x,y,w,h,sx,sy);
-  tex = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
-  s = new Sprite();
-  *reinterpret_cast<Sprite **>(lua_newuserdata(L, sizeof(Sprite *))) = s;
-
+   @lua-constructor
+   @lua-name new
+   @lua-arg tex: Class SDL_Texture
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-arg w: int
+   @lua-arg h: int
+   @lua-arg sx: int
+   @lua-arg sy: int
+   @lua-return Class Sprite
+ */
+static Sprite* new_sprite(SDL_Texture* tex, lua_Integer x, lua_Integer y, lua_Integer w, lua_Integer h, lua_Integer sx, lua_Integer sy) {
+  Sprite* s = new Sprite();
   s->init(tex, x, y, w, h, sx, sy);
-  /*for(int l = 0; l < sizeof(Sprite); l++){
-    printf("c: %i/%ld v: %i\n", l, sizeof(Sprite), *(c++));
-    }*/
-  // s->draw();
-  set_meta(L, -1, "Sprite");
-  return 1;
+  return s;
 }
-
-const struct luaL_Reg spritemeta[] = {{"new", l_new_sprite},
-                                      {"draw", l_draw_sprite},
-                                      {"destroy", l_free_sprite},
-                                      {"move", l_move_sprite},
-                                      {"size", l_size_sprite},
-                                      {"__index", l_meta_indexer},
-                                      {NULL, NULL}};

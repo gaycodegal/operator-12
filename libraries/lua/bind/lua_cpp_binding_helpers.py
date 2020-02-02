@@ -58,6 +58,7 @@ def class_lget(arg_name, arg_type, i):
     return """
     {name} = *reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
     if ({name} == NULL) {{
+        printf("could not retrieve {name} (null)\\n");
         return 0;
     }}
 """.format(
@@ -69,6 +70,7 @@ def delete_lget(arg_name, arg_type, i):
     {name} = *_d{name};
     *_d{name} = NULL;
     if ({name} == NULL) {{
+        printf("could not retrieve {name} (null)\\n");
         return 0;
     }}
 """.format(
@@ -182,7 +184,7 @@ def write_fn(out, values, basename):
         guard = lua_typeguard(arg_type)
         arg_get = lua_arggetter(arg_name, arg_type, i + 1)
         out.write("""
-        if (!lua_is{guard}(L, -{index})) {{
+    if (!lua_is{guard}(L, -{index})) {{
         printf("bad arg {fnname}.{name}\\n");
         return 0;
     }}
