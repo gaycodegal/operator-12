@@ -1,7 +1,7 @@
 load("//bzl:vars.bzl", "COPTS", "LINKOPTS")
 load("//libraries/lua/bind:bind.bzl", "lua_bind_cpp")
 
-bound = ["lua_surface", "lua_ttf", "lua_texture", "lua_sprite"]
+bound = ["lua_surface", "lua_ttf", "lua_texture", "lua_sprite", "lua_music"]
 bindings = [b.replace("lua", "bound") for b in bound]
 excluded = [b + ".cpp" for b in bound]
 
@@ -23,6 +23,11 @@ cc_library(
     ],
     includes = [""],
     visibility = ["//visibility:public"],
+)
+
+lua_bind_cpp(
+    name = "bound_music",
+    src = "lua_music.cpp",
 )
 
 lua_bind_cpp(

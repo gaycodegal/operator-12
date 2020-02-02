@@ -8,6 +8,8 @@ docpattern = re.compile(r"""
 [^\{]*\{ # collect the start of the function */
 """, re.MULTILINE|re.DOTALL|re.VERBOSE)
 
+guard = re.compile(r"^#(n?)guard ([A-Z_]+)")
+
 # static void* <capture_this> (args){
 fnnamepattern = re.compile(r"\w+\s*\(")
 
@@ -93,8 +95,12 @@ def class_lpush(arg_type):
 
 def string_lpush(arg_type):
     return """
-    lua_pushstring(L, retVal);
-    delete[] retVal;
+    if (retVal == NULL) {
+        lua_pushnil(L);
+    } else {
+        lua_pushstring(L, retVal);
+        delete[] retVal;
+    }
 """
 
 def cxx_string_lpush(arg_type):

@@ -3,7 +3,7 @@
 
 #include "lua_include.h"
 #include "lua_map.h"
-#include "lua_music.h"
+#include "bound_music.h"
 #include "bound_sprite.h"
 #include "lua_static.h"
 #include "bound_surface.h"

@@ -28,7 +28,7 @@ static Sprite* new_sprite(SDL_Texture* tex, lua_Integer x, lua_Integer y, lua_In
    @lua-arg x: int
    @lua-arg y: int
  */
-static int l_draw_sprite(Sprite* self, lua_Integer x, lua_Integer y) {
+static void l_draw_sprite(Sprite* self, lua_Integer x, lua_Integer y) {
   self->draw(x, y);
 }
 
@@ -38,7 +38,7 @@ static int l_draw_sprite(Sprite* self, lua_Integer x, lua_Integer y) {
    @lua-name destroy
    @lua-arg self: Delete Sprite
  */
-static int l_free_sprite(Sprite* self) {
+static void l_free_sprite(Sprite* self) {
   delete self;
 }
 

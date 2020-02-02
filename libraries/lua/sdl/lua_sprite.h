@@ -4,6 +4,4 @@
 #include "globals.h"
 #include "sprite.h"
 
-extern const struct luaL_Reg spritemeta[];
-
 #endif
