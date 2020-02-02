@@ -55,36 +55,14 @@ static void l_move_sprite(Sprite* self, lua_Integer x, lua_Integer y) {
 }
 
 /**
-   get a sprite's size
+   set a sprite's size
 
-   @lua-meta
    @lua-name size
+   @lua-arg self: Class Sprite
+   @lua-arg w: int
+   @lua-arg h: int
  */
-static int l_size_sprite(lua_State *L) {
+static void l_size_sprite(Sprite* self, lua_Integer w, lua_Integer h) {
   // printLuaStack(L, "size_sprite");
-  int w, h;
-  Sprite *s;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 3);
-    return 0;
-  }
-  h = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  w = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  s = *reinterpret_cast<Sprite **>(lua_touserdata(L, -1));
-  if (s == NULL) {
-    return 0;
-  }
-  lua_pop(L, 1);
-  s->size(w, h);
-  return 1;
+  self->size(w, h);
 }
