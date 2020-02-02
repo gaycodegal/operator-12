@@ -2,6 +2,9 @@
 
 /**
    Create a new texture
+
+   @lua-meta
+   @lua-name new
  */
 static int l_texture_new(lua_State *L) {
   // printLuaStack(L, "new_tex");
@@ -22,6 +25,9 @@ static int l_texture_new(lua_State *L) {
 
 /**
    destroy a texture
+
+   @lua-meta
+   @lua-name destroy
 */
 static int l_texture_destroy(lua_State *L) {
   SDL_Texture *tex;
@@ -37,6 +43,9 @@ static int l_texture_destroy(lua_State *L) {
 
 /**
    Creates a new texture that is capable of being a render target
+
+   @lua-meta
+   @lua-name newTarget
  */
 static int l_texture_newTarget(lua_State *L) {
   int width;
@@ -63,6 +72,9 @@ static int l_texture_newTarget(lua_State *L) {
 
 /**
    Sets the RGB mask of a texure
+
+   @lua-meta
+   @lua-name setRGBMask
  */
 static int l_texture_setRGBMask(lua_State *L) {
   SDL_Texture *texture;
@@ -99,6 +111,9 @@ static int l_texture_setRGBMask(lua_State *L) {
 
 /**
    Sets the alpha mask of a texture
+
+   @lua-meta
+   @lua-name setAMask
  */
 static int l_texture_setAMask(lua_State *L) {
   SDL_Texture *texture;
@@ -123,6 +138,9 @@ static int l_texture_setAMask(lua_State *L) {
 
 /**
    Copies a texture onto the global renderer
+
+   @lua-meta
+   @lua-name renderCopy
  */
 static int l_texture_renderCopy(lua_State *L) {
   SDL_Texture *texture;
@@ -204,6 +222,9 @@ static int l_texture_renderCopy(lua_State *L) {
 
 /**
    Sets the blend mode of a texture
+
+   @lua-meta
+   @lua-name blendmode
  */
 static int l_texture_blendmode(lua_State *L) {
   SDL_Texture *texture;
@@ -223,12 +244,3 @@ static int l_texture_blendmode(lua_State *L) {
   SDL_SetTextureBlendMode(texture, mode);
   return 0;
 }
-
-const struct luaL_Reg texture_meta[] = {{"new", l_texture_new},
-                                        {"destroy", l_texture_destroy},
-                                        {"newTarget", l_texture_newTarget},
-                                        {"setRGBMask", l_texture_setRGBMask},
-                                        {"setAMask", l_texture_setAMask},
-                                        {"renderCopy", l_texture_renderCopy},
-                                        {"blendmode", l_texture_blendmode},
-                                        {NULL, NULL}};
