@@ -13,8 +13,8 @@ int luaopen_gamelibs(lua_State *L) {
       {"Texture", texture_meta},
       {"Sprite", spritemeta},
       {"static", static_meta},
-      {"Surface", surface_meta},
-      {"TTF", ttf_meta},
+      {"Surface", bound_surface_meta},
+      {"TTF", bound_ttf_meta},
       {NULL, NULL}};
 
   static const struct luaConstInt globints[] = {

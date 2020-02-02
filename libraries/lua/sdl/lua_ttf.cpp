@@ -2,57 +2,31 @@
 
 /**
    creates a surface with text rendered to it
- */
-static int l_ttf_surface(lua_State *L) {
-  char *text;
-  int r;
-  int g;
-  int b;
-  int a;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 5);
-    return 0;
-  }
-  a = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 4);
-    return 0;
-  }
-  b = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 3);
-    return 0;
-  }
-  g = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  r = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isstring(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  text = (char *)lua_tostring(L, -1);
-  lua_pop(L, 1);
+
+   @lua-name surface
+   @lua-arg text: string
+   @lua-arg r: int
+   @lua-arg g: int
+   @lua-arg b: int
+   @lua-arg a: int
+   @lua-return Class SDL_Surface Surface
+*/
+static SDL_Surface* ttf_surface(const char* text, int r, int g, int b, int a) {
   SDL_Color c;
   c.r = r;
   c.b = b;
   c.g = g;
   c.a = a;
-  SDL_Surface *textSurface = TTF_RenderText_Solid(gFont, text, c);
-  lua_pushlightuserdata(L, (void *)textSurface);
-  return 1;
+  return TTF_RenderText_Solid(gFont, text, c);
 }
 
 /**
    gets the size required to render text
+
+   @lua-meta
+   @lua-name size
  */
-static int l_ttf_size(lua_State *L) {
+static int ttf_size(lua_State *L) {
   char *text;
   if (!lua_isstring(L, -1)) {
     lua_pop(L, 1);
@@ -69,6 +43,3 @@ static int l_ttf_size(lua_State *L) {
   lua_pushnumber(L, h);
   return 2;
 }
-
-const struct luaL_Reg ttf_meta[] = {
-    {"surface", l_ttf_surface}, {"size", l_ttf_size}, {NULL, NULL}};
