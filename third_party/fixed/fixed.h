@@ -459,6 +459,46 @@ public: // conversion to basic types
 		return data_;
 	}
 
+  
+  size_t to_string(char* s, size_t n) {
+    if (s == NULL) {
+      return -1;
+    }
+    size_t used = 0;
+    used = snprintf(s, n, "%u", to_uint());
+    if (used < 0) {
+      return -1;
+    }
+    s += used;
+    size_t frac = 1;
+    size_t pow5 = 5;
+    size_t raw = data_;
+    base_type bit = Fixed::one;
+    bit >>= 1;
+    while (bit > 0) {
+      frac *= 10;
+      if (bit & raw) {
+	frac += pow5;
+      }
+      pow5 *= 5;
+      bit >>= 1;
+    }
+    char* period_here = s;
+    bool doperiod = n - used > 0;
+    if (n - used > 0) {
+      size_t nused = snprintf(s, n - used, "%lu", frac);
+      if (nused < 0) {
+	return -1;
+      }
+      used += nused;
+    }
+    if (doperiod) {
+      *period_here = '.';
+    }
+    return used;
+  }
+
+
 public:
 	CONSTEXPR14 void swap(Fixed &rhs) {
 		using std::swap;
@@ -530,6 +570,109 @@ template <size_t I, size_t F>
 std::ostream &operator<<(std::ostream &os, Fixed<I, F> f) {
 	os << f.to_double();
 	return os;
+}
+
+Fixed<16, 16> frexp(Fixed<16, 16>x, int* exp) {
+  using base_type = typename Fixed<16,16>::base_type;
+  base_type data = x.to_raw();
+  base_type t = data;
+  if (t < 0) {
+    t = ~t;
+  }
+  int shifts = 0;
+  bool is_one = true;
+  while(t != 1 && t > 0) {
+    if (t & 1) {
+      is_one = false;
+    }
+    t >>= 1;
+    ++shifts;
+  }
+  shifts -= Fixed<16, 16>::fractional_bits;
+  
+  if (exp != NULL) {
+    if (is_one) {
+      if (shifts < 0) {
+	--shifts;
+      }
+    } else if (shifts >= 0) {
+      ++shifts;
+    }
+    *exp = shifts;
+  }
+
+  if (shifts < 0) {
+    return Fixed<16, 16>::from_base(data >> shifts);
+  } else {
+    return Fixed<16, 16>::from_base(data << -shifts);
+  }
+}
+  
+Fixed<16, 16> floor(Fixed<16, 16>a, Fixed<16, 16>b) {
+  using base_type = typename Fixed<16,16>::base_type;
+  base_type x = a.to_raw();
+  base_type p = b.to_raw() >> Fixed<16,16>::fractional_bits;
+  base_type v = 1;
+  while(p > 0) {
+    if (p & 1) {
+      v = v * x;
+    }
+    p >>= 1;
+    x *= x;
+  }
+  return Fixed<16, 16>::from_base(v);
+}
+  
+Fixed<16, 16> pow(Fixed<16, 16>x, Fixed<16, 16>b) {
+  using base_type = typename Fixed<16,16>::base_type;
+  base_type p = b.to_raw();
+  Fixed<16,16> v = Fixed<16,16>::one;
+  while(p > 0) {
+    if (p & 1) {
+      v = v * x;
+    }
+    p >>= 1;
+    x *= x;
+  }
+  while(p < 0) {
+    if (p & 1) {
+      v = v / x;
+    }
+    p /= 2;
+    x *= x;
+  }
+  return Fixed<16, 16>::from_base(v);
+}
+  
+  //template <size_t I, size_t F>
+Fixed<16, 16> strtof_fixed(const char* str, char **endptr) {
+  if (str == NULL) {
+    return 0;
+  }
+  char* p = const_cast<char*>(str);
+  size_t i = 0;
+  for(char c = *p; c != '\0' && c > '0' && c < '9'; c = *(++p)) {
+    i = i * 10 + (c - '0');
+  }
+  Fixed<16, 16> v = 0;
+  if (*p == '.') {
+    ++p;
+    for(char c = *p; c != '\0' && c > '0' && c < '9'; c = *(++p)) {
+      v += (c - '0');
+      v /= 10;
+    }
+  }
+  v += i;
+
+  if (endptr != NULL) {
+    *endptr = p;
+  }
+  return v;
+}
+
+  //template <size_t I, size_t F>
+size_t fixed_to_string(char* s, size_t n, Fixed<16, 16> fixed) {
+  return fixed.to_string(s, n);
 }
 
 // basic math operators

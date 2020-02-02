@@ -1,8 +1,11 @@
+load("//bzl:vars.bzl", "COPTS", "LINKOPTS")
 licenses(["notice"]) # MIT license
 
 lua_dir = "src/"
 lua_hdrs = glob([lua_dir+"*.h"])
-lua_lib_raw = "lapi.c lcode.c lctype.c ldebug.c ldo.c ldump.c lfunc.c lgc.c llex.c lmem.c lobject.c lopcodes.c lparser.c lstate.c lstring.c ltable.c ltm.c lundump.c lvm.c lzio.c lauxlib.c lbaselib.c lbitlib.c lcorolib.c ldblib.c liolib.c lmathlib.c loslib.c lstrlib.c ltablib.c lutf8lib.c loadlib.c linit.c".split(" ")
+lua_lib_raw = "lapi.cpp lcode.cpp lctype.cpp ldebug.cpp ldo.cpp ldump.cpp lfunc.cpp lgc.cpp llex.cpp lmem.cpp lobject.cpp lopcodes.cpp lparser.cpp lstate.cpp lstring.cpp ltable.cpp ltm.cpp lundump.cpp lvm.cpp lzio.cpp lauxlib.cpp lbaselib.cpp lbitlib.cpp lcorolib.cpp ldblib.cpp liolib.cpp lmathlib.cpp loslib.cpp lstrlib.cpp ltablib.cpp lutf8lib.cpp loadlib.cpp linit.cpp".split(" ")
+#lua_lib_raw = "lapi.cpp".split(" ")
+#lua_hdrs = ["src/luaconf.h"]
 lua_lib_srcs = lua_hdrs + [lua_dir + x for x in lua_lib_raw]
 
 cc_library(
@@ -10,6 +13,11 @@ cc_library(
     hdrs = lua_hdrs,
     srcs = lua_lib_srcs,
     includes = [lua_dir],
+    copts = COPTS,
+    linkopts = LINKOPTS,
+    deps = [
+        "//third_party/fixed",
+    ],
     visibility = ["//visibility:public"],
 )
 
@@ -21,15 +29,20 @@ cc_library(
     copts=[
         "-include android-lua.h",
     ],
-    deps = ["//extras:lua-android-include"],
+    deps = [
+        "//extras:lua-android-include",
+        "//third_party/fixed",
+    ],
     linkopts = ["-ldl -lm -landroid -llog"],
     visibility = ["//visibility:public"],
 )
 
 cc_binary(
     name = "lua",
-    srcs = ["src/lua.c"],
+    srcs = ["src/lua.cpp"],
     deps = [":lua-lib"],
+    copts = COPTS,
+    linkopts = LINKOPTS,
     visibility = ["//visibility:private"],
 )
 
