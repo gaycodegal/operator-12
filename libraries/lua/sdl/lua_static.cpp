@@ -2,16 +2,20 @@
 
 /**
    triggers shutdown on end of loop
+
+   @lua-name quit
  */
-static int l_static_quit(lua_State *L) {
+static void l_static_quit() {
   quit = true;
-  return 0;
 }
 
 /**
    Reads a file using SDL's internal read system
 
    Lua's read system only works on certain systems.
+
+   @lua-meta
+   @lua-name readfile
  */
 static int l_static_readfile(lua_State *L) {
   char *name;
@@ -33,77 +37,47 @@ static int l_static_readfile(lua_State *L) {
 
 /**
    pauses execution for some milliseconds immediately
+
+   @lua-name wait
+   @lua-arg millis: int
  */
-static int l_static_wait(lua_State *L) {
-  int t;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  t = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  SDL_Delay(t);
-  return 0;
+static void l_static_wait(lua_Integer millis) {
+  SDL_Delay(millis);
 }
 
 /**
    sets time to delay after frame is complete
+
+   @lua-name framedelay
+   @lua-arg millis: int
  */
-static int l_static_framedelay(lua_State *L) {
-  int t;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  t = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  framedelay = t;
-  return 0;
+static void l_static_framedelay(lua_Integer millis) {
+  framedelay = millis;
 }
 
 /**
    Sets the global clip rect of the renderer
+
+   @lua-name setRenderClip
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-arg w: int
+   @lua-arg h: int
  */
-static int l_static_setRenderClip(lua_State *L) {
-  int x;
-  int y;
-  int w;
-  int h;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 4);
-    return 0;
-  }
-  h = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 3);
-    return 0;
-  }
-  w = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 2);
-    return 0;
-  }
-  y = lua_tointeger(L, -1);
-  lua_pop(L, 1);
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  x = lua_tointeger(L, -1);
-  lua_pop(L, 1);
+static void l_static_setRenderClip(lua_Integer x, lua_Integer y, lua_Integer w, lua_Integer h) {
   SDL_Rect rect;
   rect.x = x;
   rect.y = y;
   rect.w = w;
   rect.h = h;
   SDL_RenderSetClipRect(globalRenderer, &rect);
-  return 0;
 }
 
 /**
    gets the global render clip rect
+
+   @lua-meta
+   @lua-name getRenderClip
  */
 static int l_static_getRenderClip(lua_State *L) {
   SDL_Rect rect;
@@ -117,31 +91,29 @@ static int l_static_getRenderClip(lua_State *L) {
 
 /**
    Sets the texture to be the render target
+
+   @lua-name setRenderTarget
+   @lua-arg texture: Class SDL_Texture
  */
-static int l_static_setRenderTarget(lua_State *L) {
-  SDL_Texture *texture;
-  if (!lua_islightuserdata(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  texture = (SDL_Texture *)lua_touserdata(L, -1);
-  lua_pop(L, 1);
+static void l_static_setRenderTarget(SDL_Texture* texture) {
   SDL_SetRenderTarget(globalRenderer, texture);
-  return 0;
 }
 
 /**
    Sets the render target back to the screen
+
+   @lua-name unsetRenderTarget
  */
-static int l_static_unsetRenderTarget(lua_State *L) {
+static void l_static_unsetRenderTarget() {
   SDL_SetRenderTarget(globalRenderer, NULL);
-  return 0;
 }
 
 /**
    clears renderer
+
+   @lua-name renderClear
  */
-static int l_static_renderClear(lua_State *L) {
+static void l_static_renderClear() {
   SDL_SetRenderDrawColor(globalRenderer, 0x00, 0x00, 0x00, 0x00);
   SDL_Rect rect;
   rect.x = 0;
@@ -149,33 +121,15 @@ static int l_static_renderClear(lua_State *L) {
   rect.w = SCREEN_WIDTH;
   rect.h = SCREEN_HEIGHT;
   SDL_RenderFillRect(globalRenderer, &rect);
-  return 0;
 }
 
 /**
    Sets the render blend mode
- */
-static int l_static_renderBlendmode(lua_State *L) {
-  SDL_BlendMode mode;
-  if (!lua_isnumber(L, -1)) {
-    lua_pop(L, 1);
-    return 0;
-  }
-  mode = static_cast<SDL_BlendMode>(static_cast<int>(lua_tonumber(L, -1)));
-  lua_pop(L, 1);
-  SDL_SetRenderDrawBlendMode(globalRenderer, mode);
-  return 0;
-}
 
-const struct luaL_Reg static_meta[] = {
-    {"quit", l_static_quit},
-    {"wait", l_static_wait},
-    {"readfile", l_static_readfile},
-    {"framedelay", l_static_framedelay},
-    {"setRenderClip", l_static_setRenderClip},
-    {"getRenderClip", l_static_getRenderClip},
-    {"setRenderTarget", l_static_setRenderTarget},
-    {"unsetRenderTarget", l_static_unsetRenderTarget},
-    {"renderClear", l_static_renderClear},
-    {"renderBlendmode", l_static_renderBlendmode},
-    {NULL, NULL}};
+   @lua-name renderBlendmode
+   @lua-arg mode: int
+ */
+static void l_static_renderBlendmode(lua_Integer mode) {
+  SDL_BlendMode bmode = static_cast<SDL_BlendMode>(mode);
+  SDL_SetRenderDrawBlendMode(globalRenderer, bmode);
+}
