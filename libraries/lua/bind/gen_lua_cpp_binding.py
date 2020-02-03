@@ -7,27 +7,49 @@ from argparse import RawTextHelpFormatter
 parser = argparse.ArgumentParser(description = """
 Parses Javadoc like statements in a C++ file and generates binding functions
 to help call the functions in lua. Also outputs a metatable for linking purposes
-generates a {OUT_LOCATION}/{OUT_BASENAME}.cpp and {OUT_LOCATION}/{OUT_BASENAME}.h
+generates a `{OUT_LOCATION}/{OUT_BASENAME}.cpp` and `{OUT_LOCATION}/{OUT_BASENAME}.h`
 
-The .cpp file includes the contents of {IN_FILE} already, so you may use static
-functions and will not need to include {IN_FILE} in your build.
+The .cpp file includes the contents of `{IN_FILE}` already, so you may use static
+functions and will not need to include `{IN_FILE}` in your build.
 
-javadoc functions are defined with /** */. rules are defined with `@lua-` statements
+javadoc functions are defined with `/** */`. rules are defined with `@lua-` statements
 that each occupy their own line. Possible values are:
 
-- @lua-meta
+- `@lua-meta`
     -   specifies that this function is a low level lua linking function and can be
         directly included in the metatable. `@lua-name` still required.
-- @lua-name
+- `@lua-name NAME`
     -   specifies the name this function will be called by from lua
-- @lua-arg NAME: TYPE
+- `@lua-arg NAME: TYPE`
     -   specifies an argument to the function. Ordering of these statements
         creates the order arguments will be accepted in.
-- @lua-return TYPE
+- `@lua-return TYPE`
     -   specifies the type of value this function will return
-- @lua-constructor
+- `@lua-constructor`
     -   specifies that this function is a constructor and the metatable should have
-        __index set to the meta-indexer, which allows class-like use of instances
+        `__index` set to the meta-indexer, which allows class-like use of instances
+
+TYPE is one of the following patterns
+- `string`
+    - A simple heap-allocated C string
+- `String`
+    - A C++ stack allocated string
+- `Class CTYPE [METATABLE_NAME]`
+    - e.g. Class SDL_Surface Surface
+    - e.g. Class Sprite Sprite
+    - When this is a return TYPE, Lua only allocates the size of a pointer to
+      the class
+- `int`
+    - a lua_Integer
+- `number`
+    - a lua_Number
+- `Delete CTYPE`
+    - Same as Class, but nulls the pointer after fetch, which is useful
+      for functions in which you call `delete` on the returned pointer.
+- `bool`
+    - a boolean
+- `Struct CTYPE [METATABLE_NAME]`
+    - like class, but lua allocates the full size of this type onto the stack
 """, formatter_class=RawTextHelpFormatter)
 parser.add_argument("IN_FILE", help = "the input .cpp file")
 parser.add_argument("OUT_LOCATION", help = "the output directory")
