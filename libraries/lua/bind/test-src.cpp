@@ -11,7 +11,7 @@ static void* l_shader_new(char* vert, char* frag) {
 }
 
 /**
-   @lua-metas
+   @lua-meta
    @lua-name use
  */
 static int l_shader_use(lua_State *L) {

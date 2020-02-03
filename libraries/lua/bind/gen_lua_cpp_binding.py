@@ -104,16 +104,18 @@ with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cpp", "w") as out_
     if didguard != None:
         out_file.write("#endif\n")
     
-    basename_upper = basename.upper()
     # create the .h file
+    if didguard != None:
+        contents = contents[didguard.span()[1]:]
+        groups = didguard.groups()
+        out_header.write("#if{}def {}\n".format(*groups))
     out_header.write("""
-#ifndef _{}_
-#define _{}_
+#pragma once
 #include "globals.h"
 #include "{}.h"
 
 extern const struct luaL_Reg {}_meta[];
-
-#endif
-    """.format(basename_upper, basename_upper, basename, basename))
+""".format(basename, basename))
+    if didguard != None:
+        out_header.write("#endif\n")
     
