@@ -10,3 +10,4 @@ third_party/
 out/
 docs/
 .#*
+__pycache__/
