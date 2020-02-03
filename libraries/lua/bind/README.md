@@ -5,6 +5,14 @@ Bind is a helper for binding C++ code to lua.
 For more info on bind, please run:
 
     bazel run //libraries/lua/bind:gen_lua_cpp_binding -- --help
+	
+For a demo please run:
+
+    bazel run //libraries/lua/bind:test.cpp --run_under bat
+	
+or 
+
+    bazel run //libraries/lua/bind:test.h --run_under bat
 
 ## Usage
 
