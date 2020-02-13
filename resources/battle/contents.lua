@@ -1,1 +1,0 @@
-return {"collectable.lua","goal-object.lua","load.lua","map.lua","overlay.lua","selection-mode.lua","ui.lua"}
