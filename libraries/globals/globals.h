@@ -17,4 +17,6 @@ extern bool quit;
 // delay between this and the next frame
 extern int framedelay;
 
+extern int screen_data[128 * 128];
+
 #endif

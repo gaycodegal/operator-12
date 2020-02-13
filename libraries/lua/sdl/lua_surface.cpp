@@ -27,7 +27,7 @@ static SDL_Surface* surface_new(const char* source) {
    @lua-arg height: int
    @lua-return Class SDL_Surface Surface
  */
-static SDL_Surface* surface_newBlank(lua_Integer width, lua_Integer height) {
+inline SDL_Surface* surface_newBlank(lua_Integer width, lua_Integer height) {
   Uint32 rmask, gmask, bmask, amask;
   /* SDL interprets each pixel as a 32-bit number, so our masks must depend
      on the endianness (byte order) of the machine */
@@ -177,6 +177,6 @@ static void l_surface_blitScale(SDL_Surface *dst, SDL_Surface *src, lua_Integer 
    @lua-name destroy
    @lua-arg self: Delete SDL_Surface
  */
-static void l_surface_destroy(SDL_Surface* self) {
+inline void surface_destroy(SDL_Surface* self) {
   SDL_FreeSurface(self);
 }

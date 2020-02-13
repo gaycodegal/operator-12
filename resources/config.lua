@@ -1,4 +1,4 @@
 return {
-   load="load.lua",
+   load="op12.lua",
    doInitSDL=true
 }

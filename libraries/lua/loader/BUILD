@@ -14,6 +14,7 @@ cc_library(
         "//libraries/lua/include",
         "//libraries/lua/map",
         "//libraries/lua/sdl",
+        "//libraries/lua/bits",
         "//libraries/util/lua",
     ],
     includes = [""],
