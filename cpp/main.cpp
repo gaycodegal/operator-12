@@ -177,10 +177,8 @@ void one_iter() {
     callErr(L, UPDATE, 2);
   }
   if (drawExists) {
-    lua_getglobal(L, UPDATE);
-    lua_pushnumber(L, delta / 1000.0f);
-    lua_pushnumber(L, tdelta);
-    callErr(L, UPDATE, 2);
+    lua_getglobal(L, DRAW);
+    callErr(L, DRAW, 0);
   }
   bits_renderPresent();
   lastTick = nowTick;
@@ -263,7 +261,7 @@ int main(int argc, char **argv) {
   if (globalTypeExists(L, LUA_TFUNCTION, START))
     callLuaVoidArgv(L, START, argc - 1, argv + 1);
   updateExists = globalTypeExists(L, LUA_TFUNCTION, UPDATE);
-  updateExists = globalTypeExists(L, LUA_TFUNCTION, DRAW);
+  drawExists = globalTypeExists(L, LUA_TFUNCTION, DRAW);
   keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
   keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
   mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");

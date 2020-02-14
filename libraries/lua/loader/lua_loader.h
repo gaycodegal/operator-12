@@ -9,6 +9,7 @@
 #include "bound_surface.h"
 #include "bound_texture.h"
 #include "bound_ttf.h"
+#include "bound_screen.h"
 
 /**
    loads the sprite library into lua

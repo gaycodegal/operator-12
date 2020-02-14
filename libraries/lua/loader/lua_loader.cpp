@@ -14,6 +14,7 @@ int luaopen_gamelibs(lua_State *L) {
       {"Sprite", bound_sprite_meta},
       {"static", bound_static_meta},
       {"Surface", bound_surface_meta},
+      {"Bits", bound_screen_meta},
       {"TTF", bound_ttf_meta},
       {NULL, NULL}};
 

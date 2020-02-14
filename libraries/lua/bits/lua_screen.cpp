@@ -12,42 +12,24 @@ void initBits() {
   rect.y = 0;
   rect.w = bitsSurface->w;
   rect.h = bitsSurface->h;
-  SDL_FillRect(bitsSurface, &rect, SDL_MapRGBA(bitsSurface->format, 255, 128, 128, 255));
-
-  colors[0] = make_pixel(0, 0, 0);
-  colors[1] = make_pixel(29, 43, 83);
-  colors[2] = make_pixel(126, 37, 83);
-  colors[3] = make_pixel(0, 135, 81);
-  colors[4] = make_pixel(171, 82, 54);
-  colors[5] = make_pixel(95, 87, 79);
-  colors[6] = make_pixel(194, 195, 199);
-  colors[7] = make_pixel(255, 241, 232);
-  colors[8] = make_pixel(255, 0, 77);
-  colors[9] = make_pixel(255, 163, 0);
-  colors[10] = make_pixel(255, 236, 39);
-  colors[11] = make_pixel(0, 228, 54);
-  colors[12] = make_pixel(41, 173, 255);
-  colors[13] = make_pixel(41, 173, 255);
-  colors[14] = make_pixel(255, 119, 168);
-  colors[15] = make_pixel(255, 204, 170);
+  colors[0] = SDL_MapRGBA(bitsSurface->format, 0, 0, 0, 255);
+  colors[1] = SDL_MapRGBA(bitsSurface->format, 29, 43, 83, 255);
+  colors[2] = SDL_MapRGBA(bitsSurface->format, 126, 37, 83, 255);
+  colors[3] = SDL_MapRGBA(bitsSurface->format, 0, 135, 81, 255);
+  colors[4] = SDL_MapRGBA(bitsSurface->format, 171, 82, 54, 255);
+  colors[5] = SDL_MapRGBA(bitsSurface->format, 95, 87, 79, 255);
+  colors[6] = SDL_MapRGBA(bitsSurface->format, 194, 195, 199, 255);
+  colors[7] = SDL_MapRGBA(bitsSurface->format, 255, 241, 232, 255);
+  colors[8] = SDL_MapRGBA(bitsSurface->format, 255, 0, 77, 255);
+  colors[9] = SDL_MapRGBA(bitsSurface->format, 255, 163, 0, 255);
+  colors[10] = SDL_MapRGBA(bitsSurface->format, 255, 236, 39, 255);
+  colors[11] = SDL_MapRGBA(bitsSurface->format, 0, 228, 54, 255);
+  colors[12] = SDL_MapRGBA(bitsSurface->format, 41, 173, 255, 255);
+  colors[13] = SDL_MapRGBA(bitsSurface->format, 41, 173, 255, 255);
+  colors[14] = SDL_MapRGBA(bitsSurface->format, 255, 119, 168, 255);
+  colors[15] = SDL_MapRGBA(bitsSurface->format, 255, 204, 170, 255);
   last_color = colors[7];
-  draw_circle(bitsSurface, 64, 64, 8, colors[1]);
-}
-
-Uint32 make_pixel(Uint8 r, Uint8 g, Uint8 b) {
-  Uint32 pixel = 0;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    pixel |= r << 24;
-    pixel |= g << 16;      
-    pixel |= b << 8;
-    pixel |= 0xFF;
-#else
-    pixel |= b << 16;
-    pixel |= g << 8;      
-    pixel |= r;
-    pixel |= 0xFF000000;
-#endif
-  return pixel;
+  SDL_FillRect(bitsSurface, &rect, colors[14]);
 }
 
 /**
@@ -57,6 +39,7 @@ Uint32 make_pixel(Uint8 r, Uint8 g, Uint8 b) {
    @lua-arg color: int = last_color
  */
 static void pset(lua_Integer x, lua_Integer y, lua_Integer c) {
+  last_color = c;
   set_pixel(bitsSurface, x, y, colors[c]);
 }
 
@@ -68,7 +51,46 @@ static void pset(lua_Integer x, lua_Integer y, lua_Integer c) {
    @lua-arg color: int = last_color
  */
 static void circ(lua_Integer x, lua_Integer y, lua_Integer r, lua_Integer c) {
+  last_color = c;
   draw_circle(bitsSurface, x, y, r, colors[c]);
+}
+
+/**
+   @lua-name circfill
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-arg r: int
+   @lua-arg color: int = last_color
+ */
+static void circfill(lua_Integer x, lua_Integer y, lua_Integer r, lua_Integer c) {
+  last_color = c;
+  fill_circle(bitsSurface, x, y, r, colors[c]);
+}
+
+/**
+   @lua-name rect
+   @lua-arg x0: int
+   @lua-arg y0: int
+   @lua-arg x1: int
+   @lua-arg y1: int
+   @lua-arg color: int = last_color
+ */
+static void rect(lua_Integer x0, lua_Integer y0, lua_Integer x1, lua_Integer y1, lua_Integer c) {
+  last_color = c;
+  draw_rect(bitsSurface, x0,y0,x1,y1, colors[c]);
+}
+
+/**
+   @lua-name rectfill
+   @lua-arg x0: int
+   @lua-arg y0: int
+   @lua-arg x1: int
+   @lua-arg y1: int
+   @lua-arg color: int = last_color
+ */
+static void rectfill(lua_Integer x0, lua_Integer y0, lua_Integer x1, lua_Integer y1, lua_Integer c) {
+  last_color = c;
+  fill_rect(bitsSurface, x0,y0,x1,y1, colors[c]);
 }
 
 
@@ -85,13 +107,55 @@ void draw_circle(SDL_Surface* surface, int center_x, int center_y, int radius, U
       //  Each of the following renders an octant of the circle
       set_pixel(surface, center_x + x, center_y - y, color);
       set_pixel(surface, center_x + x, center_y + y, color);
+      
       set_pixel(surface, center_x - x, center_y - y, color);
       set_pixel(surface, center_x - x, center_y + y, color);
+      
       set_pixel(surface, center_x + y, center_y - x, color);
       set_pixel(surface, center_x + y, center_y + x, color);
+      
       set_pixel(surface, center_x - y, center_y - x, color);
       set_pixel(surface, center_x - y, center_y + x, color);
 
+      if (error <= 0) {
+         ++y;
+         error += ty;
+         ty += 2;
+      }
+
+      if (error > 0) {
+         --x;
+         tx += 2;
+         error += (tx - diameter);
+      }
+   }
+}
+
+inline void draw_vert_line(SDL_Surface* surface, int x, int y0, int y1, Uint32 color) {
+  for(int yi = y0; yi <= y1; ++yi) {
+    set_pixel(surface, x, yi, color);
+  }
+}
+
+void fill_circle(SDL_Surface* surface, int center_x, int center_y, int radius, Uint32 color) {
+   const int diameter = (radius * 2);
+
+   int x = (radius - 1);
+   int y = 0;
+   int tx = 1;
+   int ty = 1;
+   int error = (tx - diameter);
+
+   while (x >= y) {
+      //  Each of the following renders an octant of the circle
+     draw_vert_line(surface, center_x + x, center_y - y, center_y + y, color);
+
+     draw_vert_line(surface, center_x - x, center_y - y, center_y + y, color);
+
+     draw_vert_line(surface, center_x + y, center_y - x, center_y + x, color);
+
+     draw_vert_line(surface, center_x - y, center_y - x, center_y + x, color);
+      
       if (error <= 0) {
          ++y;
          error += ty;

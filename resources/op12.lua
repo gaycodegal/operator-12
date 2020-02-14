@@ -14,6 +14,9 @@ function KeyUp(key)
    end
 end
 
+for k, v in pairs(Game.Bits) do
+   rawset(_G, k, v)
+end
 
 nbattles = 3
 
@@ -152,7 +155,15 @@ function _update()
 end
 
 function _draw()
-   main:draw()
+   x = 0
+   rect(0, 0, 20, 20, 4)
+   x = x + 22
+   rectfill(x, 0, x + 20, 20)
+   x = x + 22
+   circ(x + 10, 10, 10)
+   x = x + 22
+   circfill(x + 10, 10, 10)
+   --main:draw()
 end
 
 function printcoord(coord)

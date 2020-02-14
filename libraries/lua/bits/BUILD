@@ -1,7 +1,7 @@
 load("//bzl:vars.bzl", "COPTS", "LINKOPTS")
 load("//libraries/lua/bind:bind.bzl", "lua_bind_cpp")
 
-bound = []
+bound = ["lua_screen"]
 bindings = [b.replace("lua", "bound") for b in bound]
 excluded = [b + ".cpp" for b in bound]
 
