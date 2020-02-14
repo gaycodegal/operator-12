@@ -131,11 +131,11 @@ void one_iter() {
     } // User presses a key
     else if (keydownExists && e.type == SDL_KEYDOWN) {
       lua_getglobal(L, "KeyDown");
-      lua_pushnumber(L, e.key.keysym.sym);
+      lua_pushinteger(L, e.key.keysym.sym);
       callErr(L, "KeyDown", 1);
     } else if (keyupExists && e.type == SDL_KEYUP) {
       lua_getglobal(L, "KeyUp");
-      lua_pushnumber(L, e.key.keysym.sym);
+      lua_pushinteger(L, e.key.keysym.sym);
       callErr(L, "KeyUp", 1);
     }/* else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
                e.type == SDL_MOUSEBUTTONUP) {

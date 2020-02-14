@@ -41,24 +41,31 @@ def lua_name(values, x):
     values["name"] = x.strip()
 
 def lua_arg(values, x):
+    spliteq = x.split("=")
+    x = spliteq[0]
+    if len(spliteq) == 2:
+        spliteq = spliteq[1].strip()
+    else:
+        spliteq = None
     spliti = x.index(":")
     x = [x.strip() for x in [x[:spliti], x[spliti + 1:]]]
     x[1] = type_split(x[1])
     assert len(x) == 2, "arg must be of the format 'name: type' {}".format(x)
     assert x[1][0] in argconvert, "{} must be in {}".format(x, argconvert)
+    x.append(spliteq)
     args = values.get("arg", [])
     args.append(x)
     values["arg"] = args
 
 def struct_lget(arg_name, arg_type, i):
     return """
-    {name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
+    {name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -1));
 """.format(
         i, name = arg_name, ctype = arg_type[1])
 
 def class_lget(arg_name, arg_type, i):
     return """
-    {name} = *reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
+    {name} = *reinterpret_cast<{ctype}*>(lua_touserdata(L, -1));
     if ({name} == NULL) {{
         printf("could not retrieve {name} (null)\\n");
         return 0;
@@ -68,7 +75,7 @@ def class_lget(arg_name, arg_type, i):
 
 def delete_lget(arg_name, arg_type, i):
     return """
-    {ctype}* _d{name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -{}));
+    {ctype}* _d{name} = reinterpret_cast<{ctype}*>(lua_touserdata(L, -1));
     {name} = *_d{name};
     *_d{name} = NULL;
     if ({name} == NULL) {{
@@ -109,10 +116,10 @@ def cxx_string_lpush(arg_type):
 """
 
 arggets = {
-    "string": lambda n, x, i: n + " = lua_tostring(L, -{});".format(i),
-    "int": lambda n, x, i: n + " = lua_tointeger(L, -{});".format(i),
-    "number": lambda n, x, i: n + " = lua_tonumber(L, -{});".format(i),
-    "bool": lambda n, x, i: n + " = static_cast<bool>(lua_toboolean(L, -{}));".format(i),
+    "string": lambda n, x, i: n + " = lua_tostring(L, -1);".format(i),
+    "int": lambda n, x, i: n + " = lua_tointeger(L, -1);".format(i),
+    "number": lambda n, x, i: n + " = lua_tonumber(L, -1);".format(i),
+    "bool": lambda n, x, i: n + " = static_cast<bool>(lua_toboolean(L, -1));".format(i),
     "Class": class_lget,
     "Struct": struct_lget,
     "Delete": delete_lget,
@@ -182,25 +189,37 @@ def write_fn(out, values, basename):
     out.write("\nstatic int {}(lua_State *L) {{\n".format(fn_name_get(name, basename)))
     args = values.get("arg", [])
     # write variables
-    for (arg_name, arg_type) in args:
+    for (arg_name, arg_type, _) in args:
         out.write("    {} {};\n".format(lua_ctypeof(arg_type), arg_name))
 
+    if len(args) > 0:
+        out.write("    int stack_size = lua_gettop(L);\n")
     # retrieve variables and guard for type
-    for (i, (arg_name, arg_type)) in enumerate(args[::-1]):
+    for (i, (arg_name, arg_type, arg_fallback)) in enumerate(args[::-1]):
         guard = lua_typeguard(arg_type)
         arg_get = lua_arggetter(arg_name, arg_type, i + 1)
-        out.write("""
-    if (!lua_is{guard}(L, -{index})) {{
+        if arg_fallback != None:
+            failure_case = """
+        {name} = {fallback};
+""".format(name=arg_name, fallback=arg_fallback)
+        else:
+            failure_case = """
         printf("bad arg {fnname}.{name}\\n");
         return 0;
+"""
+        out.write("""
+    if (stack_size < {index} || !lua_is{guard}(L, -1)) {{
+{failure_case}
+    }} else {{
+        {arg_get}
+        lua_pop(L, 1);
     }}
-    {arg_get}
-""".format(index=i+1, guard=guard, arg_get=arg_get, fnname=name, name=arg_name))
+""".format(index=len(args) - i, guard=guard, arg_get=arg_get, fnname=name, name=arg_name, failure_case = failure_case))
 
     # call the function
     fn_name = values["fn_name"]
     returns = values.get("return", None)
-    args_joined = ", ".join([n for (n, t) in args])
+    args_joined = ", ".join([n for (n, t, _) in args])
     out.write("\n    ")
     if returns != None:
         if returns[0] == "Struct":

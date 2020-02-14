@@ -118,7 +118,7 @@ int luaopen_gamelibs(lua_State *L) {
   }
   struct luaConstInt *pint = (struct luaConstInt *)globints;
   while (pint->name != NULL) {
-    lua_pushnumber(L, pint->val);
+    lua_pushinteger(L, pint->val);
     lua_setfield(L, -2, pint->name);
     ++pint;
   }

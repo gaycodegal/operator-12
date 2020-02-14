@@ -8,6 +8,12 @@
    beatup(0, 0) through beatup(63, 0)
 ]]
 
+function KeyUp(key)
+   if key == Game.KEY_ESCAPE then
+      Game.static.quit()
+   end
+end
+
 
 nbattles = 3
 
@@ -45,7 +51,7 @@ function filtermap(t, f)
       r = f(t[i], i)
       if r ~= nil then
 	 y[yi] = r
-	 yi += 1
+	 yi = yi + 1
       end
    end
    return y
@@ -142,7 +148,7 @@ function _init()
 end
 
 function _update()
-   main:update()
+   --main:update()
 end
 
 function _draw()
@@ -153,7 +159,7 @@ function printcoord(coord)
    printh("{" .. coord[1] .. ", " .. coord[2] .. "}")
 end
 
-function tostring(b)
+function tostringd(b)
    return b and "true, " or "false, "
 end
 
@@ -300,7 +306,7 @@ slug = class({
 
    move = function(self, dx, dy)
       local next, head, replace, nind, links, obj
-      self.moves -= 1
+      self.moves = self.moves - 1
       if self.moves <= 0 then
 	 self.moves = 0
 	 self:endturn()
@@ -328,7 +334,7 @@ slug = class({
 	    splice(links, nind, 1)
 	    -- removal without insertion can displace head
 	    if nind <= self.head + 1 then
-	       self.head -= 1
+	       self.head = self.head - 1
 	    end
 	    break
 	 end
@@ -406,7 +412,7 @@ slug = class({
       local link = self.links[1]
       mapobjs[mapind(link)] = nil
       splice(self.links, 1, 1)
-      self.head -= 1
+      self.head = self.head - 1
    end,
 })
 
@@ -450,7 +456,7 @@ battle = {
 	 if slug == slugs[si] then
 	    splice(slugs, si, 1)
 	    if slug.team == battle.teamturn and si - 1 <= battle.sind then
-	       battle.sind -= 1
+	       battle.sind = battle.sind - 1
 	       if battle.sind == -1 then
 		  battle.sind = #battle.pslugs - 1
 	       end
@@ -459,7 +465,7 @@ battle = {
 	 end
       end
       if #slugs == 0 then
-	 if slug.team != 1 then
+	 if slug.team ~= 1 then
 	    beatup(battle.map)
 	 end
 	 battle.teamturn = -1
@@ -542,8 +548,8 @@ battle = {
       spawners = battle.spawners
       add(battle.pslugs, slug.new(type, {clonecoord(pos)}, 0, 1))
       splice(spawners, battle.ss + 1, 1)
-      battle.ss %= #spawners
-      sluginventory[si] -= 1
+      battle.ss = battle.ss % #spawners
+      sluginventory[si] = sluginventory[si] - 1
       if #spawners == 0 then
 	 battle.spawners = nil
 	 battle.mode = battle.movemode
@@ -584,7 +590,7 @@ battle = {
 	    inpdelay = 0
 	 end
       else
-	 inpdelay -= 1
+	 inpdelay = inpdelay - 1
       end
       
    end,
@@ -609,7 +615,7 @@ battle = {
 	    inpdelay = 0
 	 end
       else
-	 inpdelay -= 1
+	 inpdelay = inpdelay - 1
       end
       slug = battle.currentslug()
       if slug.done then
@@ -638,7 +644,7 @@ battle = {
 	    inpdelay = 0
 	 end
       else
-	 inpdelay -= 1
+	 inpdelay = inpdelay - 1
       end
       if slug.done then
 	 battle.nextslugorturn()
@@ -666,7 +672,7 @@ battle = {
 
    nmeslowmove = function()
       if nmedel ~= 0 then
-	 nmedel -= 1
+	 nmedel = nmedel - 1
 	 return
       end
       nmedel = maxnmedel
@@ -698,7 +704,7 @@ battle = {
 
    nmeattack = function()
       if nmedel ~= 0 then
-	 nmedel -= 1
+	 nmedel = nmedel - 1
 	 return
       end
       battle.currentslug():attack()
@@ -758,8 +764,8 @@ battle = {
    end,
 
    updatebg = function()
-      battle.bgi += 0.5
-      battle.bgi %= 128
+      battle.bgi = battle.bgi + 0.5
+      battle.bgi = battle.bgi % 128
    end,
 
    currentslug = function()
@@ -963,29 +969,29 @@ function readmap(mapnum)
    end
    while n > 0 do
       nomapthings = peek(address)
-      address += 29 + 3 * nomapthings
-      n -= 1
+      address = address + 29 + 3 * nomapthings
+      n = n - 1
    end
    nomapthings = peek(address)
-   address += 1
+   address = address + 1
    mapi = 17 -- skip the first 16 as those are under the ui
    for i = 1, 28 do -- 28 = 56/2
       data = peek(address)
-      address += 1
+      address = address + 1
       for di = 1, 8 do
 	 data, bit = readnextbit(data, 0, 59)
 	 mapdata[mapi] = bit
-	 mapi += 1
+	 mapi = mapi + 1
       end
    end
    for i = 1, nomapthings do
       mapitem = {}
       mapitem.id = peek(address)
-      address += 1
+      address = address + 1
       mapitem.location = peek(address)
-      address += 1
+      address = address + 1
       data = peek(address)
-      address += 1
+      address = address + 1
       mapitem.data = data
       mapitem.shape = flr(shr(band(0xF0, data), 4))
       mapitem.rotation = flr(shr(band(0xC, data), 2))
@@ -1051,7 +1057,7 @@ function correctmap()
 	    for d in all(newsdeltas) do
 	       check = addcoord(coord, d)
 	       if battle.spaceok(check) then
-		  n += 1
+		  n = n + 1
 	       end
 	    end
 	    if n < 3 then
@@ -1168,7 +1174,7 @@ selector = class({
 	    inpdelay = 0
 	 end
       else
-	 inpdelay -= 1
+	 inpdelay = inpdelay - 1
       end
    end,
 
@@ -1209,7 +1215,7 @@ function textbox(str, x, y, w, h)
 end
 
 function painttext(str, x, y, w, h, c)
-   w+=1
+   w=w+1
    local s,i,a,b
    i=1
    for q=y,y+h-7,9 do
@@ -1224,18 +1230,18 @@ function painttext(str, x, y, w, h, c)
 	    if b+3<=#s then
 	       spr(tonum("0x"..sub(s,b+1,b+3)),(b)*4+x,q)
 	    else
-	       i-=#s-b+1
+	       i=i-(#s-b+1)
 	    end
-	    b+=4
+	    b=b+4
 	    a=b
 	 else
-	    b+=1
+	    b=b+1
 	 end
       end
       if a<=#s then
 	 print(sub(s,a),(a-1)*4+x,q+1,c)
       end
-      i+=#s
+      i=i+#s
    end
 end
 
@@ -1348,17 +1354,17 @@ worldmap = {
 	    inpdelay = 0
 	 end
       else
-	 inpdelay -= 1
+	 inpdelay = inpdelay - 1
       end
-      worldmap.bgi += 0.5
-      worldmap.bgi %= 128
+      worldmap.bgi = worldmap.bgi + 0.5
+      worldmap.bgi = worldmap.bgi % 128
    end,
 
    move = function(di)
       if worldmap.bridgeopen(wplayerx, wplayery, di) then
 	 local d = newsdeltas[di]
-	 wplayerx += d[1]
-	 wplayery += d[2]
+	 wplayerx = wplayerx + d[1]
+	 wplayery = wplayery + d[2]
       end
    end,
 
@@ -1426,5 +1432,4 @@ worldmap = {
       drawfullui("\x97: begin battle", "\x94\x91\x83\x8b")
    end,
 }
-
 --g

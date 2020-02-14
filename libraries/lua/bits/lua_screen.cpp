@@ -3,7 +3,7 @@
 int screen_data[128 * 128];
 Uint32 colors[16];
 SDL_Surface *bitsSurface;
-
+int last_color;
 void initBits() {
   bitsSurface = surface_newBlank(128, 128);
   //make pink
@@ -30,7 +30,8 @@ void initBits() {
   colors[13] = make_pixel(41, 173, 255);
   colors[14] = make_pixel(255, 119, 168);
   colors[15] = make_pixel(255, 204, 170);
-  set_pixel(bitsSurface, 5, 5, colors[14]);
+  last_color = colors[7];
+  draw_circle(bitsSurface, 64, 64, 8, colors[1]);
 }
 
 Uint32 make_pixel(Uint8 r, Uint8 g, Uint8 b) {
@@ -49,31 +50,109 @@ Uint32 make_pixel(Uint8 r, Uint8 g, Uint8 b) {
   return pixel;
 }
 
-void set_pixel(SDL_Surface *surface, int x, int y, Uint32 pixel) {
+/**
+   @lua-name pset
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-arg color: int = last_color
+ */
+static void pset(lua_Integer x, lua_Integer y, lua_Integer c) {
+  set_pixel(bitsSurface, x, y, colors[c]);
+}
+
+/**
+   @lua-name circ
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-arg r: int
+   @lua-arg color: int = last_color
+ */
+static void circ(lua_Integer x, lua_Integer y, lua_Integer r, lua_Integer c) {
+  draw_circle(bitsSurface, x, y, r, colors[c]);
+}
+
+
+void draw_circle(SDL_Surface* surface, int center_x, int center_y, int radius, Uint32 color) {
+   const int diameter = (radius * 2);
+
+   int x = (radius - 1);
+   int y = 0;
+   int tx = 1;
+   int ty = 1;
+   int error = (tx - diameter);
+
+   while (x >= y) {
+      //  Each of the following renders an octant of the circle
+      set_pixel(surface, center_x + x, center_y - y, color);
+      set_pixel(surface, center_x + x, center_y + y, color);
+      set_pixel(surface, center_x - x, center_y - y, color);
+      set_pixel(surface, center_x - x, center_y + y, color);
+      set_pixel(surface, center_x + y, center_y - x, color);
+      set_pixel(surface, center_x + y, center_y + x, color);
+      set_pixel(surface, center_x - y, center_y - x, color);
+      set_pixel(surface, center_x - y, center_y + x, color);
+
+      if (error <= 0) {
+         ++y;
+         error += ty;
+         ty += 2;
+      }
+
+      if (error > 0) {
+         --x;
+         tx += 2;
+         error += (tx - diameter);
+      }
+   }
+}
+
+void draw_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 color) {
+  for(int yi = y0; yi <= y1; ++yi) {
+    if (yi == y0 || yi == y1) {
+      for(int xi = x0; xi <= x1; ++xi) {
+	set_pixel(surface, xi, yi, color);
+      }
+    } else {
+      set_pixel(surface, x0, yi, color);
+      set_pixel(surface, x1, yi, color);
+    }
+  }
+}
+
+void fill_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 color) {
+  for(int xi = x0; xi <= x1; ++xi) {
+    for(int yi = y0; yi <= y1; ++yi) {
+      set_pixel(surface, xi, yi, color);
+    }
+  }
+}
+
+
+void set_pixel(SDL_Surface *surface, int x, int y, Uint32 color) {
   int bpp = surface->format->BytesPerPixel;
   /* Here p is the address to the pixel we want to set */
   Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
   
   switch(bpp) {
   case 1:
-    *p = pixel;
+    *p = color;
     break;
   case 2:
-    *(Uint16 *)p = pixel;
+    *(Uint16 *)p = color;
     break;
   case 3:
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    p[0] = (pixel >> 16) & 0xff;
-    p[1] = (pixel >> 8) & 0xff;
-    p[2] = pixel & 0xff;
+    p[0] = (color >> 16) & 0xff;
+    p[1] = (color >> 8) & 0xff;
+    p[2] = color & 0xff;
 #else
-    p[0] = pixel & 0xff;
-    p[1] = (pixel >> 8) & 0xff;
-    p[2] = (pixel >> 16) & 0xff;
+    p[0] = color & 0xff;
+    p[1] = (color >> 8) & 0xff;
+    p[2] = (color >> 16) & 0xff;
 #endif
     break;
   case 4:
-    *(Uint32 *)p = pixel;
+    *(Uint32 *)p = color;
     break;
   }
 }
