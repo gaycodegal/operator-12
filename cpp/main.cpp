@@ -1,11 +1,11 @@
 #include "main.h"
 int SCREEN_WIDTH = 128 * 5;
 int SCREEN_HEIGHT = 128 * 5;
-SDL_Window *window;
-SDL_Renderer *globalRenderer;
-TTF_Font *gFont = NULL;
+SDL_Window* window;
+SDL_Renderer* globalRenderer;
+TTF_Font* gFont = NULL;
 bool doInitSDL = false;
-SDL_Surface *screenSurface;
+SDL_Surface* screenSurface;
 
 const char* DRAW = "_draw";
 const char* UPDATE = "_update";
@@ -16,7 +16,7 @@ int start() {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     return 1;
   }
-  /* initialize TTF */
+  /* initialize TTF* /
   if (TTF_Init() == -1) {
     printf("Could not initialize SDL_TTF SDL_Error: %s\n", SDL_GetError());
     return 1;
@@ -60,12 +60,9 @@ int start() {
 }
 
 int end() {
-  if (!doInitSDL)
-    return 0;
-  if (window != NULL)
-    SDL_DestroyWindow(window);
-  if (gFont != NULL)
-    TTF_CloseFont(gFont);
+  if (!doInitSDL) return 0;
+  if (window != NULL) SDL_DestroyWindow(window);
+  if (gFont != NULL) TTF_CloseFont(gFont);
   gFont = NULL;
   // Mix_CloseAudio();
   TTF_Quit();
@@ -79,7 +76,7 @@ int end() {
 bool quit = false;
 int framedelay = 1000 / 60;
 
-void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
+void mouseHelper(lua_State* L, int type, const char* event, bool fn_exists) {
   int x, y;
   SDL_GetMouseState(&x, &y);
   if (fn_exists) {
@@ -90,7 +87,7 @@ void mouseHelper(lua_State *L, int type, const char *event, bool fn_exists) {
   }
 }
 
-void mouseWheelHelper(lua_State *L, int dx, int dy, const char *event,
+void mouseWheelHelper(lua_State* L, int dx, int dy, const char* event,
                       bool fn_exists) {
   int x, y;
   SDL_GetMouseState(&x, &y);
@@ -110,7 +107,7 @@ static inline long getMS() {
       .count();
 }
 
-lua_State *L;
+lua_State* L;
 long lastTick;
 int updateExists;
 int drawExists;
@@ -128,7 +125,7 @@ void one_iter() {
     // User requests quit
     if (e.type == SDL_QUIT) {
       quit = true;
-    } // User presses a key
+    }  // User presses a key
     else if (keydownExists && e.type == SDL_KEYDOWN) {
       lua_getglobal(L, "KeyDown");
       lua_pushinteger(L, e.key.keysym.sym);
@@ -137,25 +134,27 @@ void one_iter() {
       lua_getglobal(L, "KeyUp");
       lua_pushinteger(L, e.key.keysym.sym);
       callErr(L, "KeyUp", 1);
-    }/* else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
-               e.type == SDL_MOUSEBUTTONUP) {
-      // Get mouse position
-      switch (e.type) {
-      case SDL_MOUSEBUTTONDOWN:
-        mouseHelper(L, e.type, "MouseDown", mousedownExists);
-        break;
-      case SDL_MOUSEMOTION:
-        mouseHelper(L, e.type, "MouseMove", mousemoveExists);
-        break;
-      case SDL_MOUSEBUTTONUP:
-        mouseHelper(L, e.type, "MouseUp", mouseupExists);
-        break;
-      }
-    } else if (e.type == SDL_MOUSEWHEEL) {
-      //mouseWheelHelper(L, e.wheel.x, e.wheel.y, "MouseWheel", mousewheelExists);
-      } */
+    }
+    /* else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
+                e.type == SDL_MOUSEBUTTONUP) {
+       // Get mouse position
+       switch (e.type) {
+       case SDL_MOUSEBUTTONDOWN:
+         mouseHelper(L, e.type, "MouseDown", mousedownExists);
+         break;
+       case SDL_MOUSEMOTION:
+         mouseHelper(L, e.type, "MouseMove", mousemoveExists);
+         break;
+       case SDL_MOUSEBUTTONUP:
+         mouseHelper(L, e.type, "MouseUp", mouseupExists);
+         break;
+       }
+     } else if (e.type == SDL_MOUSEWHEEL) {
+       //mouseWheelHelper(L, e.wheel.x, e.wheel.y, "MouseWheel",
+     mousewheelExists);
+       }* /
     else if (e.type == SDL_WINDOWEVENT &&
-               e.window.event == SDL_WINDOWEVENT_RESIZED) {
+             e.window.event == SDL_WINDOWEVENT_RESIZED) {
       screenSurface = SDL_GetWindowSurface(window);
       SDL_FillRect(screenSurface, NULL, 0x000000);
       SCREEN_WIDTH = screenSurface->w;
@@ -182,12 +181,11 @@ void one_iter() {
   }
   bits_renderPresent();
   lastTick = nowTick;
-  //SDL_RenderPresent(globalRenderer);
-  if (!quit)
-    SDL_WaitEventTimeout(NULL, framedelay);
+  // SDL_RenderPresent(globalRenderer);
+  if (!quit) SDL_WaitEventTimeout(NULL, framedelay);
 }
 
-std::string openConfig(const char *path) {
+std::string openConfig(const char* path) {
   std::string ret = "load.lua";
   L = luaL_newstate();
   luaL_openlibs(L);
@@ -217,7 +215,7 @@ std::string openConfig(const char *path) {
 #undef main
 #endif
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   quit = false;
 #ifdef _WIN32
   SetCurrentDirectory("resources");
@@ -277,12 +275,10 @@ int main(int argc, char **argv) {
 
   if (updateExists) {
     while (!quit) {
-
       one_iter();
     }
   }
-  if (globalTypeExists(L, LUA_TFUNCTION, "End"))
-    callLuaVoid(L, "End");
+  if (globalTypeExists(L, LUA_TFUNCTION, "End")) callLuaVoid(L, "End");
   lua_close(L);
 
   end();

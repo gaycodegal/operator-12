@@ -8,12 +8,11 @@
    @lua-arg source: string
    @lua-return Class SDL_Surface Surface
  */
-static SDL_Surface* surface_new(const char* source) {
+static SDL_Surface *surface_new(const char *source) {
   SDL_Surface *loadedSurface = IMG_Load(source);
   if (loadedSurface == NULL) {
     printf("Unable to load image %s! SDL_image Error: %s\n", source,
            IMG_GetError());
-    
   }
   return loadedSurface;
 }
@@ -27,7 +26,7 @@ static SDL_Surface* surface_new(const char* source) {
    @lua-arg height: int
    @lua-return Class SDL_Surface Surface
  */
-inline SDL_Surface* surface_newBlank(lua_Integer width, lua_Integer height) {
+inline SDL_Surface *surface_newBlank(lua_Integer width, lua_Integer height) {
   Uint32 rmask, gmask, bmask, amask;
   /* SDL interprets each pixel as a 32-bit number, so our masks must depend
      on the endianness (byte order) of the machine */
@@ -52,7 +51,7 @@ inline SDL_Surface* surface_newBlank(lua_Integer width, lua_Integer height) {
    @lua-arg self: Class SDL_Surface
    @lua-arg mode: int
  */
-static void surface_blendmode(SDL_Surface* self, lua_Integer mode) {
+static void surface_blendmode(SDL_Surface *self, lua_Integer mode) {
   SDL_SetSurfaceBlendMode(self, static_cast<SDL_BlendMode>(mode));
 }
 
@@ -70,7 +69,9 @@ static void surface_blendmode(SDL_Surface* self, lua_Integer mode) {
    @lua-arg b: int
    @lua-arg a: int
  */
-static void surface_fill(SDL_Surface* self, lua_Integer x, lua_Integer y, lua_Integer width, lua_Integer height, lua_Integer r, lua_Integer g, lua_Integer b, lua_Integer a) {
+static void surface_fill(SDL_Surface *self, lua_Integer x, lua_Integer y,
+                         lua_Integer width, lua_Integer height, lua_Integer r,
+                         lua_Integer g, lua_Integer b, lua_Integer a) {
   SDL_Rect rect;
   rect.x = x;
   rect.y = y;
@@ -96,7 +97,7 @@ static int surface_size(lua_State *L) {
   if (surface == NULL) {
     return 0;
   }
-  
+
   lua_pushinteger(L, surface->w);
   lua_pushinteger(L, surface->h);
   return 2;
@@ -111,7 +112,8 @@ static int surface_size(lua_State *L) {
    @lua-arg x: int
    @lua-arg y: int
  */
-static void surface_blit(SDL_Surface *dst, SDL_Surface *src, lua_Integer x, lua_Integer y) {
+static void surface_blit(SDL_Surface *dst, SDL_Surface *src, lua_Integer x,
+                         lua_Integer y) {
   SDL_Rect stretchRect;
   stretchRect.x = x;
   stretchRect.y = y;
@@ -129,10 +131,9 @@ static void surface_blit(SDL_Surface *dst, SDL_Surface *src, lua_Integer x, lua_
    @lua-arg self: Class SDL_Surface
    @lua-return Class SDL_Texture Texture
  */
-static SDL_Texture* surface_textureFrom(SDL_Surface* self) {
+static SDL_Texture *surface_textureFrom(SDL_Surface *self) {
   // Create texture from surface pixels
-  SDL_Texture *newTexture =
-      SDL_CreateTextureFromSurface(globalRenderer, self);
+  SDL_Texture *newTexture = SDL_CreateTextureFromSurface(globalRenderer, self);
   if (newTexture == NULL) {
     printf("Unable to create texture from surface! SDL Error: %s\n",
            SDL_GetError());
@@ -155,7 +156,10 @@ static SDL_Texture* surface_textureFrom(SDL_Surface* self) {
    @lua-arg dw: int
    @lua-arg dh: int
  */
-static void l_surface_blitScale(SDL_Surface *dst, SDL_Surface *src, lua_Integer sx, lua_Integer sy, lua_Integer sw, lua_Integer sh, lua_Integer dx, lua_Integer dy, lua_Integer dw, lua_Integer dh) {
+static void l_surface_blitScale(SDL_Surface *dst, SDL_Surface *src,
+                                lua_Integer sx, lua_Integer sy, lua_Integer sw,
+                                lua_Integer sh, lua_Integer dx, lua_Integer dy,
+                                lua_Integer dw, lua_Integer dh) {
   SDL_Rect stretchRect;
   stretchRect.x = dx;
   stretchRect.y = dy;
@@ -177,6 +181,4 @@ static void l_surface_blitScale(SDL_Surface *dst, SDL_Surface *src, lua_Integer 
    @lua-name destroy
    @lua-arg self: Delete SDL_Surface
  */
-inline void surface_destroy(SDL_Surface* self) {
-  SDL_FreeSurface(self);
-}
+inline void surface_destroy(SDL_Surface *self) { SDL_FreeSurface(self); }

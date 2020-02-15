@@ -6,14 +6,10 @@
    @lua-arg frag: string
    @lua-return Class Shader
  */
-static void* l_shader_new(char* vert, char* frag) {
-  return NULL;
-}
+static void* l_shader_new(char* vert, char* frag) { return NULL; }
 
 /**
    @lua-meta
    @lua-name use
  */
-static int l_shader_use(lua_State *L) {
-  return 0;
-}
+static int l_shader_use(lua_State* L) { return 0; }

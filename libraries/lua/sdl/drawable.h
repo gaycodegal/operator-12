@@ -5,7 +5,7 @@
    anything that can draw itself to the current sdl2 context
  */
 class Drawable {
-public:
+ public:
   Drawable() {}
   virtual ~Drawable() {}
   virtual void draw(int x, int y) = 0;

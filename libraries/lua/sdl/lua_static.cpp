@@ -5,9 +5,7 @@
 
    @lua-name quit
  */
-static void l_static_quit() {
-  quit = true;
-}
+static void l_static_quit() { quit = true; }
 
 /**
    Reads a file using SDL's internal read system
@@ -41,9 +39,7 @@ static int l_static_readfile(lua_State *L) {
    @lua-name wait
    @lua-arg millis: int
  */
-static void l_static_wait(lua_Integer millis) {
-  SDL_Delay(millis);
-}
+static void l_static_wait(lua_Integer millis) { SDL_Delay(millis); }
 
 /**
    sets time to delay after frame is complete
@@ -51,9 +47,7 @@ static void l_static_wait(lua_Integer millis) {
    @lua-name framedelay
    @lua-arg millis: int
  */
-static void l_static_framedelay(lua_Integer millis) {
-  framedelay = millis;
-}
+static void l_static_framedelay(lua_Integer millis) { framedelay = millis; }
 
 /**
    Sets the global clip rect of the renderer
@@ -64,7 +58,8 @@ static void l_static_framedelay(lua_Integer millis) {
    @lua-arg w: int
    @lua-arg h: int
  */
-static void l_static_setRenderClip(lua_Integer x, lua_Integer y, lua_Integer w, lua_Integer h) {
+static void l_static_setRenderClip(lua_Integer x, lua_Integer y, lua_Integer w,
+                                   lua_Integer h) {
   SDL_Rect rect;
   rect.x = x;
   rect.y = y;
@@ -95,7 +90,7 @@ static int l_static_getRenderClip(lua_State *L) {
    @lua-name setRenderTarget
    @lua-arg texture: Class SDL_Texture
  */
-static void l_static_setRenderTarget(SDL_Texture* texture) {
+static void l_static_setRenderTarget(SDL_Texture *texture) {
   SDL_SetRenderTarget(globalRenderer, texture);
 }
 

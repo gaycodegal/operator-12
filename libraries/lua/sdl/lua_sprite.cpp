@@ -14,7 +14,9 @@
    @lua-arg sy: int
    @lua-return Class Sprite
  */
-static Sprite* new_sprite(SDL_Texture* tex, lua_Integer x, lua_Integer y, lua_Integer w, lua_Integer h, lua_Integer sx, lua_Integer sy) {
+static Sprite* new_sprite(SDL_Texture* tex, lua_Integer x, lua_Integer y,
+                          lua_Integer w, lua_Integer h, lua_Integer sx,
+                          lua_Integer sy) {
   Sprite* s = new Sprite();
   s->init(tex, x, y, w, h, sx, sy);
   return s;
@@ -38,9 +40,7 @@ static void l_draw_sprite(Sprite* self, lua_Integer x, lua_Integer y) {
    @lua-name destroy
    @lua-arg self: Delete Sprite
  */
-static void l_free_sprite(Sprite* self) {
-  delete self;
-}
+static void l_free_sprite(Sprite* self) { delete self; }
 
 /**
    move a sprite

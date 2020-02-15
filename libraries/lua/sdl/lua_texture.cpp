@@ -17,8 +17,9 @@ static int l_texture_new(lua_State *L) {
   }
   path = (char *)lua_tostring(L, -1);
   lua_pop(L, 1);
-  SDL_Texture* tex = loadTexture(path, w, h);
-  *reinterpret_cast<SDL_Texture**>(lua_newuserdata(L, sizeof(SDL_Texture*))) = tex;
+  SDL_Texture *tex = loadTexture(path, w, h);
+  *reinterpret_cast<SDL_Texture **>(lua_newuserdata(L, sizeof(SDL_Texture *))) =
+      tex;
   set_meta(L, -1, "Texture");
   lua_pushnumber(L, w);
   lua_pushnumber(L, h);
@@ -31,9 +32,7 @@ static int l_texture_new(lua_State *L) {
    @lua-name destroy
    @lua-arg self: Delete SDL_Texture
 */
-static void texture_destroy(SDL_Texture* self) {
-  SDL_DestroyTexture(self);
-}
+static void texture_destroy(SDL_Texture *self) { SDL_DestroyTexture(self); }
 
 /**
    Creates a new texture that is capable of being a render target
@@ -44,10 +43,10 @@ static void texture_destroy(SDL_Texture* self) {
    @lua-arg height: int
    @lua-return Class SDL_Texture Texture
  */
-static SDL_Texture* texture_newTarget(lua_Integer width, lua_Integer height) {
+static SDL_Texture *texture_newTarget(lua_Integer width, lua_Integer height) {
   Uint32 pixformat = SDL_PIXELFORMAT_RGBA8888;
-  return SDL_CreateTexture(
-      globalRenderer, pixformat, SDL_TEXTUREACCESS_TARGET, width, height);
+  return SDL_CreateTexture(globalRenderer, pixformat, SDL_TEXTUREACCESS_TARGET,
+                           width, height);
 }
 
 /**
@@ -59,7 +58,8 @@ static SDL_Texture* texture_newTarget(lua_Integer width, lua_Integer height) {
    @lua-arg g: int
    @lua-arg b: int
  */
-static void l_texture_setRGBMask(SDL_Texture *self, lua_Integer r, lua_Integer g, lua_Integer b) {
+static void l_texture_setRGBMask(SDL_Texture *self, lua_Integer r,
+                                 lua_Integer g, lua_Integer b) {
   SDL_SetTextureColorMod(self, r, g, b);
 }
 
@@ -90,7 +90,10 @@ static void l_texture_setAMask(SDL_Texture *self, lua_Integer a) {
    @lua-arg dw: int
    @lua-arg dh: int
  */
-static void l_texture_renderCopy(SDL_Texture *self, lua_Integer sx, lua_Integer sy, lua_Integer sw, lua_Integer sh, lua_Integer dx, lua_Integer dy, lua_Integer dw, lua_Integer dh) {
+static void l_texture_renderCopy(SDL_Texture *self, lua_Integer sx,
+                                 lua_Integer sy, lua_Integer sw, lua_Integer sh,
+                                 lua_Integer dx, lua_Integer dy, lua_Integer dw,
+                                 lua_Integer dh) {
   SDL_Rect dest;
   dest.x = dx;
   dest.y = dy;

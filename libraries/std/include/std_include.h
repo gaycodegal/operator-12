@@ -10,7 +10,7 @@
 #include <jni.h>
 #include <stdlib.h>
 #include <unistd.h>
-#define printf(...)                                                            \
+#define printf(...) \
   __android_log_print(ANDROID_LOG_DEBUG, "PRINTF", __VA_ARGS__)
 #elif __APPLE__
 
@@ -27,8 +27,8 @@
 
 #endif
 
-#include <chrono>
 #include <stdio.h>
+#include <chrono>
 #include <string>
 
 #endif

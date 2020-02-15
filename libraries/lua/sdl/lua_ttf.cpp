@@ -11,7 +11,7 @@
    @lua-arg a: int
    @lua-return Class SDL_Surface Surface
 */
-static SDL_Surface* ttf_surface(const char* text, int r, int g, int b, int a) {
+static SDL_Surface *ttf_surface(const char *text, int r, int g, int b, int a) {
   SDL_Color c;
   c.r = r;
   c.b = b;

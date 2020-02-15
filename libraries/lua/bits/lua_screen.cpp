@@ -1,11 +1,10 @@
 #include "lua_screen.h"
 int screen_data[128 * 128];
 Uint32 colors[16];
-SDL_Surface *bitsSurface;
+SDL_Surface* bitsSurface;
 int last_color;
 void initBits() {
   bitsSurface = surface_newBlank(128, 128);
-  //make pink
   SDL_Rect rect;
   rect.x = 0;
   rect.y = 0;
@@ -32,19 +31,21 @@ void initBits() {
 }
 
 inline void set_last_color(lua_Integer c) {
-  if(c >= 0 && c <= 15) {
+  if (c >= 0 && c <= 15) {
     last_color = c;
   }
 }
 
-inline void draw_vert_line(SDL_Surface* surface, int x, int y0, int y1, Uint32 color) {
-  for(int yi = y0; yi <= y1; ++yi) {
+inline void draw_vert_line(SDL_Surface* surface, int x, int y0, int y1,
+                           Uint32 color) {
+  for (int yi = y0; yi <= y1; ++yi) {
     set_pixel(surface, x, yi, color);
   }
 }
 
-inline void draw_horz_line(SDL_Surface* surface, int x0, int x1, int y, Uint32 color) {
-  for(int xi = x0; xi <= x1; ++xi) {
+inline void draw_horz_line(SDL_Surface* surface, int x0, int x1, int y,
+                           Uint32 color) {
+  for (int xi = x0; xi <= x1; ++xi) {
     set_pixel(surface, xi, y, color);
   }
 }
@@ -55,7 +56,8 @@ inline void draw_horz_line(SDL_Surface* surface, int x0, int x1, int y, Uint32 c
    @lua-arg y: int
    @lua-arg color: int = last_color
  */
-static void pset(const lua_Integer x, const lua_Integer y, const lua_Integer c) {
+static void pset(const lua_Integer x, const lua_Integer y,
+                 const lua_Integer c) {
   set_last_color(c);
   set_pixel(bitsSurface, x, y, colors[last_color]);
 }
@@ -67,7 +69,8 @@ static void pset(const lua_Integer x, const lua_Integer y, const lua_Integer c) 
    @lua-arg r: int
    @lua-arg color: int = last_color
  */
-static void circ(const lua_Integer x, const lua_Integer y, const lua_Integer r, const lua_Integer c) {
+static void circ(const lua_Integer x, const lua_Integer y, const lua_Integer r,
+                 const lua_Integer c) {
   set_last_color(c);
   draw_circle(bitsSurface, x, y, r, colors[last_color]);
 }
@@ -79,7 +82,8 @@ static void circ(const lua_Integer x, const lua_Integer y, const lua_Integer r, 
    @lua-arg r: int
    @lua-arg color: int = last_color
  */
-static void circfill(const lua_Integer x, const lua_Integer y, const lua_Integer r, const lua_Integer c) {
+static void circfill(const lua_Integer x, const lua_Integer y,
+                     const lua_Integer r, const lua_Integer c) {
   set_last_color(c);
   fill_circle(bitsSurface, x, y, r, colors[last_color]);
 }
@@ -92,9 +96,11 @@ static void circfill(const lua_Integer x, const lua_Integer y, const lua_Integer
    @lua-arg y1: int
    @lua-arg color: int = last_color
  */
-static void line(const lua_Integer x0, const lua_Integer y0, const lua_Integer x1, const lua_Integer y1, const lua_Integer c) {
+static void line(const lua_Integer x0, const lua_Integer y0,
+                 const lua_Integer x1, const lua_Integer y1,
+                 const lua_Integer c) {
   set_last_color(c);
-  draw_line(bitsSurface, x0,y0,x1,y1, colors[last_color]);
+  draw_line(bitsSurface, x0, y0, x1, y1, colors[last_color]);
 }
 
 /**
@@ -105,9 +111,11 @@ static void line(const lua_Integer x0, const lua_Integer y0, const lua_Integer x
    @lua-arg y1: int
    @lua-arg color: int = last_color
  */
-static void rect(const lua_Integer x0, const lua_Integer y0, const lua_Integer x1, const lua_Integer y1, const lua_Integer c) {
+static void rect(const lua_Integer x0, const lua_Integer y0,
+                 const lua_Integer x1, const lua_Integer y1,
+                 const lua_Integer c) {
   set_last_color(c);
-  draw_rect(bitsSurface, x0,y0,x1,y1, colors[last_color]);
+  draw_rect(bitsSurface, x0, y0, x1, y1, colors[last_color]);
 }
 
 /**
@@ -118,15 +126,18 @@ static void rect(const lua_Integer x0, const lua_Integer y0, const lua_Integer x
    @lua-arg y1: int
    @lua-arg color: int = last_color
  */
-static void rectfill(const lua_Integer x0, const lua_Integer y0, const lua_Integer x1, const lua_Integer y1, const lua_Integer c) {
+static void rectfill(const lua_Integer x0, const lua_Integer y0,
+                     const lua_Integer x1, const lua_Integer y1,
+                     const lua_Integer c) {
   set_last_color(c);
-  fill_rect(bitsSurface, x0,y0,x1,y1, colors[last_color]);
+  fill_rect(bitsSurface, x0, y0, x1, y1, colors[last_color]);
 }
 
-void draw_line(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 color) {
-  int dx = abs(x1-x0);
+void draw_line(SDL_Surface* surface, int x0, int y0, int x1, int y1,
+               Uint32 color) {
+  int dx = abs(x1 - x0);
   int sx = x0 < x1 ? 1 : -1;
-  int dy = -abs(y1-y0);
+  int dy = -abs(y1 - y0);
   int sy = y0 < y1 ? 1 : -1;
   int error_xy = dx + dy;
   if (dx == 0) {
@@ -135,96 +146,100 @@ void draw_line(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 colo
   if (dx == 0) {
     draw_vert_line(surface, std::min(x0, x1), std::max(x0, x1), y0, color);
   }
-  while (true) {   /* loop */
+  int max_loops = 512;  // just to be safe
+  while (--max_loops > 0) {
     set_pixel(surface, x0, y0, color);
     if (x0 == x1 && y0 == y1) {
       break;
     }
     int e2 = 2 * error_xy;
-    if (e2 >= dy) { 
-      error_xy += dy; // error now > 0
+    if (e2 >= dy) {
+      error_xy += dy;  // error now > 0
       x0 += sx;
     }
-    if (e2 <= dx) { 
-      error_xy += dx; // error now < 0
+    if (e2 <= dx) {
+      error_xy += dx;  // error now < 0
       y0 += sy;
     }
   }
 }
 
-void draw_circle(SDL_Surface* surface, int center_x, int center_y, int radius, Uint32 color) {
-   const int diameter = radius * 2;
+void draw_circle(SDL_Surface* surface, int center_x, int center_y, int radius,
+                 Uint32 color) {
+  const int diameter = radius * 2;
 
-   int x = radius - 1;
-   int y = 0;
-   int tx = 1;
-   int ty = 1;
-   int error = tx - diameter;
+  int x = radius - 1;
+  int y = 0;
+  int tx = 1;
+  int ty = 1;
+  int error = tx - diameter;
 
-   while (x >= y) {
-      set_pixel(surface, center_x + x, center_y - y, color);
-      set_pixel(surface, center_x + x, center_y + y, color);
-      
-      set_pixel(surface, center_x - x, center_y - y, color);
-      set_pixel(surface, center_x - x, center_y + y, color);
-      
-      set_pixel(surface, center_x + y, center_y - x, color);
-      set_pixel(surface, center_x + y, center_y + x, color);
-      
-      set_pixel(surface, center_x - y, center_y - x, color);
-      set_pixel(surface, center_x - y, center_y + x, color);
+  while (x >= y) {
+    set_pixel(surface, center_x + x, center_y - y, color);
+    set_pixel(surface, center_x + x, center_y + y, color);
 
-      if (error <= 0) {
-         ++y;
-         error += ty;
-         ty += 2;
-      }
+    set_pixel(surface, center_x - x, center_y - y, color);
+    set_pixel(surface, center_x - x, center_y + y, color);
 
-      if (error > 0) {
-         --x;
-         tx += 2;
-         error += tx - diameter;
-      }
-   }
+    set_pixel(surface, center_x + y, center_y - x, color);
+    set_pixel(surface, center_x + y, center_y + x, color);
+
+    set_pixel(surface, center_x - y, center_y - x, color);
+    set_pixel(surface, center_x - y, center_y + x, color);
+
+    if (error <= 0) {
+      ++y;
+      error += ty;
+      ty += 2;
+    }
+
+    if (error > 0) {
+      --x;
+      tx += 2;
+      error += tx - diameter;
+    }
+  }
 }
 
-void fill_circle(SDL_Surface* surface, int center_x, int center_y, int radius, Uint32 color) {
-   const int diameter = radius * 2;
+void fill_circle(SDL_Surface* surface, int center_x, int center_y, int radius,
+                 Uint32 color) {
+  const int diameter = radius * 2;
 
-   int x = radius - 1;
-   int y = 0;
-   int tx = 1;
-   int ty = 1;
-   int error = tx - diameter;
+  int x = radius - 1;
+  int y = 0;
+  int tx = 1;
+  int ty = 1;
+  int error = tx - diameter;
 
-   while (x >= y) {
-     draw_vert_line(surface, center_x + x, center_y - y, center_y + y, color);
+  while (x >= y) {
+    draw_vert_line(surface, center_x + x, center_y - y, center_y + y, color);
 
-     draw_vert_line(surface, center_x - x, center_y - y, center_y + y, color);
+    draw_vert_line(surface, center_x - x, center_y - y, center_y + y, color);
 
-     draw_vert_line(surface, center_x + y, center_y - x, center_y + x, color);
+    draw_vert_line(surface, center_x + y, center_y - x, center_y + x, color);
 
-     draw_vert_line(surface, center_x - y, center_y - x, center_y + x, color);
-      
-      if (error <= 0) {
-         ++y;
-         error += ty;
-         ty += 2;
-      }
+    draw_vert_line(surface, center_x - y, center_y - x, center_y + x, color);
 
-      if (error > 0) {
-         --x;
-         tx += 2;
-         error += tx - diameter;
-      }
-   }
+    if (error <= 0) {
+      ++y;
+      error += ty;
+      ty += 2;
+    }
+
+    if (error > 0) {
+      --x;
+      tx += 2;
+      error += tx - diameter;
+    }
+  }
 }
 
-void draw_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 color) {
-  for(int yi = y0; yi <= y1; ++yi) {
+void draw_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1,
+               Uint32 color) {
+  for (int yi = y0; yi <= y1; ++yi) {
     if (yi == y0 || yi == y1) {
-      for(int xi = x0; xi <= x1; ++xi) {
-	set_pixel(surface, xi, yi, color);
+      for (int xi = x0; xi <= x1; ++xi) {
+        set_pixel(surface, xi, yi, color);
       }
     } else {
       set_pixel(surface, x0, yi, color);
@@ -233,47 +248,45 @@ void draw_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 colo
   }
 }
 
-void fill_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1, Uint32 color) {
-  for(int xi = x0; xi <= x1; ++xi) {
-    for(int yi = y0; yi <= y1; ++yi) {
+void fill_rect(SDL_Surface* surface, int x0, int y0, int x1, int y1,
+               Uint32 color) {
+  for (int xi = x0; xi <= x1; ++xi) {
+    for (int yi = y0; yi <= y1; ++yi) {
       set_pixel(surface, xi, yi, color);
     }
   }
 }
 
-
-void set_pixel(SDL_Surface *surface, int x, int y, Uint32 color) {
+void set_pixel(SDL_Surface* surface, int x, int y, Uint32 color) {
   int bpp = surface->format->BytesPerPixel;
   /* Here p is the address to the pixel we want to set */
-  Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-  
-  switch(bpp) {
-  case 1:
-    *p = color;
-    break;
-  case 2:
-    *(Uint16 *)p = color;
-    break;
-  case 3:
+  Uint8* p = (Uint8*)surface->pixels + y * surface->pitch + x * bpp;
+
+  switch (bpp) {
+    case 1:
+      *p = color;
+      break;
+    case 2:
+      *(Uint16*)p = color;
+      break;
+    case 3:
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    p[0] = (color >> 16) & 0xff;
-    p[1] = (color >> 8) & 0xff;
-    p[2] = color & 0xff;
+      p[0] = (color >> 16) & 0xff;
+      p[1] = (color >> 8) & 0xff;
+      p[2] = color & 0xff;
 #else
-    p[0] = color & 0xff;
-    p[1] = (color >> 8) & 0xff;
-    p[2] = (color >> 16) & 0xff;
+      p[0] = color & 0xff;
+      p[1] = (color >> 8) & 0xff;
+      p[2] = (color >> 16) & 0xff;
 #endif
-    break;
-  case 4:
-    *(Uint32 *)p = color;
-    break;
+      break;
+    case 4:
+      *(Uint32*)p = color;
+      break;
   }
 }
 
-void destroyBits() {
-  surface_destroy(bitsSurface);
-}
+void destroyBits() { surface_destroy(bitsSurface); }
 
 /**
    @lua-name flip

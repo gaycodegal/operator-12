@@ -10,7 +10,7 @@
    @lua-return Class Mix_Music Music
  */
 static Mix_Music* l_music_new(const char* source) {
-  Mix_Music *music = Mix_LoadMUS(source);
+  Mix_Music* music = Mix_LoadMUS(source);
   if (!music) {
     printf("Music error: %s\n", Mix_GetError());
   }
@@ -47,18 +47,14 @@ static void l_music_setPosition(lua_Number position) {
 
    @lua-name pause
  */
-static void l_music_pause() {
-  Mix_PauseMusic();
-}
+static void l_music_pause() { Mix_PauseMusic(); }
 
 /**
    resumes the current music
 
    @lua-name resume
  */
-static void l_music_resume() {
-  Mix_ResumeMusic();
-}
+static void l_music_resume() { Mix_ResumeMusic(); }
 
 /**
    frees a music
@@ -66,6 +62,4 @@ static void l_music_resume() {
    @lua-name destroy
    @lua-arg self: Delete Mix_Music
  */
-static void l_music_destroy(Mix_Music* self) {
-  Mix_FreeMusic(self);
-}
+static void l_music_destroy(Mix_Music* self) { Mix_FreeMusic(self); }

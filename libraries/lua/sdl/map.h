@@ -1,13 +1,13 @@
 #ifndef _MAP_H_
 #define _MAP_H_
 
-#include "globals.h"
 #include "drawable.h"
-#include "util_lua.h"
+#include "globals.h"
 #include "sdl_include.h"
+#include "util_lua.h"
 
 class TiledTexture {
-private:
+ private:
   std::string imageName;
   SDL_Texture *texture;
   int tileWidth, tileHeight;
@@ -15,7 +15,7 @@ private:
   int count;
   int cols;
 
-public:
+ public:
   TiledTexture(lua_State *L);
   ~TiledTexture();
   void draw(int n, int x, int y);
@@ -23,7 +23,7 @@ public:
 };
 
 class TiledMap : public Drawable {
-private:
+ private:
   SDL_Texture *texture;
   int nTilesets;
   TiledTexture **tilesets;
@@ -34,7 +34,7 @@ private:
 
   int *tiles;
 
-public:
+ public:
   TiledMap(lua_State *L);
   ~TiledMap();
 
