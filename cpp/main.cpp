@@ -16,7 +16,7 @@ int start() {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     return 1;
   }
-  /* initialize TTF* /
+  /* initialize TTF*/
   if (TTF_Init() == -1) {
     printf("Could not initialize SDL_TTF SDL_Error: %s\n", SDL_GetError());
     return 1;
@@ -134,8 +134,7 @@ void one_iter() {
       lua_getglobal(L, "KeyUp");
       lua_pushinteger(L, e.key.keysym.sym);
       callErr(L, "KeyUp", 1);
-    }
-    /* else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
+    } /* else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
                 e.type == SDL_MOUSEBUTTONUP) {
        // Get mouse position
        switch (e.type) {
@@ -152,7 +151,7 @@ void one_iter() {
      } else if (e.type == SDL_MOUSEWHEEL) {
        //mouseWheelHelper(L, e.wheel.x, e.wheel.y, "MouseWheel",
      mousewheelExists);
-       }* /
+       }*/
     else if (e.type == SDL_WINDOWEVENT &&
              e.window.event == SDL_WINDOWEVENT_RESIZED) {
       screenSurface = SDL_GetWindowSurface(window);
