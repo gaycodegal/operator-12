@@ -1,15 +1,15 @@
 #include "main.h"
-int SCREEN_WIDTH = 640;
-int SCREEN_HEIGHT = 480;
+int SCREEN_WIDTH = 128 * 5;
+int SCREEN_HEIGHT = 128 * 5;
 SDL_Window *window;
 SDL_Renderer *globalRenderer;
 TTF_Font *gFont = NULL;
 bool doInitSDL = false;
 SDL_Surface *screenSurface;
 
-#define DRAW "_draw"
-#define UPDATE "_update"
-#define START "_init"
+const char* DRAW = "_draw";
+const char* UPDATE = "_update";
+const char* START = "_init";
 
 int start() {
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {

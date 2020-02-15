@@ -163,6 +163,12 @@ function _draw()
    circ(x + 10, 10, 10)
    x = x + 22
    circfill(x + 10, 10, 10)
+   x = x + 22
+   line(x, 0, x + 20, 0, 1)
+   line(x, 0, x, 20, 1)
+   line(x, 0, x + 20, 5, 2)
+   line(x, 0, x + 20, 10, 3)
+   line(x, 0, x + 20, 20, 4)
    --main:draw()
 end
 

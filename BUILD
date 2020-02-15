@@ -1,5 +1,12 @@
 load("//wasm_toolchain:rules_wasm.bzl", "wasm_binary")
 
+sh_binary(
+    name = "format",
+    srcs = [
+        "scripts/format.sh",
+    ],
+)
+
 DEPS = [
     "//libraries/std/include",
     "//libraries/lua/include",
