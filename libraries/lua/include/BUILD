@@ -28,7 +28,7 @@ LINKOPTS = select({
 cc_library(
     name = "include",
     hdrs = glob([
-        "*.h",
+        "*.hh",
     ]),
     deps = [
         "//third_party/lua:lua-lib",

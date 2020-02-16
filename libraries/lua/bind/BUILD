@@ -14,5 +14,5 @@ py_binary(
 
 lua_bind_cpp(
     name = "test",
-    src = "test-src.cpp",
+    src = "test-src.cc",
 )

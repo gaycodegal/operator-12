@@ -3,10 +3,10 @@ load("//bzl:vars.bzl", "COPTS", "LINKOPTS")
 cc_library(
     name = "map",
     srcs = glob([
-        "*.cpp",
+        "*.cc",
     ]),
     hdrs = glob([
-        "*.h",
+        "*.hh",
     ]),
     copts = COPTS,
     linkopts = LINKOPTS,

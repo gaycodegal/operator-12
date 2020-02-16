@@ -58,8 +58,8 @@ LINKOPTS = select({
 cc_binary(
     name = "main",
     srcs = glob([
-        "cpp/*.h",
-        "cpp/*.cpp",
+        "cc/*.hh",
+        "cc/*.cc",
     ]),
     deps = DEPS,
     data = glob(["resources/**"]),
@@ -70,8 +70,8 @@ cc_binary(
 wasm_binary(
     name = "index.html",
     srcs = glob([
-        "cpp/*.h",
-        "cpp/*.cpp",
+        "cc/*.hh",
+        "cc/*.cc",
     ]),
     deps = DEPS,
     data = glob(["resources/**"]),
@@ -114,8 +114,8 @@ android_library(
 cc_library(
     name = "android",
     srcs = glob([
-        "cpp/*.h",
-        "cpp/*.cpp",
+        "cc/*.hh",
+        "cc/*.cc",
     ]),
     copts = ["-DANDROID"],
     deps = [

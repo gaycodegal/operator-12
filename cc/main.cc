@@ -1,0 +1,286 @@
+#include "main.hh"
+int SCREEN_WIDTH = 128 * 5;
+int SCREEN_HEIGHT = 128 * 5;
+SDL_Window* window;
+SDL_Renderer* globalRenderer;
+TTF_Font* gFont = NULL;
+bool doInitSDL = false;
+SDL_Surface* screenSurface;
+
+const char* DRAW = "_draw";
+const char* UPDATE = "_update";
+const char* START = "_init";
+
+int start() {
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+    return 1;
+  }
+  /* initialize TTF*/
+  if (TTF_Init() == -1) {
+    printf("Could not initialize SDL_TTF SDL_Error: %s\n", SDL_GetError());
+    return 1;
+  }
+
+  /*if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
+    printf("Could not initialize SDL_MIXER SDL_Error: %s\n", SDL_GetError());
+    return 1;
+    }*/
+
+  Uint32 initopts = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+#ifdef ANDROID
+  SDL_DisplayMode displayMode;
+  if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0) {
+    SCREEN_WIDTH = displayMode.w;
+    SCREEN_HEIGHT = displayMode.h;
+  }
+  initopts |= SDL_WINDOW_FULLSCREEN;
+#endif
+  window = SDL_CreateWindow("Game Engine V0", SDL_WINDOWPOS_CENTERED,
+                            SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+                            initopts);
+  if (window == NULL) {
+    printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+    return 1;
+  }
+  screenSurface = SDL_GetWindowSurface(window);
+  if (!screenSurface) {
+    printf("Could not create renderer SDL_Error: %s\n", SDL_GetError());
+    return 1;
+  }
+  gFont = TTF_OpenFont("fonts/mozart.ttf", 28);
+  if (gFont == NULL) {
+    printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
+    return 1;
+  }
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+
+  initBits();
+  return 0;
+}
+
+int end() {
+  if (!doInitSDL) return 0;
+  if (window != NULL) SDL_DestroyWindow(window);
+  if (gFont != NULL) TTF_CloseFont(gFont);
+  gFont = NULL;
+  // Mix_CloseAudio();
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
+
+  destroyBits();
+  return 0;
+}
+
+bool quit = false;
+int framedelay = 1000 / 60;
+
+void mouseHelper(lua_State* L, int type, const char* event, bool fn_exists) {
+  int x, y;
+  SDL_GetMouseState(&x, &y);
+  if (fn_exists) {
+    lua_getglobal(L, event);
+    lua_pushnumber(L, x);
+    lua_pushnumber(L, y);
+    callErr(L, event, 2);
+  }
+}
+
+void mouseWheelHelper(lua_State* L, int dx, int dy, const char* event,
+                      bool fn_exists) {
+  int x, y;
+  SDL_GetMouseState(&x, &y);
+  if (fn_exists) {
+    lua_getglobal(L, event);
+    lua_pushnumber(L, x);
+    lua_pushnumber(L, y);
+    lua_pushnumber(L, dx);
+    lua_pushnumber(L, dy);
+    callErr(L, event, 4);
+  }
+}
+
+static inline long getMS() {
+  return std::chrono::duration_cast<std::chrono::milliseconds>(
+             std::chrono::system_clock::now().time_since_epoch())
+      .count();
+}
+
+lua_State* L;
+long lastTick;
+int updateExists;
+int drawExists;
+int keydownExists;
+int keyupExists;
+int mousedownExists;
+int mousemoveExists;
+int mouseupExists;
+int mousewheelExists;
+int mousescrollExists;
+SDL_Event e;
+void one_iter() {
+  // Handle events on queue
+  while (SDL_PollEvent(&e) != 0) {
+    // User requests quit
+    if (e.type == SDL_QUIT) {
+      quit = true;
+    }  // User presses a key
+    else if (keydownExists && e.type == SDL_KEYDOWN) {
+      lua_getglobal(L, "KeyDown");
+      lua_pushinteger(L, e.key.keysym.sym);
+      callErr(L, "KeyDown", 1);
+    } else if (keyupExists && e.type == SDL_KEYUP) {
+      lua_getglobal(L, "KeyUp");
+      lua_pushinteger(L, e.key.keysym.sym);
+      callErr(L, "KeyUp", 1);
+    } /* else if (e.type == SDL_MOUSEMOTION || e.type == SDL_MOUSEBUTTONDOWN ||
+                e.type == SDL_MOUSEBUTTONUP) {
+       // Get mouse position
+       switch (e.type) {
+       case SDL_MOUSEBUTTONDOWN:
+         mouseHelper(L, e.type, "MouseDown", mousedownExists);
+         break;
+       case SDL_MOUSEMOTION:
+         mouseHelper(L, e.type, "MouseMove", mousemoveExists);
+         break;
+       case SDL_MOUSEBUTTONUP:
+         mouseHelper(L, e.type, "MouseUp", mouseupExists);
+         break;
+       }
+     } else if (e.type == SDL_MOUSEWHEEL) {
+       //mouseWheelHelper(L, e.wheel.x, e.wheel.y, "MouseWheel",
+     mousewheelExists);
+       }*/
+    else if (e.type == SDL_WINDOWEVENT &&
+             e.window.event == SDL_WINDOWEVENT_RESIZED) {
+      screenSurface = SDL_GetWindowSurface(window);
+      SDL_FillRect(screenSurface, NULL, 0x000000);
+      SCREEN_WIDTH = screenSurface->w;
+      SCREEN_HEIGHT = screenSurface->h;
+    }
+  }
+
+  SDL_RenderClear(globalRenderer);
+  long nowTick = getMS();
+  long delta = (nowTick - lastTick);
+  long tdelta = delta;
+  if (delta <= 0) {
+    delta = 0;
+  }
+  if (updateExists) {
+    lua_getglobal(L, UPDATE);
+    lua_pushnumber(L, delta / 1000.0f);
+    lua_pushnumber(L, tdelta);
+    callErr(L, UPDATE, 2);
+  }
+  if (drawExists) {
+    lua_getglobal(L, DRAW);
+    callErr(L, DRAW, 0);
+  }
+  bits_renderPresent();
+  lastTick = nowTick;
+  // SDL_RenderPresent(globalRenderer);
+  if (!quit) SDL_WaitEventTimeout(NULL, framedelay);
+}
+
+std::string openConfig(const char* path) {
+  std::string ret = "load.lua";
+  L = luaL_newstate();
+  luaL_openlibs(L);
+
+  if (path == NULL) {
+    if (!loadLuaFile(L, "config.lua", 1)) {
+      return NULL;
+    }
+  } else {
+    if (!loadLuaFile(L, (std::string(path) + "/config.lua").c_str(), 1)) {
+      return NULL;
+    }
+  }
+
+  lua_getfield(L, -1, "load");
+  ret = std::string(lua_tostring(L, -1));
+  lua_pop(L, 1);
+  lua_getfield(L, -1, "doInitSDL");
+  doInitSDL = lua_toboolean(L, -1);
+  lua_pop(L, 1);
+
+  lua_close(L);
+  return ret;
+}
+
+#ifndef ANDROID
+#undef main
+#endif
+
+int main(int argc, char** argv) {
+  quit = false;
+#ifdef _WIN32
+  SetCurrentDirectory("resources");
+#elif ANDROID
+// already in resources
+#else
+  chdir("resources");
+#endif
+
+  std::string path;
+  if (argc < 2) {
+    path = openConfig(NULL);
+  } else {
+    path = openConfig(argv[1]);
+  }
+
+  if (doInitSDL) {
+    if (start() != 0) {
+      end();
+      return 1;
+    }
+  }
+
+  L = luaL_newstate();
+  luaL_openlibs(L);
+  luaL_requiref(L, LUA_LIBNAME, luaopen_gamelibs, 1);
+
+#ifdef ANDROID
+  if (!loadLuaFile(L, "android.lua", 0)) {
+    end();
+    return 1;
+  }
+#else
+  if (!loadLuaFile(L, path.c_str(), 0)) {
+    end();
+    return 1;
+  }
+#endif
+
+  lastTick = getMS();
+  if (globalTypeExists(L, LUA_TFUNCTION, START))
+    callLuaVoidArgv(L, START, argc - 1, argv + 1);
+  updateExists = globalTypeExists(L, LUA_TFUNCTION, UPDATE);
+  drawExists = globalTypeExists(L, LUA_TFUNCTION, DRAW);
+  keydownExists = globalTypeExists(L, LUA_TFUNCTION, "KeyDown");
+  keyupExists = globalTypeExists(L, LUA_TFUNCTION, "KeyUp");
+  mousedownExists = globalTypeExists(L, LUA_TFUNCTION, "MouseDown");
+  mousemoveExists = globalTypeExists(L, LUA_TFUNCTION, "MouseMove");
+  mouseupExists = globalTypeExists(L, LUA_TFUNCTION, "MouseUp");
+  mousewheelExists = globalTypeExists(L, LUA_TFUNCTION, "MouseWheel");
+// While application is running
+#ifdef __EMSCRIPTEN__
+  // void emscripten_set_main_loop(em_callback_func func, int fps, int
+  // simulate_infinite_loop);
+  emscripten_set_main_loop(one_iter, 60, 1);
+#else
+
+  if (updateExists) {
+    while (!quit) {
+      one_iter();
+    }
+  }
+  if (globalTypeExists(L, LUA_TFUNCTION, "End")) callLuaVoid(L, "End");
+  lua_close(L);
+
+  end();
+#endif
+  return 0;
+}

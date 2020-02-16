@@ -3,7 +3,7 @@ load("//bzl:vars.bzl", "COPTS", "LINKOPTS")
 cc_library(
     name = "include",
     srcs = glob([
-        "*.h",
+        "*.hh",
     ]),
     includes = [""],
     copts = COPTS,

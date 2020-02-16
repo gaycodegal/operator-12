@@ -7,9 +7,9 @@ from argparse import RawTextHelpFormatter
 parser = argparse.ArgumentParser(description = """
 Parses Javadoc like statements in a C++ file and generates binding functions
 to help call the functions in lua. Also outputs a metatable for linking purposes
-generates a `{OUT_LOCATION}/{OUT_BASENAME}.cpp` and `{OUT_LOCATION}/{OUT_BASENAME}.h`
+generates a `{OUT_LOCATION}/{OUT_BASENAME}.cc` and `{OUT_LOCATION}/{OUT_BASENAME}.hh`
 
-The .cpp file includes the contents of `{IN_FILE}` already, so you may use static
+The .cc file includes the contents of `{IN_FILE}` already, so you may use static
 functions and will not need to include `{IN_FILE}` in your build.
 
 javadoc functions are defined with `/** */`. rules are defined with `@lua-` statements
@@ -51,7 +51,7 @@ TYPE is one of the following patterns
 - `Struct CTYPE [METATABLE_NAME]`
     - like class, but lua allocates the full size of this type onto the stack
 """, formatter_class=RawTextHelpFormatter)
-parser.add_argument("IN_FILE", help = "the input .cpp file")
+parser.add_argument("IN_FILE", help = "the input .cc file")
 parser.add_argument("OUT_LOCATION", help = "the output directory")
 parser.add_argument("OUT_BASENAME", help = "output file basename")
 sys_args = parser.parse_args()
@@ -59,15 +59,15 @@ IN_FILEname = sys_args.IN_FILE
 out_filename = os.path.join(sys_args.OUT_LOCATION, sys_args.OUT_BASENAME)
 basename = sys_args.OUT_BASENAME
 
-with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cpp", "w") as out_file, open(out_filename + ".h", "w") as out_header:
-    # create the .cpp file
+with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cc", "w") as out_file, open(out_filename + ".hh", "w") as out_header:
+    # create the .cc file
     contents = IN_FILE.read()
     didguard = guard.match(contents)
     if didguard != None:
         contents = contents[didguard.span()[1]:]
         groups = didguard.groups()
         out_file.write("#if{}def {}\n".format(*groups))
-    out_file.write('#include "{}.h"\n'.format(basename))
+    out_file.write('#include "{}.hh"\n'.format(basename))
     out_file.write(contents)
     out_file.write("\n")
     fns = []
@@ -104,15 +104,15 @@ with open(IN_FILEname, "r") as IN_FILE, open(out_filename + ".cpp", "w") as out_
     if didguard != None:
         out_file.write("#endif\n")
     
-    # create the .h file
+    # create the .hh file
     if didguard != None:
         contents = contents[didguard.span()[1]:]
         groups = didguard.groups()
         out_header.write("#if{}def {}\n".format(*groups))
     out_header.write("""
 #pragma once
-#include "globals.h"
-#include "{}.h"
+#include "globals.hh"
+#include "{}.hh"
 
 extern const struct luaL_Reg {}_meta[];
 """.format(basename, basename))

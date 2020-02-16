@@ -28,7 +28,7 @@ LINKOPTS = select({
 cc_library(
     name = "globals",
     hdrs = glob([
-        "*.h",
+        "*.hh",
     ]),
     deps = [
         "//libraries/sdl/include",

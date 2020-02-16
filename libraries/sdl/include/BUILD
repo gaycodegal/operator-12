@@ -55,7 +55,7 @@ LINKOPTS = select({
 cc_library(
     name = "include",
     hdrs = glob([
-        "*.h",
+        "*.hh",
     ]),
     includes = [""],
     deps = DEPS,
