@@ -1,19 +1,24 @@
 #include "util_files.hh"
 
-char *fileRead(const char *fname, Sint64 &size) {
-  SDL_RWops *io = SDL_RWFromFile(fname, "rb");
+std::string fileRead(const char* fname, bool& success) {
+  SDL_RWops* io = SDL_RWFromFile(fname, "rb");
   if (io == NULL) {
     printf("No such file %s\n", fname);
-    return NULL;
+    success = false;
+    return "";
   }
-  size = SDL_RWsize(io);
+  Sint64 size = SDL_RWsize(io);
   if (size == -1) {
     SDL_RWclose(io);
-    return NULL;
+    success = false;
+    return "";
   }
-  char *c = new char[size + 1];
-  SDL_RWread(io, c, size, 1);
+  std::string out(size + 1, ' ');
+  // modifying data safe in C++11 or higher
+  char* data = const_cast<char*>(out.data());
+  SDL_RWread(io, data, size, 1);
   SDL_RWclose(io);
-  c[size] = 0;
-  return c;
+  data[size] = 0;
+  success = true;
+  return out;
 }

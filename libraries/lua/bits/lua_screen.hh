@@ -1,4 +1,4 @@
-#include "globals.hh"
+#include "bits_globals.hh"
 #include "lua_surface.hh"
 
 Uint32 make_pixel(Uint8 r, Uint8 g, Uint8 b);

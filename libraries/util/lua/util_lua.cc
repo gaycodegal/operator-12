@@ -66,17 +66,15 @@ int globalTypeExists(lua_State *L, int type, const char *name) {
 }
 
 int loadLuaFile(lua_State *L, const char *fname, int nresults) {
-  Sint64 s;
-  char *file = fileRead(fname, s);
-  if (file == NULL) {
+  bool success;
+  std::string file = fileRead(fname, success);
+  if (!success) {
     return 0;
   }
-  if (luaL_loadstring(L, file)) {
+  if (luaL_loadstring(L, file.c_str())) {
     printf("failed to load %s with error:%s\n", fname, lua_tostring(L, -1));
-    delete[] file;
     return 0;
   }
-  delete[] file;
   if (lua_pcall(L, 0, nresults, 0)) {
     /* PRIMING RUN. FORGET THIS AND YOU'RE TOAST */
     printf("failed to call %s with error:%s\n", fname, lua_tostring(L, -1));

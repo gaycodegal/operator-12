@@ -1,15 +1,10 @@
 #include "lua_screen.hh"
-int screen_data[128 * 128];
-Uint32 colors[16];
-SDL_Surface* bitsSurface;
-int last_color;
+#define GUARD_BOUNDS(x, y) if ((x) < 0 || (x) > 127 || (y) < 0 || (y) > 127) { return; }
+
+bool alphas[16] = {0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+
 void initBits() {
   bitsSurface = surface_newBlank(128, 128);
-  SDL_Rect rect;
-  rect.x = 0;
-  rect.y = 0;
-  rect.w = bitsSurface->w;
-  rect.h = bitsSurface->h;
   colors[0] = SDL_MapRGBA(bitsSurface->format, 0, 0, 0, 255);
   colors[1] = SDL_MapRGBA(bitsSurface->format, 29, 43, 83, 255);
   colors[2] = SDL_MapRGBA(bitsSurface->format, 126, 37, 83, 255);
@@ -23,11 +18,10 @@ void initBits() {
   colors[10] = SDL_MapRGBA(bitsSurface->format, 255, 236, 39, 255);
   colors[11] = SDL_MapRGBA(bitsSurface->format, 0, 228, 54, 255);
   colors[12] = SDL_MapRGBA(bitsSurface->format, 41, 173, 255, 255);
-  colors[13] = SDL_MapRGBA(bitsSurface->format, 41, 173, 255, 255);
+  colors[13] = SDL_MapRGBA(bitsSurface->format, 131, 118, 156, 255);
   colors[14] = SDL_MapRGBA(bitsSurface->format, 255, 119, 168, 255);
   colors[15] = SDL_MapRGBA(bitsSurface->format, 255, 204, 170, 255);
   last_color = colors[7];
-  SDL_FillRect(bitsSurface, &rect, colors[14]);
 }
 
 inline void set_last_color(lua_Integer c) {
@@ -50,6 +44,50 @@ inline void draw_horz_line(SDL_Surface* surface, int x0, int x1, int y,
   }
 }
 
+inline int spritei(int x, int y) {
+  return x / 2 + y * 64;
+}
+
+inline int spritepix(int i, int x) {
+  return (memory[i] >> (((x + 1) & 1) * 4)) & 0xF;
+}
+
+/**
+   @lua-name sget
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-return int
+ */
+static inline int sget(const lua_Integer x, const lua_Integer y) {
+  return spritepix(spritei(x, y), x);
+}
+
+/**
+   @lua-name spr
+   @lua-arg n: int
+   @lua-arg x: int
+   @lua-arg y: int
+   @lua-arg w: int = 8
+   @lua-arg h: int = 8
+   @lua-arg flipx: bool = false
+   @lua-arg flipy: bool = false
+
+ */
+static lua_Integer spr(const lua_Integer n, const lua_Integer x, const lua_Integer y, const lua_Integer h, const lua_Integer w, const bool flipx, const bool flipy) {
+  int sx = (n % 16) * 8;
+  int sy = (n / 16) * 8;
+  for (int xi = 0; xi < w; ++xi) {
+    for (int yi = 0; yi < h; ++yi) {
+      int c = sget(xi + sx, yi + sy);
+      if (alphas[c]) {
+	Uint32 px = colors[c];
+	set_pixel(bitsSurface, xi + x, yi + y, px);
+      }
+    }
+  }
+  return spritepix(spritei(x, y), x);
+}
+
 /**
    @lua-name pset
    @lua-arg x: int
@@ -58,6 +96,7 @@ inline void draw_horz_line(SDL_Surface* surface, int x0, int x1, int y,
  */
 static void pset(const lua_Integer x, const lua_Integer y,
                  const lua_Integer c) {
+  GUARD_BOUNDS(x, y);
   set_last_color(c);
   set_pixel(bitsSurface, x, y, colors[last_color]);
 }
@@ -71,6 +110,8 @@ static void pset(const lua_Integer x, const lua_Integer y,
  */
 static void circ(const lua_Integer x, const lua_Integer y, const lua_Integer r,
                  const lua_Integer c) {
+  GUARD_BOUNDS(x - r, y - r);
+  GUARD_BOUNDS(x + r, y + r);
   set_last_color(c);
   draw_circle(bitsSurface, x, y, r, colors[last_color]);
 }
@@ -84,6 +125,8 @@ static void circ(const lua_Integer x, const lua_Integer y, const lua_Integer r,
  */
 static void circfill(const lua_Integer x, const lua_Integer y,
                      const lua_Integer r, const lua_Integer c) {
+  GUARD_BOUNDS(x - r, y - r);
+  GUARD_BOUNDS(x + r, y + r);
   set_last_color(c);
   fill_circle(bitsSurface, x, y, r, colors[last_color]);
 }
@@ -99,8 +142,19 @@ static void circfill(const lua_Integer x, const lua_Integer y,
 static void line(const lua_Integer x0, const lua_Integer y0,
                  const lua_Integer x1, const lua_Integer y1,
                  const lua_Integer c) {
+  GUARD_BOUNDS(x0, y0);
+  GUARD_BOUNDS(x1, y1);
   set_last_color(c);
   draw_line(bitsSurface, x0, y0, x1, y1, colors[last_color]);
+}
+
+/**
+   @lua-name cls
+   @lua-arg color: int = last_color
+ */
+static void cls(const lua_Integer c) {
+  set_last_color(c);
+  fill_rect(bitsSurface, 0, 0, bitsSurface->w - 1, bitsSurface->h - 1, colors[last_color]);
 }
 
 /**
@@ -114,6 +168,8 @@ static void line(const lua_Integer x0, const lua_Integer y0,
 static void rect(const lua_Integer x0, const lua_Integer y0,
                  const lua_Integer x1, const lua_Integer y1,
                  const lua_Integer c) {
+  GUARD_BOUNDS(x0, y0);
+  GUARD_BOUNDS(x1, y1);
   set_last_color(c);
   draw_rect(bitsSurface, x0, y0, x1, y1, colors[last_color]);
 }
@@ -129,6 +185,8 @@ static void rect(const lua_Integer x0, const lua_Integer y0,
 static void rectfill(const lua_Integer x0, const lua_Integer y0,
                      const lua_Integer x1, const lua_Integer y1,
                      const lua_Integer c) {
+  GUARD_BOUNDS(x0, y0);
+  GUARD_BOUNDS(x1, y1);
   set_last_color(c);
   fill_rect(bitsSurface, x0, y0, x1, y1, colors[last_color]);
 }
@@ -286,7 +344,9 @@ void set_pixel(SDL_Surface* surface, int x, int y, Uint32 color) {
   }
 }
 
-void destroyBits() { surface_destroy(bitsSurface); }
+void destroyBits() {
+  //surface_destroy(bitsSurface);
+}
 
 /**
    @lua-name flip

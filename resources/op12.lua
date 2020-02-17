@@ -18,6 +18,18 @@ for k, v in pairs(Game.Bits) do
    rawset(_G, k, v)
 end
 
+for k, v in pairs(math) do
+   rawset(_G, k, v)
+end
+
+function sin(x)
+   return math.sin(x * math.pi * 2)
+end
+
+function cos(x)
+   return math.cos(x * math.pi * 2)
+end
+
 nbattles = 3
 
 --[[--
@@ -142,19 +154,29 @@ function startbattle(name, ind)
    main = battle
 end
 
+fakemain = {
+   bgi = 0,
+   update = function()
+      main.bgi = main.bgi + 0.5
+      main.bgi = main.bgi % 128
+   end,
+}
+
 function _init()
-   cartdata("gaycodegal_op12_0")
+   main = fakemain
+   --[[cartdata("gaycodegal_op12_0")
    main = worldmap 
    main:start()
    maxinpdel = 7
-   inpdelay = maxinpdel
+      inpdelay = maxinpdel]]
 end
 
 function _update()
-   --main:update()
+   main:update()
 end
 
 function _draw()
+   drawbg[1](3,6)
    x = 0
    rect(0, 0, 20, 20, 4)
    x = x + 22
@@ -169,7 +191,13 @@ function _draw()
    line(x, 0, x + 20, 5, 2)
    line(x, 0, x + 20, 10, 3)
    line(x, 0, x + 20, 20, 4)
-   --main:draw()
+
+   for y = 0, 1 do
+      for x = 0, 15 do
+	 spr(x + y * 16, x * 8, y * 8)
+      end
+   end
+      --main:draw()
 end
 
 function printcoord(coord)

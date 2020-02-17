@@ -21,6 +21,7 @@ cc_library(
         "//libraries/globals",
         "//libraries/lua/sdl",
         "//libraries/util/lua",
+        "//libraries/util",
     ],
     includes = [""],
     visibility = ["//visibility:public"],
@@ -29,4 +30,9 @@ cc_library(
 lua_bind_cpp(
     name = "bound_screen",
     src = "lua_screen.cc",
+)
+
+lua_bind_cpp(
+    name = "bound_bits_io",
+    src = "lua_bits_io.cc",
 )

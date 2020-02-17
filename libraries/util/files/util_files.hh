@@ -1,12 +1,11 @@
-#ifndef _UTIL_FILES_H_
-#define _UTIL_FILES_H_
+#pragma once
 
 #include "sdl_include.hh"
+#include <string>
 
 /**
    reads in the text content of a file.
    allocates and returns a c string.
  */
-char *fileRead(const char *fname, Sint64 &size);
+std::string fileRead(const char* fname, bool& success);
 
-#endif

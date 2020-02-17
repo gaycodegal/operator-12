@@ -56,6 +56,14 @@ int start() {
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
 
   initBits();
+  bool success;
+  std::string file = fileRead("op12.p8", success);
+  if (!success) {
+    return 1;
+  }
+  if(!init_memory(file)) {
+    return 1;
+  }
   return 0;
 }
 
@@ -74,7 +82,7 @@ int end() {
 }
 
 bool quit = false;
-int framedelay = 1000 / 60;
+int framedelay = 1000 / 30;
 
 void mouseHelper(lua_State* L, int type, const char* event, bool fn_exists) {
   int x, y;
@@ -160,7 +168,6 @@ void one_iter() {
       SCREEN_HEIGHT = screenSurface->h;
     }
   }
-
   SDL_RenderClear(globalRenderer);
   long nowTick = getMS();
   long delta = (nowTick - lastTick);
@@ -181,7 +188,7 @@ void one_iter() {
   bits_renderPresent();
   lastTick = nowTick;
   // SDL_RenderPresent(globalRenderer);
-  if (!quit) SDL_WaitEventTimeout(NULL, framedelay);
+  if (!quit) SDL_Delay(framedelay);
 }
 
 std::string openConfig(const char* path) {

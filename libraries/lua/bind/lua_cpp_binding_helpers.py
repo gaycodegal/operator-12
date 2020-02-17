@@ -117,7 +117,7 @@ def cxx_string_lpush(arg_type):
 
 arggets = {
     "string": lambda n, x, i: n + " = lua_tostring(L, -1);".format(i),
-    "int": lambda n, x, i: n + " = lua_tointeger(L, -1);".format(i),
+    "int": lambda n, x, i: n + " = lua_tonumber(L, -1);".format(i),
     "number": lambda n, x, i: n + " = lua_tonumber(L, -1);".format(i),
     "bool": lambda n, x, i: n + " = static_cast<bool>(lua_toboolean(L, -1));".format(i),
     "Class": class_lget,

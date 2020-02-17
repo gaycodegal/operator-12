@@ -23,13 +23,12 @@ static int l_static_readfile(lua_State *L) {
   }
   name = (char *)lua_tostring(L, -1);
   lua_pop(L, 1);
-  Sint64 size;
-  char *s = fileRead(name, size);
-  if (s == NULL) {
+  bool success;
+  std::string file = fileRead(name, success);
+  if (!success) {
     return 0;
   }
-  lua_pushlstring(L, s, (size_t)size);
-  delete[] s;
+  lua_pushlstring(L, file.c_str(), file.size());
   return 1;
 }
 
