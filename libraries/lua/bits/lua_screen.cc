@@ -71,17 +71,20 @@ static inline int sget(const lua_Integer x, const lua_Integer y) {
    @lua-arg h: int = 8
    @lua-arg flipx: bool = false
    @lua-arg flipy: bool = false
-
  */
 static lua_Integer spr(const lua_Integer n, const lua_Integer x, const lua_Integer y, const lua_Integer h, const lua_Integer w, const bool flipx, const bool flipy) {
   int sx = (n % 16) * 8;
   int sy = (n / 16) * 8;
+  int fx = flipx ? -1 : 1;
+  int fy = flipy ? -1 : 1;
+  int ax = flipx ? w - 1 : 0;
+  int ay = flipy ? h - 1: 0;
   for (int xi = 0; xi < w; ++xi) {
     for (int yi = 0; yi < h; ++yi) {
       int c = sget(xi + sx, yi + sy);
       if (alphas[c]) {
 	Uint32 px = colors[c];
-	set_pixel(bitsSurface, xi + x, yi + y, px);
+	set_pixel(bitsSurface, (xi) * fx + ax + x, (yi) * fy + ay + y, px);
       }
     }
   }
