@@ -5,7 +5,6 @@ main
 tiled/*.png
 tiled/*.lua
 bazel*
-third_party/
 !*BUILD
 out/
 *.pyc
